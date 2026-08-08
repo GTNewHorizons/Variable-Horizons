@@ -2,6 +2,7 @@ package com.LazyFlesh.variablehorizons.variants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.VariableHorizons;
@@ -11,7 +12,7 @@ import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 public abstract class VariantLoader {
 
     public static void loadActiveVariants() {
-        List<String> active = VariantNames.getActiveVariantNames();
+        Set<String> active = VariantNames.getActiveVariantNames();
         List<String> toRemove = new ArrayList<>();
         List<String> toAdd = new ArrayList<>();
 
@@ -90,7 +91,7 @@ public abstract class VariantLoader {
                     }
                 }
                 // both passes made, add it
-                List<String> active = VariantNames.getActiveVariantNames();
+                Set<String> active = VariantNames.getActiveVariantNames();
                 active.add(name.id);
                 GeneralConfig.activeVariants = active.toArray(new String[0]);
                 ConfigurationManager.save(GeneralConfig.class);
@@ -104,7 +105,7 @@ public abstract class VariantLoader {
             if (!VariantNames.activeContains(name.id)) {
                 return "Variant already inactive.";
             } else {
-                List<String> active = VariantNames.getActiveVariantNames();
+                Set<String> active = VariantNames.getActiveVariantNames();
                 active.remove(name.id);
                 GeneralConfig.activeVariants = active.toArray(new String[0]);
                 ConfigurationManager.save(GeneralConfig.class);

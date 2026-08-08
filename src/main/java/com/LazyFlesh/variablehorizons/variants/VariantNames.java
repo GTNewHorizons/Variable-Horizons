@@ -3,6 +3,8 @@ package com.LazyFlesh.variablehorizons.variants;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.variants.invasive.GardenOfGrind;
@@ -51,6 +53,9 @@ public enum VariantNames {
     public final List<VariantNames> partOf = new ArrayList<>(); // composition variant it is part of
     public VariantLoader loaderClass;
     public boolean hasLoaded = false;
+
+    private static Set<String> activeVariantsCache;
+    private static boolean variantsCacheRefresh;
 
     VariantNames(String id) {
         this.id = id;
@@ -105,8 +110,12 @@ public enum VariantNames {
         return names.toString();
     }
 
-    public static List<String> getActiveVariantNames() {
-        return new ArrayList<>(Arrays.asList(GeneralConfig.activeVariants));
+    public static Set<String> getActiveVariantNames() {
+        if (activeVariantsCache == null || variantsCacheRefresh) {
+            activeVariantsCache = new HashSet<>(Arrays.asList(GeneralConfig.activeVariants));
+            variantsCacheRefresh = false;
+        }
+        return activeVariantsCache;
     }
 
     public static VariantNames getVariantFromID(String id) {
@@ -127,12 +136,12 @@ public enum VariantNames {
 
     // does the id match an active variant's id
     public static boolean activeContains(String... id) {
-        List<String> active = Arrays.asList(GeneralConfig.activeVariants);
+        Set<String> active = getActiveVariantNames();
         for (String s : id) {
             // if contained directly
-            if (active.contains(s.toUpperCase())) return true;
+            if (active.contains(s)) return true;
             // now check if it's contained as a part of a composite variant
-            VariantNames v = getVariantFromID(s.toUpperCase());
+            VariantNames v = getVariantFromID(s);
             if (v != null && !v.compositionVariant && !v.partOf.isEmpty()) {
                 for (VariantNames va : v.partOf) {
                     if (active.contains(va.id)) return true;
