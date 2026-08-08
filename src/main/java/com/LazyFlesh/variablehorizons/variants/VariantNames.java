@@ -2,8 +2,10 @@ package com.LazyFlesh.variablehorizons.variants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
@@ -57,6 +59,14 @@ public enum VariantNames {
     private static Set<String> activeVariantsCache;
     private static boolean variantsCacheRefresh;
 
+    private static final Map<String, VariantNames> allVariants = new HashMap<>();
+
+    static {
+        for (VariantNames name : values()) {
+            allVariants.put(name.id, name);
+        }
+    }
+
     VariantNames(String id) {
         this.id = id;
         this.compositionVariant = false;
@@ -93,12 +103,8 @@ public enum VariantNames {
         }
     }
 
-    public static List<String> getVariantNames() {
-        List<String> names = new ArrayList<>();
-        for (VariantNames name : VariantNames.values()) {
-            names.add(name.id);
-        }
-        return names;
+    public static Set<String> getVariantNames() {
+        return allVariants.keySet();
     }
 
     public static String getVariantNamesFormatted() {
@@ -119,17 +125,13 @@ public enum VariantNames {
     }
 
     public static VariantNames getVariantFromID(String id) {
-        for (VariantNames name : VariantNames.values()) {
-            if (id.equalsIgnoreCase(name.id)) return name;
-        }
-        return null;
+        return allVariants.getOrDefault(id, null);
     }
 
     // does the id match a variant's id
     public static boolean contains(String... id) {
-        List<String> vars = getVariantNames();
         for (String s : id) {
-            if (vars.contains(s.toUpperCase())) return true;
+            if (allVariants.containsKey(s)) return true;
         }
         return false;
     }
