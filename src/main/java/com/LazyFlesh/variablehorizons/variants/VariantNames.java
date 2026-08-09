@@ -2,7 +2,11 @@ package com.LazyFlesh.variablehorizons.variants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.variants.invasive.GardenOfGrind;
@@ -52,6 +56,20 @@ public enum VariantNames {
     public VariantLoader loaderClass;
     public boolean hasLoaded = false;
 
+    private static Set<String> activeVariantsCache;
+    private static boolean variantsCacheRefresh;
+
+    private static final Map<String, VariantNames> allVariants = new HashMap<>();
+    private static final VariantNames[] VALUES = values();
+    private static final Set<String> allVariantIDs;
+
+    static {
+        for (VariantNames name : VALUES) {
+            allVariants.put(name.id, name);
+        }
+        allVariantIDs = allVariants.keySet();
+    }
+
     VariantNames(String id) {
         this.id = id;
         this.compositionVariant = false;
@@ -88,51 +106,47 @@ public enum VariantNames {
         }
     }
 
-    public static List<String> getVariantNames() {
-        List<String> names = new ArrayList<>();
-        for (VariantNames name : VariantNames.values()) {
-            names.add(name.id);
-        }
-        return names;
+    public static Set<String> getVariantNames() {
+        return allVariantIDs;
     }
 
     public static String getVariantNamesFormatted() {
         StringBuilder names = new StringBuilder();
-        for (VariantNames name : VariantNames.values()) {
+        for (VariantNames name : VALUES) {
             names.append(name.id)
                 .append(", ");
         }
         return names.toString();
     }
 
-    public static List<String> getActiveVariantNames() {
-        return new ArrayList<>(Arrays.asList(GeneralConfig.activeVariants));
+    public static Set<String> getActiveVariantNames() {
+        if (activeVariantsCache == null || variantsCacheRefresh) {
+            activeVariantsCache = new HashSet<>(Arrays.asList(GeneralConfig.activeVariants));
+            variantsCacheRefresh = false;
+        }
+        return activeVariantsCache;
     }
 
     public static VariantNames getVariantFromID(String id) {
-        for (VariantNames name : VariantNames.values()) {
-            if (id.equalsIgnoreCase(name.id)) return name;
-        }
-        return null;
+        return allVariants.getOrDefault(id, null);
     }
 
     // does the id match a variant's id
     public static boolean contains(String... id) {
-        List<String> vars = getVariantNames();
         for (String s : id) {
-            if (vars.contains(s.toUpperCase())) return true;
+            if (allVariants.containsKey(s)) return true;
         }
         return false;
     }
 
     // does the id match an active variant's id
     public static boolean activeContains(String... id) {
-        List<String> active = Arrays.asList(GeneralConfig.activeVariants);
+        Set<String> active = getActiveVariantNames();
         for (String s : id) {
             // if contained directly
-            if (active.contains(s.toUpperCase())) return true;
+            if (active.contains(s)) return true;
             // now check if it's contained as a part of a composite variant
-            VariantNames v = getVariantFromID(s.toUpperCase());
+            VariantNames v = getVariantFromID(s);
             if (v != null && !v.compositionVariant && !v.partOf.isEmpty()) {
                 for (VariantNames va : v.partOf) {
                     if (active.contains(va.id)) return true;
