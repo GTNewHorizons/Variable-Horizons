@@ -60,11 +60,14 @@ public enum VariantNames {
     private static boolean variantsCacheRefresh;
 
     private static final Map<String, VariantNames> allVariants = new HashMap<>();
+    private static final VariantNames[] VALUES = values();
+    private static final Set<String> allVariantIDs;
 
     static {
-        for (VariantNames name : values()) {
+        for (VariantNames name : VALUES) {
             allVariants.put(name.id, name);
         }
+        allVariantIDs = allVariants.keySet();
     }
 
     VariantNames(String id) {
@@ -104,12 +107,12 @@ public enum VariantNames {
     }
 
     public static Set<String> getVariantNames() {
-        return allVariants.keySet();
+        return allVariantIDs;
     }
 
     public static String getVariantNamesFormatted() {
         StringBuilder names = new StringBuilder();
-        for (VariantNames name : VariantNames.values()) {
+        for (VariantNames name : VALUES) {
             names.append(name.id)
                 .append(", ");
         }
