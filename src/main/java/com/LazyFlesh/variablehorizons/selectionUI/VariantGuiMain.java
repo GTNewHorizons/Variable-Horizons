@@ -26,8 +26,8 @@ public class VariantGuiMain extends GuiScreen {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onGuiInit(GuiScreenEvent.InitGuiEvent.Post event) {
         if (event.gui instanceof GuiSelectWorld gui) {
-            event.buttonList
-                .add(new GuiVariantsButton(6, event.gui.height - 52, 82, 20, "Variants", gui));
+            if (event.gui.width / 2 + 248 > event.gui.width) return;
+            event.buttonList.add(new GuiVariantsButton(6, event.gui.height - 52, 82, 20, "Variants", gui));
         }
     }
 
