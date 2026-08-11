@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.GuiScreenEvent;
 
+import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
@@ -82,7 +83,9 @@ public class VariantGuiMain extends GuiScreen {
         if (button.id == 0) {
             this.mc.displayGuiScreen(parent);
         } else if (button.id == 1) {
-           // Toggle variant if possible
+            VariantNames selectedVariant = fullVariants.get(selectedIndex);
+            boolean variantState = VariantNames.activeContains(selectedVariant.id);
+            VariantLoader.toggleVariant(selectedVariant, !variantState);
         }
     }
 
@@ -161,11 +164,16 @@ public class VariantGuiMain extends GuiScreen {
         @Override
         protected void drawSlot(int index, int x, int y, int slotHeight, Tessellator tessellator, int mouseX,
             int mouseY) {
-            String label = StatCollector.translateToLocal("variants." + fullVariants.get(index).id + ".name");
+            String selectedVariantID = fullVariants.get(index).id;
+            String label = StatCollector.translateToLocal("variants." + selectedVariantID + ".name");
             int xOffset = x + (getListWidth() - 4) / 2;
             int yOffset = y + (slotHeight - VariantGuiMain.this.fontRendererObj.FONT_HEIGHT) / 2;
-            VariantGuiMain.this
-                .drawCenteredString(VariantGuiMain.this.fontRendererObj, label, xOffset, yOffset, 0xFFFFFF);
+            VariantGuiMain.this.drawCenteredString(
+                VariantGuiMain.this.fontRendererObj,
+                label,
+                xOffset,
+                yOffset,
+                VariantNames.activeContains(selectedVariantID) ? 0x45f542 : 0xFFFFFF);
         }
     }
 }
