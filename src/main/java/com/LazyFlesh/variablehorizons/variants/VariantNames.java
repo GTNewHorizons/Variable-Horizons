@@ -62,10 +62,17 @@ public enum VariantNames {
     private static final Map<String, VariantNames> allVariants = new HashMap<>();
     private static final VariantNames[] VALUES = values();
     private static final Set<String> allVariantIDs;
+    public static final List<VariantNames> allCompositionVariants = new ArrayList<>();
+    public static final List<VariantNames> allSubVariants = new ArrayList<>();
 
     static {
         for (VariantNames name : VALUES) {
             allVariants.put(name.id, name);
+            if (name.compositionVariant) {
+                allCompositionVariants.add(name);
+            } else {
+                allSubVariants.add(name);
+            }
         }
         allVariantIDs = allVariants.keySet();
     }
