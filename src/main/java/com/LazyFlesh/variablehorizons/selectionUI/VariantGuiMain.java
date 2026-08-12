@@ -75,7 +75,7 @@ public class VariantGuiMain extends GuiScreen {
     }
 
     private void updateBottomButtons() {
-        this.buttonList.get(1).enabled = selectedIndex >= 0 && selectedIndex < fullVariants.size();
+        this.buttonList.get(1).enabled = selectedIndex >= 1 && selectedIndex < fullVariants.size();
     }
 
     @Override
