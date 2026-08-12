@@ -10,10 +10,12 @@ import net.minecraft.client.gui.GuiSelectWorld;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.GuiScreenEvent;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
@@ -31,6 +33,7 @@ public class VariantGuiMain extends GuiScreen {
     private static final int OPENING_BUTTON_ID = 8192;
     private static final int SIDEBAR_WIDTH = 200;
     private static final int PADDING = 6;
+    private static final int ICON_SIZE = 32;
     private static final List<VariantNames> fullVariants = VariantNames.allCompositionVariants;
     private static final List<VariantNames> subVariants = VariantNames.allSubVariants;
     private boolean showingFullVariants = true;
@@ -202,24 +205,38 @@ public class VariantGuiMain extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
+    private ResourceLocation getVariantIcon(String variantId) {
+        return new ResourceLocation("variablehorizons", "textures/gui/variants/" + variantId + ".png");
+    }
+
     private void drawDetailsPanel() {
         int panelX = SIDEBAR_WIDTH + PADDING * 2;
-        int panelY = 32;
+        int panelY = 50;
 
         if (selectedIndex < 0 || selectedIndex >= filteredVariants.size()) {
             return;
         }
 
+        VariantNames selectedVariant = filteredVariants.get(selectedIndex);
+
+        ResourceLocation icon = getVariantIcon(selectedVariant.id);
+        this.mc.getTextureManager()
+            .bindTexture(icon);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        // is actually drawScaledCustomSizeModalRect I think
+        func_152125_a(panelX, panelY, 0, 0, 256, 256, ICON_SIZE, ICON_SIZE, 256, 256);
+
+        int textX = panelX + ICON_SIZE + PADDING;
         this.drawString(
             this.fontRendererObj,
-            VariantNames.getTranslatedVariantName(filteredVariants.get(selectedIndex)),
-            panelX,
-            panelY,
+            VariantNames.getTranslatedVariantName(selectedVariant),
+            textX,
+            panelY + (ICON_SIZE - fontRendererObj.FONT_HEIGHT) / 2,
             0xFFFFFF);
 
         int wrapWidth = this.width - panelX - PADDING;
         List<String> lines = this.fontRendererObj.listFormattedStringToWidth("blablabla", wrapWidth);
-        int lineY = panelY + 20;
+        int lineY = panelY + 40;
         for (String line : lines) {
             this.drawString(this.fontRendererObj, line, panelX, lineY, 0xCCCCCC);
             lineY += this.fontRendererObj.FONT_HEIGHT + 2;
