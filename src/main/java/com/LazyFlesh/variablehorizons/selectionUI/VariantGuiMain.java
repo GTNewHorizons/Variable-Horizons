@@ -47,7 +47,14 @@ public class VariantGuiMain extends GuiScreen {
     public static void onGuiInit(GuiScreenEvent.InitGuiEvent.Post event) {
         if (event.gui instanceof GuiSelectWorld gui) {
             if (event.gui.width / 2 + 248 > event.gui.width) return;
-            event.buttonList.add(new GuiVariantsButton(6, event.gui.height - 52, 82, 20, "Variants", gui));
+            event.buttonList.add(
+                new GuiVariantsButton(
+                    6,
+                    event.gui.height - 52,
+                    82,
+                    20,
+                    StatCollector.translateToLocal("variantgui.header"),
+                    gui));
         }
     }
 
@@ -87,7 +94,7 @@ public class VariantGuiMain extends GuiScreen {
                 filteredVariants.add(variant);
                 continue;
             }
-            String translatedName = StatCollector.translateToLocal("variants." + variant.id + ".name")
+            String translatedName = VariantNames.getTranslatedVariantName(variant)
                 .toLowerCase();
             if (translatedName.contains(query) || variant.id.toLowerCase()
                 .contains(query)) {
@@ -103,8 +110,22 @@ public class VariantGuiMain extends GuiScreen {
 
     @Override
     public void initGui() {
-        this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height - 27, 200, 20, "Done"));
-        this.buttonList.add(new GuiButton(1, PADDING, this.height - 52, SIDEBAR_WIDTH - PADDING, 20, "Toggle"));
+        this.buttonList.add(
+            new GuiButton(
+                0,
+                this.width / 2 - 100,
+                this.height - 27,
+                200,
+                20,
+                StatCollector.translateToLocal("variantgui.done")));
+        this.buttonList.add(
+            new GuiButton(
+                1,
+                PADDING,
+                this.height - 52,
+                SIDEBAR_WIDTH - PADDING,
+                20,
+                StatCollector.translateToLocal("variantgui.toggle")));
         this.buttonList.add(
             new GuiButton(
                 2,
@@ -112,7 +133,8 @@ public class VariantGuiMain extends GuiScreen {
                 this.height - 27,
                 SIDEBAR_WIDTH - PADDING,
                 20,
-                showingFullVariants ? "Show Sub-Variants" : "Show Full Variants"));
+                showingFullVariants ? StatCollector.translateToLocal("variantgui.showsub")
+                    : StatCollector.translateToLocal("variantgui.showfull")));
         this.searchField = new GuiTextField(this.fontRendererObj, PADDING, 14, SIDEBAR_WIDTH - PADDING - 4, 16);
         this.searchField.setMaxStringLength(64);
         this.searchField.setFocused(true);
@@ -145,7 +167,8 @@ public class VariantGuiMain extends GuiScreen {
         } else if (button.id == 2) {
             showingFullVariants = !showingFullVariants;
             selectedIndex = -1;
-            button.displayString = showingFullVariants ? "Show Sub-Variants" : "Show Full Variants";
+            button.displayString = showingFullVariants ? StatCollector.translateToLocal("variantgui.showsub")
+                : StatCollector.translateToLocal("variantgui.showfull");
             refreshFilteredVariants();
         }
     }
@@ -170,7 +193,12 @@ public class VariantGuiMain extends GuiScreen {
         this.optionList.drawScreen(mouseX, mouseY, partialTicks);
         searchField.drawTextBox();
         drawDetailsPanel();
-        this.drawCenteredString(this.fontRendererObj, "Variants", this.width / 2, 20, 0xFFFFFF);
+        this.drawCenteredString(
+            this.fontRendererObj,
+            StatCollector.translateToLocal("variantgui.header"),
+            this.width / 2,
+            20,
+            0xFFFFFF);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
@@ -182,8 +210,12 @@ public class VariantGuiMain extends GuiScreen {
             return;
         }
 
-        String entry = filteredVariants.get(selectedIndex).id;
-        this.drawString(this.fontRendererObj, entry, panelX, panelY, 0xFFFFFF);
+        this.drawString(
+            this.fontRendererObj,
+            VariantNames.getTranslatedVariantName(filteredVariants.get(selectedIndex)),
+            panelX,
+            panelY,
+            0xFFFFFF);
 
         int wrapWidth = this.width - panelX - PADDING;
         List<String> lines = this.fontRendererObj.listFormattedStringToWidth("blablabla", wrapWidth);
@@ -242,7 +274,7 @@ public class VariantGuiMain extends GuiScreen {
         protected void drawSlot(int index, int x, int y, int slotHeight, Tessellator tessellator, int mouseX,
             int mouseY) {
             String selectedVariantID = filteredVariants.get(index).id;
-            String label = StatCollector.translateToLocal("variants." + selectedVariantID + ".name");
+            String label = VariantNames.getTranslatedVariantName(selectedVariantID);
             int xOffset = x + (getListWidth() - 4) / 2;
             int yOffset = y + (slotHeight - VariantGuiMain.this.fontRendererObj.FONT_HEIGHT) / 2;
             VariantGuiMain.this.drawCenteredString(

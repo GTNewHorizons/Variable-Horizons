@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.minecraft.util.StatCollector;
+
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.variants.invasive.GardenOfGrind;
 import com.LazyFlesh.variablehorizons.variants.runtime.NoRocket;
@@ -140,6 +142,14 @@ public enum VariantNames {
 
     public static VariantNames getVariantFromID(String id) {
         return allVariants.getOrDefault(id, null);
+    }
+
+    public static String getTranslatedVariantName(VariantNames variant) {
+        return StatCollector.translateToLocal("variants." + variant.id + ".name");
+    }
+
+    public static String getTranslatedVariantName(String ID) {
+        return StatCollector.translateToLocal("variants." + ID + ".name");
     }
 
     // does the id match a variant's id

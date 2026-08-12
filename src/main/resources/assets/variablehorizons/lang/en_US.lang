@@ -18,3 +18,9 @@ variants.HALF_EFFICIENCY.name=Half Efficiency
 variants.INFINITE_POWER.name=Infinite Power
 variants.NETHER_START.name=Nether Start
 
+#Variant GUI buttons
+variantgui.header=Variants
+variantgui.done=Done
+variantgui.toggle=Toggle
+variantgui.showfull=Show Full Variants 
+variantgui.showsub=Show Sub-Variants
