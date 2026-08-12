@@ -1,7 +1,10 @@
 package com.LazyFlesh.variablehorizons.selectionUI;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -36,10 +39,14 @@ public class VariantGuiMain extends GuiScreen {
     private static final int ICON_SIZE = 32;
     private static final List<VariantNames> fullVariants = VariantNames.allCompositionVariants;
     private static final List<VariantNames> subVariants = VariantNames.allSubVariants;
+    private static final ResourceLocation DEFAULT_ICON = new ResourceLocation(
+        "variablehorizons",
+        "textures/gui/variants/ohno.png");
     private boolean showingFullVariants = true;
     private VariantList optionList;
     private GuiTextField searchField;
     private final List<VariantNames> filteredVariants = new ArrayList<>();
+    private final Map<String, ResourceLocation> iconCache = new HashMap<>();
 
     public VariantGuiMain(GuiScreen parent) {
         this.parent = parent;
@@ -206,7 +213,18 @@ public class VariantGuiMain extends GuiScreen {
     }
 
     private ResourceLocation getVariantIcon(String variantId) {
-        return new ResourceLocation("variablehorizons", "textures/gui/variants/" + variantId + ".png");
+        return iconCache.computeIfAbsent(variantId, id -> {
+            ResourceLocation candidate = new ResourceLocation(
+                "variablehorizons",
+                "textures/gui/variants/" + id + ".png");
+            try {
+                this.mc.getResourceManager()
+                    .getResource(candidate);
+                return candidate;
+            } catch (IOException e) {
+                return DEFAULT_ICON;
+            }
+        });
     }
 
     private void drawDetailsPanel() {
