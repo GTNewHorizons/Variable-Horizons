@@ -21,6 +21,7 @@ public abstract class VariantLoader {
             if (variant == null) {
                 VariableHorizons.LOG.warn("Turning off undefined variant: {}", var);
                 active.remove(var);
+                toRemove.add(var);
                 continue;
             }
             if (toRemove.contains(var)) {
@@ -77,22 +78,14 @@ public abstract class VariantLoader {
                         }
                     }
                 }
-                // aaand now check none of the active are incompatible with *it*
-                for (String var : VariantNames.getActiveVariantNames()) {
-                    VariantNames v = VariantNames.getVariantFromID(var);
-                    if (v == null) {
-                        VariableHorizons.LOG.warn("Undefined variant in active variants: {}", var);
-                        continue;
-                    }
-                    if (v.incompatible != null) {
-                        if (v.incompatible.contains(name)) {
-                            return "Variant is incompatible with an active variant.";
-                        }
-                    }
-                }
-                // both passes made, add it
+                // since variants add themselves to their incompatible variants' list of incompatible variants, we don't
+                // have to check twice.
                 Set<String> active = VariantNames.getActiveVariantNames();
                 active.add(name.id);
+                // add the composites, too
+                if (name.compositionVariant) {
+                    for (VariantNames n : name.composedOf) active.add(n.id);
+                }
                 GeneralConfig.activeVariants = active.toArray(new String[0]);
                 ConfigurationManager.save(GeneralConfig.class);
                 if (name.loaderClass instanceof IRuntimeVariant) {
@@ -107,6 +100,10 @@ public abstract class VariantLoader {
             } else {
                 Set<String> active = VariantNames.getActiveVariantNames();
                 active.remove(name.id);
+                // and the composites, too
+                if (name.compositionVariant) {
+                    for (VariantNames n : name.composedOf) active.remove(n.id);
+                }
                 GeneralConfig.activeVariants = active.toArray(new String[0]);
                 ConfigurationManager.save(GeneralConfig.class);
                 return "Server/instance restart required for change to take effect.";

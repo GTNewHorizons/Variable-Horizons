@@ -95,13 +95,17 @@ public enum VariantNames {
         if (incompatible.length != 0) {
             this.incompatible = Arrays.asList(incompatible);
             for (VariantNames i : incompatible) {
-                i.incompatible.add(this);
+                addIncompatibility(i, this);
             }
         }
         if (composedOf.length != 0) {
             this.composedOf = Arrays.asList(composedOf);
             for (VariantNames i : composedOf) {
                 i.partOf.add(this);
+                // make sure to add the incompatibles of the composites
+                for (VariantNames name : i.incompatible) {
+                    addIncompatibility(this, name);
+                }
             }
         }
     }
@@ -159,6 +163,21 @@ public enum VariantNames {
                     if (active.contains(va.id)) return true;
                 }
             }
+        }
+        return false;
+    }
+
+    public static void addIncompatibility(VariantNames first, VariantNames second) {
+        if (first != null && second != null) {
+            if (!first.incompatible.contains(second)) first.incompatible.add(second);
+            if (!second.incompatible.contains(first)) second.incompatible.add(first);
+        }
+    }
+
+    public static boolean checkIncompatibility(VariantNames first, VariantNames second) {
+        if (first != null && second != null) {
+            if (first.incompatible.contains(second)) return false;
+            else return !second.incompatible.contains(first);
         }
         return false;
     }
