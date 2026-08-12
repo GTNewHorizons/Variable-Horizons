@@ -72,8 +72,8 @@ public abstract class VariantLoader {
                 return "Variant already active.";
             } else {
                 if (name.incompatible != null) {
-                    for (VariantNames incompatible : name.incompatible) {
-                        if (VariantNames.activeContains(incompatible.id)) {
+                    for (String variant : VariantNames.getActiveVariantNames()) {
+                        if (VariantNames.checkIncompatibility(VariantNames.getVariantFromID(variant), name)) {
                             return "Variant is incompatible with an active variant.";
                         }
                     }

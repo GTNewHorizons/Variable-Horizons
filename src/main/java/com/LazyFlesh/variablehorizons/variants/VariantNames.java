@@ -176,8 +176,21 @@ public enum VariantNames {
 
     public static boolean checkIncompatibility(VariantNames first, VariantNames second) {
         if (first != null && second != null) {
-            if (first.incompatible.contains(second)) return false;
-            else return !second.incompatible.contains(first);
+            if (first.incompatible.contains(second) || second.incompatible.contains(first)) {
+                return true;
+            }
+
+            for (VariantNames subVariantsFirst : first.composedOf) {
+                if (second.incompatible.contains(subVariantsFirst)) {
+                    return true;
+                }
+            }
+
+            for (VariantNames subVariantsSecond : second.composedOf) {
+                if (first.incompatible.contains(subVariantsSecond)) {
+                    return true;
+                }
+            }
         }
         return false;
     }
