@@ -1,5 +1,6 @@
 package com.LazyFlesh.variablehorizons.selectionUI;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
@@ -7,9 +8,12 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSelectWorld;
 import net.minecraft.client.gui.GuiSlot;
+import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.GuiScreenEvent;
+
+import org.lwjgl.input.Keyboard;
 
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
@@ -31,6 +35,8 @@ public class VariantGuiMain extends GuiScreen {
     private static final List<VariantNames> subVariants = VariantNames.allSubVariants;
     private boolean showingFullVariants = true;
     private VariantList optionList;
+    private GuiTextField searchField;
+    private final List<VariantNames> filteredVariants = new ArrayList<>();
 
     public VariantGuiMain(GuiScreen parent) {
         this.parent = parent;
@@ -70,6 +76,31 @@ public class VariantGuiMain extends GuiScreen {
         return showingFullVariants ? fullVariants : subVariants;
     }
 
+    private void refreshFilteredVariants() {
+        String query = searchField.getText()
+            .trim()
+            .toLowerCase();
+        filteredVariants.clear();
+
+        for (VariantNames variant : getActiveVariantList()) {
+            if (query.isEmpty()) {
+                filteredVariants.add(variant);
+                continue;
+            }
+            String translatedName = StatCollector.translateToLocal("variants." + variant.id + ".name")
+                .toLowerCase();
+            if (translatedName.contains(query) || variant.id.toLowerCase()
+                .contains(query)) {
+                filteredVariants.add(variant);
+            }
+        }
+
+        if (selectedIndex >= filteredVariants.size()) {
+            selectedIndex = -1;
+        }
+        updateBottomButtons();
+    }
+
     @Override
     public void initGui() {
         this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height - 27, 200, 20, "Done"));
@@ -82,14 +113,25 @@ public class VariantGuiMain extends GuiScreen {
                 SIDEBAR_WIDTH - PADDING,
                 20,
                 showingFullVariants ? "Show Sub-Variants" : "Show Full Variants"));
+        this.searchField = new GuiTextField(this.fontRendererObj, PADDING, 14, SIDEBAR_WIDTH - PADDING - 4, 16);
+        this.searchField.setMaxStringLength(64);
+        this.searchField.setFocused(true);
         this.optionList = new VariantList();
 
-        updateBottomButtons();
+        refreshFilteredVariants();
     }
 
     private void updateBottomButtons() {
-        int indexMin = showingFullVariants ? 1 : 0;
-        this.buttonList.get(1).enabled = selectedIndex >= indexMin && selectedIndex < getActiveVariantList().size();
+        boolean enableToggle = selectedIndex >= 0 && selectedIndex < filteredVariants.size();
+        if (selectedIndex >= 0 && filteredVariants.get(selectedIndex) == VariantNames.NORMAL) {
+            enableToggle = false;
+        }
+        this.buttonList.get(1).enabled = enableToggle;
+    }
+
+    @Override
+    public void onGuiClosed() {
+        Keyboard.enableRepeatEvents(false);
     }
 
     @Override
@@ -97,20 +139,36 @@ public class VariantGuiMain extends GuiScreen {
         if (button.id == 0) {
             this.mc.displayGuiScreen(parent);
         } else if (button.id == 1) {
-            VariantNames selectedVariant = getActiveVariantList().get(selectedIndex);
+            VariantNames selectedVariant = filteredVariants.get(selectedIndex);
             boolean variantState = VariantNames.activeContains(selectedVariant.id);
             VariantLoader.toggleVariant(selectedVariant, !variantState);
         } else if (button.id == 2) {
             showingFullVariants = !showingFullVariants;
             selectedIndex = -1;
             button.displayString = showingFullVariants ? "Show Sub-Variants" : "Show Full Variants";
-            updateBottomButtons();
+            refreshFilteredVariants();
         }
+    }
+
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) {
+        if (searchField.textboxKeyTyped(typedChar, keyCode)) {
+            refreshFilteredVariants();
+            return;
+        }
+        super.keyTyped(typedChar, keyCode);
+    }
+
+    @Override
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+        searchField.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.optionList.drawScreen(mouseX, mouseY, partialTicks);
+        searchField.drawTextBox();
         drawDetailsPanel();
         this.drawCenteredString(this.fontRendererObj, "Variants", this.width / 2, 20, 0xFFFFFF);
         super.drawScreen(mouseX, mouseY, partialTicks);
@@ -120,12 +178,11 @@ public class VariantGuiMain extends GuiScreen {
         int panelX = SIDEBAR_WIDTH + PADDING * 2;
         int panelY = 32;
 
-        List<VariantNames> active = getActiveVariantList();
-        if (selectedIndex < 0 || selectedIndex >= active.size()) {
+        if (selectedIndex < 0 || selectedIndex >= filteredVariants.size()) {
             return;
         }
 
-        String entry = active.get(selectedIndex).id;
+        String entry = filteredVariants.get(selectedIndex).id;
         this.drawString(this.fontRendererObj, entry, panelX, panelY, 0xFFFFFF);
 
         int wrapWidth = this.width - panelX - PADDING;
@@ -162,7 +219,7 @@ public class VariantGuiMain extends GuiScreen {
 
         @Override
         protected int getSize() {
-            return getActiveVariantList().size();
+            return filteredVariants.size();
         }
 
         @Override
@@ -184,7 +241,7 @@ public class VariantGuiMain extends GuiScreen {
         @Override
         protected void drawSlot(int index, int x, int y, int slotHeight, Tessellator tessellator, int mouseX,
             int mouseY) {
-            String selectedVariantID = getActiveVariantList().get(index).id;
+            String selectedVariantID = filteredVariants.get(index).id;
             String label = StatCollector.translateToLocal("variants." + selectedVariantID + ".name");
             int xOffset = x + (getListWidth() - 4) / 2;
             int yOffset = y + (slotHeight - VariantGuiMain.this.fontRendererObj.FONT_HEIGHT) / 2;
