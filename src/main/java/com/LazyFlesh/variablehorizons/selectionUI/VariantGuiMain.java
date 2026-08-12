@@ -29,6 +29,7 @@ public class VariantGuiMain extends GuiScreen {
     private static final int PADDING = 6;
     private static final List<VariantNames> fullVariants = VariantNames.allCompositionVariants;
     private static final List<VariantNames> subVariants = VariantNames.allSubVariants;
+    private boolean showingFullVariants = true;
     private VariantList optionList;
 
     public VariantGuiMain(GuiScreen parent) {
@@ -65,17 +66,30 @@ public class VariantGuiMain extends GuiScreen {
         }
     }
 
+    private List<VariantNames> getActiveVariantList() {
+        return showingFullVariants ? fullVariants : subVariants;
+    }
+
     @Override
     public void initGui() {
         this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height - 27, 200, 20, "Done"));
         this.buttonList.add(new GuiButton(1, PADDING, this.height - 52, SIDEBAR_WIDTH - PADDING, 20, "Toggle"));
+        this.buttonList.add(
+            new GuiButton(
+                2,
+                PADDING,
+                this.height - 27,
+                SIDEBAR_WIDTH - PADDING,
+                20,
+                showingFullVariants ? "Show Sub-Variants" : "Show Full Variants"));
         this.optionList = new VariantList();
 
         updateBottomButtons();
     }
 
     private void updateBottomButtons() {
-        this.buttonList.get(1).enabled = selectedIndex >= 1 && selectedIndex < fullVariants.size();
+        int indexMin = showingFullVariants ? 1 : 0;
+        this.buttonList.get(1).enabled = selectedIndex >= indexMin && selectedIndex < getActiveVariantList().size();
     }
 
     @Override
@@ -83,9 +97,14 @@ public class VariantGuiMain extends GuiScreen {
         if (button.id == 0) {
             this.mc.displayGuiScreen(parent);
         } else if (button.id == 1) {
-            VariantNames selectedVariant = fullVariants.get(selectedIndex);
+            VariantNames selectedVariant = getActiveVariantList().get(selectedIndex);
             boolean variantState = VariantNames.activeContains(selectedVariant.id);
             VariantLoader.toggleVariant(selectedVariant, !variantState);
+        } else if (button.id == 2) {
+            showingFullVariants = !showingFullVariants;
+            selectedIndex = -1;
+            button.displayString = showingFullVariants ? "Show Sub-Variants" : "Show Full Variants";
+            updateBottomButtons();
         }
     }
 
@@ -101,11 +120,12 @@ public class VariantGuiMain extends GuiScreen {
         int panelX = SIDEBAR_WIDTH + PADDING * 2;
         int panelY = 32;
 
-        if (selectedIndex < 0 || selectedIndex >= fullVariants.size()) {
+        List<VariantNames> active = getActiveVariantList();
+        if (selectedIndex < 0 || selectedIndex >= active.size()) {
             return;
         }
 
-        String entry = fullVariants.get(selectedIndex).id;
+        String entry = active.get(selectedIndex).id;
         this.drawString(this.fontRendererObj, entry, panelX, panelY, 0xFFFFFF);
 
         int wrapWidth = this.width - panelX - PADDING;
@@ -142,7 +162,7 @@ public class VariantGuiMain extends GuiScreen {
 
         @Override
         protected int getSize() {
-            return fullVariants.size();
+            return getActiveVariantList().size();
         }
 
         @Override
@@ -164,7 +184,7 @@ public class VariantGuiMain extends GuiScreen {
         @Override
         protected void drawSlot(int index, int x, int y, int slotHeight, Tessellator tessellator, int mouseX,
             int mouseY) {
-            String selectedVariantID = fullVariants.get(index).id;
+            String selectedVariantID = getActiveVariantList().get(index).id;
             String label = StatCollector.translateToLocal("variants." + selectedVariantID + ".name");
             int xOffset = x + (getListWidth() - 4) / 2;
             int yOffset = y + (slotHeight - VariantGuiMain.this.fontRendererObj.FONT_HEIGHT) / 2;

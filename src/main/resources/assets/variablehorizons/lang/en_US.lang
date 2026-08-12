@@ -1,6 +1,20 @@
 #Variant names
+#Full variants
+variants.NORMAL.name=Base Pack
 variants.GARDEN_OF_GRIND.name=Garden of Grind
 variants.NETHER_ONLY.name=Nether Only
 variants.SKYBLOCK.name=Skyblock
-variants.NORMAL.name=Base Pack
+
+#Sub-Variants
+variants.NO_RECIPE_ADDITIONS.name=No Recipe Additions
+variants.VOID_WORLD.name=Void World
+variants.VOID_ISLAND.name=Void Island
+variants.NO_ROCKET.name=No Rocket
+variants.NO_QUEST_REWARDS.name=No Quest Rewards
+variants.HALF_TIME.name=Half Recipe Times
+variants.QUARTER_TIME.name=Quarter Recipe Times
+variants.DOUBLE_TIME.name=Double Recipe Times
+variants.HALF_EFFICIENCY.name=Half Efficiency
+variants.INFINITE_POWER.name=Infinite Power
+variants.NETHER_START.name=Nether Start
 
