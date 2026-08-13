@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.minecraft.util.StatCollector;
+
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.variants.invasive.GardenOfGrind;
 import com.LazyFlesh.variablehorizons.variants.runtime.NoRocket;
@@ -62,10 +64,17 @@ public enum VariantNames {
     private static final Map<String, VariantNames> allVariants = new HashMap<>();
     private static final VariantNames[] VALUES = values();
     private static final Set<String> allVariantIDs;
+    public static final List<VariantNames> allCompositionVariants = new ArrayList<>();
+    public static final List<VariantNames> allSubVariants = new ArrayList<>();
 
     static {
         for (VariantNames name : VALUES) {
             allVariants.put(name.id, name);
+            if (name.compositionVariant) {
+                allCompositionVariants.add(name);
+            } else {
+                allSubVariants.add(name);
+            }
         }
         allVariantIDs = allVariants.keySet();
     }
@@ -88,13 +97,17 @@ public enum VariantNames {
         if (incompatible.length != 0) {
             this.incompatible = Arrays.asList(incompatible);
             for (VariantNames i : incompatible) {
-                i.incompatible.add(this);
+                addIncompatibility(i, this);
             }
         }
         if (composedOf.length != 0) {
             this.composedOf = Arrays.asList(composedOf);
             for (VariantNames i : composedOf) {
                 i.partOf.add(this);
+                // make sure to add the incompatibles of the composites
+                for (VariantNames name : i.incompatible) {
+                    addIncompatibility(this, name);
+                }
             }
         }
     }
@@ -131,6 +144,14 @@ public enum VariantNames {
         return allVariants.getOrDefault(id, null);
     }
 
+    public static String getTranslatedVariantName(VariantNames variant) {
+        return StatCollector.translateToLocal("variants." + variant.id + ".name");
+    }
+
+    public static String getTranslatedVariantName(String ID) {
+        return StatCollector.translateToLocal("variants." + ID + ".name");
+    }
+
     // does the id match a variant's id
     public static boolean contains(String... id) {
         for (String s : id) {
@@ -150,6 +171,34 @@ public enum VariantNames {
             if (v != null && !v.compositionVariant && !v.partOf.isEmpty()) {
                 for (VariantNames va : v.partOf) {
                     if (active.contains(va.id)) return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static void addIncompatibility(VariantNames first, VariantNames second) {
+        if (first != null && second != null) {
+            if (!first.incompatible.contains(second)) first.incompatible.add(second);
+            if (!second.incompatible.contains(first)) second.incompatible.add(first);
+        }
+    }
+
+    public static boolean checkIncompatibility(VariantNames first, VariantNames second) {
+        if (first != null && second != null) {
+            if (first.incompatible.contains(second) || second.incompatible.contains(first)) {
+                return true;
+            }
+
+            for (VariantNames subVariantsFirst : first.composedOf) {
+                if (second.incompatible.contains(subVariantsFirst)) {
+                    return true;
+                }
+            }
+
+            for (VariantNames subVariantsSecond : second.composedOf) {
+                if (first.incompatible.contains(subVariantsSecond)) {
+                    return true;
                 }
             }
         }
