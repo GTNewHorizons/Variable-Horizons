@@ -232,9 +232,9 @@ public class VariantGuiMain extends GuiScreen {
             || keyCode == Keyboard.KEY_MINUS;
     }
 
-    private boolean isNumberFieldVisible() {
+    private boolean isNumberFieldVisible(VariantNames connectedVariant) {
         return selectedIndex >= 0 && selectedIndex < filteredVariants.size()
-            && DIMENSION_LOCKED.equals(filteredVariants.get(selectedIndex).id);
+            && connectedVariant.equals(filteredVariants.get(selectedIndex));
     }
 
     @Override
@@ -244,9 +244,9 @@ public class VariantGuiMain extends GuiScreen {
             return;
         }
 
-        if (isNumberFieldVisible() && isAllowedNumericInput(typedChar, keyCode)) {
+        if (isNumberFieldVisible(VariantNames.DIMLOCKED) && isAllowedNumericInput(typedChar, keyCode)) {
             if (dimIdField.textboxKeyTyped(typedChar, keyCode)) {
-                applyNumberFieldValue();
+                applyNumberFieldValue(dimIdField, VariantNames.DIMLOCKED);
                 return;
             }
         }
@@ -254,12 +254,16 @@ public class VariantGuiMain extends GuiScreen {
         super.keyTyped(typedChar, keyCode);
     }
 
-    private void applyNumberFieldValue() {
-        String text = dimIdField.getText();
+    private void applyNumberFieldValue(GuiTextField field, VariantNames connectedVariant) {
+        String text = field.getText();
         if (text.isEmpty()) return;
+        int parsedInt = 0;
         try {
-            GeneralConfig.startingDimID = Integer.parseInt(text);
+            parsedInt = Integer.parseInt(text);
         } catch (NumberFormatException ignored) {}
+        if (connectedVariant.equals(VariantNames.DIMLOCKED)) {
+            GeneralConfig.startingDimID = parsedInt;
+        }
         ConfigurationManager.save(GeneralConfig.class);
     }
 
@@ -268,7 +272,7 @@ public class VariantGuiMain extends GuiScreen {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         searchField.mouseClicked(mouseX, mouseY, mouseButton);
 
-        if (isNumberFieldVisible()) {
+        if (isNumberFieldVisible(VariantNames.DIMLOCKED)) {
             dimIdField.mouseClicked(mouseX, mouseY, mouseButton);
         } else {
             dimIdField.setFocused(false);
@@ -281,7 +285,7 @@ public class VariantGuiMain extends GuiScreen {
         searchField.drawTextBox();
         drawDetailsPanel();
 
-        if (isNumberFieldVisible()) {
+        if (isNumberFieldVisible(VariantNames.DIMLOCKED)) {
             dimIdField.drawTextBox();
         }
 
