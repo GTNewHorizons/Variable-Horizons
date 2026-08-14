@@ -41,7 +41,19 @@ public enum Mixins implements IMixins {
         .setApplyIf(
             () -> VariantNames.activeContains(VariantNames.VOID_WORLD.id) && !GogConfig.dragonTime
                 && !GeneralConfig.disableVariants)
-        .setPhase(IBaseTransformer.Phase.EARLY));
+        .setPhase(IBaseTransformer.Phase.EARLY)),
+    ALLOW_RESPAWN_IN_DIMENSION(new MixinBuilder("Allow respawning in another dimension")
+        .addCommonMixins("MixinWorldProvider_AllowRespawnInDimension")
+        .setApplyIf(
+            () -> VariantNames.activeContains(VariantNames.DIMENSION_LOCKED.id) && !GeneralConfig.disableVariants)
+        .setPhase(IBaseTransformer.Phase.EARLY)),
+    SET_INITIAL_SPAWN_DIMENSION(new MixinBuilder("Set spawn dimension to another dimension")
+        .addCommonMixins("MixinServerConfigurationManager_ChangeInitialSpawnDimension")
+        .setApplyIf(
+            () -> VariantNames.activeContains(VariantNames.DIMENSION_LOCKED.id) && !GeneralConfig.disableVariants)
+        .setPhase(IBaseTransformer.Phase.EARLY)),
+
+    ;
 
     private final MixinBuilder builder;
 

@@ -9,6 +9,8 @@
     "MixinChunkProviderServer_DisableModGeneration",
     "MixinChunkProviderServer_DisablePopulation",
     "MixinChunkProviderServer_DisableTerrain",
-    "MixinChunkProviderServer_DisableTerrain_EndlessIDs"
+    "MixinChunkProviderServer_DisableTerrain_EndlessIDs",
+    "MixinWorldProvider_AllowRespawnInDimension",
+    "MixinServerConfigurationManager_ChangeInitialSpawnDimension"
   ]
 }
