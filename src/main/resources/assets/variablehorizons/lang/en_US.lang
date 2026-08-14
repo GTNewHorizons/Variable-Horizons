@@ -18,6 +18,26 @@ variants.HALF_EFFICIENCY.name=Half Efficiency
 variants.INFINITE_POWER.name=Infinite Power
 variants.CUSTOM_DIM_START.name=Custom Starting Dimension
 
+#Variant descriptions
+#Full Variants
+variants.NORMAL.desc=Base Pack
+variants.GARDEN_OF_GRIND.desc=Garden of Grind
+variants.DIMLOCKED.desc=As the name implies, this variant locks you to a specific dimension which you cannot leave. You will spawn and respawn in that dimension and have to deal with all the challenges that present themselves from not having access to the intended progression path. You can specify the dimension ID you want this variant to lock you to, some examples include the Nether (-1), the End (1) and Ross128BA (63). A full list of dimension IDs can be found on the GTNH wiki. All Dimlocks other than the End include a custom recipe for chaos shards and may contain some extra changes to make the run possible. 
+variants.SKYBLOCK.desc=Skyblock
+
+#Sub-Variants
+variants.NO_RECIPE_ADDITIONS.desc=No Recipe Additions
+variants.VOID_WORLD.desc=Void World
+variants.VOID_ISLAND.desc=Void Island
+variants.NO_ROCKET.desc=No Rocket
+variants.NO_QUEST_REWARDS.desc=No Quest Rewards
+variants.HALF_TIME.desc=Half Recipe Times
+variants.QUARTER_TIME.desc=Quarter Recipe Times
+variants.DOUBLE_TIME.desc=Double Recipe Times
+variants.HALF_EFFICIENCY.desc=Half Efficiency
+variants.INFINITE_POWER.desc=Infinite Power
+variants.CUSTOM_DIM_START.desc=Custom Starting Dimension
+
 #Variant GUI buttons
 variantgui.header=Pack Variants
 variantgui.done=Done
