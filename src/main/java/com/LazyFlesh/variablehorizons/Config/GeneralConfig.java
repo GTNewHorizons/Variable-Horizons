@@ -19,4 +19,8 @@ public class GeneralConfig {
     @Config.DefaultStringList({ "NORMAL" })
     public static String[] activeVariants;
 
+    @Config.Comment("ID of the starting dimension")
+    @Config.DefaultInt(0)
+    public static int startingDimID;
+
 }
