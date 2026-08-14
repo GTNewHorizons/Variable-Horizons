@@ -44,3 +44,6 @@ variantgui.done=Done
 variantgui.toggle=Toggle
 variantgui.showfull=Show Full Variants 
 variantgui.showsub=Show Sub-Variants
+
+#Variant GUI tooltips
+variantgui.dimidfield.tooltip=Insert numeric ID of chosen dimension

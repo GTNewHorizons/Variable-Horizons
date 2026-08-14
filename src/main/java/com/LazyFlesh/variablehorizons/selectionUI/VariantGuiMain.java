@@ -279,6 +279,12 @@ public class VariantGuiMain extends GuiScreen {
         }
     }
 
+    private boolean isMouseOverTextField(GuiTextField field, int mouseX, int mouseY) {
+        return mouseX >= field.xPosition && mouseX < field.xPosition + field.width
+            && mouseY >= field.yPosition
+            && mouseY < field.yPosition + field.height;
+    }
+
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.optionList.drawScreen(mouseX, mouseY, partialTicks);
@@ -296,6 +302,13 @@ public class VariantGuiMain extends GuiScreen {
             20,
             0xFFFFFF);
         super.drawScreen(mouseX, mouseY, partialTicks);
+
+        if (isNumberFieldVisible(VariantNames.DIMLOCKED) && isMouseOverTextField(dimIdField, mouseX, mouseY)) {
+            List<String> tooltip = this.fontRendererObj
+                .listFormattedStringToWidth(StatCollector.translateToLocal("variantgui.dimidfield.tooltip"), 200);
+            this.drawHoveringText(tooltip, mouseX, mouseY, this.fontRendererObj);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        }
     }
 
     private ResourceLocation getVariantIcon(String variantId) {
