@@ -19,8 +19,16 @@ public class GeneralConfig {
     @Config.DefaultStringList({ "NORMAL" })
     public static String[] activeVariants;
 
-    @Config.Comment("ID of the starting dimension")
+    @Config.Comment("ID of chosen starting dimension")
     @Config.DefaultInt(0)
     public static int startingDimID;
+
+    @Config.Comment("Global recipe time multiplier")
+    @Config.DefaultFloat(1f)
+    public static float recipeTimeMultiplier;
+
+    @Config.Comment("Global machine efficiency multiplier")
+    @Config.DefaultFloat(1f)
+    public static float efficiencyMultiplier;
 
 }

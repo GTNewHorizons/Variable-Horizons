@@ -11,10 +11,8 @@ variants.VOID_WORLD.name=Void World
 variants.VOID_ISLAND.name=Void Island
 variants.NO_ROCKET.name=No Rocket
 variants.NO_QUEST_REWARDS.name=No Quest Rewards
-variants.HALF_TIME.name=Half Recipe Times
-variants.QUARTER_TIME.name=Quarter Recipe Times
-variants.DOUBLE_TIME.name=Double Recipe Times
-variants.HALF_EFFICIENCY.name=Half Efficiency
+variants.ALTERED_TIME.name=Altered Recipe Times
+variants.ALTERED_EFFICIENCY.name=Altered Machine Efficiency
 variants.INFINITE_POWER.name=Infinite Power
 variants.CUSTOM_DIM_START.name=Custom Starting Dimension
 
@@ -31,10 +29,8 @@ variants.VOID_WORLD.desc=Void World
 variants.VOID_ISLAND.desc=Void Island
 variants.NO_ROCKET.desc=No Rocket
 variants.NO_QUEST_REWARDS.desc=No Quest Rewards
-variants.HALF_TIME.desc=Half Recipe Times
-variants.QUARTER_TIME.desc=Quarter Recipe Times
-variants.DOUBLE_TIME.desc=Double Recipe Times
-variants.HALF_EFFICIENCY.desc=Half Efficiency
+variants.ALTERED_TIME.desc=Altered Recipe Times
+variants.ALTERED_EFFICIENCY.desc=Altered Machine Efficiency
 variants.INFINITE_POWER.desc=Infinite Power
 variants.CUSTOM_DIM_START.desc=Custom Starting Dimension
 
@@ -47,3 +43,5 @@ variantgui.showsub=Show Sub-Variants
 
 #Variant GUI tooltips
 variantgui.dimidfield.tooltip=Insert numeric ID of chosen dimension
+variantgui.efficiencyfield.tooltip=Insert machine efficiency multiplier
+variantgui.recipetimefield.tooltip=Insert recipe time multiplier

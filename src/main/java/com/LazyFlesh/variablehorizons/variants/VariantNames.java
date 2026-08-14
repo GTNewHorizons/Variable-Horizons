@@ -25,10 +25,8 @@ public enum VariantNames {
     VOID_ISLAND("VOID_ISLAND"), // OW is a sky island. Think Botania Garden of Glass or normal Skyblock
     NO_ROCKET("NO_ROCKET", new NoRocket()), // disable nasa bench
     NO_QUEST_REWARDS("NO_QUEST_REWARDS"),
-    HALF_TIME("HALF_TIME"),
-    QUARTER_TIME("QUARTER_TIME"),
-    DOUBLE_TIME("DOUBLE_TIME"),
-    HALF_EFFICIENCY("HALF_EFFICIENCY"),
+    ALTERED_RECIPE_TIME("ALTERED_TIME"),
+    ALTERED_EFFICIENCY("ALTERED_EFFICIENCY"),
     INFINITE_POWER("INFINITE_POWER"),
     CUSTOM_DIM_START("CUSTOM_DIM_START"), // sets a different dim as the spawn dimension instead of OW
 

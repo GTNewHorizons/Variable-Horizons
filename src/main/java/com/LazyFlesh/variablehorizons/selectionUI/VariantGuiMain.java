@@ -45,8 +45,11 @@ public class VariantGuiMain extends GuiScreen {
 
     private static final List<VariantNames> fullVariants = VariantNames.allCompositionVariants;
     private static final List<VariantNames> subVariants = VariantNames.allSubVariants;
-    private static final List<VariantNames> inputFieldVariants = Arrays
-        .asList(VariantNames.DIMLOCKED, VariantNames.CUSTOM_DIM_START);
+    private static final List<VariantNames> inputFieldVariants = Arrays.asList(
+        VariantNames.DIMLOCKED,
+        VariantNames.CUSTOM_DIM_START,
+        VariantNames.ALTERED_EFFICIENCY,
+        VariantNames.ALTERED_RECIPE_TIME);
     private static final ResourceLocation DEFAULT_ICON = new ResourceLocation(
         "variablehorizons",
         "textures/gui/variants/ohno.png");
@@ -143,9 +146,12 @@ public class VariantGuiMain extends GuiScreen {
         VariantNames selected = filteredVariants.get(selectedIndex);
         if (selected.equals(VariantNames.DIMLOCKED) || selected.equals(VariantNames.CUSTOM_DIM_START)) {
             numberInputField.setText(String.valueOf(GeneralConfig.startingDimID));
+        } else if (selected.equals(VariantNames.ALTERED_EFFICIENCY)) {
+            numberInputField.setText(String.valueOf(GeneralConfig.efficiencyMultiplier));
+        } else if (selected.equals(VariantNames.ALTERED_RECIPE_TIME)) {
+            numberInputField.setText(String.valueOf(GeneralConfig.recipeTimeMultiplier));
         }
         updateNumberFieldPosition(selected);
-
     }
 
     private void updateNumberFieldPosition(VariantNames selected) {
@@ -236,7 +242,8 @@ public class VariantGuiMain extends GuiScreen {
             || keyCode == Keyboard.KEY_RIGHT
             || keyCode == Keyboard.KEY_HOME
             || keyCode == Keyboard.KEY_END
-            || keyCode == Keyboard.KEY_MINUS;
+            || keyCode == Keyboard.KEY_MINUS
+            || keyCode == Keyboard.KEY_DECIMAL;
     }
 
     private boolean isNumberFieldVisible() {
@@ -278,6 +285,10 @@ public class VariantGuiMain extends GuiScreen {
         } catch (NumberFormatException ignored) {}
         if (dimLock) {
             GeneralConfig.startingDimID = parsedInt;
+        } else if (selectedVariant.equals(VariantNames.ALTERED_EFFICIENCY)) {
+            GeneralConfig.efficiencyMultiplier = parsedFloat;
+        } else if (selectedVariant.equals(VariantNames.ALTERED_RECIPE_TIME)) {
+            GeneralConfig.recipeTimeMultiplier = parsedFloat;
         }
         ConfigurationManager.save(GeneralConfig.class);
     }
@@ -305,6 +316,10 @@ public class VariantGuiMain extends GuiScreen {
         VariantNames selectedVariant = filteredVariants.get(selectedIndex);
         if (selectedVariant.equals(VariantNames.DIMLOCKED) || selectedVariant.equals(VariantNames.CUSTOM_DIM_START)) {
             tooltip = StatCollector.translateToLocal("variantgui.dimidfield.tooltip");
+        } else if (selectedVariant.equals(VariantNames.ALTERED_EFFICIENCY)) {
+            tooltip = StatCollector.translateToLocal("variantgui.efficiencyfield.tooltip");
+        } else if (selectedVariant.equals(VariantNames.ALTERED_RECIPE_TIME)) {
+            tooltip = StatCollector.translateToLocal("variantgui.recipetimefield.tooltip");
         }
         return tooltip;
     }
