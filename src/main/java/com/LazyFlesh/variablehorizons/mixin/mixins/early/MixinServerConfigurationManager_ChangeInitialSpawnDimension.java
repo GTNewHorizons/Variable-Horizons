@@ -20,7 +20,7 @@ public abstract class MixinServerConfigurationManager_ChangeInitialSpawnDimensio
         index = 0)
     private int gtnhvariants$createPlayerForUser(int dimension) {
         int dim = 0;
-        if (VariantNames.activeContains(VariantNames.DIMLOCKED.id)) dim = GeneralConfig.startingDimID;
+        if (VariantNames.activeContains(VariantNames.CUSTOM_DIM_START.id)) dim = GeneralConfig.startingDimID;
         return dim;
     }
 }
