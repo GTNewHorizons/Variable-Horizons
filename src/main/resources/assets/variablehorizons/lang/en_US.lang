@@ -2,7 +2,7 @@
 #Full variants
 variants.NORMAL.name=Base Pack
 variants.GARDEN_OF_GRIND.name=Garden of Grind
-variants.DIMENSION_LOCKED.name=Dimension Locked
+variants.DIMLOCKED.name=Dimlocked
 variants.SKYBLOCK.name=Skyblock
 
 #Sub-Variants

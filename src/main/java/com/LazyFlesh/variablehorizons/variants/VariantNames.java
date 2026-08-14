@@ -41,7 +41,7 @@ public enum VariantNames {
     GARDEN_OF_GRIND("GARDEN_OF_GRIND", new GardenOfGrind(),
         new VariantNames[] { VOID_WORLD, NO_RECIPE_ADDITIONS, NO_ROCKET }, new VariantNames[] {}),
 
-    DIMENSION_LOCKED("DIMENSION_LOCKED", true, new VariantNames[] { CUSTOM_DIM_START, NO_ROCKET },
+    DIMLOCKED("DIMLOCKED", true, new VariantNames[] { CUSTOM_DIM_START, NO_ROCKET },
         new VariantNames[] { NO_RECIPE_ADDITIONS }),
 
     SKYBLOCK("SKYBLOCK", true, new VariantNames[] { VOID_ISLAND }, new VariantNames[] { NO_RECIPE_ADDITIONS }),

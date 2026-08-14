@@ -19,7 +19,7 @@ public class MixinWorldProvider_AllowRespawnInDimension {
     @Overwrite(remap = false)
     public int getRespawnDimension(EntityPlayerMP player) {
         int dim = 0;
-        if (VariantNames.activeContains(VariantNames.DIMENSION_LOCKED.id)) dim = GeneralConfig.startingDimID;
+        if (VariantNames.activeContains(VariantNames.DIMLOCKED.id)) dim = GeneralConfig.startingDimID;
         return dim;
     }
 }
