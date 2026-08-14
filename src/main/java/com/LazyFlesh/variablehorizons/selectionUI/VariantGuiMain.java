@@ -2,6 +2,7 @@ package com.LazyFlesh.variablehorizons.selectionUI;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,14 +45,15 @@ public class VariantGuiMain extends GuiScreen {
 
     private static final List<VariantNames> fullVariants = VariantNames.allCompositionVariants;
     private static final List<VariantNames> subVariants = VariantNames.allSubVariants;
+    private static final List<VariantNames> inputFieldVariants = Arrays
+        .asList(VariantNames.DIMLOCKED, VariantNames.CUSTOM_DIM_START);
     private static final ResourceLocation DEFAULT_ICON = new ResourceLocation(
         "variablehorizons",
         "textures/gui/variants/ohno.png");
-    private static final String DIMENSION_LOCKED = VariantNames.DIMLOCKED.id;
     private boolean showingFullVariants = true;
     private VariantList optionList;
     private GuiTextField searchField;
-    private GuiTextField dimIdField;
+    private GuiTextField numberInputField;
     private final List<VariantNames> filteredVariants = new ArrayList<>();
     private final Map<String, ResourceLocation> iconCache = new HashMap<>();
 
@@ -130,15 +132,20 @@ public class VariantGuiMain extends GuiScreen {
         return this.fontRendererObj.listFormattedStringToWidth(description, wrapWidth);
     }
 
-    private void syncNumberField() {
+    private void syncNumberField(VariantNames connectedVariant) {
         if (selectedIndex < 0 || selectedIndex >= filteredVariants.size()) {
             return;
         }
-        VariantNames selected = filteredVariants.get(selectedIndex);
-        if (DIMENSION_LOCKED.equals(selected.id)) {
-            dimIdField.setText(String.valueOf(GeneralConfig.startingDimID));
-            updateNumberFieldPosition(selected);
+        if (!inputFieldVariants.contains(connectedVariant)) {
+            return;
         }
+
+        VariantNames selected = filteredVariants.get(selectedIndex);
+        if (selected.equals(VariantNames.DIMLOCKED) || selected.equals(VariantNames.CUSTOM_DIM_START)) {
+            numberInputField.setText(String.valueOf(GeneralConfig.startingDimID));
+        }
+        updateNumberFieldPosition(selected);
+
     }
 
     private void updateNumberFieldPosition(VariantNames selected) {
@@ -149,8 +156,8 @@ public class VariantGuiMain extends GuiScreen {
         List<String> lines = getWrappedDescriptionLines(selected, wrapWidth);
         int descBottomY = panelY + ICON_TO_DESC_GAP + lines.size() * (this.fontRendererObj.FONT_HEIGHT + 2);
 
-        dimIdField.xPosition = panelX;
-        dimIdField.yPosition = descBottomY + DESC_TO_FIELD_GAP;
+        numberInputField.xPosition = panelX;
+        numberInputField.yPosition = descBottomY + DESC_TO_FIELD_GAP;
     }
 
     @Override
@@ -183,12 +190,12 @@ public class VariantGuiMain extends GuiScreen {
         this.searchField = new GuiTextField(this.fontRendererObj, PADDING, 14, SIDEBAR_WIDTH - PADDING - 4, 16);
         this.searchField.setMaxStringLength(64);
         this.searchField.setFocused(true);
-        this.dimIdField = new GuiTextField(this.fontRendererObj, SIDEBAR_WIDTH + PADDING * 2, 90, 100, 16);
-        this.dimIdField.setMaxStringLength(10);
+        this.numberInputField = new GuiTextField(this.fontRendererObj, SIDEBAR_WIDTH + PADDING * 2, 90, 100, 16);
+        this.numberInputField.setMaxStringLength(10);
         this.optionList = new VariantList();
 
         refreshFilteredVariants();
-        syncNumberField();
+        syncNumberField(VariantNames.NORMAL);
     }
 
     private void updateBottomButtons() {
@@ -218,7 +225,7 @@ public class VariantGuiMain extends GuiScreen {
             button.displayString = showingFullVariants ? StatCollector.translateToLocal("variantgui.showsub")
                 : StatCollector.translateToLocal("variantgui.showfull");
             refreshFilteredVariants();
-            syncNumberField();
+            syncNumberField(VariantNames.NORMAL);
         }
     }
 
@@ -232,9 +239,9 @@ public class VariantGuiMain extends GuiScreen {
             || keyCode == Keyboard.KEY_MINUS;
     }
 
-    private boolean isNumberFieldVisible(VariantNames connectedVariant) {
+    private boolean isNumberFieldVisible() {
         return selectedIndex >= 0 && selectedIndex < filteredVariants.size()
-            && connectedVariant.equals(filteredVariants.get(selectedIndex));
+            && inputFieldVariants.contains(filteredVariants.get(selectedIndex));
     }
 
     @Override
@@ -244,9 +251,9 @@ public class VariantGuiMain extends GuiScreen {
             return;
         }
 
-        if (isNumberFieldVisible(VariantNames.DIMLOCKED) && isAllowedNumericInput(typedChar, keyCode)) {
-            if (dimIdField.textboxKeyTyped(typedChar, keyCode)) {
-                applyNumberFieldValue(dimIdField, VariantNames.DIMLOCKED);
+        if (isNumberFieldVisible() && isAllowedNumericInput(typedChar, keyCode)) {
+            if (numberInputField.textboxKeyTyped(typedChar, keyCode)) {
+                applyNumberFieldValue(numberInputField);
                 return;
             }
         }
@@ -254,14 +261,22 @@ public class VariantGuiMain extends GuiScreen {
         super.keyTyped(typedChar, keyCode);
     }
 
-    private void applyNumberFieldValue(GuiTextField field, VariantNames connectedVariant) {
+    private void applyNumberFieldValue(GuiTextField field) {
         String text = field.getText();
         if (text.isEmpty()) return;
         int parsedInt = 0;
+        float parsedFloat = 1f;
+        VariantNames selectedVariant = filteredVariants.get(selectedIndex);
+        boolean dimLock = selectedVariant.equals(VariantNames.DIMLOCKED)
+            || selectedVariant.equals(VariantNames.CUSTOM_DIM_START);
         try {
-            parsedInt = Integer.parseInt(text);
+            if (dimLock) {
+                parsedInt = Integer.parseInt(text);
+            } else {
+                parsedFloat = Float.parseFloat(text);
+            }
         } catch (NumberFormatException ignored) {}
-        if (connectedVariant.equals(VariantNames.DIMLOCKED)) {
+        if (dimLock) {
             GeneralConfig.startingDimID = parsedInt;
         }
         ConfigurationManager.save(GeneralConfig.class);
@@ -272,10 +287,10 @@ public class VariantGuiMain extends GuiScreen {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         searchField.mouseClicked(mouseX, mouseY, mouseButton);
 
-        if (isNumberFieldVisible(VariantNames.DIMLOCKED)) {
-            dimIdField.mouseClicked(mouseX, mouseY, mouseButton);
+        if (isNumberFieldVisible()) {
+            numberInputField.mouseClicked(mouseX, mouseY, mouseButton);
         } else {
-            dimIdField.setFocused(false);
+            numberInputField.setFocused(false);
         }
     }
 
@@ -285,14 +300,23 @@ public class VariantGuiMain extends GuiScreen {
             && mouseY < field.yPosition + field.height;
     }
 
+    private String getTranslatedTextfieldTooltip() {
+        String tooltip = "";
+        VariantNames selectedVariant = filteredVariants.get(selectedIndex);
+        if (selectedVariant.equals(VariantNames.DIMLOCKED) || selectedVariant.equals(VariantNames.CUSTOM_DIM_START)) {
+            tooltip = StatCollector.translateToLocal("variantgui.dimidfield.tooltip");
+        }
+        return tooltip;
+    }
+
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.optionList.drawScreen(mouseX, mouseY, partialTicks);
         searchField.drawTextBox();
         drawDetailsPanel();
 
-        if (isNumberFieldVisible(VariantNames.DIMLOCKED)) {
-            dimIdField.drawTextBox();
+        if (isNumberFieldVisible()) {
+            numberInputField.drawTextBox();
         }
 
         this.drawCenteredString(
@@ -303,9 +327,9 @@ public class VariantGuiMain extends GuiScreen {
             0xFFFFFF);
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        if (isNumberFieldVisible(VariantNames.DIMLOCKED) && isMouseOverTextField(dimIdField, mouseX, mouseY)) {
+        if (isNumberFieldVisible() && isMouseOverTextField(numberInputField, mouseX, mouseY)) {
             List<String> tooltip = this.fontRendererObj
-                .listFormattedStringToWidth(StatCollector.translateToLocal("variantgui.dimidfield.tooltip"), 200);
+                .listFormattedStringToWidth(getTranslatedTextfieldTooltip(), 200);
             this.drawHoveringText(tooltip, mouseX, mouseY, this.fontRendererObj);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         }
@@ -391,7 +415,7 @@ public class VariantGuiMain extends GuiScreen {
         @Override
         protected void elementClicked(int index, boolean doubleClick, int mouseX, int mouseY) {
             selectedIndex = index;
-            syncNumberField();
+            syncNumberField(filteredVariants.get(selectedIndex));
             updateBottomButtons();
         }
 
