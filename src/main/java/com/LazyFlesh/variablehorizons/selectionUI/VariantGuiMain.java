@@ -158,9 +158,9 @@ public class VariantGuiMain extends GuiScreen {
         this.buttonList.add(
             new GuiButton(
                 0,
-                this.width / 2 - 100,
+                this.width / 2 - 75,
                 this.height - 27,
-                200,
+                150,
                 20,
                 StatCollector.translateToLocal("variantgui.done")));
         this.buttonList.add(
