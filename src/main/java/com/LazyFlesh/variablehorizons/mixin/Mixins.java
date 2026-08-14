@@ -44,13 +44,11 @@ public enum Mixins implements IMixins {
         .setPhase(IBaseTransformer.Phase.EARLY)),
     ALLOW_RESPAWN_IN_DIMENSION(new MixinBuilder("Allow respawning in another dimension")
         .addCommonMixins("MixinWorldProvider_AllowRespawnInDimension")
-        .setApplyIf(
-            () -> VariantNames.activeContains(VariantNames.DIMENSION_LOCKED.id) && !GeneralConfig.disableVariants)
+        .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
         .setPhase(IBaseTransformer.Phase.EARLY)),
     SET_INITIAL_SPAWN_DIMENSION(new MixinBuilder("Set spawn dimension to another dimension")
         .addCommonMixins("MixinServerConfigurationManager_ChangeInitialSpawnDimension")
-        .setApplyIf(
-            () -> VariantNames.activeContains(VariantNames.DIMENSION_LOCKED.id) && !GeneralConfig.disableVariants)
+        .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
         .setPhase(IBaseTransformer.Phase.EARLY)),
 
     ;
