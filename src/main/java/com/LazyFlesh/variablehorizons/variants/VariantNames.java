@@ -30,7 +30,7 @@ public enum VariantNames {
     DOUBLE_TIME("DOUBLE_TIME"),
     HALF_EFFICIENCY("HALF_EFFICIENCY"),
     INFINITE_POWER("INFINITE_POWER"),
-    NETHER_START("NETHER_START"), // sets Nether as the spawn dimension instead of OW
+    CUSTOM_DIM_START("CUSTOM_DIM_START"), // sets a different dim as the spawn dimension instead of OW
 
     // full variants
     // i.e. defines both world type and recipes
@@ -41,7 +41,7 @@ public enum VariantNames {
     GARDEN_OF_GRIND("GARDEN_OF_GRIND", new GardenOfGrind(),
         new VariantNames[] { VOID_WORLD, NO_RECIPE_ADDITIONS, NO_ROCKET }, new VariantNames[] {}),
 
-    NETHER_ONLY("NETHER_ONLY", true, new VariantNames[] { NETHER_START, NO_ROCKET },
+    DIMENSION_LOCKED("DIMENSION_LOCKED", true, new VariantNames[] { CUSTOM_DIM_START, NO_ROCKET },
         new VariantNames[] { NO_RECIPE_ADDITIONS }),
 
     SKYBLOCK("SKYBLOCK", true, new VariantNames[] { VOID_ISLAND }, new VariantNames[] { NO_RECIPE_ADDITIONS }),

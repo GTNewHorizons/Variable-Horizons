@@ -2,7 +2,7 @@
 #Full variants
 variants.NORMAL.name=Base Pack
 variants.GARDEN_OF_GRIND.name=Garden of Grind
-variants.NETHER_ONLY.name=Nether Only
+variants.DIMENSION_LOCKED.name=Dimension Locked
 variants.SKYBLOCK.name=Skyblock
 
 #Sub-Variants
@@ -16,7 +16,7 @@ variants.QUARTER_TIME.name=Quarter Recipe Times
 variants.DOUBLE_TIME.name=Double Recipe Times
 variants.HALF_EFFICIENCY.name=Half Efficiency
 variants.INFINITE_POWER.name=Infinite Power
-variants.NETHER_START.name=Nether Start
+variants.CUSTOM_DIM_START.name=Custom Starting Dimension
 
 #Variant GUI buttons
 variantgui.header=Pack Variants
