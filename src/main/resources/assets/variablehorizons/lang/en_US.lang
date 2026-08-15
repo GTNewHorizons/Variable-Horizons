@@ -47,4 +47,5 @@ variantgui.efficiencyfield.tooltip=Insert machine efficiency multiplier
 variantgui.recipetimefield.tooltip=Insert recipe time multiplier
 
 #Misc
-variants.portals.message=Otherworldly forces interfere with the linking of portals
+variants.portal_activation.message=Otherworldly forces deny your attempt at transdimensional travel
+variants.portal_creation.message=Otherworldly forces prevent the creation of transdimensional portals

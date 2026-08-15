@@ -31,7 +31,7 @@ public class MixinBlockPortal_DisableNetherPortal {
                 if (last == null || now - last > 20) {
                     player.addChatMessage(
                         new net.minecraft.util.ChatComponentText(
-                            StatCollector.translateToLocal("variants.portals.message")));
+                            StatCollector.translateToLocal("variants.portal_activation.message")));
                     variable_Horizons$lastWarned.put(player, now);
                 }
             }
