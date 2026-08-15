@@ -12,7 +12,6 @@ import com.LazyFlesh.variablehorizons.Config.GogConfig;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import com.gtnewhorizon.gtnhmixins.ILateMixinLoader;
 import com.gtnewhorizon.gtnhmixins.LateMixin;
-import com.gtnewhorizon.gtnhmixins.builders.IBaseTransformer;
 import com.gtnewhorizon.gtnhmixins.builders.IMixins;
 import com.gtnewhorizon.gtnhmixins.builders.ITargetMod;
 import com.gtnewhorizon.gtnhmixins.builders.MixinBuilder;
@@ -25,53 +24,57 @@ public enum Mixins implements IMixins {
     DISABLE_CHUNK_TERRAIN_GENERATION(new MixinBuilder().addCommonMixins("MixinChunkProviderServer_DisableTerrain")
         .setApplyIf(() -> VariantNames.activeContains(VariantNames.VOID_WORLD.id) && !GeneralConfig.disableVariants)
         .addExcludedMod(TargetedMod.ENDLESSIDS)
-        .setPhase(IBaseTransformer.Phase.EARLY)),
+        .setPhase(Phase.EARLY)),
     DISABLE_CHUNK_TERRAIN_GENERATION_ENDLESS_IDS(
         new MixinBuilder().addCommonMixins("MixinChunkProviderServer_DisableTerrain_EndlessIDs")
             .setApplyIf(() -> VariantNames.activeContains(VariantNames.VOID_WORLD.id) && !GeneralConfig.disableVariants)
             .addRequiredMod(TargetedMod.ENDLESSIDS)
-            .setPhase(IBaseTransformer.Phase.EARLY)),
+            .setPhase(Phase.EARLY)),
     DISABLE_WORLD_TYPE_CHUNK_POPULATION(
         new MixinBuilder("Disable chunk population tied to chunk generation (ores/structure)")
             .addCommonMixins("MixinChunkProviderServer_DisablePopulation")
             .setApplyIf(() -> VariantNames.activeContains(VariantNames.VOID_WORLD.id) && !GeneralConfig.disableVariants)
-            .setPhase(IBaseTransformer.Phase.EARLY)),
+            .setPhase(Phase.EARLY)),
     DISABLE_MODDED_CHUNK_POPULATION(new MixinBuilder("Disable all other mod chunk population (e.g. Natura clouds")
         .addCommonMixins("MixinChunkProviderServer_DisableModGeneration")
         .setApplyIf(
             () -> VariantNames.activeContains(VariantNames.VOID_WORLD.id) && !GogConfig.dragonTime
                 && !GeneralConfig.disableVariants)
-        .setPhase(IBaseTransformer.Phase.EARLY)),
+        .setPhase(Phase.EARLY)),
     ALLOW_RESPAWN_IN_DIMENSION(new MixinBuilder("Allow respawning in another dimension")
         .addCommonMixins("MixinWorldProvider_AllowRespawnInDimension")
         .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
-        .setPhase(IBaseTransformer.Phase.EARLY)),
+        .setPhase(Phase.EARLY)),
     SET_INITIAL_SPAWN_DIMENSION(new MixinBuilder("Set spawn dimension to another dimension")
         .addCommonMixins("MixinServerConfigurationManager_ChangeInitialSpawnDimension")
         .setApplyIf(
             () -> VariantNames.activeContains(VariantNames.CUSTOM_DIM_START.id) && !GeneralConfig.disableVariants)
-        .setPhase(IBaseTransformer.Phase.EARLY)),
+        .setPhase(Phase.EARLY)),
     DISABLE_NETHER_PORTALS(new MixinBuilder("Disable the creation of nether portals")
         .addCommonMixins("MixinBlockPortal_DisableNetherPortal")
         .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
-        .setPhase(IBaseTransformer.Phase.EARLY)),
+        .setPhase(Phase.EARLY)),
     DISABLE_END_EXIT_PORTAL(
         new MixinBuilder("Disable the creation of an exit portal upon the death of the ender dragon")
             .addCommonMixins("MixinEntityDragon_DisableExitPortal")
             .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
-            .setPhase(IBaseTransformer.Phase.EARLY)),
+            .setPhase(Phase.EARLY)),
+    DISABLE_END_PORTAL_ACTIVATION(new MixinBuilder("Disable the activation of end portals using eyes of ender")
+        .addCommonMixins("MixinItemEnderEye_DisableEndPortalActivation")
+        .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
+        .setPhase(Phase.EARLY)),
     DISABLE_END_EXIT_PORTAL_HEE(
         new MixinBuilder("Disable the creation of an exit portal upon the death of the HEE ender dragon")
             .addCommonMixins("MixinEntityBossDragon_DisableExitPortalHEE")
             .addRequiredMod(TargetedMod.HARDCORE_ENDER_EXPANSION)
             .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
-            .setPhase(IBaseTransformer.Phase.LATE)),
+            .setPhase(Phase.LATE)),
     DISABLE_END_EXIT_PORTAL_DE(
         new MixinBuilder("Disable the creation of an exit portal upon the death of the DE ender dragon")
             .addCommonMixins("MixinEntityCustomDragon_DisableExitPortalDE")
             .addRequiredMod(TargetedMod.DRACONIC_EVOLUTION)
             .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
-            .setPhase(IBaseTransformer.Phase.LATE))
+            .setPhase(Phase.LATE))
 
     ;
 
