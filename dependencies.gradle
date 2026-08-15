@@ -41,5 +41,6 @@ dependencies {
 
     compileOnly("com.github.GTNewHorizons:Hardcore-Ender-Expansion:1.12.27-GTNH:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:Draconic-Evolution:1.5.32-GTNH:dev") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:ThaumicTinkerer:2.12.29:dev")
 
 }

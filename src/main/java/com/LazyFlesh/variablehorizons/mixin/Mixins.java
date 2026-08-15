@@ -74,7 +74,12 @@ public enum Mixins implements IMixins {
             .addCommonMixins("MixinEntityCustomDragon_DisableExitPortalDE")
             .addRequiredMod(TargetedMod.DRACONIC_EVOLUTION)
             .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
-            .setPhase(Phase.LATE))
+            .setPhase(Phase.LATE)),
+    DISABLE_BEDROCK_PORTAL(new MixinBuilder("Disable the creation of bedrock portals")
+        .addCommonMixins("MixinItemIchorPickAdv_DisableBedrockPortal")
+        .addRequiredMod(TargetedMod.THAUMIC_TINKERER)
+        .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
+        .setPhase(Phase.LATE))
 
     ;
 
@@ -94,7 +99,8 @@ public enum Mixins implements IMixins {
 
         ENDLESSIDS("com.falsepattern.endlessids.asm.EndlessIDsCore", "endlessids"),
         HARDCORE_ENDER_EXPANSION("HardcoreEnderExpansion"),
-        DRACONIC_EVOLUTION("DraconicEvolution");
+        DRACONIC_EVOLUTION("DraconicEvolution"),
+        THAUMIC_TINKERER("ThaumicTinkerer");
 
         private final TargetModBuilder builder;
 
