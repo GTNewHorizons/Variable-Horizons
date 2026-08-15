@@ -20,7 +20,8 @@ public class MixinEntityCustomDragon_DisableExitPortalDE {
         World world = ((Entity) (Object) this).worldObj;
         for (EntityPlayer player : world.playerEntities) {
             player.addChatMessage(
-                new net.minecraft.util.ChatComponentText(StatCollector.translateToLocal("variants.portal_creation.message")));
+                new net.minecraft.util.ChatComponentText(
+                    StatCollector.translateToLocal("variants.portal_creation.message")));
         }
         ci.cancel();
     }

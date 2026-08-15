@@ -44,7 +44,8 @@ public class MixinItemEnderEye_DisableEndPortalActivation {
         int z, int side, float hitX, float hitY, float hitZ, CallbackInfoReturnable<Boolean> cir) {
         if (this.variablehorizons$portalBlocked) {
             player.addChatMessage(
-                new net.minecraft.util.ChatComponentText(StatCollector.translateToLocal("variants.portal_activation.message")));
+                new net.minecraft.util.ChatComponentText(
+                    StatCollector.translateToLocal("variants.portal_activation.message")));
             this.variablehorizons$portalBlocked = false;
         }
     }

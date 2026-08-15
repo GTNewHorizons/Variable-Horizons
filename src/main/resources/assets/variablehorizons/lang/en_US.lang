@@ -38,7 +38,7 @@ variants.CUSTOM_DIM_START.desc=Custom Starting Dimension
 variantgui.header=Pack Variants
 variantgui.done=Done
 variantgui.toggle=Toggle
-variantgui.showfull=Show Full Variants 
+variantgui.showfull=Show Full Variants
 variantgui.showsub=Show Sub-Variants
 
 #Variant GUI tooltips
