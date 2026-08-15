@@ -50,36 +50,18 @@ public enum Mixins implements IMixins {
         .setApplyIf(
             () -> VariantNames.activeContains(VariantNames.CUSTOM_DIM_START.id) && !GeneralConfig.disableVariants)
         .setPhase(Phase.EARLY)),
-    DISABLE_NETHER_PORTALS(new MixinBuilder("Disable the creation of nether portals")
-        .addCommonMixins("MixinBlockPortal_DisableNetherPortal")
-        .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
-        .setPhase(Phase.EARLY)),
-    DISABLE_END_EXIT_PORTAL(
-        new MixinBuilder("Disable the creation of an exit portal upon the death of the ender dragon")
-            .addCommonMixins("MixinEntityDragon_DisableExitPortal")
-            .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
+    LOCK_TO_DIMENSION_TRAVEL_TO_DIM(new MixinBuilder(
+        "Forcibly return a player to the specified dim upon trying to leave it, travelToDimension method")
+            .addCommonMixins("MixinEntityPlayerMP_LockDimension")
+            .setApplyIf(
+                () -> VariantNames.activeContains(VariantNames.CUSTOM_DIM_START.id) && !GeneralConfig.disableVariants)
             .setPhase(Phase.EARLY)),
-    DISABLE_END_PORTAL_ACTIVATION(new MixinBuilder("Disable the activation of end portals using eyes of ender")
-        .addCommonMixins("MixinItemEnderEye_DisableEndPortalActivation")
-        .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
-        .setPhase(Phase.EARLY)),
-    DISABLE_END_EXIT_PORTAL_HEE(
-        new MixinBuilder("Disable the creation of an exit portal upon the death of the HEE ender dragon")
-            .addCommonMixins("MixinEntityBossDragon_DisableExitPortalHEE")
-            .addRequiredMod(TargetedMod.HARDCORE_ENDER_EXPANSION)
-            .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
-            .setPhase(Phase.LATE)),
-    DISABLE_END_EXIT_PORTAL_DE(
-        new MixinBuilder("Disable the creation of an exit portal upon the death of the DE ender dragon")
-            .addCommonMixins("MixinEntityCustomDragon_DisableExitPortalDE")
-            .addRequiredMod(TargetedMod.DRACONIC_EVOLUTION)
-            .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
-            .setPhase(Phase.LATE)),
-    DISABLE_BEDROCK_PORTAL(new MixinBuilder("Disable the creation of bedrock portals")
-        .addCommonMixins("MixinItemIchorPickAdv_DisableBedrockPortal")
-        .addRequiredMod(TargetedMod.THAUMIC_TINKERER)
-        .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
-        .setPhase(Phase.LATE))
+    LOCK_TO_DIMENSION_TRANSFER_PLAYER_TO_DIM(new MixinBuilder(
+        "Forcibly return a player to the specified dim upon trying to leave, transferPlayerToDimension method")
+            .addCommonMixins("MixinServerConfigurationManager_LockDimension")
+            .setApplyIf(
+                () -> VariantNames.activeContains(VariantNames.CUSTOM_DIM_START.id) && !GeneralConfig.disableVariants)
+            .setPhase(Phase.EARLY)),
 
     ;
 
