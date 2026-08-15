@@ -64,7 +64,7 @@ public enum Mixins implements IMixins {
         new MixinBuilder("Disable the creation of an exit portal upon the death of the HEE ender dragon")
             .addCommonMixins("MixinEntityBossDragon_DisableExitPortalHEE")
             .addRequiredMod(TargetedMod.HARDCORE_ENDER_EXPANSION)
-            .setApplyIf(() -> false)
+            .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
             .setPhase(IBaseTransformer.Phase.LATE)),
     DISABLE_END_EXIT_PORTAL_DE(
         new MixinBuilder("Disable the creation of an exit portal upon the death of the DE ender dragon")
