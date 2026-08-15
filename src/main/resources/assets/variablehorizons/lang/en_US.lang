@@ -45,3 +45,6 @@ variantgui.showsub=Show Sub-Variants
 variantgui.dimidfield.tooltip=Insert numeric ID of chosen dimension
 variantgui.efficiencyfield.tooltip=Insert machine efficiency multiplier
 variantgui.recipetimefield.tooltip=Insert recipe time multiplier
+
+#Misc
+variants.portals.message=Otherworldly forces interfere with the linking of portals

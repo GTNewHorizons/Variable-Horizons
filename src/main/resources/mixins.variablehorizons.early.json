@@ -11,6 +11,8 @@
     "MixinChunkProviderServer_DisableTerrain",
     "MixinChunkProviderServer_DisableTerrain_EndlessIDs",
     "MixinWorldProvider_AllowRespawnInDimension",
-    "MixinServerConfigurationManager_ChangeInitialSpawnDimension"
+    "MixinServerConfigurationManager_ChangeInitialSpawnDimension",
+    "MixinBlockPortal_DisableNetherPortal",
+    "MixinEntityDragon_DisableExitPortal"
   ]
 }

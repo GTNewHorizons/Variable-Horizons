@@ -51,8 +51,15 @@ public enum Mixins implements IMixins {
         .setApplyIf(
             () -> VariantNames.activeContains(VariantNames.CUSTOM_DIM_START.id) && !GeneralConfig.disableVariants)
         .setPhase(IBaseTransformer.Phase.EARLY)),
-
-    ;
+    DISABLE_NETHER_PORTALS(new MixinBuilder("Disable the creation of nether portals")
+        .addCommonMixins("MixinBlockPortal_DisableNetherPortal")
+        .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
+        .setPhase(IBaseTransformer.Phase.EARLY)),
+    DISABLE_END_EXIT_PORTAL(
+        new MixinBuilder("Disable the creation of an exit portal upon the death of the ender dragon")
+            .addCommonMixins("MixinEntityDragon_DisableExitPortal")
+            .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
+            .setPhase(IBaseTransformer.Phase.EARLY)),;
 
     private final MixinBuilder builder;
 
