@@ -1,8 +1,5 @@
 package com.LazyFlesh.variablehorizons.mixin;
 
-import static gregtech.api.enums.Mods.DraconicEvolution;
-import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
-
 import java.util.List;
 import java.util.Set;
 
@@ -66,16 +63,14 @@ public enum Mixins implements IMixins {
     DISABLE_END_EXIT_PORTAL_HEE(
         new MixinBuilder("Disable the creation of an exit portal upon the death of the HEE ender dragon")
             .addCommonMixins("MixinEntityBossDragon_DisableExitPortalHEE")
-            .setApplyIf(
-                () -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants
-                    && HardcoreEnderExpansion.isModLoaded())
+            .addRequiredMod(TargetedMod.HARDCORE_ENDER_EXPANSION)
+            .setApplyIf(() -> false)
             .setPhase(IBaseTransformer.Phase.LATE)),
     DISABLE_END_EXIT_PORTAL_DE(
         new MixinBuilder("Disable the creation of an exit portal upon the death of the DE ender dragon")
             .addCommonMixins("MixinEntityCustomDragon_DisableExitPortalDE")
-            .setApplyIf(
-                () -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants
-                    && DraconicEvolution.isModLoaded())
+            .addRequiredMod(TargetedMod.DRACONIC_EVOLUTION)
+            .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
             .setPhase(IBaseTransformer.Phase.LATE))
 
     ;
@@ -94,7 +89,9 @@ public enum Mixins implements IMixins {
 
     public enum TargetedMod implements ITargetMod {
 
-        ENDLESSIDS("com.falsepattern.endlessids.asm.EndlessIDsCore", "endlessids");
+        ENDLESSIDS("com.falsepattern.endlessids.asm.EndlessIDsCore", "endlessids"),
+        HARDCORE_ENDER_EXPANSION("HardcoreEnderExpansion"),
+        DRACONIC_EVOLUTION("DraconicEvolution");
 
         private final TargetModBuilder builder;
 
