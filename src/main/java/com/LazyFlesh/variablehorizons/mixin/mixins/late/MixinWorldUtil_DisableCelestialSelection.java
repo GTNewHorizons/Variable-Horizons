@@ -22,7 +22,8 @@ public class MixinWorldUtil_DisableCelestialSelection {
     public static void toCelestialSelection(EntityPlayerMP player, GCPlayerStats stats, int tier,
         GuiCelestialSelection.MapMode mapMode) {
         if (randomUtil.warningCooldownFinished(player, player.worldObj)) {
-            player.addChatMessage(new net.minecraft.util.ChatComponentText(randomUtil.getRandomPortalMessage()));
+            player.addChatMessage(
+                new net.minecraft.util.ChatComponentText(randomUtil.getRandomPortalMessage(player, player.worldObj)));
         }
     }
 }

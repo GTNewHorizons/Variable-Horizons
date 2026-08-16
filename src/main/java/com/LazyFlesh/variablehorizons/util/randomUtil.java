@@ -11,8 +11,11 @@ public class randomUtil {
 
     private static final java.util.Map<EntityPlayerMP, Long> WARN_TIMES = new java.util.WeakHashMap<>();
 
-    public static String getRandomPortalMessage() {
-        int randomNumber = MathHelper.getRandomIntegerInRange(new Random(), 1, 30);
+    public static String getRandomPortalMessage(EntityPlayerMP player, World world) {
+        int randomNumber = MathHelper.getRandomIntegerInRange(new Random(), 1, 32);
+        if (randomNumber == 32) {
+            world.playSoundAtEntity(player, "variablehorizons:event.incorrectBuzzer", 0.5f, 1f);
+        }
         return StatCollector.translateToLocal("variants.dimlock.message." + randomNumber);
     }
 

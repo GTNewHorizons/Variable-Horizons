@@ -20,7 +20,9 @@ public class MixinEntityPlayerMP_LockDimension {
 
         if (dimension != lockedDimension) {
             if (randomUtil.warningCooldownFinished(player, player.worldObj)) {
-                player.addChatMessage(new net.minecraft.util.ChatComponentText(randomUtil.getRandomPortalMessage()));
+                player.addChatMessage(
+                    new net.minecraft.util.ChatComponentText(
+                        randomUtil.getRandomPortalMessage(player, player.worldObj)));
             }
             ci.cancel();
         }
