@@ -43,7 +43,8 @@ public enum Mixins implements IMixins {
         .setPhase(Phase.EARLY)),
     ALLOW_RESPAWN_IN_DIMENSION(new MixinBuilder("Allow respawning in another dimension")
         .addCommonMixins("MixinWorldProvider_AllowRespawnInDimension")
-        .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
+        .setApplyIf(
+            () -> VariantNames.activeContains(VariantNames.CUSTOM_DIM_START.id) && !GeneralConfig.disableVariants)
         .setPhase(Phase.EARLY)),
     SET_INITIAL_SPAWN_DIMENSION(new MixinBuilder("Set spawn dimension to another dimension")
         .addCommonMixins("MixinServerConfigurationManager_ChangeInitialSpawnDimension")
@@ -53,15 +54,18 @@ public enum Mixins implements IMixins {
     LOCK_TO_DIMENSION_TRAVEL_TO_DIM(new MixinBuilder(
         "Forcibly return a player to the specified dim upon trying to leave it, travelToDimension method")
             .addCommonMixins("MixinEntityPlayerMP_LockDimension")
-            .setApplyIf(
-                () -> VariantNames.activeContains(VariantNames.CUSTOM_DIM_START.id) && !GeneralConfig.disableVariants)
+            .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
             .setPhase(Phase.EARLY)),
     LOCK_TO_DIMENSION_TRANSFER_PLAYER_TO_DIM(new MixinBuilder(
         "Forcibly return a player to the specified dim upon trying to leave, transferPlayerToDimension method")
             .addCommonMixins("MixinServerConfigurationManager_LockDimension")
-            .setApplyIf(
-                () -> VariantNames.activeContains(VariantNames.CUSTOM_DIM_START.id) && !GeneralConfig.disableVariants)
+            .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
             .setPhase(Phase.EARLY)),
+    DISABLE_CELESTIAL_SELECTION(new MixinBuilder("Disable the galacticraft planet map")
+        .addCommonMixins("MixinWorldUtil_DisableCelestialSelection")
+        .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
+        .addRequiredMod(TargetedMod.GALACTICRAFT_CORE)
+        .setPhase(Phase.LATE))
 
     ;
 
@@ -80,9 +84,7 @@ public enum Mixins implements IMixins {
     public enum TargetedMod implements ITargetMod {
 
         ENDLESSIDS("com.falsepattern.endlessids.asm.EndlessIDsCore", "endlessids"),
-        HARDCORE_ENDER_EXPANSION("HardcoreEnderExpansion"),
-        DRACONIC_EVOLUTION("DraconicEvolution"),
-        THAUMIC_TINKERER("ThaumicTinkerer");
+        GALACTICRAFT_CORE("GalacticraftCore");
 
         private final TargetModBuilder builder;
 
