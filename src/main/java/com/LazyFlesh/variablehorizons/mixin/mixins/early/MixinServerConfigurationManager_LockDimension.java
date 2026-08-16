@@ -23,7 +23,9 @@ public class MixinServerConfigurationManager_LockDimension {
         net.minecraft.world.Teleporter teleporter, CallbackInfo ci) {
         int lockedDimension = GeneralConfig.startingDimID;
         if (dimension != lockedDimension) {
-            player.addChatMessage(new net.minecraft.util.ChatComponentText(randomUtil.getRandomPortalMessage()));
+            if (randomUtil.warningCooldownFinished(player, player.worldObj)) {
+                player.addChatMessage(new net.minecraft.util.ChatComponentText(randomUtil.getRandomPortalMessage()));
+            }
             ci.cancel();
         }
     }

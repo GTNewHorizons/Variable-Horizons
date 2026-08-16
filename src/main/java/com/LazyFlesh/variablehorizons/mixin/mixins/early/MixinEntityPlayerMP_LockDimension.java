@@ -15,11 +15,13 @@ public class MixinEntityPlayerMP_LockDimension {
 
     @Inject(method = "travelToDimension", cancellable = true, at = @At("HEAD"))
     private void variablehorizons$lockDimension(int dimension, CallbackInfo ci) {
-        EntityPlayerMP self = (EntityPlayerMP) (Object) this;
+        EntityPlayerMP player = (EntityPlayerMP) (Object) this;
         int lockedDimension = GeneralConfig.startingDimID;
 
         if (dimension != lockedDimension) {
-            self.addChatMessage(new net.minecraft.util.ChatComponentText(randomUtil.getRandomPortalMessage()));
+            if (randomUtil.warningCooldownFinished(player, player.worldObj)) {
+                player.addChatMessage(new net.minecraft.util.ChatComponentText(randomUtil.getRandomPortalMessage()));
+            }
             ci.cancel();
         }
     }
