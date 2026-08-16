@@ -2,7 +2,7 @@
 #Full variants
 variants.NORMAL.name=Base Pack
 variants.GARDEN_OF_GRIND.name=Garden of Grind
-variants.NETHER_ONLY.name=Nether Only
+variants.DIMLOCKED.name=Dimlocked
 variants.SKYBLOCK.name=Skyblock
 
 #Sub-Variants
@@ -11,16 +11,40 @@ variants.VOID_WORLD.name=Void World
 variants.VOID_ISLAND.name=Void Island
 variants.NO_ROCKET.name=No Rocket
 variants.NO_QUEST_REWARDS.name=No Quest Rewards
-variants.HALF_TIME.name=Half Recipe Times
-variants.QUARTER_TIME.name=Quarter Recipe Times
-variants.DOUBLE_TIME.name=Double Recipe Times
-variants.HALF_EFFICIENCY.name=Half Efficiency
+variants.ALTERED_TIME.name=Altered Recipe Times
+variants.ALTERED_EFFICIENCY.name=Altered Machine Efficiency
 variants.INFINITE_POWER.name=Infinite Power
-variants.NETHER_START.name=Nether Start
+variants.CUSTOM_DIM_START.name=Custom Starting Dimension
+
+#Variant descriptions
+#Full Variants
+variants.NORMAL.desc=Base Pack
+variants.GARDEN_OF_GRIND.desc=Garden of Grind
+variants.DIMLOCKED.desc=As the name implies, this variant locks you to a specific dimension which you cannot leave. You will spawn and respawn in that dimension and have to deal with all the challenges that present themselves from not having access to the intended progression path. You can specify the dimension ID you want this variant to lock you to, some examples include the Nether (-1), the End (1) and Ross128B (64). A full list of dimension IDs can be found on the GTNH wiki. All Dimlocks other than the End include a custom recipe for chaos shards and may contain some extra changes to make the run possible. 
+variants.SKYBLOCK.desc=Skyblock
+
+#Sub-Variants
+variants.NO_RECIPE_ADDITIONS.desc=No Recipe Additions
+variants.VOID_WORLD.desc=Void World
+variants.VOID_ISLAND.desc=Void Island
+variants.NO_ROCKET.desc=No Rocket
+variants.NO_QUEST_REWARDS.desc=No Quest Rewards
+variants.ALTERED_TIME.desc=Altered Recipe Times
+variants.ALTERED_EFFICIENCY.desc=Altered Machine Efficiency
+variants.INFINITE_POWER.desc=Infinite Power
+variants.CUSTOM_DIM_START.desc=This variant allows you to choose a starting dimension in which you are going to spawn and respawn, but there is nothing preventing you from leaving. You can specify the dimension ID you want this variant to lock you to, some examples include the Nether (-1), the End (1) and Ross128B (64). A full list of dimension IDs can be found on the GTNH wiki.
 
 #Variant GUI buttons
 variantgui.header=Pack Variants
 variantgui.done=Done
 variantgui.toggle=Toggle
-variantgui.showfull=Show Full Variants 
+variantgui.showfull=Show Full Variants
 variantgui.showsub=Show Sub-Variants
+
+#Variant GUI tooltips
+variantgui.dimidfield.tooltip=Insert numeric ID of chosen dimension
+variantgui.efficiencyfield.tooltip=Insert machine efficiency multiplier
+variantgui.recipetimefield.tooltip=Insert recipe time multiplier
+
+#Misc
+variants.dimlock.message=Otherworldly forces reject your attempt at crossing dimensional boundaries

@@ -2,6 +2,7 @@ package com.LazyFlesh.variablehorizons.selectionUI;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +21,10 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -34,17 +37,26 @@ public class VariantGuiMain extends GuiScreen {
     private int selectedIndex = -1;
     private final GuiScreen parent;
     private static final int OPENING_BUTTON_ID = 8192;
-    private static final int SIDEBAR_WIDTH = 200;
+    private static final int SIDEBAR_WIDTH = 150;
     private static final int PADDING = 6;
     private static final int ICON_SIZE = 32;
+    private static final int ICON_TO_DESC_GAP = 40;
+    private static final int DESC_TO_FIELD_GAP = 8;
+
     private static final List<VariantNames> fullVariants = VariantNames.allCompositionVariants;
     private static final List<VariantNames> subVariants = VariantNames.allSubVariants;
+    private static final List<VariantNames> inputFieldVariants = Arrays.asList(
+        VariantNames.DIMLOCKED,
+        VariantNames.CUSTOM_DIM_START,
+        VariantNames.ALTERED_EFFICIENCY,
+        VariantNames.ALTERED_RECIPE_TIME);
     private static final ResourceLocation DEFAULT_ICON = new ResourceLocation(
         "variablehorizons",
         "textures/gui/variants/ohno.png");
     private boolean showingFullVariants = true;
     private VariantList optionList;
     private GuiTextField searchField;
+    private GuiTextField numberInputField;
     private final List<VariantNames> filteredVariants = new ArrayList<>();
     private final Map<String, ResourceLocation> iconCache = new HashMap<>();
 
@@ -118,14 +130,50 @@ public class VariantGuiMain extends GuiScreen {
         updateBottomButtons();
     }
 
+    private List<String> getWrappedDescriptionLines(VariantNames variant, int wrapWidth) {
+        String description = StatCollector.translateToLocal("variants." + variant.id + ".desc");
+        return this.fontRendererObj.listFormattedStringToWidth(description, wrapWidth);
+    }
+
+    private void syncNumberField(VariantNames connectedVariant) {
+        if (selectedIndex < 0 || selectedIndex >= filteredVariants.size()) {
+            return;
+        }
+        if (!inputFieldVariants.contains(connectedVariant)) {
+            return;
+        }
+
+        VariantNames selected = filteredVariants.get(selectedIndex);
+        if (selected.equals(VariantNames.DIMLOCKED) || selected.equals(VariantNames.CUSTOM_DIM_START)) {
+            numberInputField.setText(String.valueOf(GeneralConfig.startingDimID));
+        } else if (selected.equals(VariantNames.ALTERED_EFFICIENCY)) {
+            numberInputField.setText(String.valueOf(GeneralConfig.efficiencyMultiplier));
+        } else if (selected.equals(VariantNames.ALTERED_RECIPE_TIME)) {
+            numberInputField.setText(String.valueOf(GeneralConfig.recipeTimeMultiplier));
+        }
+        updateNumberFieldPosition(selected);
+    }
+
+    private void updateNumberFieldPosition(VariantNames selected) {
+        int panelX = SIDEBAR_WIDTH + PADDING * 2;
+        int panelY = 50;
+        int wrapWidth = this.width - panelX - PADDING;
+
+        List<String> lines = getWrappedDescriptionLines(selected, wrapWidth);
+        int descBottomY = panelY + ICON_TO_DESC_GAP + lines.size() * (this.fontRendererObj.FONT_HEIGHT + 2);
+
+        numberInputField.xPosition = panelX;
+        numberInputField.yPosition = descBottomY + DESC_TO_FIELD_GAP;
+    }
+
     @Override
     public void initGui() {
         this.buttonList.add(
             new GuiButton(
                 0,
-                this.width / 2 - 100,
+                this.width / 2 - 75,
                 this.height - 27,
-                200,
+                150,
                 20,
                 StatCollector.translateToLocal("variantgui.done")));
         this.buttonList.add(
@@ -148,9 +196,12 @@ public class VariantGuiMain extends GuiScreen {
         this.searchField = new GuiTextField(this.fontRendererObj, PADDING, 14, SIDEBAR_WIDTH - PADDING - 4, 16);
         this.searchField.setMaxStringLength(64);
         this.searchField.setFocused(true);
+        this.numberInputField = new GuiTextField(this.fontRendererObj, SIDEBAR_WIDTH + PADDING * 2, 90, 100, 16);
+        this.numberInputField.setMaxStringLength(10);
         this.optionList = new VariantList();
 
         refreshFilteredVariants();
+        syncNumberField(VariantNames.NORMAL);
     }
 
     private void updateBottomButtons() {
@@ -180,7 +231,24 @@ public class VariantGuiMain extends GuiScreen {
             button.displayString = showingFullVariants ? StatCollector.translateToLocal("variantgui.showsub")
                 : StatCollector.translateToLocal("variantgui.showfull");
             refreshFilteredVariants();
+            syncNumberField(VariantNames.NORMAL);
         }
+    }
+
+    private boolean isAllowedNumericInput(char typedChar, int keyCode) {
+        if (Character.isDigit(typedChar)) return true;
+        return keyCode == Keyboard.KEY_BACK || keyCode == Keyboard.KEY_DELETE
+            || keyCode == Keyboard.KEY_LEFT
+            || keyCode == Keyboard.KEY_RIGHT
+            || keyCode == Keyboard.KEY_HOME
+            || keyCode == Keyboard.KEY_END
+            || keyCode == Keyboard.KEY_MINUS
+            || keyCode == Keyboard.KEY_DECIMAL;
+    }
+
+    private boolean isNumberFieldVisible() {
+        return selectedIndex >= 0 && selectedIndex < filteredVariants.size()
+            && inputFieldVariants.contains(filteredVariants.get(selectedIndex));
     }
 
     @Override
@@ -189,13 +257,71 @@ public class VariantGuiMain extends GuiScreen {
             refreshFilteredVariants();
             return;
         }
+
+        if (isNumberFieldVisible() && isAllowedNumericInput(typedChar, keyCode)) {
+            if (numberInputField.textboxKeyTyped(typedChar, keyCode)) {
+                applyNumberFieldValue(numberInputField);
+                return;
+            }
+        }
+
         super.keyTyped(typedChar, keyCode);
+    }
+
+    private void applyNumberFieldValue(GuiTextField field) {
+        String text = field.getText();
+        if (text.isEmpty()) return;
+        int parsedInt = 0;
+        float parsedFloat = 1f;
+        VariantNames selectedVariant = filteredVariants.get(selectedIndex);
+        boolean dimLock = selectedVariant.equals(VariantNames.DIMLOCKED)
+            || selectedVariant.equals(VariantNames.CUSTOM_DIM_START);
+        try {
+            if (dimLock) {
+                parsedInt = Integer.parseInt(text);
+            } else {
+                parsedFloat = Float.parseFloat(text);
+            }
+        } catch (NumberFormatException ignored) {}
+        if (dimLock) {
+            GeneralConfig.startingDimID = parsedInt;
+        } else if (selectedVariant.equals(VariantNames.ALTERED_EFFICIENCY)) {
+            GeneralConfig.efficiencyMultiplier = parsedFloat;
+        } else if (selectedVariant.equals(VariantNames.ALTERED_RECIPE_TIME)) {
+            GeneralConfig.recipeTimeMultiplier = parsedFloat;
+        }
+        ConfigurationManager.save(GeneralConfig.class);
     }
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         searchField.mouseClicked(mouseX, mouseY, mouseButton);
+
+        if (isNumberFieldVisible()) {
+            numberInputField.mouseClicked(mouseX, mouseY, mouseButton);
+        } else {
+            numberInputField.setFocused(false);
+        }
+    }
+
+    private boolean isMouseOverTextField(GuiTextField field, int mouseX, int mouseY) {
+        return mouseX >= field.xPosition && mouseX < field.xPosition + field.width
+            && mouseY >= field.yPosition
+            && mouseY < field.yPosition + field.height;
+    }
+
+    private String getTranslatedTextfieldTooltip() {
+        String tooltip = "";
+        VariantNames selectedVariant = filteredVariants.get(selectedIndex);
+        if (selectedVariant.equals(VariantNames.DIMLOCKED) || selectedVariant.equals(VariantNames.CUSTOM_DIM_START)) {
+            tooltip = StatCollector.translateToLocal("variantgui.dimidfield.tooltip");
+        } else if (selectedVariant.equals(VariantNames.ALTERED_EFFICIENCY)) {
+            tooltip = StatCollector.translateToLocal("variantgui.efficiencyfield.tooltip");
+        } else if (selectedVariant.equals(VariantNames.ALTERED_RECIPE_TIME)) {
+            tooltip = StatCollector.translateToLocal("variantgui.recipetimefield.tooltip");
+        }
+        return tooltip;
     }
 
     @Override
@@ -203,6 +329,11 @@ public class VariantGuiMain extends GuiScreen {
         this.optionList.drawScreen(mouseX, mouseY, partialTicks);
         searchField.drawTextBox();
         drawDetailsPanel();
+
+        if (isNumberFieldVisible()) {
+            numberInputField.drawTextBox();
+        }
+
         this.drawCenteredString(
             this.fontRendererObj,
             StatCollector.translateToLocal("variantgui.header"),
@@ -210,6 +341,13 @@ public class VariantGuiMain extends GuiScreen {
             20,
             0xFFFFFF);
         super.drawScreen(mouseX, mouseY, partialTicks);
+
+        if (isNumberFieldVisible() && isMouseOverTextField(numberInputField, mouseX, mouseY)) {
+            List<String> tooltip = this.fontRendererObj
+                .listFormattedStringToWidth(getTranslatedTextfieldTooltip(), 200);
+            this.drawHoveringText(tooltip, mouseX, mouseY, this.fontRendererObj);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        }
     }
 
     private ResourceLocation getVariantIcon(String variantId) {
@@ -253,8 +391,8 @@ public class VariantGuiMain extends GuiScreen {
             0xFFFFFF);
 
         int wrapWidth = this.width - panelX - PADDING;
-        List<String> lines = this.fontRendererObj.listFormattedStringToWidth("blablabla", wrapWidth);
-        int lineY = panelY + 40;
+        List<String> lines = getWrappedDescriptionLines(selectedVariant, wrapWidth);
+        int lineY = panelY + ICON_TO_DESC_GAP;
         for (String line : lines) {
             this.drawString(this.fontRendererObj, line, panelX, lineY, 0xCCCCCC);
             lineY += this.fontRendererObj.FONT_HEIGHT + 2;
@@ -292,6 +430,7 @@ public class VariantGuiMain extends GuiScreen {
         @Override
         protected void elementClicked(int index, boolean doubleClick, int mouseX, int mouseY) {
             selectedIndex = index;
+            syncNumberField(filteredVariants.get(selectedIndex));
             updateBottomButtons();
         }
 
