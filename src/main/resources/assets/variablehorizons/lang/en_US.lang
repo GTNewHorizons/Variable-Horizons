@@ -47,4 +47,23 @@ variantgui.efficiencyfield.tooltip=Insert machine efficiency multiplier
 variantgui.recipetimefield.tooltip=Insert recipe time multiplier
 
 #Misc
-variants.dimlock.message=Otherworldly forces reject your attempt at crossing dimensional boundaries
+variants.dimlock.message.1=Otherworldly forces reject your attempt at crossing dimensional boundaries
+variants.dimlock.message.2=You don't have the right, O you don't have the right, therefore you don't have the right, O you don't have the right
+variants.dimlock.message.3=You can't do that, and it's your fault
+variants.dimlock.message.4=Where's the fun in that?
+variants.dimlock.message.5=There are DEMONS in there! NO!
+variants.dimlock.message.6=You feel a sense of discomfort, and decide it's simply not for you
+variants.dimlock.message.7=You bounce off of the portal, like a fly hitting a window
+variants.dimlock.message.8=Fruitless.
+variants.dimlock.message.9=The warm sun on your face reminds you how much you love reality. You decide to stay.
+variants.dimlock.message.10=Remember why you are here?
+variants.dimlock.message.11=Useless.
+variants.dimlock.message.12=Stop it
+variants.dimlock.message.13=No.
+variants.dimlock.message.14=No?
+variants.dimlock.message.15=No!
+variants.dimlock.message.16=Are you sure?
+variants.dimlock.message.17=It seems you're not invited
+variants.dimlock.message.18=You feel a tug, but nothing happens
+variants.dimlock.message.19=Something is watching, you quickly pull away
+variants.dimlock.message.20=You catch a glimpse of something moving on the other side, better not go there
