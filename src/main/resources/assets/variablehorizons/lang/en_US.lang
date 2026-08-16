@@ -32,7 +32,7 @@ variants.NO_QUEST_REWARDS.desc=No Quest Rewards
 variants.ALTERED_TIME.desc=Altered Recipe Times
 variants.ALTERED_EFFICIENCY.desc=Altered Machine Efficiency
 variants.INFINITE_POWER.desc=Infinite Power
-variants.CUSTOM_DIM_START.desc=Custom Starting Dimension
+variants.CUSTOM_DIM_START.desc=This variant allows you to choose a starting dimension in which you are going to spawn and respawn, but there is nothing preventing you from leaving. You can specify the dimension ID you want this variant to lock you to, some examples include the Nether (-1), the End (1) and Ross128B (64). A full list of dimension IDs can be found on the GTNH wiki.
 
 #Variant GUI buttons
 variantgui.header=Pack Variants
