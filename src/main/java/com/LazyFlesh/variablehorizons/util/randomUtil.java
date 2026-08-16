@@ -12,7 +12,7 @@ public class randomUtil {
     private static final java.util.Map<EntityPlayerMP, Long> WARN_TIMES = new java.util.WeakHashMap<>();
 
     public static String getRandomPortalMessage() {
-        int randomNumber = MathHelper.getRandomIntegerInRange(new Random(), 1, 20);
+        int randomNumber = MathHelper.getRandomIntegerInRange(new Random(), 1, 30);
         return StatCollector.translateToLocal("variants.dimlock.message." + randomNumber);
     }
 
