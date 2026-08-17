@@ -122,6 +122,7 @@ public class VariantGuiMain extends GuiScreen {
     }
 
     private List<VariantNames> getActiveVariantList() {
+        subVariants.remove(VariantNames.NO_RECIPE_ADDITIONS);
         return showingFullVariants ? fullVariants : subVariants;
     }
 
