@@ -63,8 +63,25 @@ public class VariantGuiMain extends GuiScreen {
     private final List<VariantNames> filteredVariants = new ArrayList<>();
     private final Map<String, ResourceLocation> iconCache = new HashMap<>();
 
+    private final Set<String> initialActiveVariants;
+    private final int initialStartingDimID;
+    private final float initialEfficiencyMultiplier;
+    private final float initialRecipeTimeMultiplier;
+
     public VariantGuiMain(GuiScreen parent) {
         this.parent = parent;
+        this.initialActiveVariants = new HashSet<>(VariantNames.getActiveVariantNames());
+        this.initialStartingDimID = GeneralConfig.startingDimID;
+        this.initialEfficiencyMultiplier = GeneralConfig.efficiencyMultiplier;
+        this.initialRecipeTimeMultiplier = GeneralConfig.recipeTimeMultiplier;
+    }
+
+    private boolean hasUnsavedChanges() {
+        if (!initialActiveVariants.equals(VariantNames.getActiveVariantNames())) return true;
+        if (initialStartingDimID != GeneralConfig.startingDimID) return true;
+        if (initialEfficiencyMultiplier != GeneralConfig.efficiencyMultiplier) return true;
+        if (initialRecipeTimeMultiplier != GeneralConfig.recipeTimeMultiplier) return true;
+        return false;
     }
 
     @SuppressWarnings("unchecked")
@@ -239,7 +256,11 @@ public class VariantGuiMain extends GuiScreen {
     @Override
     protected void actionPerformed(GuiButton button) {
         if (button.id == 0) {
-            this.mc.displayGuiScreen(parent);
+            if (hasUnsavedChanges()) {
+                this.mc.displayGuiScreen(new GuiRestartRequired(parent));
+            } else {
+                this.mc.displayGuiScreen(parent);
+            }
         } else if (button.id == 1) {
             VariantNames selectedVariant = filteredVariants.get(selectedIndex);
             boolean variantState = VariantNames.activeContains(selectedVariant.id);
@@ -283,6 +304,15 @@ public class VariantGuiMain extends GuiScreen {
                 applyNumberFieldValue(numberInputField);
                 return;
             }
+        }
+
+        if (keyCode == Keyboard.KEY_ESCAPE) {
+            if (hasUnsavedChanges()) {
+                this.mc.displayGuiScreen(new GuiRestartRequired(parent));
+            } else {
+                this.mc.displayGuiScreen(parent);
+            }
+            return;
         }
 
         super.keyTyped(typedChar, keyCode);
@@ -483,6 +513,63 @@ public class VariantGuiMain extends GuiScreen {
             }
 
             VariantGuiMain.this.drawCenteredString(VariantGuiMain.this.fontRendererObj, label, xOffset, yOffset, color);
+        }
+    }
+
+    private static class GuiRestartRequired extends GuiScreen {
+
+        private final GuiScreen target;
+        private static final int UNDERSTAND_BUTTON_ID = 0;
+
+        GuiRestartRequired(GuiScreen target) {
+            this.target = target;
+        }
+
+        @Override
+        public void initGui() {
+            this.buttonList.add(
+                new GuiButton(
+                    UNDERSTAND_BUTTON_ID,
+                    this.width / 2 - 100,
+                    this.height / 2 + 36,
+                    200,
+                    20,
+                    StatCollector.translateToLocal("fml.configgui.confirmRestartMessage")));
+        }
+
+        @Override
+        protected void actionPerformed(GuiButton button) {
+            if (button.id == UNDERSTAND_BUTTON_ID) {
+                this.mc.displayGuiScreen(target);
+            }
+        }
+
+        @Override
+        public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+            this.drawDefaultBackground();
+
+            this.drawCenteredString(
+                this.fontRendererObj,
+                StatCollector.translateToLocal("fml.configgui.gameRestartTitle"),
+                this.width / 2,
+                this.height / 2 - 40,
+                0xCCCCCC);
+
+            List<String> lines = this.fontRendererObj.listFormattedStringToWidth(
+                StatCollector.translateToLocal("fml.configgui.gameRestartRequired"),
+                this.width - 50);
+            int lineY = this.height / 2;
+            for (String line : lines) {
+                this.drawCenteredString(this.fontRendererObj, line, this.width / 2, lineY, 0xFFFFFF);
+                lineY += this.fontRendererObj.FONT_HEIGHT + 2;
+            }
+
+            super.drawScreen(mouseX, mouseY, partialTicks);
+        }
+
+        @Override
+        public boolean doesGuiPauseGame() {
+            return false;
         }
     }
 }
