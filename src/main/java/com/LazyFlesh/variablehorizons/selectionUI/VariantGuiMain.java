@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -57,6 +59,7 @@ public class VariantGuiMain extends GuiScreen {
     private VariantList optionList;
     private GuiTextField searchField;
     private GuiTextField numberInputField;
+    private Set<String> activeVariantsCache = new HashSet<>();
     private final List<VariantNames> filteredVariants = new ArrayList<>();
     private final Map<String, ResourceLocation> iconCache = new HashMap<>();
 
@@ -166,6 +169,21 @@ public class VariantGuiMain extends GuiScreen {
         numberInputField.yPosition = descBottomY + DESC_TO_FIELD_GAP;
     }
 
+    private void refreshActiveVariantsCache() {
+        activeVariantsCache = VariantNames.getActiveVariantNames();
+    }
+
+    private boolean isIncompatibleWithActive(VariantNames variant) {
+        for (String activeId : activeVariantsCache) {
+            if (activeId.equals(variant.id)) continue;
+            VariantNames active = VariantNames.getVariantFromID(activeId);
+            if (VariantNames.checkIncompatibility(variant, active)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void initGui() {
         this.buttonList.add(
@@ -202,6 +220,7 @@ public class VariantGuiMain extends GuiScreen {
 
         refreshFilteredVariants();
         syncNumberField(VariantNames.NORMAL);
+        refreshActiveVariantsCache();
     }
 
     private void updateBottomButtons() {
@@ -225,6 +244,7 @@ public class VariantGuiMain extends GuiScreen {
             VariantNames selectedVariant = filteredVariants.get(selectedIndex);
             boolean variantState = VariantNames.activeContains(selectedVariant.id);
             VariantLoader.toggleVariant(selectedVariant, !variantState);
+            refreshActiveVariantsCache();
         } else if (button.id == 2) {
             showingFullVariants = !showingFullVariants;
             selectedIndex = -1;
@@ -447,16 +467,22 @@ public class VariantGuiMain extends GuiScreen {
         @Override
         protected void drawSlot(int index, int x, int y, int slotHeight, Tessellator tessellator, int mouseX,
             int mouseY) {
-            String selectedVariantID = filteredVariants.get(index).id;
+            VariantNames selectedVariant = filteredVariants.get(index);
+            String selectedVariantID = selectedVariant.id;
             String label = VariantNames.getTranslatedVariantName(selectedVariantID);
             int xOffset = x + (getListWidth() - 4) / 2;
             int yOffset = y + (slotHeight - VariantGuiMain.this.fontRendererObj.FONT_HEIGHT) / 2;
-            VariantGuiMain.this.drawCenteredString(
-                VariantGuiMain.this.fontRendererObj,
-                label,
-                xOffset,
-                yOffset,
-                VariantNames.activeContains(selectedVariantID) ? 0x45f542 : 0xFFFFFF);
+
+            int color;
+            if (activeVariantsCache.contains(selectedVariantID)) {
+                color = 0x45f542;
+            } else if (isIncompatibleWithActive(selectedVariant)) {
+                color = 0xFF5555;
+            } else {
+                color = 0xFFFFFF;
+            }
+
+            VariantGuiMain.this.drawCenteredString(VariantGuiMain.this.fontRendererObj, label, xOffset, yOffset, color);
         }
     }
 }
