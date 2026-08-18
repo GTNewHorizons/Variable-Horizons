@@ -40,6 +40,10 @@ public class randomUtil {
         if (VOID_WORLD_ACTIVE) {
             return true;
         }
+        return voidIslandVoidCheck(dimID);
+    }
+
+    public static boolean voidIslandVoidCheck(int dimID) {
         if (VOID_ISLAND_ACTIVE) {
             if (CUSTOM_STARTING_DIM_ACTIVE) {
                 return GeneralConfig.startingDimID == dimID;

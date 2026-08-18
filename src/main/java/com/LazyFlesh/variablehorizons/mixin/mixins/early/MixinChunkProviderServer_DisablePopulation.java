@@ -1,5 +1,7 @@
 package com.LazyFlesh.variablehorizons.mixin.mixins.early;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderServer;
@@ -23,11 +25,27 @@ public class MixinChunkProviderServer_DisablePopulation {
             value = "INVOKE"),
         method = "populate(Lnet/minecraft/world/chunk/IChunkProvider;II)V")
     private void variablehorizons$ignoreChunkPopulation(IChunkProvider chunkProvider, IChunkProvider chunkProvider2,
-        int x, int z) {
+        int chunkX, int chunkZ) {
         if (randomUtil.generateVoidInThisDim(worldObj.provider.dimensionId)) {
+            if (randomUtil.voidIslandVoidCheck(worldObj.provider.dimensionId)) {
+                ChunkCoordinates spawn = this.worldObj.getSpawnPoint();
+                int spawnChunkX = spawn.posX >> 4;
+                int spawnChunkZ = spawn.posZ >> 4;
+                int spawnY = spawn.posY > 0 ? spawn.posY : 64;
+
+                if (chunkX == spawnChunkX && chunkZ == spawnChunkZ) {
+                    for (int x = spawn.posX - 2; x <= spawn.posX + 2; x++) {
+                        for (int z = spawn.posZ - 2; z <= spawn.posZ + 2; z++) {
+                            this.worldObj.setBlock(x, spawnY - 1, z, Blocks.dirt);
+                            this.worldObj.setBlock(x, spawnY, z, Blocks.grass);
+                        }
+                    }
+                }
+            }
+
             return;
         }
-        chunkProvider.populate(chunkProvider2, x, z);
+        chunkProvider.populate(chunkProvider2, chunkX, chunkZ);
     }
 
 }
