@@ -3,9 +3,12 @@ package com.LazyFlesh.variablehorizons.util;
 import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
@@ -51,5 +54,14 @@ public class randomUtil {
             return dimID == 0;
         }
         return false;
+    }
+
+    public static void generateVoidIsland(ChunkCoordinates spawnCoordinates, WorldServer world) {
+        for (int x = spawnCoordinates.posX - 2; x <= spawnCoordinates.posX + 2; x++) {
+            for (int z = spawnCoordinates.posZ - 2; z <= spawnCoordinates.posZ + 2; z++) {
+                world.setBlock(x, 64 - 1, z, Blocks.dirt);
+                world.setBlock(x, 64, z, Blocks.grass);
+            }
+        }
     }
 }
