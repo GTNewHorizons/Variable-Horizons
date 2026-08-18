@@ -41,7 +41,7 @@ public enum Mixins implements IMixins {
                 () -> (VariantNames.activeContains(VariantNames.VOID_WORLD.id)
                     || VariantNames.activeContains(VariantNames.VOID_ISLAND.id)) && !GeneralConfig.disableVariants)
             .setPhase(Phase.EARLY)),
-    DISABLE_MODDED_CHUNK_POPULATION(new MixinBuilder("Disable all other mod chunk population (e.g. Natura clouds")
+    DISABLE_MODDED_CHUNK_POPULATION(new MixinBuilder("Disable all other mod chunk population (e.g. Natura clouds)")
         .addCommonMixins("MixinChunkProviderServer_DisableModGeneration")
         .setApplyIf(
             () -> (VariantNames.activeContains(VariantNames.VOID_WORLD.id)
