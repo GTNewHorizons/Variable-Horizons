@@ -7,9 +7,16 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+import com.LazyFlesh.variablehorizons.variants.VariantNames;
+
 public class randomUtil {
 
     private static final java.util.Map<EntityPlayerMP, Long> WARN_TIMES = new java.util.WeakHashMap<>();
+    private static final boolean VOID_WORLD_ACTIVE = VariantNames.activeContains(VariantNames.VOID_WORLD.id);
+    private static final boolean VOID_ISLAND_ACTIVE = VariantNames.activeContains(VariantNames.VOID_ISLAND.id);
+    private static final boolean CUSTOM_STARTING_DIM_ACTIVE = VariantNames
+        .activeContains(VariantNames.CUSTOM_DIM_START.id);
 
     public static String getRandomPortalMessage(EntityPlayerMP player, World world) {
         int randomNumber = MathHelper.getRandomIntegerInRange(new Random(), 1, 32);
@@ -25,6 +32,19 @@ public class randomUtil {
         if (lastWarned == null || currentTime - lastWarned > 50) {
             WARN_TIMES.put(player, currentTime);
             return true;
+        }
+        return false;
+    }
+
+    public static boolean generateVoidInThisDim(int dimID) {
+        if (VOID_WORLD_ACTIVE) {
+            return true;
+        }
+        if (VOID_ISLAND_ACTIVE) {
+            if (CUSTOM_STARTING_DIM_ACTIVE) {
+                return GeneralConfig.startingDimID == dimID;
+            }
+            return dimID == 0;
         }
         return false;
     }
