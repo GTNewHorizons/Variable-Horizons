@@ -18,9 +18,8 @@ public class VoidIsland extends VariantLoader {
             { " LLL    ", " LWL    ", "LLWLL   ", "LLWLL   ", "  W     ", "  W     ", "  GGG   ", "  DDD   ", "  DDD   " },
             { "  L     ", "  LL    ", "LLLLL   ", "LLLLL   ", "        ", "        ", "  GGG   ", "  DDD   ", "  DDD   " },
             { "        ", "        ", "LLLL    ", "LLLL    ", "        ", "        ", "  GGG   ", "  DDD   ", "  DDD   " },
-            { "        ", "        ", "        ", "        ", "        ", "        ", "  GGG   ", "  DDD   ", "  DDD   " },
             { "        ", "        ", "        ", "        ", "        ", "        ", "  GGGGGG", "  DDDDDD", "  DDDDDD" },
-            { "        ", "        ", "        ", "        ", "        ", "      C ", "  GGGGGG", "  DDDDDD", "  DDDDDD" },
+            { "        ", "        ", "        ", "        ", "        ", "       C", "  GGGGGG", "  DDDDDD", "  DDDDDD" },
             { "        ", "        ", "        ", "        ", "        ", "        ", "  GGGGGG", "  DDDDDD", "  DDDDDD" }};
     }
     // spotless:on
