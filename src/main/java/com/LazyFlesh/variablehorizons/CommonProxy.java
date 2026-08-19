@@ -92,7 +92,7 @@ public class CommonProxy {
                 .itemOutputs(getModItem(DraconicEvolution.ID, "chaosShard", 1, 0))
                 .duration(100 * SECONDS)
                 .eut(TierEU.RECIPE_UMV)
-                .metadata(DEFC_CASING_TIER, 3)
+                .metadata(DEFC_CASING_TIER, 4)
                 .addTo(fusionCraftingRecipes);
         }
 
