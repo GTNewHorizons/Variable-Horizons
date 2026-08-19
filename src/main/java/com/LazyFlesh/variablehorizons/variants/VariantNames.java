@@ -42,7 +42,8 @@ public enum VariantNames {
     DIMLOCKED("DIMLOCKED", true, new VariantNames[] { CUSTOM_DIM_START, NO_ROCKET },
         new VariantNames[] { NO_RECIPE_ADDITIONS }),
 
-    SKYBLOCK("SKYBLOCK", true, new VariantNames[] { VOID_ISLAND }, new VariantNames[] { NO_RECIPE_ADDITIONS }),
+    SKYBLOCK("SKYBLOCK", true, new VariantNames[] { VOID_WORLD, VOID_ISLAND },
+        new VariantNames[] { NO_RECIPE_ADDITIONS }),
     // only OW is void, w/ sky island
     // if you want Skyblock with no recipe additions, do Garden of Grind + Void Island.
 

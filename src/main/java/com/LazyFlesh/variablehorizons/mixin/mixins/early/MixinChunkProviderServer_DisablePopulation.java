@@ -32,7 +32,7 @@ public class MixinChunkProviderServer_DisablePopulation {
                 int spawnChunkZ = spawn.posZ >> 4;
 
                 if (chunkX == spawnChunkX && chunkZ == spawnChunkZ) {
-                    randomUtil.generateVoidIsland(spawn, worldObj);
+                    randomUtil.generateVoidIsland(spawn, worldObj, worldObj.provider.dimensionId);
                 }
             }
 

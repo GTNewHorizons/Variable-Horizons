@@ -1,9 +1,13 @@
 package com.LazyFlesh.variablehorizons.util;
 
+import java.util.HashMap;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
@@ -12,6 +16,7 @@ import net.minecraft.world.WorldServer;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
+import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 
 public class randomUtil {
 
@@ -56,12 +61,45 @@ public class randomUtil {
         return false;
     }
 
-    public static void generateVoidIsland(ChunkCoordinates spawnCoordinates, WorldServer world) {
-        for (int x = spawnCoordinates.posX - 2; x <= spawnCoordinates.posX + 2; x++) {
-            for (int z = spawnCoordinates.posZ - 2; z <= spawnCoordinates.posZ + 2; z++) {
-                world.setBlock(x, 64 - 1, z, Blocks.dirt);
-                world.setBlock(x, 64, z, Blocks.grass);
+    public static void generateVoidIsland(ChunkCoordinates spawn, WorldServer world, int dimID) {
+        Object[][] island = VoidIsland.getIsland(dimID); // [0][] is offset from player/spawn, [1][] is mapping key,
+                                                         // after that is structure
+        int structX = spawn.posX + (Integer) island[0][0];
+        int structY = spawn.posY + (Integer) island[0][1];
+        int structZ = spawn.posZ + (Integer) island[0][2];
+
+        HashMap<Character, Block> blockMap = new HashMap<>();
+        char chestKey = '+';
+        for (int j = 0; j + 1 < island[1].length; j += 2) { // populate map
+            blockMap.put((Character) island[1][j], (Block) island[1][j + 1]);
+            if (island[1][j + 1] == Blocks.chest) chestKey = (Character) island[1][j];
+        }
+
+        // build structure
+        for (int x = 0; x + 2 < island.length; x++) {
+            Object[] sliceX = island[x + 2];
+            for (int y = 0; y < sliceX.length; y++) {
+                String row = (String) sliceX[y];
+                for (int z = 0; z < row.length(); z++) {
+                    if (blockMap.containsKey(row.charAt(z))) {
+                        // if the char maps to a block, place it
+                        world.setBlock(structX + x, structY - y, structZ + z, blockMap.get(row.charAt(z)));
+
+                        if (row.charAt(z) == chestKey) { // chest loot
+                            if (world.getTileEntity(structX + x, structY - y, structZ + z) == null) {
+                                world.setTileEntity(structX + x, structY - y, structZ + z, new TileEntityChest());
+                            }
+                            TileEntityChest chest = (TileEntityChest) world
+                                .getTileEntity(structX + x, structY - y, structZ + z);
+                            ItemStack[] loot = VoidIsland.getChestLoot(dimID);
+                            for (int j = 0; j < loot.length; j++) {
+                                chest.setInventorySlotContents(j, loot[j]);
+                            }
+                        }
+                    }
+                }
             }
         }
+
     }
 }

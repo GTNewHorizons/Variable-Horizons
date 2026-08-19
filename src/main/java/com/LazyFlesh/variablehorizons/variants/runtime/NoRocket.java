@@ -10,7 +10,5 @@ public class NoRocket extends VariantLoader implements IRuntimeVariant {
     @Override
     public void loadVariant(VariantNames... activeVariants) {
         VariantNames.NO_ROCKET.hasLoaded = true;
-        // its not working. GOnna have to figure something out later.
-        // GTModHandler.removeRecipeByOutput(new ItemStack(GCBlocks.nasaWorkbench));
     }
 }
