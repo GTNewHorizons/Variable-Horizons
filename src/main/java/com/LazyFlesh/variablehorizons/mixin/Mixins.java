@@ -68,7 +68,9 @@ public enum Mixins implements IMixins {
         .setPhase(Phase.LATE)),
     ADD_SEMINING_RECIPE(
         new MixinBuilder("Add custom space mining recipes").addCommonMixins("MixinWorldUtil_AddSEminingrecipe")
-            .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
+            .setApplyIf(
+                () -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && GeneralConfig.startingDimID != 100
+                    && !GeneralConfig.disableVariants)
             .addRequiredMod(TargetedMod.GREGTECH)
             .setPhase(Phase.LATE))
 
