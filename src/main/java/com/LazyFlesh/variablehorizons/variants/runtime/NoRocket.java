@@ -5,8 +5,6 @@ import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
 public class NoRocket extends VariantLoader implements IRuntimeVariant {
 
-    public NoRocket() {}
-
     @Override
     public void loadVariant(VariantNames... activeVariants) {
         VariantNames.NO_ROCKET.hasLoaded = true;

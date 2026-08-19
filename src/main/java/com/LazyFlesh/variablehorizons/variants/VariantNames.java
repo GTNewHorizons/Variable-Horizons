@@ -12,6 +12,9 @@ import net.minecraft.util.StatCollector;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.variants.invasive.GardenOfGrind;
+import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
+import com.LazyFlesh.variablehorizons.variants.runtime.InfinitePower;
+import com.LazyFlesh.variablehorizons.variants.runtime.NoQuestRewards;
 import com.LazyFlesh.variablehorizons.variants.runtime.NoRocket;
 
 public enum VariantNames {
@@ -22,12 +25,12 @@ public enum VariantNames {
     NO_RECIPE_ADDITIONS("NO_RECIPE_ADDITIONS"), // Specifies additions, since no rocket removes
                                                 // nasa bench recipe.
     VOID_WORLD("VOID_WORLD" /* no class, just mixin */), // no land anywhere
-    VOID_ISLAND("VOID_ISLAND"), // OW is a sky island. Think Botania Garden of Glass or normal Skyblock
-    NO_ROCKET("NO_ROCKET", new NoRocket()), // disable nasa bench
-    NO_QUEST_REWARDS("NO_QUEST_REWARDS"),
+    VOID_ISLAND("VOID_ISLAND", new VoidIsland()), // Starting Dim is a sky island.
+    NO_ROCKET("NO_ROCKET", new NoRocket()), // Disable nasa bench
+    NO_QUEST_REWARDS("NO_QUEST_REWARDS", new NoQuestRewards()),
     ALTERED_RECIPE_TIME("ALTERED_TIME"),
     ALTERED_EFFICIENCY("ALTERED_EFFICIENCY"),
-    INFINITE_POWER("INFINITE_POWER"),
+    INFINITE_POWER("INFINITE_POWER", new InfinitePower()),
     CUSTOM_DIM_START("CUSTOM_DIM_START"), // sets a different dim as the spawn dimension instead of OW
 
     // full variants
