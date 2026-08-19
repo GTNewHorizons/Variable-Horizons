@@ -7,13 +7,14 @@ import static gregtech.api.enums.Mods.RandomThings;
 import static gregtech.api.enums.Mods.ThaumicTinkerer;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.enums.Mods.UniversalSingularities;
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeNonCellRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GTRecipeConstants.DEFC_CASING_TIER;
+import static kubatech.loaders.DEFCRecipes.fusionCraftingRecipes;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.variants.VariantCommands;
@@ -91,7 +92,8 @@ public class CommonProxy {
                 .itemOutputs(getModItem(DraconicEvolution.ID, "chaosShard", 1, 0))
                 .duration(100 * SECONDS)
                 .eut(TierEU.RECIPE_UMV)
-                .addTo(assemblerRecipes);
+                .metadata(DEFC_CASING_TIER, 3)
+                .addTo(fusionCraftingRecipes);
         }
 
         // recipes when dimlock and GotG both activated
