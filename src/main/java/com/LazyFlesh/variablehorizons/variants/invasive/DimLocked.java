@@ -18,7 +18,6 @@ import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
-import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -30,17 +29,12 @@ import gregtech.loaders.misc.GTBees;
 
 public class DimLocked extends VariantLoader {
 
-    public DimLocked() {}
-
     @Override
     public void loadVariant(VariantNames... activeVariants) {
         // dimlocked doesn't need anything loaded (early mixins load on restart)
         VariantNames.DIMLOCKED.hasLoaded = true;
 
         registerDimlockedRecipes();
-
-        // disable entity cramming (makes mob farms behave better)
-        GTMod.proxy.mMaxEqualEntitiesAtOneSpot = -1;
     }
 
     private void registerDimlockedRecipes() {

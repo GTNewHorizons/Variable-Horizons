@@ -11,6 +11,7 @@ import java.util.Set;
 import net.minecraft.util.StatCollector;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+import com.LazyFlesh.variablehorizons.variants.invasive.DimLocked;
 import com.LazyFlesh.variablehorizons.variants.invasive.GardenOfGrind;
 import com.LazyFlesh.variablehorizons.variants.runtime.NoRocket;
 
@@ -39,7 +40,7 @@ public enum VariantNames {
     GARDEN_OF_GRIND("GARDEN_OF_GRIND", new GardenOfGrind(),
         new VariantNames[] { VOID_WORLD, NO_RECIPE_ADDITIONS, NO_ROCKET }, new VariantNames[] {}),
 
-    DIMLOCKED("DIMLOCKED", true, new VariantNames[] { CUSTOM_DIM_START, NO_ROCKET },
+    DIMLOCKED("DIMLOCKED", new DimLocked(), new VariantNames[] { CUSTOM_DIM_START, NO_ROCKET },
         new VariantNames[] { NO_RECIPE_ADDITIONS }),
 
     SKYBLOCK("SKYBLOCK", true, new VariantNames[] { VOID_ISLAND }, new VariantNames[] { NO_RECIPE_ADDITIONS }),
