@@ -65,7 +65,12 @@ public enum Mixins implements IMixins {
         .addCommonMixins("MixinWorldUtil_DisableCelestialSelection")
         .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
         .addRequiredMod(TargetedMod.GALACTICRAFT_CORE)
-        .setPhase(Phase.LATE))
+        .setPhase(Phase.LATE)),
+    ADD_SEMINING_RECIPE(
+        new MixinBuilder("Add custom space mining recipes").addCommonMixins("MixinWorldUtil_AddSEminingrecipe")
+            .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
+            .addRequiredMod(TargetedMod.GREGTECH)
+            .setPhase(Phase.LATE))
 
     ;
 
@@ -84,7 +89,8 @@ public enum Mixins implements IMixins {
     public enum TargetedMod implements ITargetMod {
 
         ENDLESSIDS("com.falsepattern.endlessids.asm.EndlessIDsCore", "endlessids"),
-        GALACTICRAFT_CORE("GalacticraftCore");
+        GALACTICRAFT_CORE("GalacticraftCore"),
+        GREGTECH("gregtech");
 
         private final TargetModBuilder builder;
 
