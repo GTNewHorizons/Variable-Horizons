@@ -51,11 +51,11 @@ public class CommonProxy {
 
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
     public void postInit(FMLPostInitializationEvent event) {
-        if (VariantNames.activeContains(VariantNames.DIMLOCKED.id)
-            && VariantNames.activeContains(VariantNames.GARDEN_OF_GRIND.id)
+
+        // recipes for nether air if dim locked to dimensions not nether
+        if (VariantNames.activeContains(VariantNames.DIMLOCKED.id) && GeneralConfig.startingDimID != -1
             && !GeneralConfig.disableVariants) {
 
-            // recipes for GotG nether air
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 64L),
@@ -77,8 +77,12 @@ public class CommonProxy {
                 .eut(TierEU.RECIPE_ZPM)
                 .metadata(COIL_HEAT, 10800)
                 .addTo(blastFurnaceRecipes);
+        }
 
-            // recipe for chaos shard
+        // recipes for chaos shard if dim locked to dimensions not the end
+        if (VariantNames.activeContains(VariantNames.DIMLOCKED.id) && GeneralConfig.startingDimID != 1
+            && !GeneralConfig.disableVariants) {
+
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemList.ChaosLocator.get(1),
@@ -88,6 +92,12 @@ public class CommonProxy {
                 .duration(100 * SECONDS)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(assemblerRecipes);
+        }
+
+        // recipes when dimlock and GotG both activated
+        if (VariantNames.activeContains(VariantNames.DIMLOCKED.id)
+            && VariantNames.activeContains(VariantNames.GARDEN_OF_GRIND.id)
+            && !GeneralConfig.disableVariants) {
 
             // Barnarda C sapling
             GTValues.RA.stdBuilder()
