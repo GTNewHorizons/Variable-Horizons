@@ -9,8 +9,7 @@ import gregtech.common.misc.GlobalVariableStorage;
 
 public class InfinitePower extends VariantLoader implements IRuntimeVariant {
 
-    public final static BigInteger infinitePowaaaaaaahhhhh = new BigInteger(
-        "999_999_999_999_999_999_999_999_999_999_999_999_999_999_999_999_999_999_999_999_999");
+    public final static BigInteger infinitePowaaaaaaahhhhh = BigInteger.TEN.pow(50);
 
     @Override
     public void loadVariant(VariantNames... activeVariants) {
