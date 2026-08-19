@@ -96,10 +96,8 @@ public class CommonProxy {
                 .addTo(fusionCraftingRecipes);
         }
 
-        // recipes when dimlock and GotG both activated
-        if (VariantNames.activeContains(VariantNames.DIMLOCKED.id)
-            && VariantNames.activeContains(VariantNames.GARDEN_OF_GRIND.id)
-            && !GeneralConfig.disableVariants) {
+        // recipes whenever dimlock activated
+        if (VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants) {
 
             // Barnarda C sapling
             GTValues.RA.stdBuilder()
