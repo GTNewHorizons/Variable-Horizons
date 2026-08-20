@@ -62,21 +62,81 @@ public class VoidIsland extends VariantLoader {
             {"             ","      ECECCD ","      DEEDED ","      DEEDDE ","             ","             ","             ","             ","             ","             ","             ","             ","             ","     GGGG    ","    GGGG     ","     GGG     ","             ","             ","             ","             "},
             {"             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","     GGG     ","             ","             ","             ","             ","             "}};
     }
+
+    private static Object[][] createIslandDD() {
+        return new Object[][] {{ -5, 19, -1 },
+            { 'A', Blocks.dirt, 0,
+                'B', GameRegistry.findBlock("etfuturum", "cobbled_deepslate"), 0,
+                'C', GameRegistry.findBlock("etfuturum", "deepslate"), 0,
+                'D', GameRegistry.findBlock("BiomesOPlenty", "leaves1"), 3,
+                'E', GameRegistry.findBlock("BiomesOPlenty", "logs1"), 2,
+                'F', GameRegistry.findBlock("BiomesOPlenty", "mushrooms"), 3,
+                'G', Blocks.stone, 0, 'H', Blocks.chest, 2 },
+            { "           ", "           ", "           ", "           ", "           ", "           ", "           ",
+                "           ", "           ", "           ", "           ", "           ", "           ", "           ",
+                "           ", "           ", "           ", "           ", "           ", "     G     ", "           ",
+                "           ", "           ", "           ", "           ", "           ", "           " },
+            { "           ", "           ", "           ", "           ", "           ", "           ", "           ",
+                "           ", "           ", "           ", "           ", "           ", "           ", "           ",
+                "           ", "           ", "           ", "           ", "           ", "    GGG    ", "     C     ",
+                "           ", "           ", "           ", "           ", "           ", "           " },
+            { "           ", "           ", "           ", "           ", "           ", "           ", "           ",
+                "           ", "           ", "           ", "           ", "           ", "           ", "           ",
+                "           ", "           ", "           ", "           ", "     F     ", "   GGAGG   ", "    CCC    ",
+                "     C     ", "           ", "           ", "           ", "           ", "           " },
+            { "           ", "           ", "           ", "    DDD    ", "           ", "    DDD    ", "           ",
+                "    DDD    ", "           ", "    DDD    ", "           ", "    DDD    ", "           ", "    DDD    ",
+                "           ", "    DDD    ", "           ", "    DDD    ", "           ", "  GGGGGGG  ", "   CCCCC   ",
+                "    BBB    ", "    BC     ", "     C     ", "     C     ", "           ", "           " },
+            { "     D     ", "           ", "     D     ", "   DDDDD   ", "     D     ", "   DDDDD   ", "     D     ",
+                "   DDDDD   ", "     D     ", "   DDDDD   ", "     D     ", "   DDDDD   ", "     D     ", "   DDDDD   ",
+                "     D     ", "   DDDDD   ", "     D     ", "   DDDDD   ", "           ", " GGGGGGGGG ", "  CCCCCCC  ",
+                "    BCBC   ", "     CC    ", "           ", "           ", "           ", "           " },
+            { "    DDD    ", "     D     ", "    DED    ", "   DDEDD   ", "    DED    ", "   DDEDD   ", "    DED    ",
+                "   DDEDD   ", "    DED    ", "   DDEDD   ", "    DED    ", "   DDEDD   ", "    DED    ", "   DDEDD   ",
+                "    DED    ", "   DDEDD   ", "    DED    ", "   DDEDD   ", "H F  E  F  ", "GGAGGAGGAGG", " CCBBCCCCC ",
+                "  CBBBCBB  ", "   BB CCC  ", "       CC  ", "        C  ", "           ", "           " },
+            { "     D     ", "           ", "     D     ", "   DDDDD   ", "     D     ", "   DDDDD   ", "     D     ",
+                "   DDDDD   ", "     D     ", "   DDDDD   ", "     D     ", "   DDDDD   ", "     D     ", "   DDDDD   ",
+                "     D     ", "   DDDDD   ", "     D     ", "   DDDDD   ", "           ", " GGGGGGGGG ", "  CCCCCCC  ",
+                "   CBBCBC  ", "     C C   ", "     B     ", "     B     ", "     C     ", "     B     " },
+            { "           ", "           ", "           ", "    DDD    ", "           ", "    DDD    ", "           ",
+                "    DDD    ", "           ", "    DDD    ", "           ", "    DDD    ", "           ", "    DDD    ",
+                "           ", "    DDD    ", "           ", "    DDD    ", "           ", "  GGGGGGG  ", "   CCBCC   ",
+                "    BB     ", "    CB     ", "    C      ", "           ", "           ", "           " },
+            { "           ", "           ", "           ", "           ", "           ", "           ", "           ",
+                "           ", "           ", "           ", "           ", "           ", "           ", "           ",
+                "           ", "           ", "           ", "           ", "     F     ", "   GGAGG   ", "    CCC    ",
+                "     B     ", "     C     ", "           ", "           ", "           ", "           " },
+            { "           ", "           ", "           ", "           ", "           ", "           ", "           ",
+                "           ", "           ", "           ", "           ", "           ", "           ", "           ",
+                "           ", "           ", "           ", "           ", "           ", "    GGG    ", "     C     ",
+                "           ", "           ", "           ", "           ", "           ", "           " },
+            { "           ", "           ", "           ", "           ", "           ", "           ", "           ",
+                "           ", "           ", "           ", "           ", "           ", "           ", "           ",
+                "           ", "           ", "           ", "           ", "           ", "     G     ", "           ",
+                "           ", "           ", "           ", "           ", "           ", "           " } };
+    }
     // spotless:on
 
     private static ItemStack[] createChestOW() {
-        return new ItemStack[] { new ItemStack(Items.lava_bucket, 1), new ItemStack(Blocks.ice, 2),
-            new ItemStack(Items.reeds, 1), new ItemStack(Items.melon_seeds, 1), new ItemStack(Items.pumpkin_seeds, 1),
-            new ItemStack(Blocks.cactus, 1), new ItemStack(Items.flint, 5) };
+        return new ItemStack[] { new ItemStack(Items.lava_bucket), new ItemStack(Blocks.ice, 2),
+            new ItemStack(Items.reeds), new ItemStack(Items.melon_seeds), new ItemStack(Items.pumpkin_seeds),
+            new ItemStack(Blocks.cactus), new ItemStack(Items.flint, 5) };
     }
 
     private static ItemStack[] createChestNether() {
-        ItemStack bopBucket = GTModHandler.getModItem(BiomesOPlenty.ID, "bopBucket", 1);
+        ItemStack bopBucket = GTModHandler.getModItem(BiomesOPlenty.ID, "bopBucket");
         ((ItemFluidContainer) bopBucket.getItem())
             .fill(bopBucket, new FluidStack(FluidRegistry.getFluid("hell_blood"), 1000), true);
-        return new ItemStack[] { new ItemStack(Items.lava_bucket, 1), bopBucket, bopBucket,
-            new ItemStack(Items.reeds, 1), new ItemStack(Blocks.brown_mushroom, 1),
-            new ItemStack(Blocks.red_mushroom, 1), new ItemStack(Blocks.cactus, 1), new ItemStack(Items.flint, 5) };
+        return new ItemStack[] { new ItemStack(Items.lava_bucket), bopBucket, bopBucket, new ItemStack(Items.reeds),
+            new ItemStack(Blocks.brown_mushroom), new ItemStack(Blocks.red_mushroom), new ItemStack(Blocks.cactus),
+            new ItemStack(Items.flint, 5) };
+    }
+
+    private static ItemStack[] createChestDD() {
+        return new ItemStack[] { new ItemStack(Items.lava_bucket), new ItemStack(Blocks.ice, 2),
+            new ItemStack(Blocks.red_mushroom), new ItemStack(Blocks.brown_mushroom), new ItemStack(Items.flint, 5) };
     }
 
     @Override
@@ -89,6 +149,9 @@ public class VoidIsland extends VariantLoader {
             case (-1) -> {
                 return createIslandNether();
             }
+            case 100 -> {
+                return createIslandDD();
+            }
             // case (non-breathable space dims) -> { return VoidIsland.spaceStation}
             default -> {
                 return createIslandOW();
@@ -100,6 +163,9 @@ public class VoidIsland extends VariantLoader {
         switch (dimID) {
             case (-1) -> {
                 return createChestNether();
+            }
+            case 100 -> {
+                return createChestDD();
             }
             // case (non-breathable space dims) -> { return VoidIsland.spaceStation}
             default -> {
