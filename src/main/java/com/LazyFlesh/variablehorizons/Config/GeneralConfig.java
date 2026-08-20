@@ -1,7 +1,6 @@
 package com.LazyFlesh.variablehorizons.Config;
 
 import com.LazyFlesh.variablehorizons.VariableHorizons;
-import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import com.gtnewhorizon.gtnhlib.config.Config;
 
 @Config.RequiresMcRestart
@@ -32,17 +31,4 @@ public class GeneralConfig {
     @Config.DefaultFloat(1f)
     public static float efficiencyMultiplier;
 
-    @Config.Comment("Dimension restriction mode: 1 = block all cross-dimension teleports, 2 = block only Galaxy dimensions")
-    @Config.DefaultInt(0)
-    public static int dimensionRestrictionMode;
-
-    public static void dimensionRestriction() {
-        if (VariantNames.activeContains(VariantNames.DIMLOCKED.id)) {
-            dimensionRestrictionMode = 1;
-        } else if (VariantNames.activeContains(VariantNames.NO_ROCKET.id)) {
-            dimensionRestrictionMode = 2;
-        } else {
-            dimensionRestrictionMode = 0;
-        }
-    }
 }
