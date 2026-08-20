@@ -13,6 +13,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.VariableHorizons;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
@@ -87,6 +89,8 @@ public class randomUtil {
             Object[] sliceX = island[x + 2];
             for (int y = 0; y < sliceX.length; y++) {
                 String row = (String) sliceX[y];
+                if (StringUtils.isBlank(row)) continue; // skip empty strings
+
                 for (int z = 0; z < row.length(); z++) {
                     char c = row.charAt(z);
                     if (blockMap.containsKey(c)) {
