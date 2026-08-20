@@ -90,6 +90,7 @@ public class randomUtil {
             String s = (String) island[2][i]; // should only need layer 1, all current examples have an empty in it.
             if (StringUtils.isBlank(s)) { // could use this, but it's a for loop, so it's not like its better.
                 empty = s;
+                break;
             }
         }
 
