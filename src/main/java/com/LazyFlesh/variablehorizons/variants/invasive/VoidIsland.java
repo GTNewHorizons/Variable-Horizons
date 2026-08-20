@@ -3,7 +3,10 @@ package com.LazyFlesh.variablehorizons.variants.invasive;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.world.World;
 
+import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
@@ -56,6 +59,29 @@ public class VoidIsland extends VariantLoader {
             default -> {
                 return createChestOW();
             }
+        }
+    }
+
+    public static void chestLoader() {
+        if (randomUtil.chestLoad != null) {
+            generateChestLoot(
+                (World) randomUtil.chestLoad[0],
+                (Integer) randomUtil.chestLoad[1],
+                (Integer) randomUtil.chestLoad[2],
+                (Integer) randomUtil.chestLoad[3],
+                (Integer) randomUtil.chestLoad[4]);
+            randomUtil.chestLoad = null;
+        }
+    }
+
+    public static void generateChestLoot(World world, int x, int y, int z, int dimID) {
+        if (world.getTileEntity(x, y, z) == null) {
+            world.setTileEntity(x, y, z, new TileEntityChest());
+        }
+        TileEntityChest chest = (TileEntityChest) world.getTileEntity(x, y, z);
+        ItemStack[] loot = VoidIsland.getChestLoot(dimID);
+        for (int j = 0; j < loot.length; j++) {
+            chest.setInventorySlotContents(j, loot[j]);
         }
     }
 }

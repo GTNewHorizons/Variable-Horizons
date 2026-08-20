@@ -6,8 +6,6 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
@@ -25,6 +23,8 @@ public class randomUtil {
     private static final boolean VOID_ISLAND_ACTIVE = VariantNames.activeContains(VariantNames.VOID_ISLAND.id);
     private static final boolean CUSTOM_STARTING_DIM_ACTIVE = VariantNames
         .activeContains(VariantNames.CUSTOM_DIM_START.id);
+
+    public static Object[] chestLoad = null;
 
     public static String getRandomPortalMessage(EntityPlayerMP player, World world) {
         int randomNumber = MathHelper.getRandomIntegerInRange(new Random(), 1, 32);
@@ -85,16 +85,9 @@ public class randomUtil {
                         // if the char maps to a block, place it
                         world.setBlock(structX + x, structY - y, structZ + z, blockMap.get(row.charAt(z)));
 
-                        if (row.charAt(z) == chestKey) { // chest loot
-                            if (world.getTileEntity(structX + x, structY - y, structZ + z) == null) {
-                                world.setTileEntity(structX + x, structY - y, structZ + z, new TileEntityChest());
-                            }
-                            TileEntityChest chest = (TileEntityChest) world
-                                .getTileEntity(structX + x, structY - y, structZ + z);
-                            ItemStack[] loot = VoidIsland.getChestLoot(dimID);
-                            for (int j = 0; j < loot.length; j++) {
-                                chest.setInventorySlotContents(j, loot[j]);
-                            }
+                        if (row.charAt(z) == chestKey) {
+                            // cache chest location for later due to mixin conflict causing crash
+                            randomUtil.chestLoad = new Object[] { world, structX + x, structY - y, structZ + z, dimID };
                         }
                     }
                 }

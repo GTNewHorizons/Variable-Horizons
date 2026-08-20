@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.Config.GogConfig;
+import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
@@ -70,6 +71,7 @@ public class VariableHorizons {
     @Mod.EventHandler
     // register server commands in this event handler (Remove if not needed)
     public void serverStarting(FMLServerStartingEvent event) {
+        VoidIsland.chestLoader();
         proxy.serverStarting(event);
     }
 }
