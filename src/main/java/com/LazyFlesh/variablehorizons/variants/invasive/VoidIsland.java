@@ -6,11 +6,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.world.World;
 
+import com.LazyFlesh.variablehorizons.VariableHorizons;
 import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import tconstruct.world.TinkerWorld;
 
 public class VoidIsland extends VariantLoader {
 
@@ -86,20 +88,21 @@ public class VoidIsland extends VariantLoader {
     public static ItemStack[] getChestLoot(int dimID) {
         switch (dimID) {
             // case (non-breathable space dims) -> { return VoidIsland.spaceStation}
-            /*
-             * case 1 -> {
-             * ItemStack[] loot = createChestOW();
-             * loot[1] = new ItemStack(Items.); // replace ice with a bucket or cell of distilled water or blood
-             * return loot;}
-             */
+
+            case -1 -> {
+                ItemStack[] loot = createChestOW();
+                loot[1] = new ItemStack(TinkerWorld.bloodChannel);
+                // replace ice with a blood channel
+                return loot;
+            }
             default -> {
                 return createChestOW();
             }
         }
     }
 
-    public static void chestLoader() {
-        if (randomUtil.chestLoad != null) {
+    public void chestLoader() {
+        if (randomUtil.chestLoad != null && randomUtil.chestLoad.length > 4) {
             generateChestLoot(
                 (World) randomUtil.chestLoad[0],
                 (Integer) randomUtil.chestLoad[1],
@@ -111,10 +114,14 @@ public class VoidIsland extends VariantLoader {
     }
 
     public static void generateChestLoot(World world, int x, int y, int z, int dimID) {
-        if (world.getTileEntity(x, y, z) == null) {
-            world.setTileEntity(x, y, z, new TileEntityChest());
-        }
+        if (world.isRemote) return;
+        VariableHorizons.LOG.info("Generating chest loot for sky island {}, {}, {} in dim: {}", x, y, z, dimID);
+        VariableHorizons.LOG
+            .info("Ignore warning for off-thread accessing. I'm aware of it, and it's not breaking anything.");
+
         TileEntityChest chest = (TileEntityChest) world.getTileEntity(x, y, z);
+        if (chest == null) chest = new TileEntityChest();
+
         ItemStack[] loot = VoidIsland.getChestLoot(dimID);
         for (int j = 0; j < loot.length; j++) {
             chest.setInventorySlotContents(j, loot[j]);

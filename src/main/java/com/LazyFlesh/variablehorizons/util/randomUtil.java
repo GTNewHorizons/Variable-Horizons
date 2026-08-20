@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+import com.LazyFlesh.variablehorizons.VariableHorizons;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 
@@ -63,6 +64,8 @@ public class randomUtil {
     }
 
     public static void generateVoidIsland(ChunkCoordinates spawn, WorldServer world, int dimID) {
+        VariableHorizons.LOG.info("Generating Sky Island for dimension: {}", dimID);
+
         Object[][] island = VoidIsland.getIsland(dimID); // [0][] is offset from player/spawn, [1][] is mapping key,
                                                          // after that is structure
         int structX = spawn.posX + (Integer) island[0][0];
