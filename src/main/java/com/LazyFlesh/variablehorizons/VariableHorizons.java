@@ -1,16 +1,10 @@
 package com.LazyFlesh.variablehorizons;
 
-import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
-
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.Config.GogConfig;
-import com.LazyFlesh.variablehorizons.variants.VariantNames;
-import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
@@ -21,7 +15,6 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 @Mod(
     modid = VariableHorizons.MODID,
@@ -78,13 +71,5 @@ public class VariableHorizons {
     // register server commands in this event handler (Remove if not needed)
     public void serverStarting(FMLServerStartingEvent event) {
         proxy.serverStarting(event);
-
-        EVENT_BUS.register(this);
-    }
-
-    @SubscribeEvent
-    public void onPlayerInteractEvent(PlayerInteractEvent event) {
-        if (VariantNames.VOID_ISLAND.loaderClass instanceof VoidIsland vI) vI.chestLoader();
-        EVENT_BUS.unregister(this);
     }
 }
