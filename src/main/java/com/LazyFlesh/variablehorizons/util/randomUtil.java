@@ -1,5 +1,6 @@
 package com.LazyFlesh.variablehorizons.util;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -68,11 +69,14 @@ public class randomUtil {
         int structY = spawn.posY + (Integer) island[0][1];
         int structZ = spawn.posZ + (Integer) island[0][2];
 
-        HashMap<Character, Block> blockMap = new HashMap<>();
+        HashMap<Character, SimpleEntry<Block, Integer>> blockMap = new HashMap<>();
         char chestKey = '+';
-        for (int j = 0; j + 1 < island[1].length; j += 2) { // populate map
-            blockMap.put((Character) island[1][j], (Block) island[1][j + 1]);
-            if (island[1][j + 1] == Blocks.chest) chestKey = (Character) island[1][j];
+        for (int j = 0; j + 2 < island[1].length; j += 3) { // populate map
+            char key = (Character) island[1][j];
+            Block block = (Block) island[1][j + 1];
+            int meta = (Integer) island[1][j + 2];
+            blockMap.put(key, new SimpleEntry<>(block, meta));
+            if (block == Blocks.chest) chestKey = key;
         }
 
         // build structure
@@ -81,11 +85,13 @@ public class randomUtil {
             for (int y = 0; y < sliceX.length; y++) {
                 String row = (String) sliceX[y];
                 for (int z = 0; z < row.length(); z++) {
-                    if (blockMap.containsKey(row.charAt(z))) {
+                    char c = row.charAt(z);
+                    if (blockMap.containsKey(c)) {
+                        SimpleEntry<Block, Integer> entry = blockMap.get(c);
                         // if the char maps to a block, place it
-                        world.setBlock(structX + x, structY - y, structZ + z, blockMap.get(row.charAt(z)));
+                        world.setBlock(structX + x, structY - y, structZ + z, entry.getKey(), entry.getValue(), 3);
 
-                        if (row.charAt(z) == chestKey) {
+                        if (c == chestKey) {
                             // cache chest location for later due to mixin conflict causing crash
                             randomUtil.chestLoad = new Object[] { world, structX + x, structY - y, structZ + z, dimID };
                         }
