@@ -1,8 +1,14 @@
 package com.LazyFlesh.variablehorizons;
 
-import com.LazyFlesh.variablehorizons.variants.VariantCommands;
+import java.util.Arrays;
+
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.util.ChatComponentText;
+
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 
+import WayofTime.alchemicalWizardry.AlchemicalWizardry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -30,6 +36,23 @@ public class CommonProxy {
 
     // register server commands in this event handler (Remove if not needed)
     public void serverStarting(FMLServerStartingEvent event) {
-        event.registerServerCommand(new VariantCommands());
+        event.registerServerCommand(new CommandBase() {
+
+            @Override
+            public String getCommandName() {
+                return "dimlocktest";
+            }
+
+            @Override
+            public String getCommandUsage(ICommandSender sender) {
+                return "/dimlocktest";
+            }
+
+            @Override
+            public void processCommand(ICommandSender sender, String[] args) {
+                int[] blacklist = AlchemicalWizardry.demonRitualDimensionBlacklist;
+                sender.addChatMessage(new ChatComponentText("Blacklist: " + Arrays.toString(blacklist)));
+            }
+        });
     }
 }

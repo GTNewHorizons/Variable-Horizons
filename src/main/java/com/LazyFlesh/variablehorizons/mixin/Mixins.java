@@ -67,7 +67,7 @@ public enum Mixins implements IMixins {
         .addRequiredMod(TargetedMod.GALACTICRAFT_CORE)
         .setPhase(Phase.LATE)),
     ADD_SEMINING_RECIPE(
-        new MixinBuilder("Add custom space mining recipes").addCommonMixins("MixinWorldUtil_AddSEminingrecipe")
+        new MixinBuilder("Add custom space mining recipes").addCommonMixins("MixinSpaceMiningRecipes_AddSEminingrecipe")
             .setApplyIf(
                 () -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && GeneralConfig.startingDimID != 100
                     && !GeneralConfig.disableVariants)

@@ -18,6 +18,7 @@ import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
+import WayofTime.alchemicalWizardry.AlchemicalWizardry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -33,6 +34,15 @@ public class DimLocked extends VariantLoader {
     public void loadVariant(VariantNames... activeVariants) {
         // dimlocked doesn't need anything loaded (early mixins load on restart)
         VariantNames.DIMLOCKED.hasLoaded = true;
+
+        // remove demon invasion blacklist if dimlocked to overworld
+        int[] newBlacklist;
+        if (GeneralConfig.startingDimID == 0) {
+            newBlacklist = new int[] {};
+        } else {
+            newBlacklist = new int[] { 0 };
+        }
+        AlchemicalWizardry.demonRitualDimensionBlacklist = newBlacklist;
 
         registerDimlockedRecipes();
     }

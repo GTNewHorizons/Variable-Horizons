@@ -18,7 +18,7 @@ import gregtech.api.enums.TierEU;
 import gtnhintergalactic.item.ItemMiningDrones;
 
 @Mixin(gtnhintergalactic.recipe.SpaceMiningRecipes.class)
-public class MixinWorldUtil_AddSEminingrecipe {
+public class MixinSpaceMiningRecipes_AddSEminingrecipe {
 
     @Invoker(value = "addRecipesToDrones", remap = false)
     public static void invokeAddRecipesToDronesWithMaterials(String asteroidName, ItemStack[] aItemInputs,
