@@ -8,7 +8,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.util.randomUtil;
 
 @Mixin(ServerConfigurationManager.class)
@@ -21,13 +20,7 @@ public class MixinServerConfigurationManager_LockDimension {
         remap = false)
     private void variablehorizons$lockDimension(EntityPlayerMP player, int dimension,
         net.minecraft.world.Teleporter teleporter, CallbackInfo ci) {
-        int lockedDimension = GeneralConfig.startingDimID;
-        if (dimension != lockedDimension) {
-            if (randomUtil.warningCooldownFinished(player, player.worldObj)) {
-                player.addChatMessage(
-                    new net.minecraft.util.ChatComponentText(
-                        randomUtil.getRandomPortalMessage(player, player.worldObj)));
-            }
+        if (randomUtil.shouldCancelDimensionChange(player, dimension)) {
             ci.cancel();
         }
     }

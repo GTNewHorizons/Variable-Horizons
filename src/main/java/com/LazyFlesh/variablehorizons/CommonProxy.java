@@ -1,7 +1,9 @@
 package com.LazyFlesh.variablehorizons;
 
+import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.variants.VariantCommands;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
@@ -26,6 +28,8 @@ public class CommonProxy {
     // damn nhcoremod...
     public void completeLoad(FMLLoadCompleteEvent event) {
         VariantLoader.loadActiveVariants();
+        GeneralConfig.dimensionRestriction();
+        ConfigurationManager.save(GeneralConfig.class);
     }
 
     // register server commands in this event handler (Remove if not needed)
