@@ -75,8 +75,8 @@ public class VoidIsland extends VariantLoader {
         ((ItemFluidContainer) bopBucket.getItem())
             .fill(bopBucket, new FluidStack(FluidRegistry.getFluid("hell_blood"), 1000), true);
         return new ItemStack[] { new ItemStack(Items.lava_bucket, 1), bopBucket, bopBucket,
-            new ItemStack(Items.reeds, 1), new ItemStack(Items.melon_seeds, 1), new ItemStack(Items.pumpkin_seeds, 1),
-            new ItemStack(Blocks.cactus, 1), new ItemStack(Items.flint, 5) };
+            new ItemStack(Items.reeds, 1), new ItemStack(Blocks.brown_mushroom, 1),
+            new ItemStack(Blocks.red_mushroom, 1), new ItemStack(Blocks.cactus, 1), new ItemStack(Items.flint, 5) };
     }
 
     @Override
@@ -102,12 +102,6 @@ public class VoidIsland extends VariantLoader {
                 return createChestNether();
             }
             // case (non-breathable space dims) -> { return VoidIsland.spaceStation}
-            /*
-             * case 1 -> {
-             * ItemStack[] loot = createChestOW();
-             * loot[1] = new ItemStack(Items.); // replace ice with a bucket or cell of distilled water or blood
-             * return loot;}
-             */
             default -> {
                 return createChestOW();
             }
