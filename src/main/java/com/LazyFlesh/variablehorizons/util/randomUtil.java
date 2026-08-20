@@ -74,6 +74,8 @@ public class randomUtil {
         int structY = spawn.posY + (Integer) island[0][1];
         int structZ = spawn.posZ + (Integer) island[0][2];
 
+        String empty;
+
         HashMap<Character, SimpleEntry<Block, Integer>> blockMap = new HashMap<>();
         char chestKey = '+';
         for (int j = 0; j + 2 < island[1].length; j += 3) { // populate map
@@ -84,12 +86,21 @@ public class randomUtil {
             if (block == Blocks.chest) chestKey = key;
         }
 
+        for (int i = 0; i < island[2].length; i++) { // find an example empty string to use for emptyness check
+            String s = (String) island[2][i]; // should only need layer 1, all current examples have an empty in it.
+            if (StringUtils.isBlank(s)) { // could use this, but it's a for loop, so it's not like its better.
+                empty = s;
+            }
+        }
+
         // build structure
         for (int x = 0; x + 2 < island.length; x++) {
             Object[] sliceX = island[x + 2];
             for (int y = 0; y < sliceX.length; y++) {
                 String row = (String) sliceX[y];
-                if (StringUtils.isBlank(row)) continue; // skip empty strings
+                if (row.equals(empty)) { // skip empty strings (Thank you, trees, for the amount of air in the bb)
+                    continue;
+                }
 
                 for (int z = 0; z < row.length(); z++) {
                     char c = row.charAt(z);
