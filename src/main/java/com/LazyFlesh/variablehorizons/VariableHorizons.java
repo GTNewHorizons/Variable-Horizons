@@ -21,7 +21,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
     version = Tags.VERSION,
     name = "Variable Horizons",
     acceptedMinecraftVersions = "[1.7.10]",
-    dependencies = "afterAll")
+    dependencies = "after:dreamcraft")
 public class VariableHorizons {
 
     public static final String MODID = "variablehorizons";

@@ -1,6 +1,7 @@
 package com.LazyFlesh.variablehorizons.variants.invasive;
 
 import static gregtech.api.enums.Mods.BiomesOPlenty;
+import static gregtech.api.enums.Mods.Minecraft;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -130,13 +131,15 @@ public class VoidIsland extends VariantLoader {
         ((ItemFluidContainer) bopBucket.getItem())
             .fill(bopBucket, new FluidStack(FluidRegistry.getFluid("hell_blood"), 1000), true);
         return new ItemStack[] { new ItemStack(Items.lava_bucket), bopBucket, bopBucket, new ItemStack(Items.reeds),
-            new ItemStack(Blocks.brown_mushroom), new ItemStack(Blocks.red_mushroom), new ItemStack(Blocks.cactus),
+            GTModHandler.getModItem(Minecraft.ID, "red_mushroom"),
+            GTModHandler.getModItem(Minecraft.ID, "brown_mushroom"), new ItemStack(Blocks.cactus),
             new ItemStack(Items.flint, 5) };
     }
 
     private static ItemStack[] createChestDD() {
         return new ItemStack[] { new ItemStack(Items.lava_bucket), new ItemStack(Blocks.ice, 2),
-            new ItemStack(Blocks.red_mushroom), new ItemStack(Blocks.brown_mushroom), new ItemStack(Items.flint, 5) };
+            GTModHandler.getModItem(Minecraft.ID, "red_mushroom"),
+            GTModHandler.getModItem(Minecraft.ID, "brown_mushroom"), new ItemStack(Items.flint, 5) };
     }
 
     @Override
