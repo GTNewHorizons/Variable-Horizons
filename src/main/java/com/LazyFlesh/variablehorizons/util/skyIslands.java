@@ -25,31 +25,38 @@ public class skyIslands {
     }
 
     public static Object[][] createIslandNether() {
-        return new Object[][]{{-9, 0, -7}, // offset x, y, z
+        return new Object[][]{{-9, 3, -7}, // offset x, y, z
             {'A', GameRegistry.findBlock("BiomesOPlenty", "ash"), 1,
-                'B', GameRegistry.findBlock("Natura", "bloodwood"), 15,
-                'C', GameRegistry.findBlock("BiomesOPlenty", "bopGrass"), 1,
-                'D', GameRegistry.findBlock("BiomesOPlenty", "flesh"), 3,
-                'E', Blocks.netherrack, 0,
-                'F', GameRegistry.findBlock("Natura", "bloodwood"), 3,
-                'G', GameRegistry.findBlock("Natura", "floraleavesnocolor"), 2,
-                'H', GameRegistry.findBlock("Natura", "bloodwood"), 2,
-                'I', GameRegistry.findBlock("Natura", "bloodwood"), 0,
-                'J', GameRegistry.findBlock("Natura", "bloodwood"), 1,
-                'K', GameRegistry.findBlock("BiomesOPlenty", "flowers2"), 2,
-                'L', Blocks.chest, 0}, // key, block, meta
-            {"             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","   GGG  GGG  ","             ","        GGG  ","             ","             ","             "},
-            {"             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","   GGG  GGG  ","  GGGGGGGGGG ","   GGGGGGGG  ","        GGGG ","        GGG  ","             ","             "},
-            {"             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","   GGG  GGG  ","  GGBGGGGBGG ","   GGGGGGGG  ","    GGGGGBGG ","        GGG  ","             ","             "},
-            {"             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","   GGG GGGG  ","  GGGGGGGGGG ","   GGBGGBGG  ","    GGGGGGGG ","     GGGGGG  ","             ","             "},
-            {"             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","       GGG   ","   GGGGGBGG  ","  GGGGGGGGGG ","    GGBBGGG  ","     GGGGG   ","      GGG    ","             "},
-            {"      K      ","      EAA    ","      AAA    ","      AEE    ","      IH     ","      IH     ","      IH     ","      IH     ","      IH     ","      IH     ","      IH     ","      IH     ","      IH     ","      IHGGG  ","  GGGGIHBGGG "," GGGGGIBGGGGG"," GGGGGGBBGGG ","    GGGBGG   ","    GGGGG    ","             "},
-            {"             ","      CCC    ","      AEA    ","      AEE    ","      JF     ","      JF     ","      JF     ","      JF     ","      JF     ","      JF     ","      JF     ","      JF     ","      JF     ","     GJFGGG  ","  GGGGJFGBGG "," GGBGGBBGGBGG","GGGGGBGGGGGG "," GGGGGGBGGG  ","   GGGGGG    ","    GGGGG    "},
-            {"             ","      CEA    ","      EEE    ","      EEA    ","             ","             ","             ","             ","             ","             ","             ","             ","      GGG    ","     GGGGGG  ","  GGGGBGGGGG "," GGGGGGGGGGGG","GGBGBGGGBBGG "," GGGGGGGGGG  ","   GGBBBG    ","    GGGGG    "},
-            {"             ","      ECCDCE ","      EEADDD ","      EEADDE ","             ","             ","             ","             ","             ","             ","             ","             ","      GGG    ","     GGBGG   ","    GGGGGGG  "," GGGGGGGGGGG ","GGGGGGGGGGGG "," GGGGGGGGGG  ","   GGGGGG    ","    GGGGG    "},
-            {"           L ","      CEEDDD ","      EEAEEE ","      EEEDED ","             ","             ","             ","             ","             ","             ","             ","             ","      GGG    ","     GGGGG   ","    GGBGG    ","     GGG     "," GGGGG GGGG  ","             ","    GGGGG    ","             "},
-            {"             ","      ECECCD ","      DEEDED ","      DEEDDE ","             ","             ","             ","             ","             ","             ","             ","             ","             ","     GGGG    ","    GGGG     ","     GGG     ","             ","             ","             ","             "},
-            {"             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","             ","     GGG     ","             ","             ","             ","             ","             "}};
+                'B', GameRegistry.findBlock("Natura", "bloodwood"), 0,
+                'C', GameRegistry.findBlock("Natura", "bloodwood"), 15,
+                'D', GameRegistry.findBlock("BiomesOPlenty", "bopGrass"), 1,
+                'E', GameRegistry.findBlock("miscutils", "FluidPyrotheum"), 1,
+                'F', GameRegistry.findBlock("BiomesOPlenty", "flesh"), 3,
+                'G', GameRegistry.findBlock("BiomesOPlenty", "flowers"), 13,
+                'H', GameRegistry.findBlock("BiomesOPlenty", "foliage"), 2,
+                'I', GameRegistry.findBlock("BiomesOPlenty", "grave"), 0,
+                'J', Blocks.netherrack, 0,
+                'K', Blocks.soul_sand, 0,
+                'L', Blocks.lava, 0,
+                'M', GameRegistry.findBlock("Natura", "floraleavesnocolor"), 2,
+                'N', GameRegistry.findBlock("BiomesOPlenty", "overgrownNetherrack"), 0,
+                'O', GameRegistry.findBlock("BiomesOPlenty", "plants"), 5,
+                'P', GameRegistry.findBlock("BiomesOPlenty", "flowers"), 14,
+                'Q', GameRegistry.findBlock("BiomesOPlenty", "grave"), 1,
+                'R', Blocks.chest, 4}, // key, block, meta
+            {"             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "     MMM     ", "         MMM ", "             ", "             ", "             ", "             "},
+            {"             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "     MMM     ", "    MMMMMMMM ", "     MMMMMMMM", "         MMM ", "             ", "             ", "             "},
+            {"             ", "     R       ", "     NH      ", "    NJN      ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "     MMMMMM  ", "    MMCMMMMM ", "     MMMMMCMM", "         MMM ", "             ", "             ", "             "},
+            {"             ", "             ", "             ", "  FFFNNAA    ", "   FJJ       ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "     MMMMMM  ", "    MMCMMCMM ", "     MMMMMMMM", "      MMMMMM ", "         MMM ", "             ", "             "},
+            {"             ", "             ", "     H  A    ", " FFFJNADAA   ", "  FJFFJAAA   ", "   FFFF      ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "     MMMMMMM ", "    MMMMMMMM ", "     MMCCMM  ", "   MMMMMMMMM ", "     MMMMMMMM", "        MMMM ", "             "},
+            {"        Q    ", "        I    ", "       AA    ", " FFJ LDAADA  ", "  FFFJFAAAA  ", "  FFFFFJ     ", "      BB     ", "      BB     ", "      BB     ", "      BB     ", "      BB     ", "      BB     ", "      BB     ", "      BB     ", "      BB     ", "      BB     ", "      BB     ", "      BB MMM ", "      BBMMMMM", "    MMBBCMMM ", "  MMMMMCCMMM ", "  MMMMCCMMMM ", "   MMMMMMMCMM", "       MMMMM ", "        MMM  "},
+            {"             ", "             ", "F      DA    ", "FFFJ  AAAAD  ", " FFFJJFAJJA  ", "  FFFFFJJ    ", "      BB     ", "      BB     ", "      BB     ", "      BB     ", "      BB     ", "      BB     ", "      BB     ", "      BB     ", "      BB     ", "      BB     ", "      BB     ", "      BB MMM ", "    MMBBMMCMM", "  MMMMBBMCMM ", " MMMMMMMCMMMM", "  MMCCCCMCMM ", "   MMMMMCMMMM", "       MMCMM ", "        MMM  "},
+            {"P            ", "G            ", "FFF          ", "FFJJ  AAAAA  ", " FFFJJFJAJ   ", "  FFFFFJJJ   ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "         MMM ", "    MMM MMMMM", "  MMMCMMMMMM ", " MMCMMMMMMCMM", "  MMMMCMMMMM ", "   MMMMMMMMM ", "       MMMMM ", "        MMM  "},
+            {"             ", "             ", "FF           ", "FFFFJ JDADA  ", "  FFFFFJAA   ", "   FFKK      ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "    MMM  MMM ", "  MMMMMMMMMM ", " MMMCCMMMMMMM", "  MMMMMMMMMM ", "     MMM M   ", "        M M  ", "             "},
+            {"             ", "             ", " F      O    ", " FFJJJKKKK   ", "  FFJFKKK    ", "   KKK       ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "  MMMMM      ", " MMMCMMM MMM ", "  MMMMMM     ", "             ", "             ", "             "},
+            {"             ", "   P         ", "   G         ", "  FFKKKKK    ", "   KKK       ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "  MMMM       ", " MMCMMM      ", "  MMMM       ", "             ", "             ", "             "},
+            {"             ", "             ", "      KK     ", "   KKKKK     ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "  MMM        ", " MMMMM       ", "  MMM        ", "             ", "             ", "             "},
+            {"             ", "        E    ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "  MMM        ", "             ", "             ", "             ", "             "}};
     }
 
     public static Object[][] createIslandDD() {
