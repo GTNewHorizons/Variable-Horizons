@@ -1,6 +1,7 @@
 package com.LazyFlesh.variablehorizons.variants.invasive;
 
 import static gregtech.api.enums.Mods.BiomesOPlenty;
+import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.enums.Mods.Minecraft;
 import static gregtech.api.enums.Mods.TinkerConstruct;
@@ -51,6 +52,13 @@ public class VoidIsland extends VariantLoader {
             new ItemStack(Items.flint, 5) };
     }
 
+    private static ItemStack[] createChestSpaceStation() {
+        return new ItemStack[] { GTModHandler.getModItem(GalacticraftCore.ID, "item.oxygenTankLightFull"),
+            GTModHandler.getModItem(GalacticraftCore.ID, "item.oxygenGear"),
+            GTModHandler.getModItem(GalacticraftCore.ID, "item.oxygenMask"),
+            GTModHandler.getModItem(GalacticraftCore.ID, "item.basicItem", 1, 20) };
+    }
+
     @Override
     public void loadVariant(VariantNames... activeVariants) {
         VariantNames.VOID_ISLAND.hasLoaded = true;
@@ -67,9 +75,9 @@ public class VoidIsland extends VariantLoader {
             case (1) -> {
                 return skyIslands.createIslandEnd();
             }
-            // case (non-breathable space dims) -> {
-            // return skyIslands.createIslandSpaceStation();
-            // }
+            case -28, -29, -30 -> {
+                return skyIslands.createIslandSpaceStation();
+            }
             default -> {
                 return skyIslands.createIslandOW();
             }
@@ -78,16 +86,18 @@ public class VoidIsland extends VariantLoader {
 
     public static ItemStack[] getChestLoot(int dimID) {
         switch (dimID) {
-            case (-1) -> {
+            case -1 -> {
                 return createChestNether();
             }
             case 100 -> {
                 return createChestDD();
             }
-            case (1) -> {
+            case 1 -> {
                 return createChestEnd();
             }
-            // case (non-breathable space dims) -> { return VoidIsland.spaceStation}
+            case -30, -29, -28, 25, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52, 53, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88 -> {
+                return createChestSpaceStation();
+            }
             default -> {
                 return createChestOW();
             }

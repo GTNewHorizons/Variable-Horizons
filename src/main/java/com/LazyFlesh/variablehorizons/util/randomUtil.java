@@ -113,11 +113,12 @@ public class randomUtil {
                         world.setBlock(structX + x, structY - y, structZ + z, entry.getKey(), entry.getValue(), 3);
 
                         if (c == chestKey) { // chest loot
-                            if (world.getTileEntity(structX + x, structY - y, structZ + z) == null) {
-                                world.setTileEntity(structX + x, structY - y, structZ + z, new TileEntityChest());
-                            }
                             TileEntityChest chest = (TileEntityChest) world
                                 .getTileEntity(structX + x, structY - y, structZ + z);
+                            if (chest == null) {
+                                chest = new TileEntityChest();
+                            }
+
                             ItemStack[] loot = VoidIsland.getChestLoot(dimID);
                             for (int j = 0; j < loot.length; j++) {
                                 chest.setInventorySlotContents(j, loot[j]);
