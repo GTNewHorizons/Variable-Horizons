@@ -74,8 +74,24 @@ public enum Mixins implements IMixins {
             .setPhase(Phase.EARLY)),
     DISABLE_CELESTIAL_SELECTION(new MixinBuilder("Disable the galacticraft planet map")
         .addCommonMixins("MixinWorldUtil_DisableCelestialSelection")
-        .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
+        .setApplyIf(() -> VariantNames.activeContains(VariantNames.NO_ROCKET.id) && !GeneralConfig.disableVariants)
         .addRequiredMod(TargetedMod.GALACTICRAFT_CORE)
+        .setPhase(Phase.LATE)),
+    ADD_SEMINING_RECIPE(
+        new MixinBuilder("Add custom space mining recipes").addCommonMixins("MixinSpaceMiningRecipes_AddSEminingrecipe")
+            .setApplyIf(
+                () -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && GeneralConfig.startingDimID != 100
+                    && !GeneralConfig.disableVariants)
+            .addRequiredMod(TargetedMod.GREGTECH)
+            .setPhase(Phase.LATE)),
+    REMOVE_ORECHID_IGNEM_DIMRESTRICTION(new MixinBuilder("Remove dimension restriction for OrechidIgnem")
+        .addCommonMixins("MixinSubTileOrechidIgnem_LetOrechidIgnemRunBesidesNether")
+        .setApplyIf(
+            () -> VariantNames.activeContains(VariantNames.DIMLOCKED.id)
+                && VariantNames.activeContains(VariantNames.NO_QUEST_REWARDS.id)
+                && GeneralConfig.startingDimID != -1
+                && !GeneralConfig.disableVariants)
+        .addRequiredMod(TargetedMod.BOTANIA)
         .setPhase(Phase.LATE))
 
     ;
@@ -95,7 +111,9 @@ public enum Mixins implements IMixins {
     public enum TargetedMod implements ITargetMod {
 
         ENDLESSIDS("com.falsepattern.endlessids.asm.EndlessIDsCore", "endlessids"),
-        GALACTICRAFT_CORE("GalacticraftCore");
+        GALACTICRAFT_CORE("GalacticraftCore"),
+        GREGTECH("gregtech"),
+        BOTANIA("Botania");
 
         private final TargetModBuilder builder;
 
