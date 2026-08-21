@@ -120,6 +120,190 @@ public class VoidIsland extends VariantLoader {
     }
     // spotless:on
 
+
+
+    private static Object[][] createIslandSpaceStation() {
+        return new Object[][]{ {-5, 7, -8},
+    {'A', GameRegistry.findBlock("TConstruct", "GlassBlock"), 0,
+        'B', GameRegistry.findBlock("GalacticraftCore", "tile.airLockSeal"), 0,
+        'D', Blocks.dirt, 0,
+        'E', Blocks.grass, 0,
+        'F', Blocks.leaves, 0,
+        'G', Blocks.log, 0,
+        'H', GameRegistry.findBlock("TConstruct", "GlassPane"), 0,
+        'I', GameRegistry.findBlock("Ztones", "tile.tankBlock"), 0,
+        'J', GameRegistry.findBlock("Ztones", "tile.tankBlock"), 13,
+        'K', Blocks.crafting_table, 0,
+        'L', GameRegistry.findBlock("GalacticraftCore", "tile.sealer"), 2,
+        'M', GameRegistry.findBlock("GalacticraftCore", "tile.oxygenCompressor"), 2,
+        'N', GameRegistry.findBlock("GalacticraftCore", "tile.airLockFrame"), 1,
+        'O', GameRegistry.findBlock("GalacticraftCore", "tile.airLockFrame"), 0,
+        'P', GameRegistry.findBlock("EnderIO", "blockCapBank"), 1,
+        'Q', GameRegistry.findBlock("GalacticraftCore", "tile.enclosed"), 1,
+        'R', GameRegistry.findBlock("GalacticraftCore", "tile.oxygenCollector"), 2,
+        'S', GameRegistry.findBlock("EnderIO", "blockSolarPanel"), 2,
+        'T', GameRegistry.findBlock("EnderIO", "blockDarkSteelPressurePlate"), 0,
+        'U', GameRegistry.findBlock("GalacticraftCore", "tile.enclosed"), 14,
+        'V', Blocks.chest, 2},
+
+            {
+                "           ",
+                    "  IIIIIII  ",
+                    "  IIIIIII  ",
+                    "  HHHHHHH  ",
+                    "  HHHHHHH  ",
+                    "  HHHHHHH  ",
+                    "  IIIIIII  ",
+                    "           ",
+                    "           ",
+                    "           "
+            },{
+            "   JJJJJ   ",
+                "  I     I  ",
+                "  I     I  ",
+                "  H     H  ",
+                "  HFFFF H  ",
+                "  H FFF H  ",
+                "  I     I  ",
+                "   JJJJJ   ",
+                "   JJJJJ   ",
+                "   JJJJJ   "
+        },{
+            "   JAAAJ   ",
+                "  I     I  ",
+                "  I  F  I  ",
+                "  H  F  H  ",
+                "  HFFFFFH  ",
+                "  HFFFFFH  ",
+                "  I     I  ",
+                "   J   J   ",
+                "   JEEEJ   ",
+                "   JJJJJ   "
+        },{
+            "   JAAAJ   ",
+                "  I     I  ",
+                "  I FFF I  ",
+                "  H FGF H  ",
+                "  HFFGFFH  ",
+                "  HFFGFFH  ",
+                "  I  G  I  ",
+                "   J G J S ",
+                "   JEDEJUP ",
+                "   JJJJJ   "
+        },{
+            "   JAAAJ   ",
+                "  I     I  ",
+                "  I  F  I  ",
+                "  H  F  H  ",
+                "  HFFFFFH  ",
+                "  HF FFFH  ",
+                "  I     I  ",
+                "   J   J   ",
+                "   JEEEJU  ",
+                "   JJJJJ   "
+        },{
+            "   JJJJJ   ",
+                "  I     I  ",
+                "  I     I  ",
+                "  I     I  ",
+                "IIIFFFFFIII",
+                "HHIFFFF IHH",
+                "III     III",
+                "   JQRUJ   ",
+                "   JJJJJU  ",
+                "   JJJJJ   "
+        },{
+            "           ",
+                "   IIIII   ",
+                "   IIIII   ",
+                " IIIIIIIII ",
+                "I         I",
+                "H         H",
+                "I         I",
+                " IIIQLUIII ",
+                "      UUU  ",
+                "           "
+        },{
+            "           ",
+                "           ",
+                "           ",
+                " IIIIIIIII ",
+                "I         I",
+                "H         H",
+                "I         I",
+                " IIIQMUIII ",
+                "           ",
+                "           "
+        },{
+            "           ",
+                "           ",
+                "           ",
+                " IIIIIIIII ",
+                "I         I",
+                "H         H",
+                "I         I",
+                " IIIIIIIII ",
+                "           ",
+                "           "
+        },{
+            "           ",
+                "           ",
+                "           ",
+                " IIIIIIIII ",
+                "I         I",
+                "H         H",
+                "I         I",
+                " IIIIKIIII ",
+                "           ",
+                "           "
+        },{
+            "           ",
+                "           ",
+                "           ",
+                " IIIIIIIII ",
+                "I         I",
+                "H         H",
+                "I         I",
+                " IIIIIIIII ",
+                "           ",
+                "           "
+        },{
+            "           ",
+                "           ",
+                "           ",
+                " IIIIIIIII ",
+                "I         I",
+                "H         H",
+                "I    T V  I",
+                " IIIIIIIII ",
+                "           ",
+                "           "
+        },{
+            "           ",
+                "           ",
+                "           ",
+                "   IIIII   ",
+                "IIIIOOOIIII",
+                "HHHIOBOIHHH",
+                "IIIIOBOIIII",
+                "   IONOI   ",
+                "           ",
+                "           "
+        },{
+            "           ",
+                "           ",
+                "           ",
+                "           ",
+                "           ",
+                "           ",
+                "     T     ",
+                "    JJJ    ",
+                "           ",
+                "           "
+        }};}
+
+
+
     private static ItemStack[] createChestOW() {
         return new ItemStack[] { new ItemStack(Items.lava_bucket), new ItemStack(Blocks.ice, 2),
             new ItemStack(Items.reeds), new ItemStack(Items.melon_seeds), new ItemStack(Items.pumpkin_seeds),
