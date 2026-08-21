@@ -31,7 +31,7 @@ public class VoidIsland extends VariantLoader {
         ItemStack bopBucket = GTModHandler.getModItem(BiomesOPlenty.ID, "bopBucket");
         ((ItemFluidContainer) bopBucket.getItem())
             .fill(bopBucket, new FluidStack(FluidRegistry.getFluid("hell_blood"), 1000), true);
-        return new ItemStack[] { new ItemStack(Items.lava_bucket), bopBucket, bopBucket, new ItemStack(Items.reeds),
+        return new ItemStack[] { bopBucket, bopBucket, new ItemStack(Items.reeds),
             GTModHandler.getModItem(Minecraft.ID, "red_mushroom"),
             GTModHandler.getModItem(Minecraft.ID, "brown_mushroom"), new ItemStack(Blocks.cactus),
             new ItemStack(Items.flint, 5) };
