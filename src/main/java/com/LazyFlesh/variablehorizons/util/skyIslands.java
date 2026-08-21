@@ -128,151 +128,19 @@ public class skyIslands {
             'S', GameRegistry.findBlock("GalacticraftCore", "tile.solar"), 7,
             'U', GameRegistry.findBlock("GalacticraftCore", "tile.enclosed"), 14,
             'V', Blocks.chest, 4},
-
-        {
-            "           ",
-            "  IIIIIII  ",
-            "  IIIIIII  ",
-            "  HHHHHHH  ",
-            "  HHHHHHH  ",
-            "  HHHHHHH  ",
-            "  IIIIIII  ",
-            "           ",
-            "           ",
-            "           "
-        },{
-            "   JJJJJ   ",
-            "  I     I  ",
-            "  I     I  ",
-            "  H     H  ",
-            "  HFFFF H  ",
-            "  H FFF H  ",
-            "  I     I  ",
-            "   JJJJJ   ",
-            "   JJJJJ   ",
-            "   JJJJJ   "
-        },{
-            "   JAAAJ   ",
-            "  I     I  ",
-            "  I  F  I  ",
-            "  H  F  H  ",
-            "  HFFFFFH  ",
-            "  HFFFFFH  ",
-            "  I     I  ",
-            "   J   J   ",
-            "   JEEEJ   ",
-            "   JJJJJ   "
-        },{
-            "   JAAAJ   ",
-            "  I     I  ",
-            "  I FFF I  ",
-            "  H FGF H  ",
-            "  HFFGFFH  ",
-            "  HFFGFFH  ",
-            "  I  G  I  ",
-            "   J G J   ",
-            "   JEDEJ   ",
-            "   JJJJJ   "
-        },{
-            "   JAAAJ   ",
-            "  I     I  ",
-            "  I  F  I  ",
-            "  H  F  H  ",
-            "  HFFFFFH  ",
-            "  HFFFFFH  ",
-            "  I     I  ",
-            "   J   J   ",
-            "   JEEEJ   ",
-            "   JJJJJ   "
-        },{
-            "   JJJJJ   ",
-            "  I     I  ",
-            "  I     I  ",
-            "  I     UUP",
-            "IIIFFFFFUII",
-            "HHIFFFFFUHH",
-            "III     UII",
-            "   JQRUJU  ",
-            "   JJJJJU  ",
-            "   JJJJJ   "
-        },{
-            "           ",
-            "   IIIII   ",
-            "   IIIII   ",
-            " IIIIIIIIIS",
-            "I         I",
-            "H         H",
-            "I         I",
-            " IIIQLUIII ",
-            "      UUU  ",
-            "           "
-        },{
-            "           ",
-            "           ",
-            "           ",
-            " IIIIIIIII ",
-            "I         I",
-            "H         H",
-            "I         I",
-            " IIIQMUIII ",
-            "           ",
-            "           "
-        },{
-            "           ",
-            "           ",
-            "           ",
-            " IIIINIIII ",
-            "I         I",
-            "H         H",
-            "I         I",
-            " IIIINIIII ",
-            "           ",
-            "           "
-        },{
-            "           ",
-            "           ",
-            "           ",
-            " IIIIIIIII ",
-            "I         I",
-            "H         H",
-            "I         I",
-            " IIIIKIIII ",
-            "           ",
-            "           "
-        },{
-            "           ",
-            "           ",
-            "           ",
-            " IIIIIIIII ",
-            "I         I",
-            "H         H",
-            "I         I",
-            " IIIIIIIII ",
-            "           ",
-            "           "
-        },{
-            "           ",
-            "           ",
-            "           ",
-            " IIIIIIIII ",
-            "I         I",
-            "H         H",
-            "I      V  I",
-            " IIIIIIIII ",
-            "           ",
-            "           "
-        },{
-            "           ",
-            "           ",
-            "           ",
-            "   IIIII   ",
-            "IIIIIIIIIII",
-            "HHHHHHHHHHH",
-            "IIIIIIIIIII",
-            "   IIIII   ",
-            "           ",
-            "           "
-        }};
+            {"           ", "  IIIIIII  ", "  IIIIIII  ", "  HHHHHHH  ", "  HHHHHHH  ", "  HHHHHHH  ", "  IIIIIII  ", "           ", "           ", "           "},
+            {"   JJJJJ   ", "  I     I  ", "  I     I  ", "  H     H  ", "  HFFFF H  ", "  H FFF H  ", "  I     I  ", "   JJJJJ   ", "   JJJJJ   ", "   JJJJJ   "},
+            {"   JAAAJ   ", "  I     I  ", "  I  F  I  ", "  H  F  H  ", "  HFFFFFH  ", "  HFFFFFH  ", "  I     I  ", "   J   J   ", "   JEEEJ   ", "   JJJJJ   "},
+            {"   JAAAJ   ", "  I     I  ", "  I FFF I  ", "  H FGF H  ", "  HFFGFFH  ", "  HFFGFFH  ", "  I  G  I  ", "   J G J   ", "   JEDEJ   ", "   JJJJJ   "},
+            {"   JAAAJ   ", "  I     I  ", "  I  F  I  ", "  H  F  H  ", "  HFFFFFH  ", "  HFFFFFH  ", "  I     I  ", "   J   J   ", "   JEEEJ   ", "   JJJJJ   "},
+            {"   JJJJJ   ", "  I     I  ", "  I     I  ", "  I     UUP", "IIIFFFFFUII", "HHIFFFFFUHH", "III     UII", "   JQRUJU  ", "   JJJJJU  ", "   JJJJJ   "},
+            {"           ", "   IIIII   ", "   IIIII   ", " IIIIIIIIIS", "I         I", "H         H", "I         I", " IIIQLUIII ", "      UUU  ", "           "},
+            {"           ", "           ", "           ", " IIIIIIIII ", "I         I", "H         H", "I         I", " IIIQMUIII ", "           ", "           "},
+            {"           ", "           ", "           ", " IIIINIIII ", "I         I", "H         H", "I         I", " IIIINIIII ", "           ", "           "},
+            {"           ", "           ", "           ", " IIIIIIIII ", "I         I", "H         H", "I         I", " IIIIKIIII ", "           ", "           "},
+            {"           ", "           ", "           ", " IIIIIIIII ", "I         I", "H         H", "I         I", " IIIIIIIII ", "           ", "           "},
+            {"           ", "           ", "           ", " IIIIIIIII ", "I         I", "H         H", "I      V  I", " IIIIIIIII ", "           ", "           "},
+            {"           ", "           ", "           ", "   IIIII   ", "IIIIIIIIIII", "HHHHHHHHHHH", "IIIIIIIIIII", "   IIIII   ", "           ", "           "}};
     }
 
     public static Object[][] createIslandEnd() {
