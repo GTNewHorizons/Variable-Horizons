@@ -72,7 +72,16 @@ public enum Mixins implements IMixins {
                 () -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && GeneralConfig.startingDimID != 100
                     && !GeneralConfig.disableVariants)
             .addRequiredMod(TargetedMod.GREGTECH)
-            .setPhase(Phase.LATE))
+            .setPhase(Phase.LATE)),
+    REMOVE_ORECHID_IGNEM_DIMRESTRICTION(new MixinBuilder("Remove dimension restriction for OrechidIgnem")
+        .addCommonMixins("MixinSubTileOrechidIgnem_LetOrechidIgnemRunBesidesNether")
+        .setApplyIf(
+            () -> VariantNames.activeContains(VariantNames.DIMLOCKED.id)
+                && VariantNames.activeContains(VariantNames.NO_QUEST_REWARDS.id)
+                && GeneralConfig.startingDimID != -1
+                && !GeneralConfig.disableVariants)
+        .addRequiredMod(TargetedMod.BOTANIA)
+        .setPhase(Phase.LATE))
 
     ;
 
@@ -92,7 +101,8 @@ public enum Mixins implements IMixins {
 
         ENDLESSIDS("com.falsepattern.endlessids.asm.EndlessIDsCore", "endlessids"),
         GALACTICRAFT_CORE("GalacticraftCore"),
-        GREGTECH("gregtech");
+        GREGTECH("gregtech"),
+        BOTANIA("Botania");
 
         private final TargetModBuilder builder;
 
