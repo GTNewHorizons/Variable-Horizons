@@ -1,5 +1,6 @@
 package com.LazyFlesh.variablehorizons;
 
+import com.LazyFlesh.variablehorizons.variants.DemonInvasionBlacklistCommand;
 import com.LazyFlesh.variablehorizons.variants.VariantCommands;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 
@@ -31,5 +32,6 @@ public class CommonProxy {
     // register server commands in this event handler (Remove if not needed)
     public void serverStarting(FMLServerStartingEvent event) {
         event.registerServerCommand(new VariantCommands());
+        event.registerServerCommand(new DemonInvasionBlacklistCommand());
     }
 }
