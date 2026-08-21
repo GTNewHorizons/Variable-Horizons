@@ -3,7 +3,6 @@ package com.LazyFlesh.variablehorizons.variants.invasive;
 import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.RandomThings;
-import static gregtech.api.enums.Mods.ThaumicTinkerer;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.enums.Mods.UniversalSingularities;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
@@ -77,12 +76,12 @@ public class DimLocked extends VariantLoader {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 16L),
-                    getModItem(ThaumicTinkerer.ID, "kamiResource", 16, 6))
-                .fluidInputs(Materials.Air.getGas(1_000_000))
-                .fluidOutputs(Materials.NetherAir.getFluid(1_000_000))
-                .duration(1 * SECONDS)
-                .eut(TierEU.RECIPE_ZPM)
+                    GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64),
+                    ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(1))
+                .fluidInputs(Materials.Air.getGas(2_000_000))
+                .fluidOutputs(Materials.NetherAir.getFluid(2_000_000))
+                .duration(8 * SECONDS)
+                .eut(TierEU.RECIPE_LuV)
                 .metadata(COIL_HEAT, 10800)
                 .addTo(blastFurnaceRecipes);
         }
