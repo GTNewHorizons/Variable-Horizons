@@ -6,13 +6,31 @@ import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.enums.Mods.Minecraft;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Stream;
+
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.ItemFluidContainer;
 
+import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.util.skyIslands;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
@@ -103,6 +121,125 @@ public class VoidIsland extends VariantLoader {
             default -> {
                 return createChestOW();
             }
+        }
+    }
+
+    public static class IslandCommands extends CommandBase {
+
+        @Override
+        public String getCommandName() {
+            return "island";
+        }
+
+        @Override
+        public List<String> getCommandAliases() {
+            return new ArrayList<>(Collections.singleton("Island"));
+        }
+
+        @Override
+        public String getCommandUsage(ICommandSender sender) {
+            return "/island <create|join> [args...]";
+        }
+
+        @Override
+        public int getRequiredPermissionLevel() {
+            return 0;
+        }
+
+        @Override
+        public void processCommand(ICommandSender sender, String[] args) {
+            if (args.length < 1) {
+                printHelpFull(sender);
+                return;
+            }
+            String subCommand = args[0].toLowerCase();
+            EntityPlayerMP pSender = getPlayer(sender, sender.getCommandSenderName());
+
+            switch (subCommand) {
+                case "join" -> {
+                    if (args.length > 1) {
+                        // go to proper dimension
+                        if (pSender.dimension != GeneralConfig.startingDimID)
+                            pSender.travelToDimension(GeneralConfig.startingDimID);
+
+                        pSender.inventory.clearInventory(null, -1);
+
+                        EntityPlayerMP player = getPlayer(sender, args[1]);
+
+                        Vec3 pos = player.getPosition(0F);
+                        pSender.setPositionAndUpdate(pos.xCoord, pos.yCoord, pos.zCoord);
+                        pSender.setSpawnChunk(player.playerLocation, true, GeneralConfig.startingDimID);
+
+                        sender.addChatMessage(
+                            new ChatComponentText(
+                                "Joined " + player.getDisplayName() + ". Spawnpoint set to their position."));
+
+                    }
+                }
+                case "create" -> {
+                    int i = 50000 + pSender.getEntityWorld().rand.nextInt(10000);
+
+                    Vec3 pos = pSender.getPosition(0F);
+                    ChunkCoordinates newSpawn = new ChunkCoordinates(
+                        (int) (pos.xCoord + i),
+                        70,
+                        (int) (pos.zCoord + i));
+
+                    WorldServer dimProvider = pSender.mcServer.worldServerForDimension(GeneralConfig.startingDimID);
+
+                    // i dont care if it exists or not, load it so stuff can happen in it!
+                    Chunk chunk = ((ChunkProviderServer) dimProvider.getChunkProvider())
+                        .originalLoadChunk((int) (pos.xCoord + i), (int) (pos.zCoord + i));
+                    chunk.needsSaving(true);
+
+                    // go to proper dimension
+                    if (pSender.dimension != GeneralConfig.startingDimID)
+                        pSender.travelToDimension(GeneralConfig.startingDimID);
+
+                    pSender.inventory.clearInventory(null, -1);
+
+                    pSender.setPositionAndUpdate(pos.xCoord + i, 72, pos.zCoord + i);
+
+                    randomUtil.generateVoidIsland(newSpawn, dimProvider, GeneralConfig.startingDimID);
+
+                    pSender.setSpawnChunk(newSpawn, true, GeneralConfig.startingDimID);
+                    chunk.needsSaving(true);
+                }
+            }
+        }
+
+        @Override
+        public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
+            List<String> completions = new ArrayList<>();
+            String currentArg = args.length == 0 ? "" : args[args.length - 1].trim();
+
+            if (args.length == 1) {
+                Stream.of("join", "create")
+                    .filter(s -> s.startsWith(currentArg))
+                    .forEach(completions::add);
+            } else if (args.length == 2) {
+                String subCommand = args[0].toLowerCase();
+                if ("join".equals(subCommand)) {
+                    Arrays.stream(
+                        MinecraftServer.getServer()
+                            .getAllUsernames())
+                        .filter(s -> s.startsWith(currentArg))
+                        .forEach(completions::add);
+                }
+            }
+
+            return completions;
+        }
+
+        private void printHelpFull(ICommandSender sender) {
+            sender.addChatMessage(new ChatComponentText("Usage: /island <subcommand> [args...]"));
+            sender.addChatMessage(new ChatComponentText(" Subcommands:"));
+            sender.addChatMessage(
+                new ChatComponentText(
+                    "  join <player name> - CLEARS YOUR INVENTORY, sets your spawn, and teleports you to that player."));
+            sender.addChatMessage(
+                new ChatComponentText(
+                    "  create - Creates a new island randomly (at least 5,000 blocks away) in the spawn dimension and sets your spawn there."));
         }
     }
 }

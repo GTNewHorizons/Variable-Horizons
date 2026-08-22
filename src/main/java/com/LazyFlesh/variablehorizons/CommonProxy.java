@@ -3,6 +3,8 @@ package com.LazyFlesh.variablehorizons;
 import com.LazyFlesh.variablehorizons.variants.DemonInvasionBlacklistCommand;
 import com.LazyFlesh.variablehorizons.variants.VariantCommands;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
+import com.LazyFlesh.variablehorizons.variants.VariantNames;
+import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
@@ -33,5 +35,7 @@ public class CommonProxy {
     public void serverStarting(FMLServerStartingEvent event) {
         event.registerServerCommand(new VariantCommands());
         event.registerServerCommand(new DemonInvasionBlacklistCommand());
+        if (VariantNames.activeContains(VariantNames.VOID_ISLAND.id))
+            event.registerServerCommand(new VoidIsland.IslandCommands());
     }
 }
