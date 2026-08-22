@@ -21,10 +21,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.ChunkProviderServer;
+import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.ItemFluidContainer;
@@ -180,30 +180,39 @@ public class VoidIsland extends VariantLoader {
                     int i = 50000 + pSender.getEntityWorld().rand.nextInt(10000);
 
                     Vec3 pos = pSender.getPosition(0F);
-                    ChunkCoordinates newSpawn = new ChunkCoordinates(
-                        (int) (pos.xCoord + i),
-                        70,
-                        (int) (pos.zCoord + i));
-
-                    WorldServer dimProvider = pSender.mcServer.worldServerForDimension(GeneralConfig.startingDimID);
-
-                    // i dont care if it exists or not, load it so stuff can happen in it!
-                    Chunk chunk = ((ChunkProviderServer) dimProvider.getChunkProvider())
-                        .originalLoadChunk((int) (pos.xCoord + i), (int) (pos.zCoord + i));
-                    chunk.needsSaving(true);
 
                     // go to proper dimension
                     if (pSender.dimension != GeneralConfig.startingDimID)
                         pSender.travelToDimension(GeneralConfig.startingDimID);
 
+                    WorldServer dimProvider = pSender.mcServer.worldServerForDimension(GeneralConfig.startingDimID);
+
+                    // i dont care if it exists or not, load it so stuff can happen in it!
+                    int chunkX = (int) (pos.xCoord + i) >> 4;
+                    int chunkZ = (int) (pos.zCoord + i) >> 4;
+                    IChunkProvider chunkProvider = dimProvider.getChunkProvider();
+
+                    for (int cx = -1; cx <= 1; cx++) {
+                        for (int cz = -1; cz <= 1; cz++) {
+                            chunkProvider.loadChunk(chunkX + cx, chunkZ + cz);
+                        }
+                    }
+
+                    randomUtil.generateVoidIsland(
+                        new ChunkCoordinates((int) (pos.xCoord + i), 71, (int) (pos.zCoord + i)),
+                        dimProvider,
+                        GeneralConfig.startingDimID);
+
                     pSender.inventory.clearInventory(null, -1);
 
                     pSender.setPositionAndUpdate(pos.xCoord + i, 72, pos.zCoord + i);
 
-                    randomUtil.generateVoidIsland(newSpawn, dimProvider, GeneralConfig.startingDimID);
+                    pSender.setSpawnChunk(
+                        new ChunkCoordinates((int) (pos.xCoord + i), 72, (int) (pos.zCoord + i)),
+                        true,
+                        GeneralConfig.startingDimID);
 
-                    pSender.setSpawnChunk(newSpawn, true, GeneralConfig.startingDimID);
-                    chunk.needsSaving(true);
+                    pSender.attackEntityFrom(DamageSource.outOfWorld, Float.MAX_VALUE);
                 }
             }
         }
