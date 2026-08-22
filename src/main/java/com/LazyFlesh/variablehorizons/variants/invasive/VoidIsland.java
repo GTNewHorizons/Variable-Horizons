@@ -22,9 +22,11 @@ import gregtech.api.util.GTModHandler;
 public class VoidIsland extends VariantLoader {
 
     private static ItemStack[] createChestOW() {
+
         return new ItemStack[] { new ItemStack(Items.lava_bucket), new ItemStack(Blocks.ice, 2),
             new ItemStack(Items.reeds), new ItemStack(Items.melon_seeds), new ItemStack(Items.pumpkin_seeds),
             new ItemStack(Blocks.cactus), new ItemStack(Items.flint, 5) };
+
     }
 
     private static ItemStack[] createChestNether() {

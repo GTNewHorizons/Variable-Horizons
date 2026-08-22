@@ -45,9 +45,11 @@ dependencies {
     implementation("com.github.GTNewHorizons:BloodMagic:1.9.12:dev")
     implementation("com.github.GTNewHorizons:Botania:1.13.33-GTNH:dev")
 
+    // custom dim start
+    devOnlyNonPublishable("com.github.GTNewHorizons:ServerUtilities:2.4.1:dev")
+
     // Deep dark island
     devOnlyNonPublishable("ganymedes01.etfuturum:Et-Futurum-Requiem:2.6.2.21-GTNH-daily") { transitive = false }
-
 
     // nether island
     devOnlyNonPublishable("com.github.GTNewHorizons:Natura:2.8.23:dev") { transitive = false }
