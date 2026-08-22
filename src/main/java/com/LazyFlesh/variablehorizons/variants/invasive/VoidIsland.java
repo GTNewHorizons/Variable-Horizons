@@ -21,7 +21,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -212,7 +211,7 @@ public class VoidIsland extends VariantLoader {
                         true,
                         GeneralConfig.startingDimID);
 
-                    pSender.attackEntityFrom(DamageSource.outOfWorld, Float.MAX_VALUE);
+                    pSender.setHealth(-1);
                 }
             }
         }
