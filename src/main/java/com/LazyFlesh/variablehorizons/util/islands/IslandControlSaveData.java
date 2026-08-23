@@ -22,7 +22,7 @@ public class IslandControlSaveData extends WorldSavedData {
         NBTTagCompound islands = nbt.getCompoundTag("islands");
         NBTTagList islandList = islands.getTagList("islandList", Constants.NBT.TAG_COMPOUND);
 
-        IslandControl.instance.island.clear();
+        IslandControl.instance.islands.clear();
         IslandControl.instance.playerIsland.clear();
 
         int[] lastIsland = islands.getIntArray("LastIsland");
@@ -60,7 +60,7 @@ public class IslandControlSaveData extends WorldSavedData {
             "LastIsland",
             new int[] { IslandControl.instance.lastIsland.first(), IslandControl.instance.lastIsland.second() });
 
-        for (IslandData data : IslandControl.instance.island.values()) {
+        for (IslandData data : IslandControl.instance.islands.values()) {
             NBTTagCompound is = new NBTTagCompound();
 
             if (data.players != null) {

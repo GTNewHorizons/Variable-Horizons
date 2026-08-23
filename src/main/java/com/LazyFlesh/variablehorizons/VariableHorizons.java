@@ -1,10 +1,13 @@
 package com.LazyFlesh.variablehorizons;
 
+import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.Config.GogConfig;
+import com.LazyFlesh.variablehorizons.util.islands.IslandControl;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
@@ -71,5 +74,7 @@ public class VariableHorizons {
     // register server commands in this event handler (Remove if not needed)
     public void serverStarting(FMLServerStartingEvent event) {
         proxy.serverStarting(event);
+
+        EVENT_BUS.register(IslandControl.instance);
     }
 }

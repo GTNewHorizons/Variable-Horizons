@@ -170,19 +170,20 @@ public class VoidIsland extends VariantLoader {
                             IslandData islandOld = IslandControl.instance.playerIsland.get(
                                 player.getUniqueID()
                                     .toString());
-                            List<String> players = Arrays.asList(islandOld.players);
-                            players.remove(
-                                pSender.getUniqueID()
-                                    .toString());
-                            islandOld.setPlayers(players.toArray(new String[] {}));
-
+                            if (islandOld != null) {
+                                List<String> players = Arrays.asList(islandOld.players);
+                                players.remove(
+                                    pSender.getUniqueID()
+                                        .toString());
+                                islandOld.setPlayers(players.toArray(new String[] {}));
+                            }
                             // add to new island
                             IslandControl.instance.playerIsland.replace(
                                 pSender.getUniqueID()
                                     .toString(),
                                 island);
                             List<String> players2 = Arrays.asList(island.players);
-                            players.add(
+                            players2.add(
                                 pSender.getUniqueID()
                                     .toString());
                             island.setPlayers(players2.toArray(new String[] {}));
@@ -295,13 +296,13 @@ public class VoidIsland extends VariantLoader {
             }
 
             // dimProvider is the dimension its being built in, dimID is the island type
-            randomUtil.generateVoidIsland(new ChunkCoordinates(), dimProvider, dimID);
+            randomUtil.generateVoidIsland(new ChunkCoordinates(posX, 72, posZ), dimProvider, dimID);
 
             player.inventory.clearInventory(null, -1);
 
             player.setPositionAndUpdate(posX, 73, posZ);
 
-            player.setSpawnChunk(new ChunkCoordinates(posX, 72, posZ), true, dimToTPTo);
+            player.setSpawnChunk(new ChunkCoordinates(posX, 74, posZ), true, dimToTPTo);
 
             IslandData newIsland = new IslandData(
                 posX,
@@ -309,6 +310,20 @@ public class VoidIsland extends VariantLoader {
                 dimToTPTo,
                 new String[] { String.valueOf(player.getUniqueID()) });
 
+            // remove from old island
+            if (IslandControl.instance.playerIsland.containsKey(
+                player.getUniqueID()
+                    .toString())) {
+                IslandData oldIsland = IslandControl.instance.playerIsland.get(
+                    player.getUniqueID()
+                        .toString());
+                List<String> players = Arrays.asList(oldIsland.players);
+                players.remove(
+                    player.getUniqueID()
+                        .toString());
+                oldIsland.setPlayers(players.toArray(new String[] {}));
+            }
+            // add to new
             IslandControl.instance.playerIsland.put(
                 player.getUniqueID()
                     .toString(),

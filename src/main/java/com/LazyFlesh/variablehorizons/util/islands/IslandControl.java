@@ -2,17 +2,47 @@ package com.LazyFlesh.variablehorizons.util.islands;
 
 import java.util.HashMap;
 
+import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+
 import akka.japi.Pair;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
 
 public class IslandControl {
 
     public static IslandControl instance = new IslandControl();
 
     public HashMap<String, IslandData> playerIsland = new HashMap<>();
-    public HashMap<String, IslandData> island = new HashMap<>();
+    public HashMap<String, IslandData> islands = new HashMap<>();
     public Pair<Integer, Integer> lastIsland = new Pair<>(0, 0);
 
     private int[] spiralCache = new int[] { 0, 0, 1, 999999999 };
+
+    @SubscribeEvent
+    private void onPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
+        if (!playerIsland.containsKey(
+            event.player.getUniqueID()
+                .toString())) {
+            if (islands.containsKey("0,0")) {
+                playerIsland.put(
+                    event.player.getUniqueID()
+                        .toString(),
+                    islands.get("0,0"));
+            } else {
+                IslandData is = new IslandData(
+                    0,
+                    0,
+                    GeneralConfig.startingDimID,
+                    new String[] { event.player.getUniqueID()
+                        .toString() });
+                islands.put(is.id, is);
+                playerIsland.put(
+                    event.player.getUniqueID()
+                        .toString(),
+                    is);
+            }
+        }
+    }
 
     public Pair<Integer, Integer> nextIslandLocation() {
         // start of spiral is 0, 0
@@ -41,25 +71,25 @@ public class IslandControl {
             for (int[] direction : directions) {
                 int rowDelta = direction[0];
                 int colDelta = direction[1];
-                int steps = Math.min(spiralCache[3], direction[2]); // if cached steps exist, they'll always be less
-
-                boolean completionFlag = false;
+                int steps = Math.max(1, Math.min(spiralCache[3], direction[2])); // if cached steps exist, they'll
+                                                                                 // always be less
 
                 // Move in the current direction for the specified number of steps
                 while (steps > 0) {
                     currentRow += rowDelta;
                     currentCol += colDelta;
 
-                    // Check if current position is the last island generated, if it is, set flag, next one is returned
-                    if (currentRow == x && currentCol == z) {
-                        completionFlag = true;
-                    } else if (completionFlag) {
-                        this.spiralCache = new int[] { currentRow, currentCol, stepSize, --steps };
+                    // Check if previous position is the last island generated
+                    if (currentRow - rowDelta == x && currentCol - colDelta == z) {
+                        this.spiralCache = new int[] { currentRow, currentCol, stepSize, steps };
                         return lastIsland = new Pair<>(currentRow * 8000, currentCol * 8000);
                     }
 
                     steps--;
                 }
+
+                if (Math.abs(currentCol) > 30_000_000 || Math.abs(currentRow) > 30_000_000)
+                    throw new RuntimeException("Whops. Things spiraled out of this world!");
             }
         }
 
