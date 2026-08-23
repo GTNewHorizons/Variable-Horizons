@@ -216,7 +216,13 @@ public class VoidIsland extends VariantLoader {
                             } catch (PlayerNotFoundException e) {
                                 // ignore exception. It just means it's island for sender, but with dimID
                                 // so we just do a new island
-                                createIsland(pSender, Integer.parseInt(args[1]));
+
+                                // wait, nvm, it can just be a misspelled username
+                                try {
+                                    createIsland(pSender, Integer.parseInt(args[1]));
+                                } catch (NumberFormatException ex) {
+                                    sender.addChatMessage(new ChatComponentText("Unknown Player " + args[1] + "."));
+                                }
                             }
                         }
                         case 3 -> createIsland(getPlayer(sender, args[2]));

@@ -10,6 +10,7 @@ import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 
 import akka.japi.Pair;
+import cpw.mods.fml.common.FMLCommonHandler;
 
 public class IslandControlSaveData extends WorldSavedData {
 
@@ -48,6 +49,7 @@ public class IslandControlSaveData extends WorldSavedData {
                 u = players.getStringTagAt(j++);
             }
             island.setPlayers(uuid);
+            IslandControl.instance.islands.put(island.id, island);
             is = islandList.getCompoundTagAt(i++);
         }
 
@@ -82,5 +84,10 @@ public class IslandControlSaveData extends WorldSavedData {
         }
         islands.setTag("islandList", islandList);
         nbt.setTag("islands", islands);
+        FMLCommonHandler.instance()
+            .getMinecraftServerInstance()
+            .worldServerForDimension(0).mapStorage
+                .loadData(IslandControlSaveData.class, IslandControlSaveData.saveDataID)
+                .markDirty();
     }
 }
