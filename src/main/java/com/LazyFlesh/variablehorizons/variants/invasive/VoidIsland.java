@@ -197,6 +197,7 @@ public class VoidIsland extends VariantLoader {
 
             switch (subCommand) {
                 case "join" -> {
+                    // permission level 0, anyone can do
                     if (args.length > 1) {
                         EntityPlayerMP player = getPlayer(sender, args[1]);
 
@@ -245,6 +246,12 @@ public class VoidIsland extends VariantLoader {
                     }
                 }
                 case "create" -> {
+                    // permission level 1, need some kind of perm to do it
+                    // make sure person can actually send command
+                    if (!sender.canCommandSenderUseCommand(1, getCommandName())) {
+                        sender.addChatMessage(new ChatComponentText("Command requires permission level 1 to execute."));
+                        return;
+                    }
                     switch (args.length) {
                         case 2 -> {
                             try {
