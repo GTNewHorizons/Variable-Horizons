@@ -18,8 +18,6 @@ public class IslandControl {
     public HashMap<String, IslandData> islands = new HashMap<>();
     public Pair<Integer, Integer> lastIsland = new Pair<>(0, 0);
 
-    private int[] spiralCache = new int[] { 0, 0, 1 };
-
     @SubscribeEvent
     private void onPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
         if (!playerIsland.containsKey(
@@ -56,9 +54,9 @@ public class IslandControl {
         int z = IslandControl.instance.lastIsland.second() / 8000;
 
         // Current position
-        int currentRow = spiralCache[0];
-        int currentCol = spiralCache[1];
-        int stepSize = spiralCache[2];
+        int currentRow = 0;
+        int currentCol = 0;
+        int stepSize = 1;
 
         boolean flag = x == 0 && z == 0;
 
@@ -89,8 +87,6 @@ public class IslandControl {
                     if (currentRow == x && currentCol == z) {
                         flag = true;
                     } else if (flag) {
-                        // cache the full row. It might take a few loops, but it'll get back to lastIsland
-                        this.spiralCache = new int[] { direction[0], direction[1], direction[2] };
                         return lastIsland = new Pair<>(currentRow * 8000, currentCol * 8000);
                     }
 
