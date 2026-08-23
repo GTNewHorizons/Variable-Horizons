@@ -44,7 +44,7 @@ public class IslandControlSaveData extends WorldSavedData {
                 uuid.add(u);
                 IslandControl.instance.playerIsland.put(u, island);
             }
-            island.setPlayers(uuid.toArray(new String[] {}));
+            island.setPlayers(uuid);
         }
 
         // clear nbt so no clashes/overwrites happen

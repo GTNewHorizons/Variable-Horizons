@@ -1,14 +1,16 @@
 package com.LazyFlesh.variablehorizons.util.islands;
 
+import java.util.List;
+
 public class IslandData {
 
     public String id;
     public int dimID;
     public int x;
     public int z;
-    public String[] players;
+    public List<String> players;
 
-    public IslandData(int x, int z, int dimID, String[] players) {
+    public IslandData(int x, int z, int dimID, List<String> players) {
         this.dimID = dimID;
         this.x = x;
         this.z = z;
@@ -16,7 +18,7 @@ public class IslandData {
         this.id = String.valueOf(x + "," + z);
     }
 
-    public void setPlayers(String[] players) {
+    public void setPlayers(List<String> players) {
         this.players = players;
     }
 

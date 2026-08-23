@@ -1,5 +1,7 @@
 package com.LazyFlesh.variablehorizons.util.islands;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
@@ -33,8 +35,11 @@ public class IslandControl {
                     0,
                     0,
                     GeneralConfig.startingDimID,
-                    new String[] { event.player.getUniqueID()
-                        .toString() });
+                    new ArrayList<>(
+                        Collections.singleton(
+                            event.player.getUniqueID()
+                                .toString())));
+
                 islands.put(is.id, is);
                 playerIsland.put(
                     event.player.getUniqueID()

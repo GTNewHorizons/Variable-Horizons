@@ -171,22 +171,18 @@ public class VoidIsland extends VariantLoader {
                                 player.getUniqueID()
                                     .toString());
                             if (islandOld != null) {
-                                List<String> players = Arrays.asList(islandOld.players);
-                                players.remove(
+                                islandOld.players.remove(
                                     pSender.getUniqueID()
                                         .toString());
-                                islandOld.setPlayers(players.toArray(new String[] {}));
                             }
                             // add to new island
                             IslandControl.instance.playerIsland.replace(
                                 pSender.getUniqueID()
                                     .toString(),
                                 island);
-                            List<String> players2 = Arrays.asList(island.players);
-                            players2.add(
+                            island.players.add(
                                 pSender.getUniqueID()
                                     .toString());
-                            island.setPlayers(players2.toArray(new String[] {}));
 
                             // go to proper dimension
                             if (pSender.dimension != island.dimID) pSender.travelToDimension(island.dimID);
@@ -300,7 +296,7 @@ public class VoidIsland extends VariantLoader {
 
             player.inventory.clearInventory(null, -1);
 
-            player.setPositionAndUpdate(posX, 73, posZ);
+            player.setPositionAndUpdate(posX, 74, posZ);
 
             player.setSpawnChunk(new ChunkCoordinates(posX, 74, posZ), true, dimToTPTo);
 
@@ -308,7 +304,10 @@ public class VoidIsland extends VariantLoader {
                 posX,
                 posZ,
                 dimToTPTo,
-                new String[] { String.valueOf(player.getUniqueID()) });
+                new ArrayList<>(
+                    Collections.singleton(
+                        player.getUniqueID()
+                            .toString())));
 
             // remove from old island
             if (IslandControl.instance.playerIsland.containsKey(
@@ -317,17 +316,17 @@ public class VoidIsland extends VariantLoader {
                 IslandData oldIsland = IslandControl.instance.playerIsland.get(
                     player.getUniqueID()
                         .toString());
-                List<String> players = Arrays.asList(oldIsland.players);
-                players.remove(
+                oldIsland.players.remove(
                     player.getUniqueID()
                         .toString());
-                oldIsland.setPlayers(players.toArray(new String[] {}));
             }
             // add to new
             IslandControl.instance.playerIsland.put(
                 player.getUniqueID()
                     .toString(),
                 newIsland);
+
+            IslandControl.instance.islands.put(newIsland.id, newIsland);
 
             // kill player so the island renders. For some reason it just... doesn't.
             player.setHealth(-1);
