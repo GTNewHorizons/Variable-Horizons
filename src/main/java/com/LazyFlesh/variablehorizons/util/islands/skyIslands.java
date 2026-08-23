@@ -163,6 +163,45 @@ public class skyIslands {
             {"                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "        S        ", "        R        ", "       SSS       ", "       SSS       ", "       SSS       ", "       RRR       ", "       RSR       ", "        S        ", "        S        ", "        S        ", "        R        ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 "},
             {"                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "        O        ", "        S        ", "        S        ", "        S        ", "        S        ", "        R        ", "        S        ", "        S        ", "        R        ", "        S        ", "        R        ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 "}};
     }
-    // spotless:on
 
+    public static Object[][] createIslandThaum() {
+        return new Object[][]{{-6, 17, -3}, // offset x, y, z
+            {'A', GameRegistry.findBlock("Thaumcraft", "blockCosmeticSlabStone"), 1,
+                'B', GameRegistry.findBlock("Thaumcraft", "blockCosmeticSolid"), 6,
+                'C', GameRegistry.findBlock("Thaumcraft", "blockCosmeticSolid"), 11,
+                'D', GameRegistry.findBlock("Thaumcraft", "blockCosmeticSolid"), 12,
+                'E', GameRegistry.findBlock("Thaumcraft", "blockCosmeticSolid"), 15,
+                'F', GameRegistry.findBlock("Thaumcraft", "blockEldritch"), 4,
+                'G', GameRegistry.findBlock("Thaumcraft", "blockEldritch"), 5,
+                'H', GameRegistry.findBlock("Thaumcraft", "blockMagicalLeaves"), 0,
+                'I', GameRegistry.findBlock("Thaumcraft", "blockMagicalLog"), 0,
+                'J', GameRegistry.findBlock("Thaumcraft", "blockStairsEldritch"), 6,
+                'K', GameRegistry.findBlock("chisel", "arcane"), 4,
+                'L', GameRegistry.findBlock("chisel", "arcane"), 7,
+                'M', GameRegistry.findBlock("chisel", "arcane"), 8,
+                'N', GameRegistry.findBlock("chisel", "voidstone2"), 4,
+                'O', GameRegistry.findBlock("chisel", "voidstone2"), 7,
+                'P', Blocks.dirt, 0,
+                'Q', GameRegistry.findBlock("thaumicbases", "eldritchArk"), 0,
+                'R', GameRegistry.findBlock("Thaumcraft", "blockEldritchNothing"), 0,
+                'S', GameRegistry.findBlock("Thaumcraft", "blockStairsEldritch"), 7,
+                'T', GameRegistry.findBlock("Thaumcraft", "blockStairsEldritch"), 4,
+                'U', GameRegistry.findBlock("Thaumcraft", "blockStairsEldritch"), 5,
+                'V', Blocks.chest, 0}, // key, block, meta
+            {"              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "   AAAAAAAA   ", "              ", "              ", "              ", "              "},
+            {"              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "  ADDDDDDDDA  ", "   JTTTTTTS   ", "              ", "              ", "              "},
+            {"              ", "              ", "              ", "    HH        ", "   HHH        ", "              ", "              ", "              ", "              ", "       HH     ", "       HHH    ", "              ", "              ", "              ", "   CC    CC   ", "    C    C    ", "   AC    CA   ", " ADCCQDDQCCDA ", "  JTLLLLLLTS  ", "              ", "              ", "              "},
+            {"              ", "              ", "    H         ", "   HHHH       ", "  HHHHHHHH    ", "    H  HHH    ", "              ", "              ", "        H     ", "      HHHH    ", "      HHHHH   ", "        H     ", "   A      A   ", "   G      G   ", "  CEC    CEC  ", "   R      R   ", "  ARA    ARA  ", "ADCDCQDDQCCCDA", " JTNOOOOOONTS ", "              ", "              ", "              "},
+            {"              ", "     HHH      ", "   HHHHH      ", "  HHHHH H     ", "  HHHHHHHHH   ", "   HIHHHHHH   ", "        H     ", "              ", "       HHH    ", "      HHHHH   ", "      HHHHH   ", "       HIH    ", "              ", "              ", "  CC      CC  ", "  C        C  ", "  CA     VAC  ", "ADCCKBBBBKCCDA", " JLODDDDDDOLS ", "    JTTTTT    ", "              ", "              "},
+            {"      H       ", "    HHHHH     ", "    HHHHHHHH  ", "  HHHHHHHHHH  ", "  HHHIIHHHH   ", "  HHHIIHHHH   ", "  HHHIIIIH    ", "     IIHH     ", "     IIHH     ", "     IIHHHH   ", "     IIHHHH   ", "        HHHH  ", "        I     ", "              ", "              ", "              ", "              ", "ADQQBMFFMBQQDA", " JLODDDDDDOLS ", "    JDDDDS    ", "     JTTT     ", "              "},
+            {"     HHH      ", "    HHHHH H   ", "    HHHHHHHHH ", "   HHHIHHHHHH ", "   HHIIHHHH   ", " HHHHIIIIHH   ", " HHHHIIHH     ", "   H IIHHH    ", "  HHHIIHHH    ", "  HHHIIHHHH   ", "     IIIHHHH  ", "      IIHHHH  ", "      II  H   ", "      II      ", "      II      ", "      II      ", "      II      ", "ADDDBFPPFBDDDA", " JLODDDDDDOLS ", "    JDDDDS    ", "     JRRS     ", "      RR      "},
+            {"      H       ", "    HHHHHHHH  ", "    HHHHHHHHH ", "      H HHHHH ", "  HHH  HHIIH  ", "  HHHH HHH    ", "  HHHHHHH     ", "  HHHHHHHH    ", "  HHHHHHHH    ", " HHHHHHIHHHH  ", "   H  IIHHHH  ", "     IIIHHHH  ", "      IIHHHH  ", "      II      ", "      II      ", "      II      ", "      II      ", "ADDDBFPPFBDDDA", " JLODDDDDDOLS ", "    JDDDDS    ", "     JRRS     ", "      RR      "},
+            {"              ", "     HHH  H   ", "     HHHHHHHH ", "        HHHHH ", "   H      H   ", "   HHH        ", "   HHH H      ", "  HHHHHHH     ", " HHHHHHHHH    ", " HHHHH H  H   ", "  HII  HHHH   ", "     HHHHHH   ", "     HHHHHH   ", "       H      ", "              ", "              ", "              ", "ADQQBMFFMBQQDA", " JLODDDDDDOLS ", "    JDDDDS    ", "     JUUS     ", "              "},
+            {"              ", "              ", "         HHH  ", "         HHH  ", "              ", "    H         ", "    H         ", "   H  HH      ", "  HHHHHHH     ", " HHHHH        ", "   H  HHHH    ", "     HHHHH    ", "     HHHHH    ", "      HHH     ", "  CC      CC  ", "  C        C  ", "  CA      AC  ", "ADCCKBBBBKCCDA", " JLODDDDDDOLS ", "    UUUUUS    ", "              ", "              "},
+            {"              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "   HH         ", "  HHH         ", "       H      ", "     HHHH     ", "   A HHHH A   ", "   G   H  G   ", "  CEC    CEC  ", "   R      R   ", "  ARA    ARA  ", "ADCCCQDDQCCCDA", " UJNOOOOOONSU ", "              ", "              ", "              "},
+            {"              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "      HH      ", "      HH      ", "              ", "   CC    CC   ", "    C    C    ", "   AC    CA   ", " ADCCQDDQCCDA ", "  UJLLLLLLSU  ", "              ", "              ", "              "},
+            {"              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "  ADDDDDDDDA  ", "   UUUUUUUU   ", "              ", "              ", "              "},
+            {"              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "   AAAAAAAA   ", "              ", "              ", "              ", "              "}};
+    }
+    // spotless:on
 }

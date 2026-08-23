@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.enums.Mods.Minecraft;
+import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 
 import java.util.ArrayList;
@@ -42,7 +43,6 @@ import gregtech.api.util.GTModHandler;
 public class VoidIsland extends VariantLoader {
 
     private static ItemStack[] createChestOW() {
-
         return new ItemStack[] { new ItemStack(Items.lava_bucket), new ItemStack(Blocks.ice, 2),
             new ItemStack(Items.reeds), new ItemStack(Items.melon_seeds), new ItemStack(Items.pumpkin_seeds),
             new ItemStack(Blocks.cactus), new ItemStack(Items.flint, 5) };
@@ -81,6 +81,13 @@ public class VoidIsland extends VariantLoader {
             GTModHandler.getModItem(GalacticraftCore.ID, "item.basicItem", 1, 20) };
     }
 
+    private static ItemStack[] createChestThaum() {
+        return new ItemStack[] { new ItemStack(Items.lava_bucket), new ItemStack(Blocks.ice, 2),
+            new ItemStack(Items.reeds), GTModHandler.getModItem(Thaumcraft.ID, "blockCustomPlant", 2, 4),
+            GTModHandler.getModItem(Thaumcraft.ID, "blockCustomPlant", 4, 5), new ItemStack(Blocks.cactus),
+            new ItemStack(Items.flint, 5) };
+    }
+
     @Override
     public void loadVariant(VariantNames... activeVariants) {
         VariantNames.VOID_ISLAND.hasLoaded = true;
@@ -88,17 +95,20 @@ public class VoidIsland extends VariantLoader {
 
     public static Object[][] getIsland(int dimID) {
         switch (dimID) {
-            case (-1) -> {
+            case -1 -> {
                 return skyIslands.createIslandNether();
             }
             case 100 -> {
                 return skyIslands.createIslandDD();
             }
-            case (1) -> {
+            case 1 -> {
                 return skyIslands.createIslandEnd();
             }
             case 25, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52, 53, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88 -> {
                 return skyIslands.createIslandSpaceStation();
+            }
+            case 50, 60, 69, 173 -> {
+                return skyIslands.createIslandThaum();
             }
             default -> {
                 return skyIslands.createIslandOW();
@@ -119,6 +129,9 @@ public class VoidIsland extends VariantLoader {
             }
             case 25, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52, 53, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88 -> {
                 return createChestSpaceStation();
+            }
+            case 50, 60, 69, 173 -> {
+                return createChestThaum();
             }
             default -> {
                 return createChestOW();
