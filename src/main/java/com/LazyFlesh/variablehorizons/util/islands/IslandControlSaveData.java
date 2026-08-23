@@ -13,6 +13,8 @@ import akka.japi.Pair;
 
 public class IslandControlSaveData extends WorldSavedData {
 
+    public static final String saveDataID = "VHIslands";
+
     public IslandControlSaveData(String worldName) {
         super(worldName);
     }
@@ -32,19 +34,21 @@ public class IslandControlSaveData extends WorldSavedData {
         }
 
         int i = 0;
-        while (islandList.getCompoundTagAt(i) != null) {
-            NBTTagCompound is = islandList.getCompoundTagAt(i++);
+        NBTTagCompound is = islandList.getCompoundTagAt(i++);
+        while (is != null && !is.hasNoTags()) {
             NBTTagList players = is.getTagList("players", Constants.NBT.TAG_STRING);
 
             IslandData island = new IslandData(is.getInteger("x"), is.getInteger("z"), is.getInteger("dimID"), null);
             int j = 0;
             List<String> uuid = new ArrayList<>();
-            while (players.getStringTagAt(j) != null) {
-                String u = players.getStringTagAt(j++);
+            String u = players.getStringTagAt(j++);
+            while (u != null && !u.isEmpty()) {
                 uuid.add(u);
                 IslandControl.instance.playerIsland.put(u, island);
+                u = players.getStringTagAt(j++);
             }
             island.setPlayers(uuid);
+            is = islandList.getCompoundTagAt(i++);
         }
 
         // clear nbt so no clashes/overwrites happen
@@ -76,7 +80,7 @@ public class IslandControlSaveData extends WorldSavedData {
             is.setInteger("dimID", data.dimID);
             islandList.appendTag(is);
         }
-        nbt.setTag("islandList", islandList);
+        islands.setTag("islandList", islandList);
         nbt.setTag("islands", islands);
     }
 }

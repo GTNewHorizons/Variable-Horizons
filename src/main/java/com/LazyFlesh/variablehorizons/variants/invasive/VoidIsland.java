@@ -30,6 +30,7 @@ import net.minecraftforge.fluids.ItemFluidContainer;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.util.islands.IslandControl;
+import com.LazyFlesh.variablehorizons.util.islands.IslandControlSaveData;
 import com.LazyFlesh.variablehorizons.util.islands.IslandData;
 import com.LazyFlesh.variablehorizons.util.islands.skyIslands;
 import com.LazyFlesh.variablehorizons.util.randomUtil;
@@ -37,6 +38,7 @@ import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
 import akka.japi.Pair;
+import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.util.GTModHandler;
 
 public class VoidIsland extends VariantLoader {
@@ -196,6 +198,12 @@ public class VoidIsland extends VariantLoader {
                                 new ChatComponentText(
                                     "Joined " + player.getDisplayName()
                                         + "'s island. Spawnpoint set to island origin."));
+
+                            FMLCommonHandler.instance()
+                                .getMinecraftServerInstance()
+                                .worldServerForDimension(0).mapStorage
+                                    .loadData(IslandControlSaveData.class, IslandControlSaveData.saveDataID)
+                                    .markDirty();
                         }
 
                     }
@@ -327,6 +335,11 @@ public class VoidIsland extends VariantLoader {
                 newIsland);
 
             IslandControl.instance.islands.put(newIsland.id, newIsland);
+            FMLCommonHandler.instance()
+                .getMinecraftServerInstance()
+                .worldServerForDimension(0).mapStorage
+                    .loadData(IslandControlSaveData.class, IslandControlSaveData.saveDataID)
+                    .markDirty();
 
             // kill player so the island renders. For some reason it just... doesn't.
             player.setHealth(-1);

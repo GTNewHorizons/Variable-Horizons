@@ -1,11 +1,13 @@
 package com.LazyFlesh.variablehorizons;
 
+import com.LazyFlesh.variablehorizons.util.islands.IslandControl;
 import com.LazyFlesh.variablehorizons.variants.DemonInvasionBlacklistCommand;
 import com.LazyFlesh.variablehorizons.variants.VariantCommands;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -37,5 +39,12 @@ public class CommonProxy {
         event.registerServerCommand(new DemonInvasionBlacklistCommand());
         if (VariantNames.activeContains(VariantNames.VOID_ISLAND.id))
             event.registerServerCommand(new VoidIsland.IslandCommands());
+
+        FMLCommonHandler.instance()
+            .bus()
+            .register(TickHandlerServer.instance);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(IslandControl.instance);
     }
 }
