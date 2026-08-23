@@ -6,8 +6,11 @@ import java.util.List;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
+
+import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
 import akka.japi.Pair;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -89,5 +92,20 @@ public class IslandControlSaveData extends WorldSavedData {
             .worldServerForDimension(0).mapStorage
                 .loadData(IslandControlSaveData.class, IslandControlSaveData.saveDataID)
                 .markDirty();
+    }
+
+    public static void init() {
+        if (VariantNames.activeContains(VariantNames.VOID_ISLAND.id)) {
+            final World world = FMLCommonHandler.instance()
+                .getMinecraftServerInstance()
+                .worldServerForDimension(0);
+            IslandControlSaveData data = (IslandControlSaveData) world.mapStorage
+                .loadData(IslandControlSaveData.class, IslandControlSaveData.saveDataID);
+            if (data == null) {
+                data = new IslandControlSaveData(IslandControlSaveData.saveDataID);
+                world.mapStorage.setData(IslandControlSaveData.saveDataID, data);
+                data.markDirty();
+            }
+        }
     }
 }

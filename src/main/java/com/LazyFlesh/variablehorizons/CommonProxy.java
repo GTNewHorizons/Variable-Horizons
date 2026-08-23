@@ -1,6 +1,7 @@
 package com.LazyFlesh.variablehorizons;
 
 import com.LazyFlesh.variablehorizons.util.islands.IslandControl;
+import com.LazyFlesh.variablehorizons.util.islands.IslandControlSaveData;
 import com.LazyFlesh.variablehorizons.variants.DemonInvasionBlacklistCommand;
 import com.LazyFlesh.variablehorizons.variants.VariantCommands;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
@@ -12,6 +13,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 public class CommonProxy {
@@ -46,5 +48,9 @@ public class CommonProxy {
         FMLCommonHandler.instance()
             .bus()
             .register(IslandControl.instance);
+    }
+
+    public void serverStarted(FMLServerStartedEvent event) {
+        IslandControlSaveData.init();
     }
 }
