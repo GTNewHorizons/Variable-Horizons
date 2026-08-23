@@ -7,6 +7,7 @@ import java.util.HashMap;
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 
 import akka.japi.Pair;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 
@@ -19,7 +20,7 @@ public class IslandControl {
     public Pair<Integer, Integer> lastIsland = new Pair<>(0, 0);
 
     @SubscribeEvent
-    private void onPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
+    public void onPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
         if (!playerIsland.containsKey(
             event.player.getUniqueID()
                 .toString())) {
@@ -45,6 +46,11 @@ public class IslandControl {
                     is);
             }
         }
+        FMLCommonHandler.instance()
+            .getMinecraftServerInstance()
+            .worldServerForDimension(0).mapStorage
+                .loadData(IslandControlSaveData.class, IslandControlSaveData.saveDataID)
+                .markDirty();
     }
 
     public Pair<Integer, Integer> nextIslandLocation() {

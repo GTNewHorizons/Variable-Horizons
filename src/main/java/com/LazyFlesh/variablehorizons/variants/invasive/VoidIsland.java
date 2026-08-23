@@ -1,11 +1,17 @@
 package com.LazyFlesh.variablehorizons.variants.invasive;
 
 import static gregtech.api.enums.Mods.BiomesOPlenty;
+import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.enums.Mods.Minecraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TinkerConstruct;
+import static gregtech.api.enums.Mods.UniversalSingularities;
+import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeConstants.DEFC_CASING_TIER;
+import static kubatech.loaders.DEFCRecipes.fusionCraftingRecipes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,6 +37,7 @@ import net.minecraftforge.fluids.ItemFluidContainer;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.util.islands.IslandControl;
+import com.LazyFlesh.variablehorizons.util.islands.IslandControlSaveData;
 import com.LazyFlesh.variablehorizons.util.islands.IslandData;
 import com.LazyFlesh.variablehorizons.util.islands.skyIslands;
 import com.LazyFlesh.variablehorizons.util.randomUtil;
@@ -38,6 +45,10 @@ import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
 import akka.japi.Pair;
+import cpw.mods.fml.common.FMLCommonHandler;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 
 public class VoidIsland extends VariantLoader {
@@ -91,6 +102,20 @@ public class VoidIsland extends VariantLoader {
     @Override
     public void loadVariant(VariantNames... activeVariants) {
         VariantNames.VOID_ISLAND.hasLoaded = true;
+
+        // recipes for chaos shard if end is a void (the other dim resources are not block-dependent)
+        if (randomUtil.generateVoidInThisDim(1)) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.ChaosLocator.get(1),
+                    // Awakened Draconium Singularity
+                    getModItem(UniversalSingularities.ID, "universal.draconicEvolution.singularity", 1, 1))
+                .itemOutputs(getModItem(DraconicEvolution.ID, "chaosShard", 1, 0))
+                .duration(100 * SECONDS)
+                .eut(TierEU.RECIPE_UMV)
+                .metadata(DEFC_CASING_TIER, 4)
+                .addTo(fusionCraftingRecipes);
+        }
     }
 
     public static Object[][] getIsland(int dimID) {
@@ -209,6 +234,12 @@ public class VoidIsland extends VariantLoader {
                                 new ChatComponentText(
                                     "Joined " + player.getDisplayName()
                                         + "'s island. Spawnpoint set to island origin."));
+
+                            FMLCommonHandler.instance()
+                                .getMinecraftServerInstance()
+                                .worldServerForDimension(0).mapStorage
+                                    .loadData(IslandControlSaveData.class, IslandControlSaveData.saveDataID)
+                                    .markDirty();
                         }
 
                     }
@@ -221,7 +252,13 @@ public class VoidIsland extends VariantLoader {
                             } catch (PlayerNotFoundException e) {
                                 // ignore exception. It just means it's island for sender, but with dimID
                                 // so we just do a new island
-                                createIsland(pSender, Integer.parseInt(args[1]));
+
+                                // wait, nvm, it can just be a misspelled username
+                                try {
+                                    createIsland(pSender, Integer.parseInt(args[1]));
+                                } catch (NumberFormatException ex) {
+                                    sender.addChatMessage(new ChatComponentText("Unknown Player " + args[1] + "."));
+                                }
                             }
                         }
                         case 3 -> createIsland(getPlayer(sender, args[2]));
@@ -340,6 +377,11 @@ public class VoidIsland extends VariantLoader {
                 newIsland);
 
             IslandControl.instance.islands.put(newIsland.id, newIsland);
+            FMLCommonHandler.instance()
+                .getMinecraftServerInstance()
+                .worldServerForDimension(0).mapStorage
+                    .loadData(IslandControlSaveData.class, IslandControlSaveData.saveDataID)
+                    .markDirty();
 
             // kill player so the island renders. For some reason it just... doesn't.
             player.setHealth(-1);
