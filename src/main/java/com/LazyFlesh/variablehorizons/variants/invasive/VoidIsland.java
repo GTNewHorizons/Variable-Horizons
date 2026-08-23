@@ -1,10 +1,16 @@
 package com.LazyFlesh.variablehorizons.variants.invasive;
 
 import static gregtech.api.enums.Mods.BiomesOPlenty;
+import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.enums.Mods.Minecraft;
 import static gregtech.api.enums.Mods.TinkerConstruct;
+import static gregtech.api.enums.Mods.UniversalSingularities;
+import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeConstants.DEFC_CASING_TIER;
+import static kubatech.loaders.DEFCRecipes.fusionCraftingRecipes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,6 +45,9 @@ import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
 import akka.japi.Pair;
 import cpw.mods.fml.common.FMLCommonHandler;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 
 public class VoidIsland extends VariantLoader {
@@ -86,6 +95,20 @@ public class VoidIsland extends VariantLoader {
     @Override
     public void loadVariant(VariantNames... activeVariants) {
         VariantNames.VOID_ISLAND.hasLoaded = true;
+
+        // recipes for chaos shard if end is a void (the other dim resources are not block-dependent)
+        if (randomUtil.generateVoidInThisDim(1)) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.ChaosLocator.get(1),
+                    // Awakened Draconium Singularity
+                    getModItem(UniversalSingularities.ID, "universal.draconicEvolution.singularity", 1, 1))
+                .itemOutputs(getModItem(DraconicEvolution.ID, "chaosShard", 1, 0))
+                .duration(100 * SECONDS)
+                .eut(TierEU.RECIPE_UMV)
+                .metadata(DEFC_CASING_TIER, 4)
+                .addTo(fusionCraftingRecipes);
+        }
     }
 
     public static Object[][] getIsland(int dimID) {
