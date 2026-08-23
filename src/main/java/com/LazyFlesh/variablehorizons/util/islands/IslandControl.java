@@ -18,7 +18,7 @@ public class IslandControl {
     public HashMap<String, IslandData> islands = new HashMap<>();
     public Pair<Integer, Integer> lastIsland = new Pair<>(0, 0);
 
-    private int[] spiralCache = new int[] { 0, 0, 1, 999999999 };
+    private int[] spiralCache = new int[] { 0, 0, 1 };
 
     @SubscribeEvent
     private void onPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
@@ -60,6 +60,8 @@ public class IslandControl {
         int currentCol = spiralCache[1];
         int stepSize = spiralCache[2];
 
+        boolean flag = x == 0 && z == 0;
+
         // got initial code from https://algo.monster/liteproblems/885
         // Spiral outward with increasing step sizes
         // Step size increases by 2 each complete rotation (1, 1, 3, 3, 5, 5, ...)
@@ -76,8 +78,7 @@ public class IslandControl {
             for (int[] direction : directions) {
                 int rowDelta = direction[0];
                 int colDelta = direction[1];
-                int steps = Math.max(1, Math.min(spiralCache[3], direction[2])); // if cached steps exist, they'll
-                                                                                 // always be less
+                int steps = direction[2];
 
                 // Move in the current direction for the specified number of steps
                 while (steps > 0) {
@@ -85,15 +86,18 @@ public class IslandControl {
                     currentCol += colDelta;
 
                     // Check if previous position is the last island generated
-                    if (currentRow - rowDelta == x && currentCol - colDelta == z) {
-                        this.spiralCache = new int[] { currentRow, currentCol, stepSize, steps };
+                    if (currentRow == x && currentCol == z) {
+                        flag = true;
+                    } else if (flag) {
+                        // cache the full row. It might take a few loops, but it'll get back to lastIsland
+                        this.spiralCache = new int[] { direction[0], direction[1], direction[2] };
                         return lastIsland = new Pair<>(currentRow * 8000, currentCol * 8000);
                     }
 
                     steps--;
                 }
 
-                if (Math.abs(currentCol) > 30_000_000 || Math.abs(currentRow) > 30_000_000)
+                if (Math.abs(currentCol * 8000) > 30_000_000 || Math.abs(currentRow * 8000) > 30_000_000)
                     throw new RuntimeException("Whops. Things spiraled out of this world!");
             }
         }
