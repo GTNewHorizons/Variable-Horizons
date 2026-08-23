@@ -1,4 +1,4 @@
-package com.LazyFlesh.variablehorizons.util;
+package com.LazyFlesh.variablehorizons.util.islands;
 
 import net.minecraft.init.Blocks;
 

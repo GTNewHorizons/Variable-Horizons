@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -21,8 +22,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -30,11 +29,14 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.ItemFluidContainer;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+import com.LazyFlesh.variablehorizons.util.islands.IslandControl;
+import com.LazyFlesh.variablehorizons.util.islands.IslandData;
+import com.LazyFlesh.variablehorizons.util.islands.skyIslands;
 import com.LazyFlesh.variablehorizons.util.randomUtil;
-import com.LazyFlesh.variablehorizons.util.skyIslands;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
+import akka.japi.Pair;
 import gregtech.api.util.GTModHandler;
 
 public class VoidIsland extends VariantLoader {
@@ -158,61 +160,63 @@ public class VoidIsland extends VariantLoader {
             switch (subCommand) {
                 case "join" -> {
                     if (args.length > 1) {
-                        // go to proper dimension
-                        if (pSender.dimension != GeneralConfig.startingDimID)
-                            pSender.travelToDimension(GeneralConfig.startingDimID);
-
-                        pSender.inventory.clearInventory(null, -1);
-
                         EntityPlayerMP player = getPlayer(sender, args[1]);
 
-                        Vec3 pos = player.getPosition(0F);
-                        pSender.setPositionAndUpdate(pos.xCoord, pos.yCoord, pos.zCoord);
-                        pSender.setSpawnChunk(player.playerLocation, true, GeneralConfig.startingDimID);
+                        IslandData island = IslandControl.instance.playerIsland.get(
+                            player.getUniqueID()
+                                .toString());
+                        if (island != null) {
+                            // remove from old island
+                            IslandData islandOld = IslandControl.instance.playerIsland.get(
+                                player.getUniqueID()
+                                    .toString());
+                            List<String> players = Arrays.asList(islandOld.players);
+                            players.remove(
+                                pSender.getUniqueID()
+                                    .toString());
+                            islandOld.setPlayers(players.toArray(new String[] {}));
 
-                        sender.addChatMessage(
-                            new ChatComponentText(
-                                "Joined " + player.getDisplayName() + ". Spawnpoint set to their position."));
+                            // add to new island
+                            IslandControl.instance.playerIsland.replace(
+                                pSender.getUniqueID()
+                                    .toString(),
+                                island);
+                            List<String> players2 = Arrays.asList(island.players);
+                            players.add(
+                                pSender.getUniqueID()
+                                    .toString());
+                            island.setPlayers(players2.toArray(new String[] {}));
+
+                            // go to proper dimension
+                            if (pSender.dimension != island.dimID) pSender.travelToDimension(island.dimID);
+
+                            pSender.inventory.clearInventory(null, -1);
+
+                            pSender.setPositionAndUpdate(island.x, 75, island.z);
+                            pSender.setSpawnChunk(player.playerLocation, true, island.dimID);
+
+                            sender.addChatMessage(
+                                new ChatComponentText(
+                                    "Joined " + player.getDisplayName()
+                                        + "'s island. Spawnpoint set to island origin."));
+                        }
 
                     }
                 }
                 case "create" -> {
-                    int i = 50000 + pSender.getEntityWorld().rand.nextInt(10000);
-
-                    Vec3 pos = pSender.getPosition(0F);
-
-                    // go to proper dimension
-                    if (pSender.dimension != GeneralConfig.startingDimID)
-                        pSender.travelToDimension(GeneralConfig.startingDimID);
-
-                    WorldServer dimProvider = pSender.mcServer.worldServerForDimension(GeneralConfig.startingDimID);
-
-                    // i dont care if it exists or not, load it so stuff can happen in it!
-                    int chunkX = (int) (pos.xCoord + i) >> 4;
-                    int chunkZ = (int) (pos.zCoord + i) >> 4;
-                    IChunkProvider chunkProvider = dimProvider.getChunkProvider();
-
-                    for (int cx = -1; cx <= 1; cx++) {
-                        for (int cz = -1; cz <= 1; cz++) {
-                            chunkProvider.loadChunk(chunkX + cx, chunkZ + cz);
+                    switch (args.length) {
+                        case 2 -> {
+                            try {
+                                createIsland(getPlayer(sender, args[1]));
+                            } catch (PlayerNotFoundException e) {
+                                // ignore exception. It just means it's island for sender, but with dimID
+                                // so we just do a new island
+                                createIsland(pSender, Integer.parseInt(args[1]));
+                            }
                         }
+                        case 3 -> createIsland(getPlayer(sender, args[2]));
+                        default -> createIsland(pSender);
                     }
-
-                    randomUtil.generateVoidIsland(
-                        new ChunkCoordinates((int) (pos.xCoord + i), 71, (int) (pos.zCoord + i)),
-                        dimProvider,
-                        GeneralConfig.startingDimID);
-
-                    pSender.inventory.clearInventory(null, -1);
-
-                    pSender.setPositionAndUpdate(pos.xCoord + i, 72, pos.zCoord + i);
-
-                    pSender.setSpawnChunk(
-                        new ChunkCoordinates((int) (pos.xCoord + i), 72, (int) (pos.zCoord + i)),
-                        true,
-                        GeneralConfig.startingDimID);
-
-                    pSender.attackEntityFrom(DamageSource.outOfWorld, Float.MAX_VALUE);
                 }
             }
         }
@@ -228,7 +232,7 @@ public class VoidIsland extends VariantLoader {
                     .forEach(completions::add);
             } else if (args.length == 2) {
                 String subCommand = args[0].toLowerCase();
-                if ("join".equals(subCommand)) {
+                if ("join".equals(subCommand) || "create".equals(subCommand)) {
                     Arrays.stream(
                         MinecraftServer.getServer()
                             .getAllUsernames())
@@ -245,10 +249,73 @@ public class VoidIsland extends VariantLoader {
             sender.addChatMessage(new ChatComponentText(" Subcommands:"));
             sender.addChatMessage(
                 new ChatComponentText(
-                    "  join <player name> - CLEARS YOUR INVENTORY, sets your spawn, and teleports you to that player."));
+                    "   join <player name> - CLEARS YOUR INVENTORY, sets your spawn, and teleports you to that player."));
             sender.addChatMessage(
                 new ChatComponentText(
-                    "  create - Creates a new island randomly (at least 5,000 blocks away) in the spawn dimension and sets your spawn there."));
+                    "   create - Creates a new island in the spawn dimension and sets your spawn there."));
+            sender.addChatMessage(
+                new ChatComponentText(
+                    "      create <dimID> - Creates a new island in that dimension, or if dimlocked, of that dimension."));
+            sender.addChatMessage(
+                new ChatComponentText("      create <player name> - Creates a new island for that player."));
+            sender.addChatMessage(
+                new ChatComponentText(
+                    "      create <player name> <dimID> - Creates a new island in that dimension, or if dimlocked, of that dimension for player <player name>."));
+        }
+
+        private void createIsland(EntityPlayerMP player) {
+            // generate island in spawn dim in next valid position
+            createIsland(player, GeneralConfig.startingDimID);
+        }
+
+        private void createIsland(EntityPlayerMP player, int dimID) {
+            int dimToTPTo = dimID;
+            if (VariantNames.activeContains(VariantNames.DIMLOCKED.id)) {
+                dimToTPTo = GeneralConfig.startingDimID;
+            }
+
+            // go to proper dimension
+            if (player.dimension != dimToTPTo) player.travelToDimension(dimToTPTo);
+
+            WorldServer dimProvider = player.mcServer.worldServerForDimension(dimToTPTo);
+
+            Pair<Integer, Integer> pos = IslandControl.instance.nextIslandLocation();
+            int posX = pos.first();
+            int posZ = pos.second();
+
+            // Load chunks so stuff can happen in them
+            int chunkX = posX >> 4;
+            int chunkZ = posZ >> 4;
+            IChunkProvider chunkProvider = dimProvider.getChunkProvider();
+
+            for (int cx = -1; cx <= 1; cx++) {
+                for (int cz = -1; cz <= 1; cz++) {
+                    chunkProvider.loadChunk(chunkX + cx, chunkZ + cz);
+                }
+            }
+
+            // dimProvider is the dimension its being built in, dimID is the island type
+            randomUtil.generateVoidIsland(new ChunkCoordinates(), dimProvider, dimID);
+
+            player.inventory.clearInventory(null, -1);
+
+            player.setPositionAndUpdate(posX, 73, posZ);
+
+            player.setSpawnChunk(new ChunkCoordinates(posX, 72, posZ), true, dimToTPTo);
+
+            IslandData newIsland = new IslandData(
+                posX,
+                posZ,
+                dimToTPTo,
+                new String[] { String.valueOf(player.getUniqueID()) });
+
+            IslandControl.instance.playerIsland.put(
+                player.getUniqueID()
+                    .toString(),
+                newIsland);
+
+            // kill player so the island renders. For some reason it just... doesn't.
+            player.setHealth(-1);
         }
     }
 }
