@@ -51,7 +51,8 @@ public enum Mixins implements IMixins {
     ALLOW_RESPAWN_IN_DIMENSION(new MixinBuilder("Allow respawning in another dimension")
         .addCommonMixins("MixinWorldProvider_AllowRespawnInDimension")
         .setApplyIf(
-            () -> VariantNames.activeContains(VariantNames.CUSTOM_DIM_START.id) && !GeneralConfig.disableVariants)
+            () -> (VariantNames.activeContains(VariantNames.CUSTOM_DIM_START.id)
+                || VariantNames.activeContains(VariantNames.VOID_ISLAND.id)) && !GeneralConfig.disableVariants)
         .setPhase(Phase.EARLY)),
     SET_INITIAL_SPAWN_DIMENSION(new MixinBuilder("Set spawn dimension to another dimension")
         .addCommonMixins("MixinServerConfigurationManager_ChangeInitialSpawnDimension")
