@@ -20,4 +20,11 @@ public class InfinitePower extends VariantLoader implements IRuntimeVariant {
             GlobalVariableStorage.GlobalEnergy.replace(uuid, infinitePowaaaaaaahhhhh);
         }
     }
+
+    @Override
+    public void variantRecipes(VariantNames... activeVariants) {
+        // recipes for each wireless hatch, 1 to 1 conversion from normal e hatch
+        // skip adding dynamo to wireless dynamo, since pointless
+
+    }
 }

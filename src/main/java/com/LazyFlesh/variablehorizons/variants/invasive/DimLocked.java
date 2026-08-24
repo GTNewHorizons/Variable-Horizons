@@ -13,6 +13,12 @@ import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.DEFC_CASING_TIER;
 import static kubatech.loaders.DEFCRecipes.fusionCraftingRecipes;
 
+import java.util.Arrays;
+
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.util.ChatComponentText;
+
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
@@ -42,12 +48,10 @@ public class DimLocked extends VariantLoader {
             newBlacklist = new int[] { 0 };
         }
         AlchemicalWizardry.demonRitualDimensionBlacklist = newBlacklist;
-
-        registerDimlockedRecipes();
     }
 
-    private void registerDimlockedRecipes() {
-
+    @Override
+    public void variantRecipes(VariantNames... activeVariants) {
         // Barnarda C sapling
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -100,4 +104,29 @@ public class DimLocked extends VariantLoader {
                 .addTo(fusionCraftingRecipes);
         }
     }
+
+    public static class DemonInvasionBlacklistCommand extends CommandBase {
+
+        @Override
+        public String getCommandName() {
+            return "DemonInvasionBlacklist";
+        }
+
+        @Override
+        public String getCommandUsage(ICommandSender sender) {
+            return "/demoninvasionblacklist";
+        }
+
+        @Override
+        public void processCommand(ICommandSender sender, String[] args) {
+            int[] blacklist = AlchemicalWizardry.demonRitualDimensionBlacklist;
+            sender.addChatMessage(new ChatComponentText("Blood Magic demon blacklist: " + Arrays.toString(blacklist)));
+        }
+
+        @Override
+        public int getRequiredPermissionLevel() {
+            return 0;
+        }
+    }
+
 }
