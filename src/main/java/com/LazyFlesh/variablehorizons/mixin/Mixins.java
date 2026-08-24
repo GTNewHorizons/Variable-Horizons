@@ -36,18 +36,21 @@ public enum Mixins implements IMixins {
             .setPhase(Phase.EARLY)),
     DISABLE_WORLD_TYPE_CHUNK_POPULATION(
         new MixinBuilder("Disable chunk population tied to chunk generation (ores/structure)")
-            .addCommonMixins("MixinChunkProviderServer_DisablePopulation")
+            .addCommonMixins("MixinChunkProviderServer_DisablePopulation", "AccessorChunkProviderGenerate")
             .setApplyIf(
                 () -> (VariantNames.activeContains(VariantNames.VOID_WORLD.id)
                     || VariantNames.activeContains(VariantNames.VOID_ISLAND.id)
-                    || VariantNames.activeContains(VariantNames.SUPERFLAT.id)) && !GeneralConfig.disableVariants)
+                    || (VariantNames.activeContains(VariantNames.SUPERFLAT.id)
+                        && !GeneralConfig.allowSuperflatPopulation))
+                    && !GeneralConfig.disableVariants)
             .setPhase(Phase.EARLY)),
     DISABLE_MODDED_CHUNK_POPULATION(new MixinBuilder("Disable all other mod chunk population (e.g. Natura clouds)")
         .addCommonMixins("MixinChunkProviderServer_DisableModGeneration")
         .setApplyIf(
             () -> (VariantNames.activeContains(VariantNames.VOID_WORLD.id)
                 || VariantNames.activeContains(VariantNames.VOID_ISLAND.id)
-                || VariantNames.activeContains(VariantNames.SUPERFLAT.id)) && !GogConfig.dragonTime
+                || (VariantNames.activeContains(VariantNames.SUPERFLAT.id) && !GeneralConfig.allowSuperflatPopulation))
+                && !GogConfig.dragonTime
                 && !GeneralConfig.disableVariants)
         .setPhase(Phase.EARLY)),
     SUPERFLAT_CHUNK_TERRAIN_GENERATION(new MixinBuilder()

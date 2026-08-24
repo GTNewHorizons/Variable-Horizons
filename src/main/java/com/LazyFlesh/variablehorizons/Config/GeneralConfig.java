@@ -31,4 +31,8 @@ public class GeneralConfig {
     @Config.DefaultFloat(1f)
     public static float efficiencyMultiplier;
 
+    @Config.Comment("Should Superflat allow all structures and foliage to generate (villages are always generated)")
+    @Config.DefaultBoolean(false)
+    public static boolean allowSuperflatPopulation;
+
 }

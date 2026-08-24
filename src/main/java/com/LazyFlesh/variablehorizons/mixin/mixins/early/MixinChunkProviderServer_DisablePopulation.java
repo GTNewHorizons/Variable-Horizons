@@ -1,9 +1,13 @@
 package com.LazyFlesh.variablehorizons.mixin.mixins.early;
 
+import java.util.Random;
+
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.ChunkProviderGenerate;
 import net.minecraft.world.gen.ChunkProviderServer;
+import net.minecraft.world.gen.structure.MapGenVillage;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -30,7 +34,20 @@ public class MixinChunkProviderServer_DisablePopulation {
         method = "populate(Lnet/minecraft/world/chunk/IChunkProvider;II)V")
     private void variablehorizons$ignoreChunkPopulation(IChunkProvider chunkProvider, IChunkProvider chunkProvider2,
         int chunkX, int chunkZ) {
-        if (IS_SUPERFLAT_ACTIVE) return;
+        if (IS_SUPERFLAT_ACTIVE) {
+            if (chunkProvider instanceof ChunkProviderGenerate) {
+                MapGenVillage villageGen = ((AccessorChunkProviderGenerate) chunkProvider).getVillageGenerator();
+
+                Random rand = new Random();
+                rand.setSeed(this.worldObj.getSeed());
+                long k = rand.nextLong() / 2L * 2L + 1L;
+                long l = rand.nextLong() / 2L * 2L + 1L;
+                rand.setSeed((long) chunkX * k + (long) chunkZ * l ^ this.worldObj.getSeed());
+
+                villageGen.generateStructuresInChunk(this.worldObj, rand, chunkX, chunkZ);
+            }
+            return;
+        }
         if (randomUtil.generateVoidInThisDim(worldObj.provider.dimensionId)) {
             if (randomUtil.voidIslandVoidCheck(worldObj.provider.dimensionId)) {
                 ChunkCoordinates spawn = this.worldObj.getSpawnPoint();
@@ -41,10 +58,8 @@ public class MixinChunkProviderServer_DisablePopulation {
                     randomUtil.generateVoidIsland(spawn, worldObj, worldObj.provider.dimensionId);
                 }
             }
-
             return;
         }
         chunkProvider.populate(chunkProvider2, chunkX, chunkZ);
     }
-
 }
