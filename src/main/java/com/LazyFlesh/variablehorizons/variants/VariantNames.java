@@ -34,6 +34,7 @@ public enum VariantNames {
     ALTERED_EFFICIENCY("ALTERED_EFFICIENCY"),
     INFINITE_POWER("INFINITE_POWER", new InfinitePower()),
     CUSTOM_DIM_START("CUSTOM_DIM_START", new DiffDimStart()), // sets a different dim as the spawn dimension instead of OW
+    SUPERFLAT("SUPERFLAT", new VariantNames[]{ VOID_WORLD, VOID_ISLAND }),
 
     // full variants
     // i.e. defines both world type and recipes
@@ -42,7 +43,7 @@ public enum VariantNames {
     NORMAL("NORMAL", true, new VariantNames[] {}, new VariantNames[] {}), // does nothing
 
     GARDEN_OF_GRIND("GARDEN_OF_GRIND", new GardenOfGrind(),
-        new VariantNames[] { VOID_WORLD, NO_RECIPE_ADDITIONS, NO_ROCKET }, new VariantNames[] {}),
+        new VariantNames[] { VOID_WORLD, NO_RECIPE_ADDITIONS, NO_ROCKET }, new VariantNames[] { SUPERFLAT }),
 
     DIMLOCKED("DIMLOCKED", new DimLocked(), new VariantNames[] { CUSTOM_DIM_START, NO_ROCKET },
         new VariantNames[] { NO_RECIPE_ADDITIONS }),
@@ -95,18 +96,29 @@ public enum VariantNames {
         this.compositionVariant = false;
     }
 
+    VariantNames(String id, VariantNames[] incompatible) {
+        this.id = id;
+        this.compositionVariant = false;
+        if (incompatible.length != 0) {
+            this.incompatible.addAll(Arrays.asList(incompatible));
+            for (VariantNames i : incompatible) {
+                addIncompatibility(i, this);
+            }
+        }
+    }
+
     VariantNames(String id, boolean compositionVariant, VariantNames[] composedOf, VariantNames[] incompatible) {
         this.id = id;
         this.compositionVariant = compositionVariant;
 
         if (incompatible.length != 0) {
-            this.incompatible = Arrays.asList(incompatible);
+            this.incompatible.addAll(Arrays.asList(incompatible));
             for (VariantNames i : incompatible) {
                 addIncompatibility(i, this);
             }
         }
         if (composedOf.length != 0) {
-            this.composedOf = Arrays.asList(composedOf);
+            this.composedOf.addAll(Arrays.asList(composedOf));
             for (VariantNames i : composedOf) {
                 i.partOf.add(this);
                 // make sure to add the incompatibles of the composites
@@ -184,8 +196,12 @@ public enum VariantNames {
 
     public static void addIncompatibility(VariantNames first, VariantNames second) {
         if (first != null && second != null) {
-            if (!first.incompatible.contains(second)) first.incompatible.add(second);
-            if (!second.incompatible.contains(first)) second.incompatible.add(first);
+            if (!first.incompatible.contains(second)) {
+                first.incompatible.add(second);
+            }
+            if (!second.incompatible.contains(first)) {
+                second.incompatible.add(first);
+            }
         }
     }
 

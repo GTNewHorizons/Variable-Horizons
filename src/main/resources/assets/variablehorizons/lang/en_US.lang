@@ -15,6 +15,7 @@ variants.ALTERED_TIME.name=Altered Recipe Times
 variants.ALTERED_EFFICIENCY.name=Altered Machine Efficiency
 variants.INFINITE_POWER.name=Infinite Power
 variants.CUSTOM_DIM_START.name=Custom Starting Dimension
+variants.SUPERFLAT.name=Superflat
 
 #Variant descriptions
 #Full Variants
@@ -33,6 +34,7 @@ variants.ALTERED_TIME.desc=Alter time with this variant, either lengthening or s
 variants.ALTERED_EFFICIENCY.desc=Alter the laws of energy conservation with this variant, either increasing or decreasing generator efficiencies across the board. The number you enter in the textbox is the multiplier that will be applied to generators, use a number >1 if you want generators to generate more power, and <1 if you want them to generate less.
 variants.INFINITE_POWER.desc=INFINITE POWER! This variant fills your wireless network to a number so large that you will never be able to deplete it. Also, in order to be able to use that power, all energy hatches are now wireless! Rejoice in your wealth of unlimited energy!
 variants.CUSTOM_DIM_START.desc=This variant allows you to choose a starting dimension in which you are going to spawn and respawn, but there is nothing preventing you from leaving. You can specify the dimension ID you want this variant to lock you to, some examples include the Nether (-1), the End (1) and Ross128B (64). A full list of dimension IDs can be found on the GTNH wiki.
+variants.SUPERFLAT.desc=
 
 #Variant GUI buttons
 variantgui.header=Pack Variants
