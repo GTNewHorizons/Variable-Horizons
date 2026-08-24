@@ -1,12 +1,13 @@
 package com.LazyFlesh.variablehorizons;
 
+import com.LazyFlesh.variablehorizons.util.RecipeRemover;
+import com.LazyFlesh.variablehorizons.util.islands.IslandCommands;
 import com.LazyFlesh.variablehorizons.util.islands.IslandControl;
 import com.LazyFlesh.variablehorizons.util.islands.IslandControlSaveData;
-import com.LazyFlesh.variablehorizons.variants.DemonInvasionBlacklistCommand;
 import com.LazyFlesh.variablehorizons.variants.VariantCommands;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
-import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
+import com.LazyFlesh.variablehorizons.variants.invasive.DimLocked;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -30,27 +31,44 @@ public class CommonProxy {
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
     public void postInit(FMLPostInitializationEvent event) {}
 
-    // damn nhcoremod...
+    // damn nhcoremod... loads recipes too late. At least its not on server starting.
     public void completeLoad(FMLLoadCompleteEvent event) {
         VariantLoader.loadActiveVariants();
+
+        // Once all variants loaded and added their items to the to-be-removed hashset, run remover
+        RecipeRemover.removeRecipesByOutput();
+        // Then after the recipes are removed, add the custom recipes.
+        // Some chance a custom recipe could be removed. if run before remover.
+        VariableHorizons.LOG.info("Added recipes.");
+        VariantLoader.loadVariantRecipes();
+
     }
 
     // register server commands in this event handler (Remove if not needed)
     public void serverStarting(FMLServerStartingEvent event) {
+        VariableHorizons.LOG.info("Loading commands:");
+        VariableHorizons.LOG.info("Loaded VariantCommands.");
         event.registerServerCommand(new VariantCommands());
-        event.registerServerCommand(new DemonInvasionBlacklistCommand());
-        if (VariantNames.activeContains(VariantNames.VOID_ISLAND.id))
-            event.registerServerCommand(new VoidIsland.IslandCommands());
-
-        FMLCommonHandler.instance()
-            .bus()
-            .register(TickHandlerServer.instance);
-        FMLCommonHandler.instance()
-            .bus()
-            .register(IslandControl.instance);
+        if (VariantNames.activeContains(VariantNames.DIMLOCKED.id)) {
+            VariableHorizons.LOG.info("Loaded Demon Invasion Blacklist Command.");
+            event.registerServerCommand(new DimLocked.DemonInvasionBlacklistCommand());
+        }
+        if (VariantNames.activeContains(VariantNames.VOID_ISLAND.id)) {
+            VariableHorizons.LOG.info("Loaded Island Commands.");
+            event.registerServerCommand(new IslandCommands());
+            FMLCommonHandler.instance()
+                .bus()
+                .register(IslandControl.instance);
+        }
     }
 
     public void serverStarted(FMLServerStartedEvent event) {
         IslandControlSaveData.init();
+
+        if (VariantNames.activeContains(VariantNames.INFINITE_POWER.id)) {
+            FMLCommonHandler.instance()
+                .bus()
+                .register(VariantNames.INFINITE_POWER.loaderClass);
+        }
     }
 }

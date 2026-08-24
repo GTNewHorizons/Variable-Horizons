@@ -15,4 +15,9 @@ public class DiffDimStart extends VariantLoader implements IRuntimeVariant {
         // disable /spawn cuz it tp's you to OW
         if (GeneralConfig.startingDimID != 0) ServerUtilitiesConfig.commands.spawn = false;
     }
+
+    @Override
+    public void variantRecipes(VariantNames... activeVariants) {
+        // none to add
+    }
 }

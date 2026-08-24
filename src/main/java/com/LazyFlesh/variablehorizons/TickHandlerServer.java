@@ -14,6 +14,7 @@ public class TickHandlerServer {
         instance = this;
     }
 
+    // currently unused, and not registered as a subscriber.
     @SubscribeEvent
     public void onServerTick(TickEvent.ServerTickEvent event) {
         final MinecraftServer server = FMLCommonHandler.instance()
