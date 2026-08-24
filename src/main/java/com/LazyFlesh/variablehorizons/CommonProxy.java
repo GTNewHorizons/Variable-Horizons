@@ -56,9 +56,6 @@ public class CommonProxy {
         if (VariantNames.activeContains(VariantNames.VOID_ISLAND.id)) {
             VariableHorizons.LOG.info("Loaded Island Commands.");
             event.registerServerCommand(new IslandCommands());
-        }
-
-        if (VariantNames.activeContains(VariantNames.VOID_ISLAND.id)) {
             FMLCommonHandler.instance()
                 .bus()
                 .register(IslandControl.instance);
