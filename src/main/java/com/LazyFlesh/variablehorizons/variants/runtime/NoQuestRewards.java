@@ -14,4 +14,10 @@ public class NoQuestRewards extends VariantLoader implements IRuntimeVariant {
         // disable rewards, but *don't* save to config, otherwise have to undo when Variant is disabled.
         BQ_Settings.noRewards = true;
     }
+
+    @Override
+    public void variantRecipes(VariantNames... activeVariants) {
+        // nothing to add. Maybe a bee princess, if the vending machine is ever inaccessible.
+        // currently you can get to the Convocation of the Damned before you need bees, and get bee coins from there
+    }
 }

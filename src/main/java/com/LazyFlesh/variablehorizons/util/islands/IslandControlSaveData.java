@@ -10,6 +10,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 
+import com.LazyFlesh.variablehorizons.VariableHorizons;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
 import akka.japi.Pair;
@@ -96,11 +97,15 @@ public class IslandControlSaveData extends WorldSavedData {
 
     public static void init() {
         if (VariantNames.activeContains(VariantNames.VOID_ISLAND.id)) {
+            VariableHorizons.LOG.info("Initialising Island Data.");
+
             final World world = FMLCommonHandler.instance()
                 .getMinecraftServerInstance()
                 .worldServerForDimension(0);
+
             IslandControlSaveData data = (IslandControlSaveData) world.mapStorage
                 .loadData(IslandControlSaveData.class, IslandControlSaveData.saveDataID);
+
             if (data == null) {
                 data = new IslandControlSaveData(IslandControlSaveData.saveDataID);
                 world.mapStorage.setData(IslandControlSaveData.saveDataID, data);

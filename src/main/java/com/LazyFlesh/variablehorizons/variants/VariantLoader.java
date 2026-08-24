@@ -16,6 +16,8 @@ public abstract class VariantLoader {
         List<String> toRemove = new ArrayList<>();
         List<String> toAdd = new ArrayList<>();
 
+        VariableHorizons.LOG.info("Loading Variants!");
+
         for (String var : active) {
             VariantNames variant = VariantNames.getVariantFromID(var);
             if (variant == null) {
@@ -64,7 +66,20 @@ public abstract class VariantLoader {
         ConfigurationManager.save(GeneralConfig.class);
     }
 
+    public static void loadVariantRecipes() {
+        for (String var : VariantNames.getActiveVariantNames()) {
+            VariantNames variant = VariantNames.getVariantFromID(var);
+
+            if (variant.hasLoaded && variant.loaderClass instanceof VariantLoader) {
+                // load recipes from all active variants
+                variant.loaderClass.variantRecipes();
+            }
+        }
+    }
+
     public abstract void loadVariant(VariantNames... activeVariants);
+
+    public abstract void variantRecipes(VariantNames... activeVariants);
 
     public static String toggleVariant(VariantNames name, boolean state) {
         if (state) {
