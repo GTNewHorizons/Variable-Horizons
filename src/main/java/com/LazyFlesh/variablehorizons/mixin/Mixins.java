@@ -39,14 +39,26 @@ public enum Mixins implements IMixins {
             .addCommonMixins("MixinChunkProviderServer_DisablePopulation")
             .setApplyIf(
                 () -> (VariantNames.activeContains(VariantNames.VOID_WORLD.id)
-                    || VariantNames.activeContains(VariantNames.VOID_ISLAND.id)) && !GeneralConfig.disableVariants)
+                    || VariantNames.activeContains(VariantNames.VOID_ISLAND.id)
+                    || VariantNames.activeContains(VariantNames.SUPERFLAT.id)) && !GeneralConfig.disableVariants)
             .setPhase(Phase.EARLY)),
     DISABLE_MODDED_CHUNK_POPULATION(new MixinBuilder("Disable all other mod chunk population (e.g. Natura clouds)")
         .addCommonMixins("MixinChunkProviderServer_DisableModGeneration")
         .setApplyIf(
             () -> (VariantNames.activeContains(VariantNames.VOID_WORLD.id)
-                || VariantNames.activeContains(VariantNames.VOID_ISLAND.id)) && !GogConfig.dragonTime
+                || VariantNames.activeContains(VariantNames.VOID_ISLAND.id)
+                || VariantNames.activeContains(VariantNames.SUPERFLAT.id)) && !GogConfig.dragonTime
                 && !GeneralConfig.disableVariants)
+        .setPhase(Phase.EARLY)),
+    SUPERFLAT_CHUNK_TERRAIN_GENERATION(new MixinBuilder()
+        .addCommonMixins("MixinChunkProviderServer_ForceSuperflatTerrain")
+        .setApplyIf(() -> (VariantNames.activeContains(VariantNames.SUPERFLAT.id) && !GeneralConfig.disableVariants))
+        .addExcludedMod(TargetedMod.ENDLESSIDS)
+        .setPhase(Phase.EARLY)),
+    SUPERFLAT_CHUNK_TERRAIN_GENERATION_ENDLESS_IDS(new MixinBuilder()
+        .addCommonMixins("MixinChunkProviderServer_ForceSuperflatTerrain_EndlessIDs")
+        .setApplyIf(() -> (VariantNames.activeContains(VariantNames.SUPERFLAT.id) && !GeneralConfig.disableVariants))
+        .addRequiredMod(TargetedMod.ENDLESSIDS)
         .setPhase(Phase.EARLY)),
     ALLOW_RESPAWN_IN_DIMENSION(new MixinBuilder("Allow respawning in another dimension")
         .addCommonMixins("MixinWorldProvider_AllowRespawnInDimension")
