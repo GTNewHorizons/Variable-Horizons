@@ -8,6 +8,7 @@ import com.LazyFlesh.variablehorizons.variants.VariantCommands;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import com.LazyFlesh.variablehorizons.variants.invasive.DimLocked;
+import com.LazyFlesh.variablehorizons.variants.runtime.InfinitePower;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -58,15 +59,18 @@ public class CommonProxy {
             event.registerServerCommand(new IslandCommands());
         }
 
-        FMLCommonHandler.instance()
-            .bus()
-            .register(TickHandlerServer.instance);
-        FMLCommonHandler.instance()
-            .bus()
-            .register(IslandControl.instance);
+        if (VariantNames.activeContains(VariantNames.VOID_ISLAND.id)) {
+            FMLCommonHandler.instance()
+                .bus()
+                .register(IslandControl.instance);
+        }
     }
 
     public void serverStarted(FMLServerStartedEvent event) {
         IslandControlSaveData.init();
+
+        if (VariantNames.activeContains(VariantNames.INFINITE_POWER.id)) {
+            InfinitePower.givePower();
+        }
     }
 }
