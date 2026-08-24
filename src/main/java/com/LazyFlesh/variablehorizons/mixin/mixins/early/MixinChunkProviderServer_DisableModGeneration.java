@@ -8,6 +8,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import com.LazyFlesh.variablehorizons.util.randomUtil;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+
 @Mixin(ChunkProviderServer.class)
 public class MixinChunkProviderServer_DisableModGeneration {
 
@@ -17,6 +21,11 @@ public class MixinChunkProviderServer_DisableModGeneration {
             target = "Lcpw/mods/fml/common/registry/GameRegistry;generateWorld(IILnet/minecraft/world/World;Lnet/minecraft/world/chunk/IChunkProvider;Lnet/minecraft/world/chunk/IChunkProvider;)V",
             value = "INVOKE"),
         method = "populate(Lnet/minecraft/world/chunk/IChunkProvider;II)V")
-    private void hodgepodge$disableModGeneration(int chunkX, int chunkZ, World world, IChunkProvider chunkProvider,
-        IChunkProvider chunkGenerator) {}
+    private void variablehorizons$disableModGeneration(int chunkX, int chunkZ, World world,
+        IChunkProvider chunkProvider, IChunkProvider chunkGenerator) {
+        if (randomUtil.generateVoidInThisDim(world.provider.dimensionId)) {
+            return;
+        }
+        GameRegistry.generateWorld(chunkX, chunkZ, world, chunkProvider, chunkGenerator);
+    }
 }

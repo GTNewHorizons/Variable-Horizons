@@ -13,23 +13,27 @@ import net.minecraft.util.StatCollector;
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.variants.invasive.DimLocked;
 import com.LazyFlesh.variablehorizons.variants.invasive.GardenOfGrind;
+import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
+import com.LazyFlesh.variablehorizons.variants.runtime.DiffDimStart;
+import com.LazyFlesh.variablehorizons.variants.runtime.InfinitePower;
+import com.LazyFlesh.variablehorizons.variants.runtime.NoQuestRewards;
 import com.LazyFlesh.variablehorizons.variants.runtime.NoRocket;
 
 public enum VariantNames {
+    // spotless:off
 
     // sub-variants/modifiers
     // modifies one thing, can be stacked with each other (barring incompats)
     // i.e. turns off quests; makes it hardcore; halves all processing time, etc.
-    NO_RECIPE_ADDITIONS("NO_RECIPE_ADDITIONS"), // Specifies additions, since no rocket removes
-                                                // nasa bench recipe.
+    NO_RECIPE_ADDITIONS("NO_RECIPE_ADDITIONS"), // Specifies additions, since no rocket removes nasa bench recipe.
     VOID_WORLD("VOID_WORLD" /* no class, just mixin */), // no land anywhere
-    VOID_ISLAND("VOID_ISLAND"), // OW is a sky island. Think Botania Garden of Glass or normal Skyblock
-    NO_ROCKET("NO_ROCKET", new NoRocket()), // disable nasa bench
-    NO_QUEST_REWARDS("NO_QUEST_REWARDS"),
+    VOID_ISLAND("VOID_ISLAND", new VoidIsland()), // Starting Dim is a sky island.
+    NO_ROCKET("NO_ROCKET", new NoRocket()), // Disable nasa bench
+    NO_QUEST_REWARDS("NO_QUEST_REWARDS", new NoQuestRewards()),
     ALTERED_RECIPE_TIME("ALTERED_TIME"),
     ALTERED_EFFICIENCY("ALTERED_EFFICIENCY"),
-    INFINITE_POWER("INFINITE_POWER"),
-    CUSTOM_DIM_START("CUSTOM_DIM_START"), // sets a different dim as the spawn dimension instead of OW
+    INFINITE_POWER("INFINITE_POWER", new InfinitePower()),
+    CUSTOM_DIM_START("CUSTOM_DIM_START", new DiffDimStart()), // sets a different dim as the spawn dimension instead of OW
 
     // full variants
     // i.e. defines both world type and recipes
@@ -43,11 +47,13 @@ public enum VariantNames {
     DIMLOCKED("DIMLOCKED", new DimLocked(), new VariantNames[] { CUSTOM_DIM_START, NO_ROCKET },
         new VariantNames[] { NO_RECIPE_ADDITIONS }),
 
-    SKYBLOCK("SKYBLOCK", true, new VariantNames[] { VOID_ISLAND }, new VariantNames[] { NO_RECIPE_ADDITIONS }),
+    SKYBLOCK("SKYBLOCK", true, new VariantNames[] { VOID_WORLD, VOID_ISLAND },
+        new VariantNames[] { NO_RECIPE_ADDITIONS }),
     // only OW is void, w/ sky island
     // if you want Skyblock with no recipe additions, do Garden of Grind + Void Island.
 
     ;
+    // spotless:on
 
     public final String id;
     public final boolean compositionVariant; // is it made of several modifications

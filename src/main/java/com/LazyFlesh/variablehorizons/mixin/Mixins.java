@@ -22,34 +22,46 @@ import cpw.mods.fml.common.versioning.ComparableVersion;
 public enum Mixins implements IMixins {
 
     DISABLE_CHUNK_TERRAIN_GENERATION(new MixinBuilder().addCommonMixins("MixinChunkProviderServer_DisableTerrain")
-        .setApplyIf(() -> VariantNames.activeContains(VariantNames.VOID_WORLD.id) && !GeneralConfig.disableVariants)
+        .setApplyIf(
+            () -> (VariantNames.activeContains(VariantNames.VOID_WORLD.id)
+                || VariantNames.activeContains(VariantNames.VOID_ISLAND.id)) && !GeneralConfig.disableVariants)
         .addExcludedMod(TargetedMod.ENDLESSIDS)
         .setPhase(Phase.EARLY)),
     DISABLE_CHUNK_TERRAIN_GENERATION_ENDLESS_IDS(
         new MixinBuilder().addCommonMixins("MixinChunkProviderServer_DisableTerrain_EndlessIDs")
-            .setApplyIf(() -> VariantNames.activeContains(VariantNames.VOID_WORLD.id) && !GeneralConfig.disableVariants)
+            .setApplyIf(
+                () -> (VariantNames.activeContains(VariantNames.VOID_WORLD.id)
+                    || VariantNames.activeContains(VariantNames.VOID_ISLAND.id)) && !GeneralConfig.disableVariants)
             .addRequiredMod(TargetedMod.ENDLESSIDS)
             .setPhase(Phase.EARLY)),
     DISABLE_WORLD_TYPE_CHUNK_POPULATION(
         new MixinBuilder("Disable chunk population tied to chunk generation (ores/structure)")
             .addCommonMixins("MixinChunkProviderServer_DisablePopulation")
-            .setApplyIf(() -> VariantNames.activeContains(VariantNames.VOID_WORLD.id) && !GeneralConfig.disableVariants)
+            .setApplyIf(
+                () -> (VariantNames.activeContains(VariantNames.VOID_WORLD.id)
+                    || VariantNames.activeContains(VariantNames.VOID_ISLAND.id)) && !GeneralConfig.disableVariants)
             .setPhase(Phase.EARLY)),
-    DISABLE_MODDED_CHUNK_POPULATION(new MixinBuilder("Disable all other mod chunk population (e.g. Natura clouds")
+    DISABLE_MODDED_CHUNK_POPULATION(new MixinBuilder("Disable all other mod chunk population (e.g. Natura clouds)")
         .addCommonMixins("MixinChunkProviderServer_DisableModGeneration")
         .setApplyIf(
-            () -> VariantNames.activeContains(VariantNames.VOID_WORLD.id) && !GogConfig.dragonTime
+            () -> (VariantNames.activeContains(VariantNames.VOID_WORLD.id)
+                || VariantNames.activeContains(VariantNames.VOID_ISLAND.id)) && !GogConfig.dragonTime
                 && !GeneralConfig.disableVariants)
         .setPhase(Phase.EARLY)),
     ALLOW_RESPAWN_IN_DIMENSION(new MixinBuilder("Allow respawning in another dimension")
         .addCommonMixins("MixinWorldProvider_AllowRespawnInDimension")
         .setApplyIf(
-            () -> VariantNames.activeContains(VariantNames.CUSTOM_DIM_START.id) && !GeneralConfig.disableVariants)
+            () -> (VariantNames.activeContains(VariantNames.CUSTOM_DIM_START.id)
+                || VariantNames.activeContains(VariantNames.VOID_ISLAND.id)) && !GeneralConfig.disableVariants)
         .setPhase(Phase.EARLY)),
     SET_INITIAL_SPAWN_DIMENSION(new MixinBuilder("Set spawn dimension to another dimension")
         .addCommonMixins("MixinServerConfigurationManager_ChangeInitialSpawnDimension")
         .setApplyIf(
             () -> VariantNames.activeContains(VariantNames.CUSTOM_DIM_START.id) && !GeneralConfig.disableVariants)
+        .setPhase(Phase.EARLY)),
+    SET_EXACT_SPAWN_LOCATION(new MixinBuilder("Set exact spawn location without variance and y = 65")
+        .addCommonMixins("MixinWorldProvider_SetExactSpawn")
+        .setApplyIf(() -> VariantNames.activeContains(VariantNames.VOID_ISLAND.id) && !GeneralConfig.disableVariants)
         .setPhase(Phase.EARLY)),
     LOCK_TO_DIMENSION_TRAVEL_TO_DIM(new MixinBuilder(
         "Forcibly return a player to the specified dim upon trying to leave it, travelToDimension method")
