@@ -14,8 +14,8 @@ public class NoRocket extends VariantLoader implements IRuntimeVariant {
     public void loadVariant(VariantNames... activeVariants) {
         VariantNames.NO_ROCKET.hasLoaded = true;
 
-        // Remove nasa bench recipe. Easist way to stop rocketing.
-        RecipeRemover.recipesToRemoveByItem.add(new ItemStack(GCBlocks.nasaWorkbench));
+        // Remove nasa bench recipe. Easiest way to stop rocketing.
+        RecipeRemover.addItemsForRecipeRemoval(new ItemStack(GCBlocks.nasaWorkbench));
     }
 
     @Override
