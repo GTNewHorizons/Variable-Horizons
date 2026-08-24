@@ -16,6 +16,8 @@ public abstract class VariantLoader {
         List<String> toRemove = new ArrayList<>();
         List<String> toAdd = new ArrayList<>();
 
+        VariableHorizons.LOG.info("Loading Variants!");
+
         for (String var : active) {
             VariantNames variant = VariantNames.getVariantFromID(var);
             if (variant == null) {

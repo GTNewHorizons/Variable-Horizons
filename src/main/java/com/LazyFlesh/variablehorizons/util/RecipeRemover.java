@@ -9,11 +9,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 
+import com.LazyFlesh.variablehorizons.VariableHorizons;
+
 public class RecipeRemover {
 
     private static final HashSet<ItemStack> recipesToRemoveByItem = new HashSet<>();
 
     public static void removeRecipesByOutput() {
+        VariableHorizons.LOG.info("Removing recipes!");
         List<IRecipe> recipes = CraftingManager.getInstance()
             .getRecipeList();
         Iterator<IRecipe> iterator = recipes.iterator();

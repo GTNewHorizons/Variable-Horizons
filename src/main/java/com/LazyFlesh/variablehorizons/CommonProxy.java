@@ -39,16 +39,24 @@ public class CommonProxy {
         RecipeRemover.removeRecipesByOutput();
         // Then after the recipes are removed, add the custom recipes.
         // Some chance a custom recipe could be removed. if run before remover.
+        VariableHorizons.LOG.info("Added recipes.");
         VariantLoader.loadVariantRecipes();
+
     }
 
     // register server commands in this event handler (Remove if not needed)
     public void serverStarting(FMLServerStartingEvent event) {
+        VariableHorizons.LOG.info("Loading commands:");
+        VariableHorizons.LOG.info("Loaded VariantCommands.");
         event.registerServerCommand(new VariantCommands());
         if (VariantNames.activeContains(VariantNames.DIMLOCKED.id)) {
+            VariableHorizons.LOG.info("Loaded Demon Invasion Blacklist Command.");
             event.registerServerCommand(new DimLocked.DemonInvasionBlacklistCommand());
         }
-        if (VariantNames.activeContains(VariantNames.VOID_ISLAND.id)) event.registerServerCommand(new IslandCommands());
+        if (VariantNames.activeContains(VariantNames.VOID_ISLAND.id)) {
+            VariableHorizons.LOG.info("Loaded Island Commands.");
+            event.registerServerCommand(new IslandCommands());
+        }
 
         FMLCommonHandler.instance()
             .bus()
