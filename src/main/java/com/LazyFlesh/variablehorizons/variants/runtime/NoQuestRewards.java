@@ -16,8 +16,5 @@ public class NoQuestRewards extends VariantLoader implements IRuntimeVariant {
     }
 
     @Override
-    public void variantRecipes(VariantNames... activeVariants) {
-        // nothing to add. Maybe a bee princess, if the vending machine is ever inaccessible.
-        // currently you can get to the Convocation of the Damned before you need bees, and get bee coins from there
-    }
+    public void variantRecipes(VariantNames... activeVariants) {}
 }
