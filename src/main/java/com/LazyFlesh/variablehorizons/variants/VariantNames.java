@@ -49,7 +49,7 @@ public enum VariantNames {
         new VariantNames[] { NO_RECIPE_ADDITIONS }),
 
     SKYBLOCK("SKYBLOCK", true, new VariantNames[] { VOID_WORLD, VOID_ISLAND },
-        new VariantNames[] { NO_RECIPE_ADDITIONS }),
+        new VariantNames[] { NO_RECIPE_ADDITIONS, SUPERFLAT }),
     // only OW is void, w/ sky island
     // if you want Skyblock with no recipe additions, do Garden of Grind + Void Island.
 

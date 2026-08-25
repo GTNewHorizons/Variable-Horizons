@@ -105,6 +105,9 @@ public abstract class VariantLoader {
                 ConfigurationManager.save(GeneralConfig.class);
                 if (name.loaderClass instanceof IRuntimeVariant) {
                     name.loaderClass.loadVariant();
+                    // skip removing recipes, since that might remove added recipes
+                    // load added recipes by toggled variant
+                    name.loaderClass.variantRecipes();
                     return "Client/world restart may be required for change to take effect.";
                 }
                 return "Server/instance restart required for change to take effect.";
