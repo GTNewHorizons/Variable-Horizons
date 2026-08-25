@@ -45,6 +45,7 @@ dependencies {
     implementation("com.github.GTNewHorizons:BloodMagic:1.9.12:dev")
     implementation("com.github.GTNewHorizons:Botania:1.13.33-GTNH:dev")
     implementation("com.github.GTNewHorizons:MagicBees:2.10.12-GTNH:dev")
+    implementation("com.github.GTNewHorizons:Forestry:4.11.36-GTNH:dev")
 
     // custom dim start
     devOnlyNonPublishable("com.github.GTNewHorizons:ServerUtilities:2.4.1:dev")
