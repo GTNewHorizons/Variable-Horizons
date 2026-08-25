@@ -29,6 +29,7 @@ import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
+import cpw.mods.fml.client.config.GuiCheckBox;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -52,6 +53,7 @@ public class VariantGuiMain extends GuiScreen {
         VariantNames.CUSTOM_DIM_START,
         VariantNames.ALTERED_EFFICIENCY,
         VariantNames.ALTERED_RECIPE_TIME);
+    private static final List<VariantNames> checkboxVariants = Arrays.asList(VariantNames.SUPERFLAT);
     private static final ResourceLocation DEFAULT_ICON = new ResourceLocation(
         "variablehorizons",
         "textures/gui/variants/ohno.png");
@@ -59,6 +61,7 @@ public class VariantGuiMain extends GuiScreen {
     private VariantList optionList;
     private GuiTextField searchField;
     private GuiTextField numberInputField;
+    private GuiCheckBox checkbox;
     private Set<String> activeVariantsCache = new HashSet<>();
     private final List<VariantNames> filteredVariants = new ArrayList<>();
     private final Map<String, ResourceLocation> iconCache = new HashMap<>();
@@ -67,6 +70,7 @@ public class VariantGuiMain extends GuiScreen {
     private final int initialStartingDimID;
     private final float initialEfficiencyMultiplier;
     private final float initialRecipeTimeMultiplier;
+    private final boolean initialSuperflatPopulation;
 
     public VariantGuiMain(GuiScreen parent) {
         this.parent = parent;
@@ -74,6 +78,7 @@ public class VariantGuiMain extends GuiScreen {
         this.initialStartingDimID = GeneralConfig.startingDimID;
         this.initialEfficiencyMultiplier = GeneralConfig.efficiencyMultiplier;
         this.initialRecipeTimeMultiplier = GeneralConfig.recipeTimeMultiplier;
+        this.initialSuperflatPopulation = GeneralConfig.allowSuperflatPopulation;
     }
 
     private boolean hasUnsavedChanges() {
@@ -81,6 +86,7 @@ public class VariantGuiMain extends GuiScreen {
         if (initialStartingDimID != GeneralConfig.startingDimID) return true;
         if (initialEfficiencyMultiplier != GeneralConfig.efficiencyMultiplier) return true;
         if (initialRecipeTimeMultiplier != GeneralConfig.recipeTimeMultiplier) return true;
+        if (initialSuperflatPopulation != GeneralConfig.allowSuperflatPopulation) return true;
         return false;
     }
 
@@ -175,6 +181,21 @@ public class VariantGuiMain extends GuiScreen {
         updateNumberFieldPosition(selected);
     }
 
+    private void syncCheckbox(VariantNames connectedVariant) {
+        if (selectedIndex < 0 || selectedIndex >= filteredVariants.size()) {
+            return;
+        }
+        if (!checkboxVariants.contains(connectedVariant)) {
+            return;
+        }
+
+        VariantNames selected = filteredVariants.get(selectedIndex);
+        if (selected.equals(VariantNames.SUPERFLAT)) {
+            checkbox.setIsChecked(GeneralConfig.allowSuperflatPopulation);
+        }
+        updateCheckboxPosition(selected);
+    }
+
     private void updateNumberFieldPosition(VariantNames selected) {
         int panelX = SIDEBAR_WIDTH + PADDING * 2;
         int panelY = 50;
@@ -185,6 +206,18 @@ public class VariantGuiMain extends GuiScreen {
 
         numberInputField.xPosition = panelX;
         numberInputField.yPosition = descBottomY + DESC_TO_FIELD_GAP;
+    }
+
+    private void updateCheckboxPosition(VariantNames selected) {
+        int panelX = SIDEBAR_WIDTH + PADDING * 2;
+        int panelY = 50;
+        int wrapWidth = this.width - panelX - PADDING;
+
+        List<String> lines = getWrappedDescriptionLines(selected, wrapWidth);
+        int descBottomY = panelY + ICON_TO_DESC_GAP + lines.size() * (this.fontRendererObj.FONT_HEIGHT + 2);
+
+        checkbox.xPosition = panelX;
+        checkbox.yPosition = descBottomY + DESC_TO_FIELD_GAP;
     }
 
     private void refreshActiveVariantsCache() {
@@ -229,6 +262,13 @@ public class VariantGuiMain extends GuiScreen {
                 20,
                 showingFullVariants ? StatCollector.translateToLocal("variantgui.showsub")
                     : StatCollector.translateToLocal("variantgui.showfull")));
+        this.checkbox = new GuiCheckBox(
+            3,
+            SIDEBAR_WIDTH + PADDING * 2,
+            90,
+            StatCollector.translateToLocal("variantgui.superflatpopulation"),
+            GeneralConfig.allowSuperflatPopulation);
+        this.buttonList.add(checkbox);
         this.searchField = new GuiTextField(this.fontRendererObj, PADDING, 14, SIDEBAR_WIDTH - PADDING - 4, 16);
         this.searchField.setMaxStringLength(64);
         this.searchField.setFocused(true);
@@ -274,6 +314,9 @@ public class VariantGuiMain extends GuiScreen {
                 : StatCollector.translateToLocal("variantgui.showfull");
             refreshFilteredVariants();
             syncNumberField(VariantNames.NORMAL);
+        } else if (button.id == 3) {
+            GeneralConfig.allowSuperflatPopulation = checkbox.isChecked();
+            ConfigurationManager.save(GeneralConfig.class);
         }
     }
 
@@ -291,6 +334,11 @@ public class VariantGuiMain extends GuiScreen {
     private boolean isNumberFieldVisible() {
         return selectedIndex >= 0 && selectedIndex < filteredVariants.size()
             && inputFieldVariants.contains(filteredVariants.get(selectedIndex));
+    }
+
+    private boolean isCheckboxVisible() {
+        return selectedIndex >= 0 && selectedIndex < filteredVariants.size()
+            && checkboxVariants.contains(filteredVariants.get(selectedIndex));
     }
 
     @Override
@@ -383,6 +431,13 @@ public class VariantGuiMain extends GuiScreen {
 
         if (isNumberFieldVisible()) {
             numberInputField.drawTextBox();
+        }
+
+        boolean checkboxVisible = isCheckboxVisible();
+        checkbox.visible = checkboxVisible;
+        checkbox.enabled = checkboxVisible;
+        if (checkboxVisible) {
+            updateCheckboxPosition(filteredVariants.get(selectedIndex));
         }
 
         this.drawCenteredString(
