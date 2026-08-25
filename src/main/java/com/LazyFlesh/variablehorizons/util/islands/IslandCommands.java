@@ -103,6 +103,16 @@ public class IslandCommands extends CommandBase {
 
                 }
             }
+            case "home" -> {
+                IslandData island = IslandControl.instance.playerIsland.get(
+                    pSender.getUniqueID()
+                        .toString());
+
+                // go to proper dimension (if dimlocked, the dimension travel is stopped by the mixin)
+                if (pSender.dimension != island.dimID) pSender.travelToDimension(island.dimID);
+
+                pSender.setPositionAndUpdate(island.x, 78, island.z);
+            }
             case "create" -> {
                 // permission level 1, need some kind of perm to do it
                 // make sure person can actually send command
@@ -139,7 +149,7 @@ public class IslandCommands extends CommandBase {
         String currentArg = args.length == 0 ? "" : args[args.length - 1].trim();
 
         if (args.length == 1) {
-            Stream.of("join", "create")
+            Stream.of("join", "create", "home")
                 .filter(s -> s.startsWith(currentArg))
                 .forEach(completions::add);
         } else if (args.length == 2) {
@@ -162,6 +172,9 @@ public class IslandCommands extends CommandBase {
         sender.addChatMessage(
             new ChatComponentText(
                 "   join <player name> - CLEARS YOUR INVENTORY, sets your spawn, and teleports you to that player."));
+        sender.addChatMessage(
+            new ChatComponentText(
+                "   home - Teleports you to your home island, trans-dim if needed. For when you obstruct your spawnpoint and haven't /sethome."));
         sender.addChatMessage(
             new ChatComponentText(
                 "   create - Creates a new island in the spawn dimension and sets your spawn there."));
