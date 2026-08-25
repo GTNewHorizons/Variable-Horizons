@@ -13,6 +13,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import cpw.mods.fml.common.registry.VillagerRegistry.IVillageTradeHandler;
 import forestry.api.apiculture.EnumBeeType;
+import forestry.apiculture.genetics.BeeDefinition;
 import forestry.plugins.PluginApiculture;
 import magicbees.bees.BeeSpecies;
 
@@ -22,9 +23,18 @@ public class VillagerRecipe implements IVillageTradeHandler {
     public void manipulateTradesForVillager(final EntityVillager villager, final MerchantRecipeList recipeList,
         final Random random) {
         ItemStack wildcardDrone = new ItemStack(PluginApiculture.items.beeDroneGE, 4, OreDictionary.WILDCARD_VALUE);
-        ItemStack Beecoin = getModItem(NewHorizonsCoreMod.ID, "CoinBeesI", 1, 0);
-        ItemStack AttunedPrincess = BeeSpecies.ATTUNED.getBeeItem(EnumBeeType.PRINCESS);
+        ItemStack beeCoin = getModItem(NewHorizonsCoreMod.ID, "CoinBeesI", 1, 0);
 
-        recipeList.add(new MerchantRecipe(wildcardDrone, Beecoin, AttunedPrincess));
+        ItemStack[] princesses = new ItemStack[] { BeeSpecies.ATTUNED.getBeeItem(EnumBeeType.PRINCESS),
+            BeeDefinition.FOREST.getMemberStack(EnumBeeType.PRINCESS),
+            BeeDefinition.MEADOWS.getMemberStack(EnumBeeType.PRINCESS),
+            BeeDefinition.WINTRY.getMemberStack(EnumBeeType.PRINCESS),
+            BeeDefinition.TROPICAL.getMemberStack(EnumBeeType.PRINCESS),
+            BeeDefinition.MODEST.getMemberStack(EnumBeeType.PRINCESS),
+            BeeDefinition.MARSHY.getMemberStack(EnumBeeType.PRINCESS) };
+
+        for (ItemStack princess : princesses) {
+            recipeList.add(new MerchantRecipe(wildcardDrone, beeCoin, princess));
+        }
     }
 }

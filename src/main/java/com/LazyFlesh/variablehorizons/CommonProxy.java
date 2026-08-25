@@ -1,10 +1,12 @@
 package com.LazyFlesh.variablehorizons;
 
+import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.util.RecipeRemover;
 import com.LazyFlesh.variablehorizons.util.VillagerRecipe;
 import com.LazyFlesh.variablehorizons.util.islands.IslandCommands;
 import com.LazyFlesh.variablehorizons.util.islands.IslandControl;
 import com.LazyFlesh.variablehorizons.util.islands.IslandControlSaveData;
+import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.variants.VariantCommands;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
@@ -27,7 +29,11 @@ public class CommonProxy {
         VariableHorizons.LOG.info("Variable Horizons, version " + Tags.VERSION);
 
         // damn it needs to be registered in preinit
-        if (VariantNames.activeContains(VariantNames.NO_QUEST_REWARDS.id)) {
+        // register if no quest rewards is on, and either dimlocked in a void dim, or all dim are void
+        if (VariantNames.activeContains(VariantNames.NO_QUEST_REWARDS.id)
+            && ((VariantNames.activeContains(VariantNames.DIMLOCKED.id)
+                && randomUtil.generateVoidInThisDim(GeneralConfig.startingDimID))
+                || VariantNames.activeContains(VariantNames.VOID_WORLD.id))) {
             VillagerRegistry.instance()
                 .registerVillageTradeHandler(80, new VillagerRecipe());
         }
