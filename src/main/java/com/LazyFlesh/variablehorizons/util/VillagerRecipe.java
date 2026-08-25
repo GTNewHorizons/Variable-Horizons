@@ -1,9 +1,11 @@
 package com.LazyFlesh.variablehorizons.util;
 
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.util.GTModHandler.getModItem;
+
 import java.util.Random;
 
 import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
@@ -20,9 +22,9 @@ public class VillagerRecipe implements IVillageTradeHandler {
     public void manipulateTradesForVillager(final EntityVillager villager, final MerchantRecipeList recipeList,
         final Random random) {
         ItemStack wildcardDrone = new ItemStack(PluginApiculture.items.beeDroneGE, 4, OreDictionary.WILDCARD_VALUE);
+        ItemStack Beecoin = getModItem(NewHorizonsCoreMod.ID, "CoinBeesI", 1, 0);
         ItemStack AttunedPrincess = BeeSpecies.ATTUNED.getBeeItem(EnumBeeType.PRINCESS);
 
-        recipeList.add(
-            new MerchantRecipe(wildcardDrone, new ItemStack(Items.emerald, 8 + random.nextInt(8)), AttunedPrincess));
+        recipeList.add(new MerchantRecipe(wildcardDrone, Beecoin, AttunedPrincess));
     }
 }
