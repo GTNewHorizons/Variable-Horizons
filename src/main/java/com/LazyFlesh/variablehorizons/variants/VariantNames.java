@@ -30,6 +30,8 @@ public enum VariantNames {
     NO_QUEST_REWARDS("NO_QUEST_REWARDS", new NoQuestRewards()),
     ALTERED_RECIPE_TIME("ALTERED_TIME"),
     ALTERED_EFFICIENCY("ALTERED_EFFICIENCY"),
+    CHEAP_MODE("CHEAP_MODE"),
+    EXPENSIVE_MODE("EXPENSIVE_MODE"),
     INFINITE_POWER("INFINITE_POWER", new InfinitePower()),
     CUSTOM_DIM_START("CUSTOM_DIM_START", new DiffDimStart()), // sets a different dim as the spawn dimension instead of OW
     SUPERFLAT("SUPERFLAT", new VariantNames[]{ VOID_WORLD, VOID_ISLAND }),

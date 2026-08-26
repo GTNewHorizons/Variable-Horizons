@@ -16,6 +16,8 @@ variants.ALTERED_EFFICIENCY.name=Altered Machine Efficiency
 variants.INFINITE_POWER.name=Infinite Power
 variants.CUSTOM_DIM_START.name=Custom Starting Dimension
 variants.SUPERFLAT.name=Superflat
+variants.EXPENSIVE_MODE.name=Expensive Mode
+variants.CHEAP_MODE.name=Cheap Mode
 
 #Variant descriptions
 #Full Variants
