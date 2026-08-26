@@ -16,6 +16,8 @@ public class RecipeRemover {
     private static final HashSet<ItemStack> recipesToRemoveByItem = new HashSet<>();
 
     public static void removeRecipesByOutput() {
+        if (recipesToRemoveByItem.isEmpty()) return;
+
         VariableHorizons.LOG.info("Removing recipes!");
         List<IRecipe> recipes = CraftingManager.getInstance()
             .getRecipeList();

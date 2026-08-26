@@ -8,7 +8,6 @@ import java.math.BigInteger;
 
 import net.minecraft.item.crafting.CraftingManager;
 
-import com.LazyFlesh.variablehorizons.util.RecipeRemover;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
@@ -32,14 +31,6 @@ public class InfinitePower extends VariantLoader implements IRuntimeVariant {
     public void loadVariant(VariantNames... activeVariants) {
         VariantNames.INFINITE_POWER.hasLoaded = true;
 
-        // Remove wireless hatch recipes. Not like they'll use em.
-        for (int i = 0; i < ItemList.WIRELESS_ENERGY_HATCHES.length; i++) {
-            RecipeRemover.addItemsForRecipeRemoval(ItemList.WIRELESS_ENERGY_HATCHES[i].get(1));
-        }
-        // Separate, since not same size
-        for (int i = 0; i < ItemList.WIRELESS_ENERGY_COVERS.length; i++) {
-            RecipeRemover.addItemsForRecipeRemoval(ItemList.WIRELESS_ENERGY_COVERS[i].get(1));
-        }
     }
 
     @SubscribeEvent
