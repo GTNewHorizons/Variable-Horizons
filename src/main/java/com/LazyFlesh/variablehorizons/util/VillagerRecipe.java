@@ -21,7 +21,7 @@ public class VillagerRecipe implements IVillageTradeHandler {
     public void manipulateTradesForVillager(final EntityVillager villager, final MerchantRecipeList recipeList,
         final Random random) {
         ItemStack wildcardDrone = new ItemStack(PluginApiculture.items.beeDroneGE, 4, OreDictionary.WILDCARD_VALUE);
-        ItemStack emernald = new ItemStack(Items.emerald, 8 + random.nextInt(8));
+        ItemStack emerald = new ItemStack(Items.emerald, 8 + random.nextInt(8));
 
         ItemStack[] princesses = new ItemStack[] { BeeSpecies.ATTUNED.getBeeItem(EnumBeeType.PRINCESS),
             BeeDefinition.FOREST.getMemberStack(EnumBeeType.PRINCESS),
@@ -32,7 +32,7 @@ public class VillagerRecipe implements IVillageTradeHandler {
             BeeDefinition.MARSHY.getMemberStack(EnumBeeType.PRINCESS) };
 
         for (ItemStack princess : princesses) {
-            recipeList.add(new MerchantRecipe(wildcardDrone, emernald, princess));
+            recipeList.add(new MerchantRecipe(wildcardDrone, emerald, princess));
         }
     }
 }
