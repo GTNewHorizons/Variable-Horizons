@@ -48,6 +48,9 @@ dependencies {
     // custom dim start
     devOnlyNonPublishable("com.github.GTNewHorizons:ServerUtilities:2.4.1:dev")
 
+    // NoRocket
+    devOnlyNonPublishable("com.github.GTNewHorizons:Galaxy-Space-GTNH:1.1.142-GTNH:dev") { transitive = false }
+
     // Deep dark island
     devOnlyNonPublishable("ganymedes01.etfuturum:Et-Futurum-Requiem:2.6.2.21-GTNH-daily") { transitive = false }
 
