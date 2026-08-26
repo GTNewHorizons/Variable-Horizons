@@ -21,7 +21,7 @@ public class IslandControl {
 
     @SubscribeEvent
     public void onPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
-        if (!playerIsland.containsKey(
+        if (!playerIsland.containsKey( // only first login
             event.player.getUniqueID()
                 .toString())) {
             if (islands.containsKey("0,0")) {
@@ -44,6 +44,10 @@ public class IslandControl {
                     event.player.getUniqueID()
                         .toString(),
                     is);
+
+                // update island position to world spawn instead of 0, 0
+                is.x = (int) event.player.posX;
+                is.z = (int) event.player.posZ;
             }
         }
         FMLCommonHandler.instance()
