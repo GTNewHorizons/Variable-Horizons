@@ -1,10 +1,8 @@
 package com.LazyFlesh.variablehorizons.variants;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -58,9 +56,9 @@ public enum VariantNames {
 
     public final String id;
     public final boolean compositionVariant; // is it made of several modifications
-    public List<VariantNames> incompatible = new ArrayList<>();
-    public List<VariantNames> composedOf = new ArrayList<>();
-    public final List<VariantNames> partOf = new ArrayList<>(); // composition variant it is part of
+    public final Set<VariantNames> incompatible = new HashSet<>();
+    public final Set<VariantNames> composedOf = new HashSet<>();
+    public final Set<VariantNames> partOf = new HashSet<>(); // composition variant it is part of
     public VariantLoader loaderClass;
     public boolean hasLoaded = false;
 
@@ -70,8 +68,8 @@ public enum VariantNames {
     private static final Map<String, VariantNames> allVariants = new HashMap<>();
     private static final VariantNames[] VALUES = values();
     private static final Set<String> allVariantIDs;
-    public static final List<VariantNames> allCompositionVariants = new ArrayList<>();
-    public static final List<VariantNames> allSubVariants = new ArrayList<>();
+    public static final Set<VariantNames> allCompositionVariants = new HashSet<>();
+    public static final Set<VariantNames> allSubVariants = new HashSet<>();
 
     static {
         for (VariantNames name : VALUES) {
@@ -196,12 +194,9 @@ public enum VariantNames {
 
     public static void addIncompatibility(VariantNames first, VariantNames second) {
         if (first != null && second != null) {
-            if (!first.incompatible.contains(second)) {
-                first.incompatible.add(second);
-            }
-            if (!second.incompatible.contains(first)) {
-                second.incompatible.add(first);
-            }
+            // sets can't have duplicates, no need to do a contains check.
+            first.incompatible.add(second);
+            second.incompatible.add(first);
         }
     }
 

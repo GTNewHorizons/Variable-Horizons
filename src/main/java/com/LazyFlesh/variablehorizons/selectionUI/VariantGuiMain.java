@@ -46,8 +46,8 @@ public class VariantGuiMain extends GuiScreen {
     private static final int ICON_TO_DESC_GAP = 40;
     private static final int DESC_TO_FIELD_GAP = 8;
 
-    private static final List<VariantNames> fullVariants = VariantNames.allCompositionVariants;
-    private static final List<VariantNames> subVariants = VariantNames.allSubVariants;
+    private static final Set<VariantNames> fullVariants = VariantNames.allCompositionVariants;
+    private static final Set<VariantNames> subVariants = VariantNames.allSubVariants;
     private static final List<VariantNames> inputFieldVariants = Arrays.asList(
         VariantNames.DIMLOCKED,
         VariantNames.CUSTOM_DIM_START,
@@ -127,7 +127,7 @@ public class VariantGuiMain extends GuiScreen {
         }
     }
 
-    private List<VariantNames> getActiveVariantList() {
+    private Set<VariantNames> getActiveVariantList() {
         subVariants.remove(VariantNames.NO_RECIPE_ADDITIONS);
         return showingFullVariants ? fullVariants : subVariants;
     }
