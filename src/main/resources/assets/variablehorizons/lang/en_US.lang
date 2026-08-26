@@ -81,4 +81,19 @@ variants.dimlock.message.28=This warp is delayed by 360 min
 variants.dimlock.message.29=There's a time and place for everything
 variants.dimlock.message.30=You rolled a 1. Critical Failure!
 variants.dimlock.message.31=Sorry, but this portal requires a premium subscription to use.
-variants.dimlock.message.32=*loud incorrect buzzer*
+
+
+
+# logging and errors
+# variant loader
+variants.error.message.1=Loading Variants!
+variants.error.message.2=Turning off undefined variant: {}
+variants.error.message.3=A variant incompatible with another active variant was detected.
+variants.error.message.4=Turning off incompatible variant: {}
+
+# variant toggle
+variants.error.message.5=Variant already active.
+variants.error.message.6=Variant is incompatible with an active variant.
+variants.error.message.7=Client/world restart may be required for change to take effect.
+variants.error.message.8=Server/instance restart required for change to take effect.
+variants.error.message.9=Variant already inactive.

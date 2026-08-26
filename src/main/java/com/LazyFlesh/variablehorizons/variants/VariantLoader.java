@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.util.StatCollector;
+
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.VariableHorizons;
 import com.LazyFlesh.variablehorizons.variants.runtime.IRuntimeVariant;
@@ -16,12 +18,12 @@ public abstract class VariantLoader {
         List<String> toRemove = new ArrayList<>();
         List<String> toAdd = new ArrayList<>();
 
-        VariableHorizons.LOG.info("Loading Variants!");
+        VariableHorizons.LOG.info(StatCollector.translateToLocal("variants.error.message.1"));
 
         for (String var : active) {
             VariantNames variant = VariantNames.getVariantFromID(var);
             if (variant == null) {
-                VariableHorizons.LOG.warn("Turning off undefined variant: {}", var);
+                VariableHorizons.LOG.warn(StatCollector.translateToLocal("variants.error.message.2"), var);
                 active.remove(var);
                 toRemove.add(var);
                 continue;
@@ -32,8 +34,9 @@ public abstract class VariantLoader {
             if (variant.incompatible != null) {
                 for (VariantNames incompatible : variant.incompatible) {
                     if (active.contains(incompatible.id)) {
-                        VariableHorizons.LOG.warn("A variant incompatible with another active variant was detected.");
-                        VariableHorizons.LOG.warn("Turning off incompatible variant: {}", incompatible.id);
+                        VariableHorizons.LOG.warn(StatCollector.translateToLocal("variants.error.message.3"));
+                        VariableHorizons.LOG
+                            .warn(StatCollector.translateToLocal("variants.error.message.4"), incompatible.id);
                         toRemove.add(incompatible.id);
                         // don't break, so all incompatible variants are removed.
                     }
@@ -84,12 +87,12 @@ public abstract class VariantLoader {
     public static String toggleVariant(VariantNames name, boolean state) {
         if (state) {
             if (VariantNames.activeContains(name.id)) {
-                return "Variant already active.";
+                return StatCollector.translateToLocal("variants.error.message.5");
             } else {
                 if (name.incompatible != null) {
                     for (String variant : VariantNames.getActiveVariantNames()) {
                         if (VariantNames.checkIncompatibility(VariantNames.getVariantFromID(variant), name)) {
-                            return "Variant is incompatible with an active variant.";
+                            return StatCollector.translateToLocal("variants.error.message.6");
                         }
                     }
                 }
@@ -108,13 +111,13 @@ public abstract class VariantLoader {
                     // skip removing recipes, since that might remove added recipes
                     // load added recipes by toggled variant
                     name.loaderClass.variantRecipes();
-                    return "Client/world restart may be required for change to take effect.";
+                    return StatCollector.translateToLocal("variants.error.message.7");
                 }
-                return "Server/instance restart required for change to take effect.";
+                return StatCollector.translateToLocal("variants.error.message.8");
             }
         } else {
             if (!VariantNames.activeContains(name.id)) {
-                return "Variant already inactive.";
+                return StatCollector.translateToLocal("variants.error.message.9");
             } else {
                 Set<String> active = VariantNames.getActiveVariantNames();
                 active.remove(name.id);
@@ -124,7 +127,7 @@ public abstract class VariantLoader {
                 }
                 GeneralConfig.activeVariants = active.toArray(new String[0]);
                 ConfigurationManager.save(GeneralConfig.class);
-                return "Server/instance restart required for change to take effect.";
+                return StatCollector.translateToLocal("variants.error.message.8");
             }
         }
     }
