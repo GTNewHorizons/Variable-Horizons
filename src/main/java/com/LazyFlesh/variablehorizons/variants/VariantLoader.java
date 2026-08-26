@@ -31,7 +31,7 @@ public abstract class VariantLoader {
             if (toRemove.contains(var)) {
                 continue;
             }
-            if (variant.incompatible != null) {
+            if (!variant.incompatible.isEmpty()) {
                 for (VariantNames incompatible : variant.incompatible) {
                     if (active.contains(incompatible.id)) {
                         VariableHorizons.LOG.warn(StatCollector.translateToLocal("variants.error.message.3"));
@@ -89,7 +89,7 @@ public abstract class VariantLoader {
             if (VariantNames.activeContains(name.id)) {
                 return StatCollector.translateToLocal("variants.error.message.5");
             } else {
-                if (name.incompatible != null) {
+                if (!name.incompatible.isEmpty()) {
                     for (String variant : VariantNames.getActiveVariantNames()) {
                         if (VariantNames.checkIncompatibility(VariantNames.getVariantFromID(variant), name)) {
                             return StatCollector.translateToLocal("variants.error.message.6");
