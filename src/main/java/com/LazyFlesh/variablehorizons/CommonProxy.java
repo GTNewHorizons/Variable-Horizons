@@ -1,9 +1,12 @@
 package com.LazyFlesh.variablehorizons;
 
+import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.util.RecipeRemover;
+import com.LazyFlesh.variablehorizons.util.VillagerRecipe;
 import com.LazyFlesh.variablehorizons.util.islands.IslandCommands;
 import com.LazyFlesh.variablehorizons.util.islands.IslandControl;
 import com.LazyFlesh.variablehorizons.util.islands.IslandControlSaveData;
+import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.variants.VariantCommands;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
@@ -16,6 +19,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.registry.VillagerRegistry;
 
 public class CommonProxy {
 
@@ -23,6 +27,16 @@ public class CommonProxy {
     // GameRegistry." (Remove if not needed)
     public void preInit(FMLPreInitializationEvent event) {
         VariableHorizons.LOG.info("Variable Horizons, version " + Tags.VERSION);
+
+        // damn it needs to be registered in preinit
+        // register if no quest rewards is on, and either dimlocked in a void dim, or all dim are void
+        if (VariantNames.activeContains(VariantNames.NO_QUEST_REWARDS.id)
+            && ((VariantNames.activeContains(VariantNames.DIMLOCKED.id)
+                && randomUtil.generateVoidInThisDim(GeneralConfig.startingDimID))
+                || VariantNames.activeContains(VariantNames.VOID_WORLD.id))) {
+            VillagerRegistry.instance()
+                .registerVillageTradeHandler(80, new VillagerRecipe());
+        }
     }
 
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
