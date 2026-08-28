@@ -53,15 +53,23 @@ public enum Mixins implements IMixins {
                 && !GogConfig.dragonTime
                 && !GeneralConfig.disableVariants)
         .setPhase(Phase.EARLY)),
-    SUPERFLAT_CHUNK_TERRAIN_GENERATION(new MixinBuilder()
+    SUPERFLAT_CHUNK_TERRAIN_GENERATION(new MixinBuilder("Make the world and all dims superflat")
         .addCommonMixins("MixinChunkProviderServer_ForceSuperflatTerrain")
         .setApplyIf(() -> (VariantNames.activeContains(VariantNames.SUPERFLAT.id) && !GeneralConfig.disableVariants))
         .addExcludedMod(TargetedMod.ENDLESSIDS)
         .setPhase(Phase.EARLY)),
-    SUPERFLAT_CHUNK_TERRAIN_GENERATION_ENDLESS_IDS(new MixinBuilder()
+    SUPERFLAT_CHUNK_TERRAIN_GENERATION_ENDLESS_IDS(new MixinBuilder("Make the world and all dims superflat")
         .addCommonMixins("MixinChunkProviderServer_ForceSuperflatTerrain_EndlessIDs")
         .setApplyIf(() -> (VariantNames.activeContains(VariantNames.SUPERFLAT.id) && !GeneralConfig.disableVariants))
         .addRequiredMod(TargetedMod.ENDLESSIDS)
+        .setPhase(Phase.EARLY)),
+    ALLOW_VILLAGE_GENERATION_IN_ANY_BIOME(new MixinBuilder("Allow villages to generate in any biome")
+        .addCommonMixins(
+            "MixinStructureVillagePieces_AllowAnyBiome",
+            "AccessorChunkGeneratorRealistic",
+            "MixinMapGenVillage_AllowAnyBiome")
+        .setApplyIf(() -> (VariantNames.activeContains(VariantNames.SUPERFLAT.id) && !GeneralConfig.disableVariants))
+        .addRequiredMod(TargetedMod.RWG)
         .setPhase(Phase.EARLY)),
     ALLOW_RESPAWN_IN_DIMENSION(new MixinBuilder("Allow respawning in another dimension")
         .addCommonMixins("MixinWorldProvider_AllowRespawnInDimension")
@@ -129,7 +137,8 @@ public enum Mixins implements IMixins {
         ENDLESSIDS("com.falsepattern.endlessids.asm.EndlessIDsCore", "endlessids"),
         GALACTICRAFT_CORE("GalacticraftCore"),
         GREGTECH("gregtech"),
-        BOTANIA("Botania");
+        BOTANIA("Botania"),
+        RWG(null, "RWG", "rwg.world.ChunkGeneratorRealistic");
 
         private final TargetModBuilder builder;
 

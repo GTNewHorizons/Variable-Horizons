@@ -18,6 +18,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
+import rwg.world.ChunkGeneratorRealistic;
+
 @Mixin(ChunkProviderServer.class)
 public class MixinChunkProviderServer_DisablePopulation {
 
@@ -35,9 +37,15 @@ public class MixinChunkProviderServer_DisablePopulation {
     private void variablehorizons$ignoreChunkPopulation(IChunkProvider chunkProvider, IChunkProvider chunkProvider2,
         int chunkX, int chunkZ) {
         if (IS_SUPERFLAT_ACTIVE) {
-            if (chunkProvider instanceof ChunkProviderGenerate) {
-                MapGenVillage villageGen = ((AccessorChunkProviderGenerate) chunkProvider).getVillageGenerator();
 
+            MapGenVillage villageGen = null;
+            if (chunkProvider instanceof ChunkProviderGenerate) {
+                villageGen = ((AccessorChunkProviderGenerate) chunkProvider).getVillageGenerator();
+            } else if (chunkProvider instanceof ChunkGeneratorRealistic) {
+                villageGen = ((AccessorChunkGeneratorRealistic) chunkProvider).getVillageGenerator();
+            }
+
+            if (villageGen != null) {
                 Random rand = new Random();
                 rand.setSeed(this.worldObj.getSeed());
                 long k = rand.nextLong() / 2L * 2L + 1L;
