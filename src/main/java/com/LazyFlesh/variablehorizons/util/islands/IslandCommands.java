@@ -219,14 +219,17 @@ public class IslandCommands extends CommandBase {
             }
         }
 
+        // twilight doesn't let much of anything spawn >31 unless you're in a structure.
+        int y = (dimProvider.provider.dimensionId == 7) ? 28 : 72;
+
         // dimProvider is the dimension its being built in, dimID is the island type
-        randomUtil.generateVoidIsland(new ChunkCoordinates(posX, 72, posZ), dimProvider, dimID);
+        randomUtil.generateVoidIsland(new ChunkCoordinates(posX, y, posZ), dimProvider, dimID);
 
         player.inventory.clearInventory(null, -1);
 
-        player.setPositionAndUpdate(posX, 74, posZ);
+        player.setPositionAndUpdate(posX, y + 2, posZ);
 
-        player.setSpawnChunk(new ChunkCoordinates(posX, 74, posZ), true, dimToTPTo);
+        player.setSpawnChunk(new ChunkCoordinates(posX, y + 2, posZ), true, dimToTPTo);
 
         IslandData newIsland = new IslandData(
             posX,

@@ -76,6 +76,12 @@ public class randomUtil {
         int structY = spawn.posY + (Integer) island[0][1];
         int structZ = spawn.posZ + (Integer) island[0][2];
 
+        if (world.provider.dimensionId == 7) {
+            // if twilight forest, bring island down. Normal mobs don't spawn > y = 31.
+            // sea level, and where world spawn places the y, is 63. In TF its 31.
+            structY = 28 + (Integer) island[0][1];;
+        }
+
         String empty = "";
 
         HashMap<Character, SimpleEntry<Block, Integer>> blockMap = new HashMap<>();
