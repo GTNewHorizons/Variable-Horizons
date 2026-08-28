@@ -3,6 +3,7 @@ package com.LazyFlesh.variablehorizons.util.islands;
 import net.minecraft.init.Blocks;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Mods;
 
 public class skyIslands {
 
@@ -203,5 +204,35 @@ public class skyIslands {
             {"              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "  ADDDDDDDDA  ", "   UUUUUUUU   ", "              ", "              ", "              "},
             {"              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "   AAAAAAAA   ", "              ", "              ", "              ", "              "}};
     }
+
+    public static Object[][] createIslandTwilight() {
+        return new Object[][]{{-4, 10, -7}, // offset x, y, z
+            { 'A', GameRegistry.findBlock(Mods.TwilightForest.getID(), "tile.TFFireflyJar"), 0,
+            'B', GameRegistry.findBlock(Mods.TwilightForest.getID(), "tile.TFLeaves"), 3,
+            'C', GameRegistry.findBlock(Mods.TwilightForest.getID(), "tile.TFLog"), 0,
+            'D', GameRegistry.findBlock(Mods.TwilightForest.getID(), "tile.TFPlant"), 3,
+            'E', Blocks.cobblestone_wall, 1,
+            'F', Blocks.dirt, 0,
+            'G', Blocks.grass, 0,
+            'H', Blocks.stone, 0,
+            'I', Blocks.water, 0,
+            'J', GameRegistry.findBlock(Mods.TwilightForest.getID(), "tile.TFCicada"), 1,
+            'K', Blocks.chest, 3,
+            'L', GameRegistry.findBlock(Mods.TwilightForest.getID(), "tile.TFLog"), 8,},
+
+            {"            ","            ","            ","            ","            ","            ","            ","            ","            ","            ","            ","      G     ","            ","            ","            ","            ","            "},
+            {"            ","            ","            ","            ","            ","  BBB       ","  BBB       ","            ","            ","            ","      GG    ","     GFFGG  ","      H     ","            ","            ","            ","            "},
+            {"            ","            ","  BBB       ","  BBB       "," BBB        "," BBBBB      "," BBBBB      ","   B        ","      A     ","      E     ","     GGGGG  ","    GFFFFFG ","     HHHHH  ","        H   ","            ","            ","            "},
+            {"            ","   BBB      "," BBBBB      "," BBBBB      ","BBBBB       ","BBBBBB      "," BBBBB      ","  BBB       ","            ","          K ","    GIIGGGG ","   GFFFFFFFG","    HHHHHHH ","     HH HH  ","     H  H   ","            ","            "},
+            {"    B       ","  BBBBB     "," BBBBBB     "," BBBBB      ","BBBCB       ","BBBBBB      "," BCCBB      ","   B        ","            ","            ","   GGGGGGGG ","  GFFFFFFFF ","   HHHHHHH  ","    HHHHHH  ","     HHH    ","     H      ","     H      "},
+            {"   BBB      ","  BBBBB     "," BBBBBB     ","BBBBCB      ","BBBBC       ","BBBCC       ","  BBC       ","    C       ","    C       ","    C       ","   GFGGGGG  ","  GFFFFFFFG ","   HHHHHHH  ","    HHH H   ","     H      ","            ","            "},
+            {"    B       ","  BBBBB     "," BBBBBB     ","BBBBB       ","BBBBB       "," BCB        ","            ","            ","            ","            ","   GGGGGGG  ","   FFFFFFF  ","    HHHHH   ","     H      ","            ","            ","            "},
+            {"            ","   BBB      ","  BBBB      ","BBBBB       ","BBBBB       ","  B         ","            ","            ","     DDD    ","     LLLL   ","    GFFFFC  ","   GFFFFFF  ","     HHH    ","            ","            ","            ","            "},
+            {"            ","            ","            "," BBB        "," BBB        ","            ","            ","            ","            ","            ","     JGG    ","     GFF    ","            ","            ","            ","            ","            "}};
+    }
+
+
+
+
     // spotless:on
 }
