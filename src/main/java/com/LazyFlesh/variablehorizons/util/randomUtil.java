@@ -1,6 +1,7 @@
 package com.LazyFlesh.variablehorizons.util;
 
 import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -21,16 +22,20 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.VariableHorizons;
+import com.LazyFlesh.variablehorizons.util.superflat.SuperflatBlocks;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 
 public class randomUtil {
 
     private static final Map<EntityPlayerMP, Long> WARN_TIMES = new WeakHashMap<>();
+    private static final Map<Integer, byte[]> CHUNK_META_CACHE = new HashMap<>();
+    private static final Map<Integer, Block[]> CHUNK_BLOCK_CACHE = new HashMap<>();
     private static final boolean VOID_WORLD_ACTIVE = VariantNames.activeContains(VariantNames.VOID_WORLD.id);
     private static final boolean VOID_ISLAND_ACTIVE = VariantNames.activeContains(VariantNames.VOID_ISLAND.id);
     private static final boolean CUSTOM_STARTING_DIM_ACTIVE = VariantNames
         .activeContains(VariantNames.CUSTOM_DIM_START.id);
+    private static final int BLOCKS_PER_CHUNK = 65536;
 
     public static String getRandomPortalMessage(EntityPlayerMP player, World world) {
         int randomNumber = MathHelper.getRandomIntegerInRange(new Random(), 1, 32);
@@ -135,5 +140,38 @@ public class randomUtil {
             }
         }
 
+    }
+
+    public static Block[] getOrBuildChunkBlocks(int dimensionId) {
+        return CHUNK_BLOCK_CACHE.computeIfAbsent(dimensionId, id -> {
+            Block[] blocks = new Block[BLOCKS_PER_CHUNK];
+            Arrays.fill(blocks, Blocks.air);
+            SuperflatBlocks.SuperflatLayer[] layers = SuperflatBlocks.getSuperflatLayers(id);
+            for (int x = 0; x < 16; x++) {
+                for (int z = 0; z < 16; z++) {
+                    for (int y = 0; y < layers.length; y++) {
+                        int index = (x << 12) | (z << 8) | (y + 61);
+                        blocks[index] = layers[y].block();
+                    }
+                }
+            }
+            return blocks;
+        });
+    }
+
+    public static byte[] getOrBuildChunkMetadata(int dimensionId) {
+        return CHUNK_META_CACHE.computeIfAbsent(dimensionId, id -> {
+            byte[] metadata = new byte[BLOCKS_PER_CHUNK];
+            SuperflatBlocks.SuperflatLayer[] layers = SuperflatBlocks.getSuperflatLayers(id);
+            for (int x = 0; x < 16; x++) {
+                for (int z = 0; z < 16; z++) {
+                    for (int y = 0; y < layers.length; y++) {
+                        int index = (x << 12) | (z << 8) | (y + 61);
+                        metadata[index] = (byte) layers[y].metadata();
+                    }
+                }
+            }
+            return metadata;
+        });
     }
 }
