@@ -69,6 +69,9 @@ dependencies {
     devOnlyNonPublishable("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
     devOnlyNonPublishable("com.github.GTNewHorizons:Hardcore-Ender-Expansion:1.12.27-GTNH:dev") {transitive = false}
 
+    // tf island
+    devOnlyNonPublishable("com.github.GTNewHorizons:twilightforest:2.7.40:dev") {transitive=false}
+
     // space station island
     devOnlyNonPublishable("com.github.GTNewHorizons:Galacticraft:3.4.33-GTNH:dev") { transitive = false }
     devOnlyNonPublishable("com.github.GTNewHorizons:EnderIO:2.10.39:dev") { transitive = false }
