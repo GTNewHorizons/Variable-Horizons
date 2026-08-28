@@ -36,14 +36,16 @@ public class MixinChunkProviderServer_ForceSuperflatTerrain_EndlessIDs {
     public Chunk variablehorizons$forceSuperflatTerrainEndlessIds(Chunk chunk) {
         Block[] ids = new Block[BLOCKS_PER_CHUNK];
         byte[] metadata = new byte[BLOCKS_PER_CHUNK];
-        Block[] blockLayers = SuperflatBlocks.getSuperflatBlocks(worldObj.provider.dimensionId);
+        SuperflatBlocks.SuperflatLayer[] blockLayers = SuperflatBlocks
+            .getSuperflatLayers(worldObj.provider.dimensionId);
         Arrays.fill(ids, Blocks.air);
 
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
                 for (int y = 0; y < 4; y++) {
                     int index = (x << 12) | (z << 8) | y + 61;
-                    ids[index] = blockLayers[y];
+                    ids[index] = blockLayers[y].block();
+                    metadata[index] = (byte) blockLayers[y].metadata();
                 }
             }
         }

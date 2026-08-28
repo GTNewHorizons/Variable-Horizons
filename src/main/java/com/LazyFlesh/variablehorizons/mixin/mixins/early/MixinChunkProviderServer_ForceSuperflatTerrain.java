@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import com.LazyFlesh.variablehorizons.util.superflat.SuperflatBlocks;
+import com.LazyFlesh.variablehorizons.util.superflat.SuperflatBlocks.SuperflatLayer;
 
 @Mixin(ChunkProviderServer.class)
 public class MixinChunkProviderServer_ForceSuperflatTerrain {
@@ -33,14 +34,15 @@ public class MixinChunkProviderServer_ForceSuperflatTerrain {
     public Chunk variablehorizons$forceSuperflatTerrain(Chunk chunk) {
         final Block[] ids = new Block[BLOCKS_PER_CHUNK];
         final byte[] metadata = new byte[BLOCKS_PER_CHUNK];
-        Block[] blockLayers = SuperflatBlocks.getSuperflatBlocks(worldObj.provider.dimensionId);
+        SuperflatLayer[] blockLayers = SuperflatBlocks.getSuperflatLayers(worldObj.provider.dimensionId);
         Arrays.fill(ids, Blocks.air);
 
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
                 for (int y = 0; y < 4; y++) {
                     int index = (x << 12) | (z << 8) | y + 61;
-                    ids[index] = blockLayers[y];
+                    ids[index] = blockLayers[y].block();
+                    metadata[index] = (byte) blockLayers[y].metadata();
                 }
             }
         }
