@@ -38,6 +38,13 @@ public class CommonProxy {
             VillagerRegistry.instance()
                 .registerVillageTradeHandler(Constants.ID_VILLAGER_BEEKEEPER, new VillagerRecipe());
         }
+
+        if (VariantNames.activeContains(VariantNames.ALTERED_RECIPE_TIME.id)) {
+            FMLCommonHandler.instance()
+                .bus()
+                .register(VariantNames.ALTERED_RECIPE_TIME.loaderClass);
+        }
+
     }
 
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
