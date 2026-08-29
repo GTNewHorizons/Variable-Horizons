@@ -142,16 +142,29 @@ public class randomUtil {
 
     }
 
+    private static int getSuperflatFloorHeight(int dimensionID) {
+        switch (dimensionID) {
+            case 7 -> {
+                return 28;
+            }
+            case 100 -> {
+                return 81;
+            }
+            default -> {
+                return 61;
+            }
+        }
+    }
+
     public static Block[] getOrBuildChunkBlocks(int dimensionId) {
         return CHUNK_BLOCK_CACHE.computeIfAbsent(dimensionId, id -> {
-            int yOffset = id == 7 ? 28 : 61;
             Block[] blocks = new Block[BLOCKS_PER_CHUNK];
             Arrays.fill(blocks, Blocks.air);
             SuperflatBlocks.SuperflatLayer[] layers = SuperflatBlocks.getSuperflatLayers(id);
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
                     for (int y = 0; y < layers.length; y++) {
-                        int index = (x << 12) | (z << 8) | (y + yOffset);
+                        int index = (x << 12) | (z << 8) | (y + getSuperflatFloorHeight(dimensionId));
                         blocks[index] = layers[y].block();
                     }
                 }
@@ -162,13 +175,12 @@ public class randomUtil {
 
     public static byte[] getOrBuildChunkMetadata(int dimensionId) {
         return CHUNK_META_CACHE.computeIfAbsent(dimensionId, id -> {
-            int yOffset = id == 7 ? 28 : 61;
             byte[] metadata = new byte[BLOCKS_PER_CHUNK];
             SuperflatBlocks.SuperflatLayer[] layers = SuperflatBlocks.getSuperflatLayers(id);
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
                     for (int y = 0; y < layers.length; y++) {
-                        int index = (x << 12) | (z << 8) | (y + yOffset);
+                        int index = (x << 12) | (z << 8) | (y + getSuperflatFloorHeight(dimensionId));
                         metadata[index] = (byte) layers[y].metadata();
                     }
                 }
