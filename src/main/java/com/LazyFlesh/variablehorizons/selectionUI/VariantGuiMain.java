@@ -73,6 +73,7 @@ public class VariantGuiMain extends GuiScreen {
     private final float initialEfficiencyMultiplier;
     private final float initialRecipeTimeMultiplier;
     private final boolean initialSuperflatPopulation;
+    private final boolean initialSuperflatBiomes;
 
     public VariantGuiMain(GuiScreen parent) {
         this.parent = parent;
@@ -81,6 +82,7 @@ public class VariantGuiMain extends GuiScreen {
         this.initialEfficiencyMultiplier = GeneralConfig.efficiencyMultiplier;
         this.initialRecipeTimeMultiplier = GeneralConfig.recipeTimeMultiplier;
         this.initialSuperflatPopulation = GeneralConfig.allowSuperflatPopulation;
+        this.initialSuperflatBiomes = GeneralConfig.allowSuperflatBiomes;
     }
 
     private boolean hasUnsavedChanges() {
@@ -89,6 +91,7 @@ public class VariantGuiMain extends GuiScreen {
         if (initialEfficiencyMultiplier != GeneralConfig.efficiencyMultiplier) return true;
         if (initialRecipeTimeMultiplier != GeneralConfig.recipeTimeMultiplier) return true;
         if (initialSuperflatPopulation != GeneralConfig.allowSuperflatPopulation) return true;
+        if (initialSuperflatBiomes != GeneralConfig.allowSuperflatBiomes) return true;
         return false;
     }
 
