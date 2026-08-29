@@ -74,6 +74,8 @@ public class VariantGuiMain extends GuiScreen {
     private final float initialRecipeTimeMultiplier;
     private final boolean initialSuperflatPopulation;
     private final boolean initialSuperflatBiomes;
+    private final boolean initialVoidIslandTree;
+    private final boolean initialVoidIslandChest;
 
     public VariantGuiMain(GuiScreen parent) {
         this.parent = parent;
@@ -83,6 +85,8 @@ public class VariantGuiMain extends GuiScreen {
         this.initialRecipeTimeMultiplier = GeneralConfig.recipeTimeMultiplier;
         this.initialSuperflatPopulation = GeneralConfig.allowSuperflatPopulation;
         this.initialSuperflatBiomes = GeneralConfig.allowSuperflatBiomes;
+        this.initialVoidIslandTree = GeneralConfig.allowVoidIslandTree;
+        this.initialVoidIslandChest = GeneralConfig.allowVoidIslandChest;
     }
 
     private boolean hasUnsavedChanges() {
@@ -92,6 +96,8 @@ public class VariantGuiMain extends GuiScreen {
         if (initialRecipeTimeMultiplier != GeneralConfig.recipeTimeMultiplier) return true;
         if (initialSuperflatPopulation != GeneralConfig.allowSuperflatPopulation) return true;
         if (initialSuperflatBiomes != GeneralConfig.allowSuperflatBiomes) return true;
+        if (initialVoidIslandTree != GeneralConfig.allowVoidIslandTree) return true;
+        if (initialVoidIslandChest != GeneralConfig.allowVoidIslandChest) return true;
         return false;
     }
 
@@ -282,6 +288,20 @@ public class VariantGuiMain extends GuiScreen {
                 "variantgui.superflat.biomes",
                 () -> GeneralConfig.allowSuperflatBiomes,
                 value -> GeneralConfig.allowSuperflatBiomes = value));
+        checkboxEntries.add(
+            makeCheckbox(
+                5,
+                VariantNames.VOID_ISLAND,
+                "variantgui.voidisland.tree",
+                () -> GeneralConfig.allowVoidIslandTree,
+                value -> GeneralConfig.allowVoidIslandTree = value));
+        checkboxEntries.add(
+            makeCheckbox(
+                6,
+                VariantNames.VOID_ISLAND,
+                "variantgui.voidisland.chest",
+                () -> GeneralConfig.allowVoidIslandChest,
+                value -> GeneralConfig.allowVoidIslandChest = value));
 
         for (CheckboxEntry entry : checkboxEntries) {
             this.buttonList.add(entry.checkbox);

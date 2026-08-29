@@ -39,4 +39,12 @@ public class GeneralConfig {
     @Config.DefaultBoolean(false)
     public static boolean allowSuperflatBiomes;
 
+    @Config.Comment("Should Void Islands spawn with a tree")
+    @Config.DefaultBoolean(true)
+    public static boolean allowVoidIslandTree;
+
+    @Config.Comment("Should Void Islands spawn with a starting chest")
+    @Config.DefaultBoolean(true)
+    public static boolean allowVoidIslandChest;
+
 }

@@ -36,7 +36,7 @@ variants.ALTERED_TIME.desc=Alter time with this variant, either lengthening or s
 variants.ALTERED_EFFICIENCY.desc=Alter the laws of energy conservation with this variant, either increasing or decreasing generator efficiencies across the board. The number you enter in the textbox is the multiplier that will be applied to generators, use a number >1 if you want generators to generate more power, and <1 if you want them to generate less.
 variants.INFINITE_POWER.desc=INFINITE POWER! This variant fills your wireless network to a number so large that you will never be able to deplete it. Also, in order to be able to use that power, all energy hatches are now wireless! Rejoice in your wealth of unlimited energy!
 variants.CUSTOM_DIM_START.desc=This variant allows you to choose a starting dimension in which you are going to spawn and respawn, but there is nothing preventing you from leaving. You can specify the dimension ID you want this variant to lock you to, some examples include the Nether (-1), the End (1) and Ross128B (64). A full list of dimension IDs can be found on the GTNH wiki.
-variants.SUPERFLAT.desc=4 layers thick flat terrain awaits you in this variant. All dimensions are now superflat, with each dimension having its own unique block layers. By default, this variant will disable all types of chunk population, meaning your world will be barren of foliage and structures, but you can enable this using the checkbox below. Villages will always generate, regardless of the setting chosen.
+variants.SUPERFLAT.desc=4 layers thick flat terrain awaits you in this variant. All dimensions are now superflat, with each dimension having its own unique block layers. By default, this variant will disable all types of chunk population, meaning your world will be barren of foliage and structures, but you can enable this using the checkbox below. Similarly, all biomes are plains by default, unless biome diversity is enabled. Villages will always generate, regardless of the setting chosen.
 
 #Variant GUI buttons
 variantgui.header=Pack Variants
@@ -44,8 +44,10 @@ variantgui.done=Done
 variantgui.toggle=Toggle
 variantgui.showfull=Show Full Variants
 variantgui.showsub=Show Sub-Variants
-variantgui.superflat.population=Enable superflat chunk population
-variantgui.superflat.biomes=Enable superflat biome diversity
+variantgui.superflat.population=Enable chunk population
+variantgui.superflat.biomes=Enable biome diversity
+variantgui.voidisland.tree=Enable tree
+variantgui.voidisland.chest=Enable starting chest
 
 #Variant GUI tooltips
 variantgui.dimidfield.tooltip=Insert numeric ID of chosen dimension

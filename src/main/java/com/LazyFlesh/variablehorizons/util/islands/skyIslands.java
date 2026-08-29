@@ -1,6 +1,9 @@
 package com.LazyFlesh.variablehorizons.util.islands;
 
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+
+import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Mods;
@@ -10,11 +13,11 @@ public class skyIslands {
     // spotless:off
     public static Object[][] createIslandOW() {
         return new Object[][] { { -7, 6, -3 }, // offset x, y, z
-            {   'L', Blocks.leaves, 0,
-                'W', Blocks.log, 0,
+            {   'L', treeBlock(Blocks.leaves), 0,
+                'W', treeBlock(Blocks.log), 0,
                 'G', Blocks.grass, 0,
                 'D', Blocks.dirt, 0,
-                'C', Blocks.chest, 0}, // key, block, meta
+                'C', islandChest(), 0}, // key, block, meta
             { "        ", "        ", "LLLL    ", " LLL    ", "        ", "        ", "        ", "        ", "        " },
             { "  L     ", "  LL    ", "LLLLL   ", "LLLLL   ", "        ", "        ", "        ", "        ", "        " },
             { " LLL    ", " LWL    ", "LLWLL   ", "LLWLL   ", "  W     ", "  W     ", "  GGG   ", "  DDD   ", "  DDD   " },
@@ -28,8 +31,8 @@ public class skyIslands {
     public static Object[][] createIslandNether() {
         return new Object[][]{{-9, 3, -7}, // offset x, y, z
             {'A', GameRegistry.findBlock("BiomesOPlenty", "ash"), 1,
-                'B', GameRegistry.findBlock("Natura", "bloodwood"), 0,
-                'C', GameRegistry.findBlock("Natura", "bloodwood"), 15,
+                'B', treeBlock(GameRegistry.findBlock("Natura", "bloodwood")), 0,
+                'C', treeBlock(GameRegistry.findBlock("Natura", "bloodwood")), 15,
                 'D', GameRegistry.findBlock("BiomesOPlenty", "bopGrass"), 1,
                 'E', GameRegistry.findBlock("miscutils", "FluidPyrotheum"), 1,
                 'F', GameRegistry.findBlock("BiomesOPlenty", "flesh"), 3,
@@ -39,15 +42,15 @@ public class skyIslands {
                 'J', Blocks.netherrack, 0,
                 'K', Blocks.soul_sand, 0,
                 'L', Blocks.lava, 0,
-                'M', GameRegistry.findBlock("Natura", "floraleavesnocolor"), 2,
+                'M', treeBlock(GameRegistry.findBlock("Natura", "floraleavesnocolor")), 2,
                 'N', GameRegistry.findBlock("BiomesOPlenty", "overgrownNetherrack"), 0,
                 'O', GameRegistry.findBlock("BiomesOPlenty", "plants"), 5,
                 'P', GameRegistry.findBlock("BiomesOPlenty", "flowers"), 14,
                 'Q', GameRegistry.findBlock("BiomesOPlenty", "grave"), 1,
-                'R', GameRegistry.findBlock("Natura", "bloodwood"), 1,
-                'S', GameRegistry.findBlock("Natura", "bloodwood"), 2,
-                'T', GameRegistry.findBlock("Natura", "bloodwood"), 3,
-                'U', Blocks.chest, 4}, // key, block, meta
+                'R', treeBlock(GameRegistry.findBlock("Natura", "bloodwood")), 1,
+                'S', treeBlock(GameRegistry.findBlock("Natura", "bloodwood")), 2,
+                'T', treeBlock(GameRegistry.findBlock("Natura", "bloodwood")), 3,
+                'U', islandChest(), 4}, // key, block, meta
             {"             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "     MMM     ", "         MMM ", "             ", "             ", "             ", "             "},
             {"             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "     MMM     ", "    MMMMMMMM ", "     MMMMMMMM", "         MMM ", "             ", "             ", "             "},
             {"             ", "     U       ", "     NH      ", "    NJN      ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "     MMMMMM  ", "    MMCMMMMM ", "     MMMMMCMM", "         MMM ", "             ", "             ", "             "},
@@ -68,10 +71,12 @@ public class skyIslands {
             { 'A', Blocks.dirt, 0,
                 'B', GameRegistry.findBlock("etfuturum", "cobbled_deepslate"), 0,
                 'C', GameRegistry.findBlock("etfuturum", "deepslate"), 0,
-                'D', GameRegistry.findBlock("BiomesOPlenty", "leaves1"), 3,
-                'E', GameRegistry.findBlock("BiomesOPlenty", "logs1"), 2,
+                'D', treeBlock(GameRegistry.findBlock("BiomesOPlenty", "leaves1")), 3,
+                'E', treeBlock(GameRegistry.findBlock("BiomesOPlenty", "logs1")), 2,
                 'F', GameRegistry.findBlock("BiomesOPlenty", "mushrooms"), 3,
-                'G', Blocks.stone, 0, 'H', Blocks.chest, 2, 'I', Blocks.mycelium, 0},
+                'G', Blocks.stone, 0,
+                'H', islandChest(), 2,
+                'I', Blocks.mycelium, 0},
             { "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "     G     ", "           ", "           ", "           ", "           ", "           ", "           ", "           " },
             { "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "    GGI    ", "     C     ", "           ", "           ", "           ", "           ", "           ", "           " },
             { "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "     F     ", "   GGIIG   ", "    CCC    ", "     C     ", "           ", "           ", "           ", "           ", "           " },
@@ -91,8 +96,8 @@ public class skyIslands {
             'B', GameRegistry.findBlock("GalacticraftCore", "tile.airLockSeal"), 0,
             'D', Blocks.dirt, 0,
             'E', Blocks.grass, 0,
-            'F', Blocks.leaves, 0,
-            'G', Blocks.log, 0,
+            'F', treeBlock(Blocks.leaves), 0,
+            'G', treeBlock(Blocks.log), 0,
             'H', Blocks.glass_pane, 0,
             'I', GameRegistry.findBlock("Ztones", "tile.tankBlock"), 0,
             'J', GameRegistry.findBlock("Ztones", "tile.tankBlock"), 13,
@@ -105,7 +110,7 @@ public class skyIslands {
             'R', GameRegistry.findBlock("GalacticraftCore", "tile.oxygenCollector"), 1,
             'S', GameRegistry.findBlock("GalacticraftCore", "tile.solar"), 7,
             'U', GameRegistry.findBlock("GalacticraftCore", "tile.enclosed"), 14,
-            'V', Blocks.chest, 4},
+            'V', islandChest(), 4},
             {"           ", "  IIIIIII  ", "  IIIIIII  ", "  HHHHHHH  ", "  HHHHHHH  ", "  HHHHHHH  ", "  IIIIIII  ", "           ", "           ", "           "},
             {"   JJJJJ   ", "  I     I  ", "  I     I  ", "  H     H  ", "  HFFFF H  ", "  H FFF H  ", "  I     I  ", "   JJJJJ   ", "   JJJJJ   ", "   JJJJJ   "},
             {"   JAAAJ   ", "  I     I  ", "  I  F  I  ", "  H  F  H  ", "  HFFFFFH  ", "  HFFFFFH  ", "  I     I  ", "   J   J   ", "   JEEEJ   ", "   JJJJJ   "},
@@ -138,14 +143,14 @@ public class skyIslands {
                 'M', GameRegistry.findBlock("HardcoreEnderExpansion", "ender_goo"), 0,
                 'N', GameRegistry.findBlock("etfuturum", "chorus_flower"), 0,
                 'O', Blocks.glowstone, 0,
-                'P', GameRegistry.findBlock("thaumicbases", "genLogs"), 2,
-                'Q', GameRegistry.findBlock("thaumicbases", "genLeaves"), 3,
+                'P', treeBlock(GameRegistry.findBlock("thaumicbases", "genLogs")), 2,
+                'Q', treeBlock(GameRegistry.findBlock("thaumicbases", "genLeaves")), 3,
                 'R', Blocks.obsidian, 0,
                 'S', GameRegistry.findBlock("HardcoreEnderExpansion", "obsidian_end"), 0,
                 'T', GameRegistry.findBlock("HardcoreEnderExpansion", "obsidian_special"), 0,
                 'U', GameRegistry.findBlock("HardcoreEnderExpansion", "obsidian_special"), 1,
                 'V', Blocks.end_stone, 0,
-                'W', Blocks.chest, 0}, // key, block, meta
+                'W', islandChest(), 0}, // key, block, meta
             {"                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "        O        ", "        S        ", "        S        ", "        S        ", "        S        ", "        S        ", "        S        ", "        S        ", "        S        ", "        S        ", "        R        ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 "},
             {"                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "        S        ", "        S        ", "       SSS       ", "       SSS       ", "       SSS       ", "       SSS       ", "       RSR       ", "        S        ", "        S        ", "        S        ", "        R        ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 "},
             {"                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "        S        ", "        S        ", "        S        ", "        S        ", "       SSS       ", "       SSS       ", "       SSS       ", "       SSS       ", "       RRR       ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 "},
@@ -174,8 +179,8 @@ public class skyIslands {
                 'E', GameRegistry.findBlock("Thaumcraft", "blockCosmeticSolid"), 15,
                 'F', GameRegistry.findBlock("Thaumcraft", "blockEldritch"), 4,
                 'G', GameRegistry.findBlock("Thaumcraft", "blockEldritch"), 5,
-                'H', GameRegistry.findBlock("Thaumcraft", "blockMagicalLeaves"), 0,
-                'I', GameRegistry.findBlock("Thaumcraft", "blockMagicalLog"), 0,
+                'H', treeBlock(GameRegistry.findBlock("Thaumcraft", "blockMagicalLeaves")), 0,
+                'I', treeBlock(GameRegistry.findBlock("Thaumcraft", "blockMagicalLog")), 0,
                 'J', GameRegistry.findBlock("Thaumcraft", "blockStairsEldritch"), 6,
                 'K', GameRegistry.findBlock("chisel", "arcane"), 4,
                 'L', GameRegistry.findBlock("chisel", "arcane"), 7,
@@ -188,7 +193,7 @@ public class skyIslands {
                 'S', GameRegistry.findBlock("Thaumcraft", "blockStairsEldritch"), 7,
                 'T', GameRegistry.findBlock("Thaumcraft", "blockStairsEldritch"), 4,
                 'U', GameRegistry.findBlock("Thaumcraft", "blockStairsEldritch"), 5,
-                'V', Blocks.chest, 0}, // key, block, meta
+                'V', islandChest(), 0}, // key, block, meta
             {"              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "   AAAAAAAA   ", "              ", "              ", "              ", "              "},
             {"              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "              ", "  ADDDDDDDDA  ", "   JTTTTTTS   ", "              ", "              ", "              "},
             {"              ", "              ", "              ", "    HH        ", "   HHH        ", "              ", "              ", "              ", "              ", "       HH     ", "       HHH    ", "              ", "              ", "              ", "   CC    CC   ", "    C    C    ", "   AC    CA   ", " ADCCQDDQCCDA ", "  JTLLLLLLTS  ", "              ", "              ", "              "},
@@ -208,8 +213,8 @@ public class skyIslands {
     public static Object[][] createIslandTwilight() {
         return new Object[][]{{-4, 10, -7}, // offset x, y, z
             { 'A', GameRegistry.findBlock(Mods.TwilightForest.getID(), "tile.TFFireflyJar"), 0,
-            'B', GameRegistry.findBlock(Mods.TwilightForest.getID(), "tile.TFLeaves"), 3,
-            'C', GameRegistry.findBlock(Mods.TwilightForest.getID(), "tile.TFLog"), 0,
+            'B', treeBlock(GameRegistry.findBlock(Mods.TwilightForest.getID(), "tile.TFLeaves")), 3,
+            'C', treeBlock(GameRegistry.findBlock(Mods.TwilightForest.getID(), "tile.TFLog")), 0,
             'D', GameRegistry.findBlock(Mods.TwilightForest.getID(), "tile.TFPlant"), 3,
             'E', Blocks.cobblestone_wall, 1,
             'F', Blocks.dirt, 0,
@@ -217,7 +222,7 @@ public class skyIslands {
             'H', Blocks.stone, 0,
             'I', Blocks.water, 0,
             'J', GameRegistry.findBlock(Mods.TwilightForest.getID(), "tile.TFCicada"), 1,
-            'K', Blocks.chest, 3,
+            'K', islandChest(), 3,
             'L', GameRegistry.findBlock(Mods.TwilightForest.getID(), "tile.TFLog"), 8,},
 
             {"            ","            ","            ","            ","            ","            ","            ","            ","            ","            ","            ","      G     ","            ","            ","            ","            ","            "},
@@ -231,8 +236,13 @@ public class skyIslands {
             {"            ","            ","            "," BBB        "," BBB        ","            ","            ","            ","            ","            ","     JGG    ","     GFF    ","            ","            ","            ","            ","            "}};
     }
 
-
-
-
     // spotless:on
+
+    private static Block islandChest() {
+        return GeneralConfig.allowVoidIslandChest ? Blocks.chest : Blocks.air;
+    }
+
+    private static Block treeBlock(Block treePart) {
+        return GeneralConfig.allowVoidIslandTree ? treePart : Blocks.air;
+    }
 }
