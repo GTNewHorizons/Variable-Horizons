@@ -11,6 +11,7 @@ import com.LazyFlesh.variablehorizons.variants.VariantCommands;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import com.LazyFlesh.variablehorizons.variants.invasive.DimLocked;
+import com.LazyFlesh.variablehorizons.variants.runtime.AlteredRecipeTime;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -81,6 +82,10 @@ public class CommonProxy {
             FMLCommonHandler.instance()
                 .bus()
                 .register(IslandControl.instance);
+        }
+        if (VariantNames.activeContains(VariantNames.ALTERED_RECIPE_TIME.id)) {
+            VariableHorizons.LOG.info("Loaded Recipe Time Altering Command.");
+            event.registerServerCommand(new AlteredRecipeTime.AlteredRecipeTimeCommand());
         }
     }
 

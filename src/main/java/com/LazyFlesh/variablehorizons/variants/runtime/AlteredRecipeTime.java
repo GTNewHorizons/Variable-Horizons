@@ -2,15 +2,16 @@ package com.LazyFlesh.variablehorizons.variants.runtime;
 
 import java.util.Map;
 
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.util.ChatComponentText;
+
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 
@@ -21,51 +22,31 @@ public class AlteredRecipeTime extends VariantLoader implements IRuntimeVariant 
         VariantNames.ALTERED_RECIPE_TIME.hasLoaded = true;
     }
 
-    public boolean modifiedRecipeTimes = false;
-    private float cachedMultiplier = 1;
-
-    @SubscribeEvent
-    @SideOnly(Side.CLIENT)
-    public void onClientTick(TickEvent.ClientTickEvent event) {
-        if (!modifiedRecipeTimes) {
-            modifiedRecipeTimes = true;
-            modifyRecipesDuration(GeneralConfig.recipeTimeMultiplier);
-        }
-    }
-
-    @SubscribeEvent
-    public void onServerTick(TickEvent.ServerTickEvent event) {
-        if (!modifiedRecipeTimes) {
-            modifiedRecipeTimes = true;
-            modifyRecipesDuration(GeneralConfig.recipeTimeMultiplier);
-        }
-    }
+    private static float cachedMultiplier = 1;
 
     @SubscribeEvent
     public void onPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
-        modifiedRecipeTimes = false;
-        modifyRecipesDuration(1 / cachedMultiplier);
+        modifyRecipesDuration(GeneralConfig.recipeTimeMultiplier);
     }
 
-    private void modifyRecipesDuration(float multiplier) {
-
+    private static void modifyRecipesDuration(float multiplier) {
         // Do the work
         for (Map.Entry<String, RecipeMap<?>> entry : RecipeMap.ALL_RECIPE_MAPS.entrySet()) {
 
             for (GTRecipe recipe : entry.getValue()
                 .getAllRecipes()) {
                 if (recipe.mDuration > 0) {
-                    recipe.mDuration = (int) (recipe.mDuration * multiplier);
+                    recipe.mDuration = Math.max(1, (int) (recipe.mDuration * multiplier / cachedMultiplier));
                 }
             }
         }
 
         for (GTRecipe.RecipeAssemblyLine recipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
             if (recipe.mDuration > 0) {
-                recipe.mDuration = (int) (recipe.mDuration * multiplier);
+                recipe.mDuration = Math.max(1, (int) (recipe.mDuration * multiplier / cachedMultiplier));
             }
             if (recipe.mResearchTime > 0) {
-                recipe.mResearchTime = (int) (recipe.mDuration * multiplier);
+                recipe.mResearchTime = Math.max(1, (int) (recipe.mDuration * multiplier / cachedMultiplier));
             }
         }
 
@@ -75,5 +56,34 @@ public class AlteredRecipeTime extends VariantLoader implements IRuntimeVariant 
     @Override
     public void variantRecipes(VariantNames... activeVariants) {
         // none to add
+    }
+
+    public static class AlteredRecipeTimeCommand extends CommandBase {
+
+        @Override
+        public String getCommandName() {
+            return "alterrecipetimes";
+        }
+
+        @Override
+        public String getCommandUsage(ICommandSender sender) {
+            return "/alterrecipetimes <multiplier>";
+        }
+
+        @Override
+        public void processCommand(ICommandSender sender, String[] args) {
+            if (args.length != 1) {
+                sender.addChatMessage(new ChatComponentText("Usage: /alterrecipetimes <multiplier>"));
+                return;
+            }
+            float multiplier = Float.parseFloat(args[0]);
+            modifyRecipesDuration(multiplier);
+            sender.addChatMessage(new ChatComponentText("Changes applied"));
+        }
+
+        @Override
+        public int getRequiredPermissionLevel() {
+            return 1;
+        }
     }
 }
