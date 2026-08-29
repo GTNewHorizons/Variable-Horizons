@@ -65,11 +65,6 @@ public class MixinChunkProviderServer_DisablePopulation {
                 if (chunkX == spawnChunkX && chunkZ == spawnChunkZ) {
                     randomUtil.generateVoidIsland(spawn, worldObj, worldObj.provider.dimensionId);
                 }
-
-                if (this.worldObj.provider.dimensionId == 7) {
-                    // if twilight, lower world spawn to 32 so player doesn't get stuck in a death loop
-                    this.worldObj.getSpawnPoint().posY = 32;
-                }
             }
             return;
         }
