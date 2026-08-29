@@ -31,4 +31,20 @@ public class GeneralConfig {
     @Config.DefaultFloat(1f)
     public static float efficiencyMultiplier;
 
+    @Config.Comment("Should Superflat allow all structures and foliage to generate (villages are always generated)")
+    @Config.DefaultBoolean(false)
+    public static boolean allowSuperflatPopulation;
+
+    @Config.Comment("Should Superflat overwold generate biomes other than plains")
+    @Config.DefaultBoolean(false)
+    public static boolean allowSuperflatBiomes;
+
+    @Config.Comment("Should Void Islands spawn with a tree")
+    @Config.DefaultBoolean(true)
+    public static boolean allowVoidIslandTree;
+
+    @Config.Comment("Should Void Islands spawn with a starting chest")
+    @Config.DefaultBoolean(true)
+    public static boolean allowVoidIslandChest;
+
 }

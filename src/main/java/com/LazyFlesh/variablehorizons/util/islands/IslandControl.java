@@ -21,7 +21,7 @@ public class IslandControl {
 
     @SubscribeEvent
     public void onPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
-        if (!playerIsland.containsKey(
+        if (!playerIsland.containsKey( // only first login
             event.player.getUniqueID()
                 .toString())) {
             if (islands.containsKey("0,0")) {
@@ -44,6 +44,10 @@ public class IslandControl {
                     event.player.getUniqueID()
                         .toString(),
                     is);
+
+                // update island position to world spawn instead of 0, 0
+                is.x = (int) event.player.posX;
+                is.z = (int) event.player.posZ;
             }
         }
         FMLCommonHandler.instance()
@@ -55,7 +59,7 @@ public class IslandControl {
 
     public Pair<Integer, Integer> nextIslandLocation() {
         // start of spiral is 0, 0
-        // to simplify, divide x and z coords of lastIsland by 8,000 (inter-island distance)
+        // to simplify, divide x and z coords of lastIsland by 8,000 (interisland distance)
         int x = IslandControl.instance.lastIsland.first() / 8000;
         int z = IslandControl.instance.lastIsland.second() / 8000;
 

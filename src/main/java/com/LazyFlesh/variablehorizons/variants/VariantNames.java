@@ -1,10 +1,8 @@
 package com.LazyFlesh.variablehorizons.variants;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,15 +23,18 @@ public enum VariantNames {
     // sub-variants/modifiers
     // modifies one thing, can be stacked with each other (barring incompats)
     // i.e. turns off quests; makes it hardcore; halves all processing time, etc.
-    NO_RECIPE_ADDITIONS("NO_RECIPE_ADDITIONS"), // Specifies additions, since no rocket removes nasa bench recipe.
-    VOID_WORLD("VOID_WORLD" /* no class, just mixin */), // no land anywhere
+    NO_RECIPE_ADDITIONS("NO_RECIPE_ADDITIONS"), // Specifies additions, since, i.e. NoRocket removes rocket recipes.
+    VOID_WORLD("VOID_WORLD"), // no land anywhere
     VOID_ISLAND("VOID_ISLAND", new VoidIsland()), // Starting Dim is a sky island.
-    NO_ROCKET("NO_ROCKET", new NoRocket()), // Disable nasa bench
+    NO_ROCKET("NO_ROCKET", new NoRocket()), // removes rocket recipes
     NO_QUEST_REWARDS("NO_QUEST_REWARDS", new NoQuestRewards()),
     ALTERED_RECIPE_TIME("ALTERED_TIME"),
     ALTERED_EFFICIENCY("ALTERED_EFFICIENCY"),
+    CHEAP_MODE("CHEAP_MODE"),
+    EXPENSIVE_MODE("EXPENSIVE_MODE"),
     INFINITE_POWER("INFINITE_POWER", new InfinitePower()),
     CUSTOM_DIM_START("CUSTOM_DIM_START", new DiffDimStart()), // sets a different dim as the spawn dimension instead of OW
+    SUPERFLAT("SUPERFLAT", new VariantNames[]{ VOID_WORLD, VOID_ISLAND }),
 
     // full variants
     // i.e. defines both world type and recipes
@@ -42,24 +43,24 @@ public enum VariantNames {
     NORMAL("NORMAL", true, new VariantNames[] {}, new VariantNames[] {}), // does nothing
 
     GARDEN_OF_GRIND("GARDEN_OF_GRIND", new GardenOfGrind(),
-        new VariantNames[] { VOID_WORLD, NO_RECIPE_ADDITIONS, NO_ROCKET }, new VariantNames[] {}),
+        new VariantNames[] { VOID_WORLD, NO_RECIPE_ADDITIONS, NO_ROCKET }, new VariantNames[] { SUPERFLAT }),
 
+    SKYBLOCK("SKYBLOCK", true, new VariantNames[] { VOID_WORLD, VOID_ISLAND },
+        new VariantNames[] { NO_RECIPE_ADDITIONS, SUPERFLAT }),
+    // only OW is void, w/ sky island
+    // if you want Skyblock with no recipe additions, do Garden of Grind + Void Island.
     DIMLOCKED("DIMLOCKED", new DimLocked(), new VariantNames[] { CUSTOM_DIM_START, NO_ROCKET },
         new VariantNames[] { NO_RECIPE_ADDITIONS }),
 
-    SKYBLOCK("SKYBLOCK", true, new VariantNames[] { VOID_WORLD, VOID_ISLAND },
-        new VariantNames[] { NO_RECIPE_ADDITIONS }),
-    // only OW is void, w/ sky island
-    // if you want Skyblock with no recipe additions, do Garden of Grind + Void Island.
 
     ;
     // spotless:on
 
     public final String id;
     public final boolean compositionVariant; // is it made of several modifications
-    public List<VariantNames> incompatible = new ArrayList<>();
-    public List<VariantNames> composedOf = new ArrayList<>();
-    public final List<VariantNames> partOf = new ArrayList<>(); // composition variant it is part of
+    public final Set<VariantNames> incompatible = new HashSet<>();
+    public final Set<VariantNames> composedOf = new HashSet<>();
+    public final Set<VariantNames> partOf = new HashSet<>(); // composition variant it is part of
     public VariantLoader loaderClass;
     public boolean hasLoaded = false;
 
@@ -69,8 +70,8 @@ public enum VariantNames {
     private static final Map<String, VariantNames> allVariants = new HashMap<>();
     private static final VariantNames[] VALUES = values();
     private static final Set<String> allVariantIDs;
-    public static final List<VariantNames> allCompositionVariants = new ArrayList<>();
-    public static final List<VariantNames> allSubVariants = new ArrayList<>();
+    public static final Set<VariantNames> allCompositionVariants = new HashSet<>();
+    public static final Set<VariantNames> allSubVariants = new HashSet<>();
 
     static {
         for (VariantNames name : VALUES) {
@@ -95,18 +96,29 @@ public enum VariantNames {
         this.compositionVariant = false;
     }
 
+    VariantNames(String id, VariantNames[] incompatible) {
+        this.id = id;
+        this.compositionVariant = false;
+        if (incompatible.length != 0) {
+            this.incompatible.addAll(Arrays.asList(incompatible));
+            for (VariantNames i : incompatible) {
+                addIncompatibility(i, this);
+            }
+        }
+    }
+
     VariantNames(String id, boolean compositionVariant, VariantNames[] composedOf, VariantNames[] incompatible) {
         this.id = id;
         this.compositionVariant = compositionVariant;
 
         if (incompatible.length != 0) {
-            this.incompatible = Arrays.asList(incompatible);
+            this.incompatible.addAll(Arrays.asList(incompatible));
             for (VariantNames i : incompatible) {
                 addIncompatibility(i, this);
             }
         }
         if (composedOf.length != 0) {
-            this.composedOf = Arrays.asList(composedOf);
+            this.composedOf.addAll(Arrays.asList(composedOf));
             for (VariantNames i : composedOf) {
                 i.partOf.add(this);
                 // make sure to add the incompatibles of the composites
@@ -184,8 +196,9 @@ public enum VariantNames {
 
     public static void addIncompatibility(VariantNames first, VariantNames second) {
         if (first != null && second != null) {
-            if (!first.incompatible.contains(second)) first.incompatible.add(second);
-            if (!second.incompatible.contains(first)) second.incompatible.add(first);
+            // sets can't have duplicates, no need to do a contains check.
+            first.incompatible.add(second);
+            second.incompatible.add(first);
         }
     }
 

@@ -15,6 +15,9 @@ variants.ALTERED_TIME.name=Altered Recipe Times
 variants.ALTERED_EFFICIENCY.name=Altered Machine Efficiency
 variants.INFINITE_POWER.name=Infinite Power
 variants.CUSTOM_DIM_START.name=Custom Starting Dimension
+variants.SUPERFLAT.name=Superflat
+variants.EXPENSIVE_MODE.name=Expensive Mode
+variants.CHEAP_MODE.name=Cheap Mode
 
 #Variant descriptions
 #Full Variants
@@ -32,7 +35,8 @@ variants.NO_QUEST_REWARDS.desc=Rather self explanatory, you will not be able to 
 variants.ALTERED_TIME.desc=Alter time with this variant, either lengthening or shortening all recipe times. The number you enter in the textbox is the multiplier that will be applied to recipes, use a number >1 if you want recipes to take longer, and <1 if you want them to be shorter.
 variants.ALTERED_EFFICIENCY.desc=Alter the laws of energy conservation with this variant, either increasing or decreasing generator efficiencies across the board. The number you enter in the textbox is the multiplier that will be applied to generators, use a number >1 if you want generators to generate more power, and <1 if you want them to generate less.
 variants.INFINITE_POWER.desc=INFINITE POWER! This variant fills your wireless network to a number so large that you will never be able to deplete it. Also, in order to be able to use that power, all energy hatches are now wireless! Rejoice in your wealth of unlimited energy!
-variants.CUSTOM_DIM_START.desc=This variant allows you to choose a starting dimension in which you are going to spawn and respawn, but there is nothing preventing you from leaving. You can specify the dimension ID you want this variant to lock you to, some examples include the Nether (-1), the End (1) and Ross128B (64). A full list of dimension IDs can be found on the GTNH wiki.
+variants.CUSTOM_DIM_START.desc=This variant allows you to choose a starting dimension in which you are going to spawn and respawn, but there is nothing preventing you from leaving. You can specify the dimension ID you want this variant to start you in, some examples include the Nether (-1), the End (1) and Ross128B (64). A full list of dimension IDs can be found on the GTNH wiki.
+variants.SUPERFLAT.desc=4 layers thick flat terrain awaits you in this variant. All dimensions are now superflat, with each dimension having its own unique block layers. By default, this variant will disable all types of chunk population, meaning your world will be barren of foliage and structures, but you can enable this using the checkbox below. Similarly, all biomes are plains by default, unless biome diversity is enabled. Villages will always generate, regardless of the setting chosen.
 
 #Variant GUI buttons
 variantgui.header=Pack Variants
@@ -40,6 +44,10 @@ variantgui.done=Done
 variantgui.toggle=Toggle
 variantgui.showfull=Show Full Variants
 variantgui.showsub=Show Sub-Variants
+variantgui.superflat.population=Enable chunk population
+variantgui.superflat.biomes=Enable biome diversity
+variantgui.voidisland.tree=Enable tree
+variantgui.voidisland.chest=Enable starting chest
 
 #Variant GUI tooltips
 variantgui.dimidfield.tooltip=Insert numeric ID of chosen dimension
@@ -78,4 +86,19 @@ variants.dimlock.message.28=This warp is delayed by 360 min
 variants.dimlock.message.29=There's a time and place for everything
 variants.dimlock.message.30=You rolled a 1. Critical Failure!
 variants.dimlock.message.31=Sorry, but this portal requires a premium subscription to use.
-variants.dimlock.message.32=*loud incorrect buzzer*
+
+
+
+# logging and errors
+# variant loader
+variants.error.message.1=Loading Variants!
+variants.error.message.2=Turning off undefined variant: {}
+variants.error.message.3=A variant incompatible with another active variant was detected.
+variants.error.message.4=Turning off incompatible variant: {}
+
+# variant toggle
+variants.error.message.5=Variant already active.
+variants.error.message.6=Variant is incompatible with an active variant.
+variants.error.message.7=Client/world restart may be required for change to take effect.
+variants.error.message.8=Server/instance restart required for change to take effect.
+variants.error.message.9=Variant already inactive.

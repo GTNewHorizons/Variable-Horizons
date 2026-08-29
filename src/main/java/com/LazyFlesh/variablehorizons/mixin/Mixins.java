@@ -36,17 +36,40 @@ public enum Mixins implements IMixins {
             .setPhase(Phase.EARLY)),
     DISABLE_WORLD_TYPE_CHUNK_POPULATION(
         new MixinBuilder("Disable chunk population tied to chunk generation (ores/structure)")
-            .addCommonMixins("MixinChunkProviderServer_DisablePopulation")
+            .addCommonMixins("MixinChunkProviderServer_DisablePopulation", "AccessorChunkProviderGenerate")
             .setApplyIf(
                 () -> (VariantNames.activeContains(VariantNames.VOID_WORLD.id)
-                    || VariantNames.activeContains(VariantNames.VOID_ISLAND.id)) && !GeneralConfig.disableVariants)
+                    || VariantNames.activeContains(VariantNames.VOID_ISLAND.id)
+                    || (VariantNames.activeContains(VariantNames.SUPERFLAT.id)
+                        && !GeneralConfig.allowSuperflatPopulation))
+                    && !GeneralConfig.disableVariants)
             .setPhase(Phase.EARLY)),
     DISABLE_MODDED_CHUNK_POPULATION(new MixinBuilder("Disable all other mod chunk population (e.g. Natura clouds)")
         .addCommonMixins("MixinChunkProviderServer_DisableModGeneration")
         .setApplyIf(
             () -> (VariantNames.activeContains(VariantNames.VOID_WORLD.id)
-                || VariantNames.activeContains(VariantNames.VOID_ISLAND.id)) && !GogConfig.dragonTime
+                || VariantNames.activeContains(VariantNames.VOID_ISLAND.id)
+                || (VariantNames.activeContains(VariantNames.SUPERFLAT.id) && !GeneralConfig.allowSuperflatPopulation))
+                && !GogConfig.dragonTime
                 && !GeneralConfig.disableVariants)
+        .setPhase(Phase.EARLY)),
+    SUPERFLAT_CHUNK_TERRAIN_GENERATION(new MixinBuilder("Make the world and all dims superflat")
+        .addCommonMixins("MixinChunkProviderServer_ForceSuperflatTerrain")
+        .setApplyIf(() -> (VariantNames.activeContains(VariantNames.SUPERFLAT.id) && !GeneralConfig.disableVariants))
+        .addExcludedMod(TargetedMod.ENDLESSIDS)
+        .setPhase(Phase.EARLY)),
+    SUPERFLAT_CHUNK_TERRAIN_GENERATION_ENDLESS_IDS(new MixinBuilder("Make the world and all dims superflat")
+        .addCommonMixins("MixinChunkProviderServer_ForceSuperflatTerrain_EndlessIDs")
+        .setApplyIf(() -> (VariantNames.activeContains(VariantNames.SUPERFLAT.id) && !GeneralConfig.disableVariants))
+        .addRequiredMod(TargetedMod.ENDLESSIDS)
+        .setPhase(Phase.EARLY)),
+    ALLOW_VILLAGE_GENERATION_IN_ANY_BIOME(new MixinBuilder("Allow villages to generate in any biome")
+        .addCommonMixins(
+            "MixinStructureVillagePieces_AllowAnyBiome",
+            "AccessorChunkGeneratorRealistic",
+            "MixinMapGenVillage_AllowAnyBiome")
+        .setApplyIf(() -> (VariantNames.activeContains(VariantNames.SUPERFLAT.id) && !GeneralConfig.disableVariants))
+        .addRequiredMod(TargetedMod.RWG)
         .setPhase(Phase.EARLY)),
     ALLOW_RESPAWN_IN_DIMENSION(new MixinBuilder("Allow respawning in another dimension")
         .addCommonMixins("MixinWorldProvider_AllowRespawnInDimension")
@@ -72,6 +95,10 @@ public enum Mixins implements IMixins {
         "Forcibly return a player to the specified dim upon trying to leave, transferPlayerToDimension method")
             .addCommonMixins("MixinServerConfigurationManager_LockDimension")
             .setApplyIf(() -> VariantNames.activeContains(VariantNames.DIMLOCKED.id) && !GeneralConfig.disableVariants)
+            .setPhase(Phase.EARLY)),
+    INCREASE_SLIME_SPAWNING_HEIGHT(
+        new MixinBuilder("Increase slime spawns to y = 80").addCommonMixins("MixinEntitySlime_ExtendedSpawnRange")
+            .setApplyIf(() -> VariantNames.activeContains(VariantNames.SUPERFLAT.id) && !GeneralConfig.disableVariants)
             .setPhase(Phase.EARLY)),
     DISABLE_CELESTIAL_SELECTION(new MixinBuilder("Disable the galacticraft planet map")
         .addCommonMixins("MixinWorldUtil_DisableCelestialSelection")
@@ -114,7 +141,8 @@ public enum Mixins implements IMixins {
         ENDLESSIDS("com.falsepattern.endlessids.asm.EndlessIDsCore", "endlessids"),
         GALACTICRAFT_CORE("GalacticraftCore"),
         GREGTECH("gregtech"),
-        BOTANIA("Botania");
+        BOTANIA("Botania"),
+        RWG(null, "RWG", "rwg.world.ChunkGeneratorRealistic");
 
         private final TargetModBuilder builder;
 

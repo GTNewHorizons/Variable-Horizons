@@ -20,6 +20,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.VillagerRegistry;
+import forestry.core.config.Constants;
 
 public class CommonProxy {
 
@@ -35,7 +36,7 @@ public class CommonProxy {
                 && randomUtil.generateVoidInThisDim(GeneralConfig.startingDimID))
                 || VariantNames.activeContains(VariantNames.VOID_WORLD.id))) {
             VillagerRegistry.instance()
-                .registerVillageTradeHandler(80, new VillagerRecipe());
+                .registerVillageTradeHandler(Constants.ID_VILLAGER_BEEKEEPER, new VillagerRecipe());
         }
     }
 

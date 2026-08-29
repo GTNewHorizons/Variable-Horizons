@@ -18,7 +18,7 @@ public class MixinWorldProvider_SetExactSpawn {
         WorldProvider provider = (WorldProvider) (Object) this;
         if (randomUtil.voidIslandVoidCheck(provider.dimensionId)) {
             ChunkCoordinates spawnPoint = provider.worldObj.getSpawnPoint();
-            spawnPoint.posY = 65;
+            spawnPoint.posY = provider.dimensionId == 7 ? 31 : 65;
             cir.setReturnValue(spawnPoint);
         }
     }

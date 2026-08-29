@@ -58,7 +58,7 @@ public class VariantCommands extends CommandBase {
 
                 if (args.length > 1) {
                     // attempt at variant name
-                    String arg1 = args[1].toLowerCase();
+                    String arg1 = args[1];
                     if (VariantNames.contains(arg1)) {
                         // if being set true/false
                         if (args.length >= 3) {
@@ -91,6 +91,8 @@ public class VariantCommands extends CommandBase {
                                 new ChatComponentText(
                                     args[1] + " is " + (VariantNames.activeContains(args[1]) ? "active" : "inactive")));
                         }
+                    } else {
+                        sender.addChatMessage(new ChatComponentText("Unknown Variant."));
                     }
                 }
             }

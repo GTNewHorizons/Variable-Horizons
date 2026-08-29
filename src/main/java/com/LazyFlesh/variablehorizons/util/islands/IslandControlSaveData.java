@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
@@ -44,6 +45,17 @@ public class IslandControlSaveData extends WorldSavedData {
             NBTTagList players = is.getTagList("players", Constants.NBT.TAG_STRING);
 
             IslandData island = new IslandData(is.getInteger("x"), is.getInteger("z"), is.getInteger("dimID"), null);
+
+            if (island.x % 8000 > 0 && island.z % 8000 > 0) {
+                // spawn island is id 0,0 but is using the world spawn coords.
+                ChunkCoordinates cc = FMLCommonHandler.instance()
+                    .getMinecraftServerInstance()
+                    .worldServerForDimension(0).provider.getSpawnPoint();
+                if (island.x == cc.posX && island.z == cc.posZ) {
+                    island.id = "0,0";
+                }
+            }
+
             int j = 0;
             List<String> uuid = new ArrayList<>();
             String u = players.getStringTagAt(j++);

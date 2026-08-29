@@ -40,6 +40,14 @@ public class VoidIsland extends VariantLoader {
 
     }
 
+    private static ItemStack[] createChestTwilight() {
+        return new ItemStack[] { new ItemStack(Items.lava_bucket),
+            GTModHandler.getModItem(Minecraft.ID, "red_mushroom"),
+            GTModHandler.getModItem(Minecraft.ID, "brown_mushroom"), new ItemStack(Items.reeds),
+            new ItemStack(Blocks.cactus), new ItemStack(Items.flint, 5) };
+
+    }
+
     private static ItemStack[] createChestNether() {
         ItemStack bopBucket = GTModHandler.getModItem(BiomesOPlenty.ID, "bopBucket");
         ((ItemFluidContainer) bopBucket.getItem())
@@ -114,7 +122,10 @@ public class VoidIsland extends VariantLoader {
             case 1 -> {
                 return skyIslands.createIslandEnd();
             }
-            case 25, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52, 53, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88 -> {
+            case 7 -> {
+                return skyIslands.createIslandTwilight();
+            }
+            case 25, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52, 53, 63, 64, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 90, 91, 92, 93, 94, 95 -> {
                 return skyIslands.createIslandSpaceStation();
             }
             case 50, 60, 69, 173 -> {
@@ -137,7 +148,10 @@ public class VoidIsland extends VariantLoader {
             case 1 -> {
                 return createChestEnd();
             }
-            case 25, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52, 53, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88 -> {
+            case 7 -> {
+                return createChestTwilight();
+            }
+            case 25, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52, 53, 63, 64, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 90, 91, 92, 93, 94, 95 -> {
                 return createChestSpaceStation();
             }
             case 50, 60, 69, 173 -> {

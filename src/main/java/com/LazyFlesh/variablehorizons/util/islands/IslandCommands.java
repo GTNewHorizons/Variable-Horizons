@@ -103,6 +103,16 @@ public class IslandCommands extends CommandBase {
 
                 }
             }
+            case "home" -> {
+                IslandData island = IslandControl.instance.playerIsland.get(
+                    pSender.getUniqueID()
+                        .toString());
+
+                // go to proper dimension (if dimlocked, the dimension travel is stopped by the mixin)
+                if (pSender.dimension != island.dimID) pSender.travelToDimension(island.dimID);
+
+                pSender.setPositionAndUpdate(island.x, 78, island.z);
+            }
             case "create" -> {
                 // permission level 1, need some kind of perm to do it
                 // make sure person can actually send command
@@ -139,7 +149,7 @@ public class IslandCommands extends CommandBase {
         String currentArg = args.length == 0 ? "" : args[args.length - 1].trim();
 
         if (args.length == 1) {
-            Stream.of("join", "create")
+            Stream.of("join", "create", "home")
                 .filter(s -> s.startsWith(currentArg))
                 .forEach(completions::add);
         } else if (args.length == 2) {
@@ -161,18 +171,19 @@ public class IslandCommands extends CommandBase {
         sender.addChatMessage(new ChatComponentText(" Subcommands:"));
         sender.addChatMessage(
             new ChatComponentText(
-                "   join <player name> - CLEARS YOUR INVENTORY, sets your spawn, and teleports you to that player."));
+                "-join <player name> - CLEARS YOUR INVENTORY, sets your spawn, and teleports you to that player."));
         sender.addChatMessage(
             new ChatComponentText(
-                "   create - Creates a new island in the spawn dimension and sets your spawn there."));
+                "-home - Teleports you to your home island, trans-dim if needed. For when you obstruct your spawnpoint and haven't /sethome."));
+        sender.addChatMessage(
+            new ChatComponentText("-create - Creates a new island in the spawn dimension and sets your spawn there."));
         sender.addChatMessage(
             new ChatComponentText(
-                "      create <dimID> - Creates a new island in that dimension, or if dimlocked, of that dimension."));
-        sender.addChatMessage(
-            new ChatComponentText("      create <player name> - Creates a new island for that player."));
+                "-create <dimID> - Creates a new island in that dimension, or if dimlocked, of that dimension."));
+        sender.addChatMessage(new ChatComponentText("-create <player name> - Creates a new island for that player."));
         sender.addChatMessage(
             new ChatComponentText(
-                "      create <player name> <dimID> - Creates a new island in that dimension, or if dimlocked, of that dimension for player <player name>."));
+                "-create <player name> <dimID> - Creates a new island in that dimension, or if dimlocked, of that dimension for player <player name>."));
     }
 
     private void createIsland(EntityPlayerMP player) {
@@ -206,14 +217,17 @@ public class IslandCommands extends CommandBase {
             }
         }
 
+        // twilight doesn't let much of anything spawn >31 unless you're in a structure.
+        int y = (dimProvider.provider.dimensionId == 7) ? 28 : 72;
+
         // dimProvider is the dimension its being built in, dimID is the island type
-        randomUtil.generateVoidIsland(new ChunkCoordinates(posX, 72, posZ), dimProvider, dimID);
+        randomUtil.generateVoidIsland(new ChunkCoordinates(posX, y, posZ), dimProvider, dimID);
 
         player.inventory.clearInventory(null, -1);
 
-        player.setPositionAndUpdate(posX, 74, posZ);
+        player.setPositionAndUpdate(posX, y + 2, posZ);
 
-        player.setSpawnChunk(new ChunkCoordinates(posX, 74, posZ), true, dimToTPTo);
+        player.setSpawnChunk(new ChunkCoordinates(posX, y + 2, posZ), true, dimToTPTo);
 
         IslandData newIsland = new IslandData(
             posX,

@@ -15,7 +15,7 @@ public class IslandData {
         this.x = x;
         this.z = z;
         this.players = players;
-        this.id = String.valueOf(x + "," + z);
+        this.id = x + "," + z;
     }
 
     public void setPlayers(List<String> players) {
