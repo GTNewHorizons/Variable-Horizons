@@ -171,21 +171,19 @@ public class IslandCommands extends CommandBase {
         sender.addChatMessage(new ChatComponentText(" Subcommands:"));
         sender.addChatMessage(
             new ChatComponentText(
-                "   join <player name> - CLEARS YOUR INVENTORY, sets your spawn, and teleports you to that player."));
+                "-join <player name> - CLEARS YOUR INVENTORY, sets your spawn, and teleports you to that player."));
         sender.addChatMessage(
             new ChatComponentText(
-                "   home - Teleports you to your home island, trans-dim if needed. For when you obstruct your spawnpoint and haven't /sethome."));
+                "-home - Teleports you to your home island, trans-dim if needed. For when you obstruct your spawnpoint and haven't /sethome."));
+        sender.addChatMessage(
+            new ChatComponentText("-create - Creates a new island in the spawn dimension and sets your spawn there."));
         sender.addChatMessage(
             new ChatComponentText(
-                "   create - Creates a new island in the spawn dimension and sets your spawn there."));
+                "-create <dimID> - Creates a new island in that dimension, or if dimlocked, of that dimension."));
+        sender.addChatMessage(new ChatComponentText("-create <player name> - Creates a new island for that player."));
         sender.addChatMessage(
             new ChatComponentText(
-                "      create <dimID> - Creates a new island in that dimension, or if dimlocked, of that dimension."));
-        sender.addChatMessage(
-            new ChatComponentText("      create <player name> - Creates a new island for that player."));
-        sender.addChatMessage(
-            new ChatComponentText(
-                "      create <player name> <dimID> - Creates a new island in that dimension, or if dimlocked, of that dimension for player <player name>."));
+                "-create <player name> <dimID> - Creates a new island in that dimension, or if dimlocked, of that dimension for player <player name>."));
     }
 
     private void createIsland(EntityPlayerMP player) {
