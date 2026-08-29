@@ -3,6 +3,7 @@ package com.LazyFlesh.variablehorizons.selectionUI;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -55,7 +56,6 @@ public class VariantGuiMain extends GuiScreen {
         VariantNames.CUSTOM_DIM_START,
         VariantNames.ALTERED_EFFICIENCY,
         VariantNames.ALTERED_RECIPE_TIME);
-    private static final List<VariantNames> checkboxVariants = Arrays.asList(VariantNames.SUPERFLAT);
     private static final ResourceLocation DEFAULT_ICON = new ResourceLocation(
         "variablehorizons",
         "textures/gui/variants/ohno.png");
@@ -197,6 +197,9 @@ public class VariantGuiMain extends GuiScreen {
                 filteredVariants.add(variant);
             }
         }
+
+        // Variants are ordered based on their order in the VariantNames enum
+        filteredVariants.sort(Comparator.comparingInt(Enum::ordinal));
 
         if (selectedIndex >= filteredVariants.size()) {
             selectedIndex = -1;

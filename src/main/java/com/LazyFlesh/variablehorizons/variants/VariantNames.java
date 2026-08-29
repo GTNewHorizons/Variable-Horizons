@@ -45,13 +45,13 @@ public enum VariantNames {
     GARDEN_OF_GRIND("GARDEN_OF_GRIND", new GardenOfGrind(),
         new VariantNames[] { VOID_WORLD, NO_RECIPE_ADDITIONS, NO_ROCKET }, new VariantNames[] { SUPERFLAT }),
 
-    DIMLOCKED("DIMLOCKED", new DimLocked(), new VariantNames[] { CUSTOM_DIM_START, NO_ROCKET },
-        new VariantNames[] { NO_RECIPE_ADDITIONS }),
-
     SKYBLOCK("SKYBLOCK", true, new VariantNames[] { VOID_WORLD, VOID_ISLAND },
         new VariantNames[] { NO_RECIPE_ADDITIONS, SUPERFLAT }),
     // only OW is void, w/ sky island
     // if you want Skyblock with no recipe additions, do Garden of Grind + Void Island.
+    DIMLOCKED("DIMLOCKED", new DimLocked(), new VariantNames[] { CUSTOM_DIM_START, NO_ROCKET },
+        new VariantNames[] { NO_RECIPE_ADDITIONS }),
+
 
     ;
     // spotless:on
