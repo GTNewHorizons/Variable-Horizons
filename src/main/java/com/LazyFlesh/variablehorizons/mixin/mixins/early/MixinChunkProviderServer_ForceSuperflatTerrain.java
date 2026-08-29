@@ -1,7 +1,10 @@
 package com.LazyFlesh.variablehorizons.mixin.mixins.early;
 
+import java.util.Arrays;
+
 import net.minecraft.block.Block;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkProviderServer;
 
@@ -10,6 +13,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
+import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.util.randomUtil;
 
 @Mixin(ChunkProviderServer.class)
@@ -29,6 +33,9 @@ public class MixinChunkProviderServer_ForceSuperflatTerrain {
         byte[] metadata = randomUtil.getOrBuildChunkMetadata(dimensionID);
 
         byte[] chunkData = chunk.getBiomeArray();
+        if (!GeneralConfig.allowSuperflatBiomes && dimensionID == 0) {
+            Arrays.fill(chunkData, (byte) BiomeGenBase.plains.biomeID);
+        }
         Chunk newChunk = new Chunk(chunk.worldObj, ids, metadata, chunk.xPosition, chunk.zPosition);
         newChunk.setBiomeArray(chunkData);
         newChunk.generateSkylightMap();

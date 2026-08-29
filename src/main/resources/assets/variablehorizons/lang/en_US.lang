@@ -44,7 +44,8 @@ variantgui.done=Done
 variantgui.toggle=Toggle
 variantgui.showfull=Show Full Variants
 variantgui.showsub=Show Sub-Variants
-variantgui.superflatpopulation=Enable superflat chunk population
+variantgui.superflat.population=Enable superflat chunk population
+variantgui.superflat.biomes=Enable superflat biome diversity
 
 #Variant GUI tooltips
 variantgui.dimidfield.tooltip=Insert numeric ID of chosen dimension

@@ -35,4 +35,8 @@ public class GeneralConfig {
     @Config.DefaultBoolean(false)
     public static boolean allowSuperflatPopulation;
 
+    @Config.Comment("Should Superflat overwold generate biomes other than plains")
+    @Config.DefaultBoolean(false)
+    public static boolean allowSuperflatBiomes;
+
 }

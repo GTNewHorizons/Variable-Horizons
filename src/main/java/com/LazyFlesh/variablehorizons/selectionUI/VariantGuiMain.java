@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -61,10 +63,10 @@ public class VariantGuiMain extends GuiScreen {
     private VariantList optionList;
     private GuiTextField searchField;
     private GuiTextField numberInputField;
-    private GuiCheckBox checkbox;
     private Set<String> activeVariantsCache = new HashSet<>();
     private final List<VariantNames> filteredVariants = new ArrayList<>();
     private final Map<String, ResourceLocation> iconCache = new HashMap<>();
+    private final List<CheckboxEntry> checkboxEntries = new ArrayList<>();
 
     private final Set<String> initialActiveVariants;
     private final int initialStartingDimID;
@@ -104,6 +106,42 @@ public class VariantGuiMain extends GuiScreen {
                     StatCollector.translateToLocal("variantgui.header"),
                     gui));
         }
+    }
+
+    private static class CheckboxEntry {
+
+        final GuiCheckBox checkbox;
+        final VariantNames variant;
+        final BooleanSupplier configGetter;
+        final Consumer<Boolean> configSetter;
+
+        CheckboxEntry(GuiCheckBox checkbox, VariantNames variant, BooleanSupplier configGetter,
+            Consumer<Boolean> configSetter) {
+            this.checkbox = checkbox;
+            this.variant = variant;
+            this.configGetter = configGetter;
+            this.configSetter = configSetter;
+        }
+    }
+
+    private CheckboxEntry makeCheckbox(int idOffset, VariantNames variant, String labelKey, BooleanSupplier getter,
+        Consumer<Boolean> setter) {
+        GuiCheckBox box = new GuiCheckBox(
+            idOffset,
+            SIDEBAR_WIDTH + PADDING * 2,
+            90,
+            StatCollector.translateToLocal(labelKey),
+            getter.getAsBoolean());
+        return new CheckboxEntry(box, variant, getter, setter);
+    }
+
+    private int calculateBottomY(VariantNames selected) {
+        if (selected == null) return 50;
+        int panelX = SIDEBAR_WIDTH + PADDING * 2;
+        int panelY = 50;
+        int wrapWidth = this.width - panelX - PADDING;
+        List<String> lines = getWrappedDescriptionLines(selected, wrapWidth);
+        return panelY + ICON_TO_DESC_GAP + lines.size() * (this.fontRendererObj.FONT_HEIGHT + 2) + DESC_TO_FIELD_GAP;
     }
 
     private static class GuiVariantsButton extends GuiButton {
@@ -178,46 +216,9 @@ public class VariantGuiMain extends GuiScreen {
         } else if (selected.equals(VariantNames.ALTERED_RECIPE_TIME)) {
             numberInputField.setText(String.valueOf(GeneralConfig.recipeTimeMultiplier));
         }
-        updateNumberFieldPosition(selected);
-    }
 
-    private void syncCheckbox(VariantNames connectedVariant) {
-        if (selectedIndex < 0 || selectedIndex >= filteredVariants.size()) {
-            return;
-        }
-        if (!checkboxVariants.contains(connectedVariant)) {
-            return;
-        }
-
-        VariantNames selected = filteredVariants.get(selectedIndex);
-        if (selected.equals(VariantNames.SUPERFLAT)) {
-            checkbox.setIsChecked(GeneralConfig.allowSuperflatPopulation);
-        }
-        updateCheckboxPosition(selected);
-    }
-
-    private void updateNumberFieldPosition(VariantNames selected) {
-        int panelX = SIDEBAR_WIDTH + PADDING * 2;
-        int panelY = 50;
-        int wrapWidth = this.width - panelX - PADDING;
-
-        List<String> lines = getWrappedDescriptionLines(selected, wrapWidth);
-        int descBottomY = panelY + ICON_TO_DESC_GAP + lines.size() * (this.fontRendererObj.FONT_HEIGHT + 2);
-
-        numberInputField.xPosition = panelX;
-        numberInputField.yPosition = descBottomY + DESC_TO_FIELD_GAP;
-    }
-
-    private void updateCheckboxPosition(VariantNames selected) {
-        int panelX = SIDEBAR_WIDTH + PADDING * 2;
-        int panelY = 50;
-        int wrapWidth = this.width - panelX - PADDING;
-
-        List<String> lines = getWrappedDescriptionLines(selected, wrapWidth);
-        int descBottomY = panelY + ICON_TO_DESC_GAP + lines.size() * (this.fontRendererObj.FONT_HEIGHT + 2);
-
-        checkbox.xPosition = panelX;
-        checkbox.yPosition = descBottomY + DESC_TO_FIELD_GAP;
+        numberInputField.xPosition = SIDEBAR_WIDTH + PADDING * 2;
+        numberInputField.yPosition = calculateBottomY(selected);
     }
 
     private void refreshActiveVariantsCache() {
@@ -262,13 +263,26 @@ public class VariantGuiMain extends GuiScreen {
                 20,
                 showingFullVariants ? StatCollector.translateToLocal("variantgui.showsub")
                     : StatCollector.translateToLocal("variantgui.showfull")));
-        this.checkbox = new GuiCheckBox(
-            3,
-            SIDEBAR_WIDTH + PADDING * 2,
-            90,
-            StatCollector.translateToLocal("variantgui.superflatpopulation"),
-            GeneralConfig.allowSuperflatPopulation);
-        this.buttonList.add(checkbox);
+
+        checkboxEntries.clear();
+        checkboxEntries.add(
+            makeCheckbox(
+                3,
+                VariantNames.SUPERFLAT,
+                "variantgui.superflat.population",
+                () -> GeneralConfig.allowSuperflatPopulation,
+                value -> GeneralConfig.allowSuperflatPopulation = value));
+        checkboxEntries.add(
+            makeCheckbox(
+                4,
+                VariantNames.SUPERFLAT,
+                "variantgui.superflat.biomes",
+                () -> GeneralConfig.allowSuperflatBiomes,
+                value -> GeneralConfig.allowSuperflatBiomes = value));
+
+        for (CheckboxEntry entry : checkboxEntries) {
+            this.buttonList.add(entry.checkbox);
+        }
         this.searchField = new GuiTextField(this.fontRendererObj, PADDING, 14, SIDEBAR_WIDTH - PADDING - 4, 16);
         this.searchField.setMaxStringLength(64);
         this.searchField.setFocused(true);
@@ -314,9 +328,14 @@ public class VariantGuiMain extends GuiScreen {
                 : StatCollector.translateToLocal("variantgui.showfull");
             refreshFilteredVariants();
             syncNumberField(VariantNames.NORMAL);
-        } else if (button.id == 3) {
-            GeneralConfig.allowSuperflatPopulation = checkbox.isChecked();
-            ConfigurationManager.save(GeneralConfig.class);
+        } else {
+            for (CheckboxEntry entry : checkboxEntries) {
+                if (button.id == entry.checkbox.id) {
+                    entry.configSetter.accept(entry.checkbox.isChecked());
+                    ConfigurationManager.save(GeneralConfig.class);
+                    return;
+                }
+            }
         }
     }
 
@@ -334,11 +353,6 @@ public class VariantGuiMain extends GuiScreen {
     private boolean isNumberFieldVisible() {
         return selectedIndex >= 0 && selectedIndex < filteredVariants.size()
             && inputFieldVariants.contains(filteredVariants.get(selectedIndex));
-    }
-
-    private boolean isCheckboxVisible() {
-        return selectedIndex >= 0 && selectedIndex < filteredVariants.size()
-            && checkboxVariants.contains(filteredVariants.get(selectedIndex));
     }
 
     @Override
@@ -433,11 +447,19 @@ public class VariantGuiMain extends GuiScreen {
             numberInputField.drawTextBox();
         }
 
-        boolean checkboxVisible = isCheckboxVisible();
-        checkbox.visible = checkboxVisible;
-        checkbox.enabled = checkboxVisible;
-        if (checkboxVisible) {
-            updateCheckboxPosition(filteredVariants.get(selectedIndex));
+        VariantNames selectedVariant = (selectedIndex >= 0 && selectedIndex < filteredVariants.size())
+            ? filteredVariants.get(selectedIndex)
+            : null;
+        int nextY = calculateBottomY(selectedVariant);
+        for (CheckboxEntry entry : checkboxEntries) {
+            boolean visible = selectedVariant != null && selectedVariant.equals(entry.variant);
+            entry.checkbox.visible = visible;
+            entry.checkbox.enabled = visible;
+            if (visible) {
+                entry.checkbox.xPosition = SIDEBAR_WIDTH + PADDING * 2;
+                entry.checkbox.yPosition = nextY;
+                nextY += 15;
+            }
         }
 
         this.drawCenteredString(
