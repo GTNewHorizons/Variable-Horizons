@@ -70,21 +70,24 @@ public class CommonProxy {
     // register server commands in this event handler (Remove if not needed)
     public void serverStarting(FMLServerStartingEvent event) {
         VariableHorizons.LOG.info("Loading commands:");
-        VariableHorizons.LOG.info("Loaded VariantCommands.");
+
+        // Don't forget to add new commands to the command list under /variants commands
+        VariableHorizons.LOG.info("Loading VariantCommands.");
         event.registerServerCommand(new VariantCommands());
+
         if (VariantNames.activeContains(VariantNames.DIMLOCKED.id)) {
-            VariableHorizons.LOG.info("Loaded Demon Invasion Blacklist Command.");
+            VariableHorizons.LOG.info("Loading Demon Invasion Blacklist Command.");
             event.registerServerCommand(new DimLocked.DemonInvasionBlacklistCommand());
         }
         if (VariantNames.activeContains(VariantNames.VOID_ISLAND.id)) {
-            VariableHorizons.LOG.info("Loaded Island Commands.");
+            VariableHorizons.LOG.info("Loading Island Commands.");
             event.registerServerCommand(new IslandCommands());
             FMLCommonHandler.instance()
                 .bus()
                 .register(IslandControl.instance);
         }
         if (VariantNames.activeContains(VariantNames.ALTERED_RECIPE_TIME.id)) {
-            VariableHorizons.LOG.info("Loaded Recipe Time Altering Command.");
+            VariableHorizons.LOG.info("Loading Recipe Time Altering Command.");
             event.registerServerCommand(new AlteredRecipeTime.AlteredRecipeTimeCommand());
         }
     }

@@ -40,6 +40,10 @@ public class VariantCommands extends CommandBase {
         String subCommand = args[0].toLowerCase();
 
         switch (subCommand) {
+            case "commands" -> {
+                sender.addChatMessage(
+                    new ChatComponentText("Commands: /variants, /island, /demoninvasionblacklist, /alterrecipetimes"));
+            }
             case "list" -> {
                 if (args.length > 1 && args[1].equalsIgnoreCase("active")) {
                     StringBuilder formattedNames = new StringBuilder();
@@ -105,7 +109,7 @@ public class VariantCommands extends CommandBase {
         String currentArg = args.length == 0 ? "" : args[args.length - 1].trim();
 
         if (args.length == 1) {
-            Stream.of("set", "list")
+            Stream.of("set", "list", "commands")
                 .filter(s -> s.startsWith(currentArg))
                 .forEach(completions::add);
         } else if (args.length == 2) {
@@ -137,7 +141,10 @@ public class VariantCommands extends CommandBase {
         sender.addChatMessage(new ChatComponentText(" Subcommands:"));
         sender.addChatMessage(
             new ChatComponentText(
-                "  set <variant> - Set Variant state to true/false (on/off) (requires permission level 1)"));
-        sender.addChatMessage(new ChatComponentText("  list <all/active> - Lists all/active Variants"));
+                "  set <variant> - Set Variant state to true/false (on/off) (requires permission level 1)."));
+        sender.addChatMessage(new ChatComponentText("  list <all/active> - Lists all/active Variants."));
+        sender.addChatMessage(
+            new ChatComponentText(
+                "  commands - Lists all commands added by Variable Horizons, such as /variants and /island."));
     }
 }
