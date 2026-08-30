@@ -12,6 +12,7 @@ import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.variants.invasive.DimLocked;
 import com.LazyFlesh.variablehorizons.variants.invasive.GardenOfGrind;
 import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
+import com.LazyFlesh.variablehorizons.variants.runtime.AlteredRecipeTime;
 import com.LazyFlesh.variablehorizons.variants.runtime.DiffDimStart;
 import com.LazyFlesh.variablehorizons.variants.runtime.InfinitePower;
 import com.LazyFlesh.variablehorizons.variants.runtime.NoQuestRewards;
@@ -28,7 +29,7 @@ public enum VariantNames {
     VOID_ISLAND("VOID_ISLAND", new VoidIsland()), // Starting Dim is a sky island.
     NO_ROCKET("NO_ROCKET", new NoRocket()), // removes rocket recipes
     NO_QUEST_REWARDS("NO_QUEST_REWARDS", new NoQuestRewards()),
-    ALTERED_RECIPE_TIME("ALTERED_TIME"),
+    ALTERED_RECIPE_TIME("ALTERED_TIME", new AlteredRecipeTime()),
     ALTERED_EFFICIENCY("ALTERED_EFFICIENCY"),
     CHEAP_MODE("CHEAP_MODE"),
     EXPENSIVE_MODE("EXPENSIVE_MODE"),
