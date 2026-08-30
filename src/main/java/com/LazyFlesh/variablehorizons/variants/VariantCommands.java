@@ -23,7 +23,7 @@ public class VariantCommands extends CommandBase {
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "/variants <set|list> [args...]";
+        return "/variants <set|list|commands> [args...]";
     }
 
     @Override
