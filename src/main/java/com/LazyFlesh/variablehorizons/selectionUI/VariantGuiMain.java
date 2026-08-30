@@ -71,7 +71,6 @@ public class VariantGuiMain extends GuiScreen {
     private final Set<String> initialActiveVariants;
     private final int initialStartingDimID;
     private final float initialEfficiencyMultiplier;
-    private final float initialRecipeTimeMultiplier;
     private final boolean initialSuperflatPopulation;
     private final boolean initialSuperflatBiomes;
     private final boolean initialVoidIslandTree;
@@ -82,7 +81,6 @@ public class VariantGuiMain extends GuiScreen {
         this.initialActiveVariants = new HashSet<>(VariantNames.getActiveVariantNames());
         this.initialStartingDimID = GeneralConfig.startingDimID;
         this.initialEfficiencyMultiplier = GeneralConfig.efficiencyMultiplier;
-        this.initialRecipeTimeMultiplier = GeneralConfig.recipeTimeMultiplier;
         this.initialSuperflatPopulation = GeneralConfig.allowSuperflatPopulation;
         this.initialSuperflatBiomes = GeneralConfig.allowSuperflatBiomes;
         this.initialVoidIslandTree = GeneralConfig.allowVoidIslandTree;
@@ -93,7 +91,6 @@ public class VariantGuiMain extends GuiScreen {
         if (!initialActiveVariants.equals(VariantNames.getActiveVariantNames())) return true;
         if (initialStartingDimID != GeneralConfig.startingDimID) return true;
         if (initialEfficiencyMultiplier != GeneralConfig.efficiencyMultiplier) return true;
-        if (initialRecipeTimeMultiplier != GeneralConfig.recipeTimeMultiplier) return true;
         if (initialSuperflatPopulation != GeneralConfig.allowSuperflatPopulation) return true;
         if (initialSuperflatBiomes != GeneralConfig.allowSuperflatBiomes) return true;
         if (initialVoidIslandTree != GeneralConfig.allowVoidIslandTree) return true;
