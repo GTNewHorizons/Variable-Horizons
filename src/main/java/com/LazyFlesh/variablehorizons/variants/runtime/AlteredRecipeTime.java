@@ -1,5 +1,6 @@
 package com.LazyFlesh.variablehorizons.variants.runtime;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.command.CommandBase;
@@ -9,6 +10,7 @@ import net.minecraft.util.ChatComponentText;
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
@@ -22,7 +24,9 @@ public class AlteredRecipeTime extends VariantLoader implements IRuntimeVariant 
         VariantNames.ALTERED_RECIPE_TIME.hasLoaded = true;
     }
 
-    private static float cachedMultiplier = 1;
+    private static final Map<GTRecipe, Integer> originalRecipeTimes = new HashMap<>();
+    private static final Map<GTRecipe.RecipeAssemblyLine, Integer> originalAsslineRecipeTimes = new HashMap<>();
+    private static final Map<GTRecipe.RecipeAssemblyLine, Integer> originalResearchTimes = new HashMap<>();
 
     @SubscribeEvent
     public void onPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
@@ -32,25 +36,30 @@ public class AlteredRecipeTime extends VariantLoader implements IRuntimeVariant 
     private static void modifyRecipesDuration(float multiplier) {
         // Do the work
         for (Map.Entry<String, RecipeMap<?>> entry : RecipeMap.ALL_RECIPE_MAPS.entrySet()) {
-
             for (GTRecipe recipe : entry.getValue()
                 .getAllRecipes()) {
                 if (recipe.mDuration > 0) {
-                    recipe.mDuration = Math.max(1, (int) (recipe.mDuration * multiplier / cachedMultiplier));
+                    int original = originalRecipeTimes.computeIfAbsent(recipe, r -> r.mDuration);
+                    recipe.mDuration = scale(original, multiplier);
                 }
             }
         }
 
         for (GTRecipe.RecipeAssemblyLine recipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
             if (recipe.mDuration > 0) {
-                recipe.mDuration = Math.max(1, (int) (recipe.mDuration * multiplier / cachedMultiplier));
+                int originalDuration = originalAsslineRecipeTimes.computeIfAbsent(recipe, r -> r.mDuration);
+                recipe.mDuration = scale(originalDuration, multiplier);
             }
             if (recipe.mResearchTime > 0) {
-                recipe.mResearchTime = Math.max(1, (int) (recipe.mDuration * multiplier / cachedMultiplier));
+                int originalResearch = originalResearchTimes.computeIfAbsent(recipe, r -> r.mResearchTime);
+                recipe.mResearchTime = scale(originalResearch, multiplier);
             }
         }
+    }
 
-        cachedMultiplier = multiplier;
+    private static int scale(int original, float multiplier) {
+        long result = Math.round(original * (double) multiplier);
+        return (int) Math.max(1, Math.min(Integer.MAX_VALUE, result));
     }
 
     @Override
@@ -78,6 +87,8 @@ public class AlteredRecipeTime extends VariantLoader implements IRuntimeVariant 
             }
             float multiplier = Float.parseFloat(args[0]);
             modifyRecipesDuration(multiplier);
+            GeneralConfig.recipeTimeMultiplier = multiplier;
+            ConfigurationManager.save(GeneralConfig.class);
             sender.addChatMessage(new ChatComponentText("Changes applied"));
         }
 
