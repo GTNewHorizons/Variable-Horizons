@@ -63,6 +63,16 @@ public enum Mixins implements IMixins {
         .setApplyIf(() -> (VariantNames.activeContains(VariantNames.SUPERFLAT.id) && !GeneralConfig.disableVariants))
         .addRequiredMod(TargetedMod.ENDLESSIDS)
         .setPhase(Phase.EARLY)),
+    SKYGRID_CHUNK_TERRAIN_GENERATION(new MixinBuilder("Make the world and all dims a skygrid")
+        .addCommonMixins("MixinChunkProviderServer_ForceSkygridTerrain")
+        .setApplyIf(() -> (VariantNames.activeContains(VariantNames.SKYGRID.id) && !GeneralConfig.disableVariants))
+        .addExcludedMod(TargetedMod.ENDLESSIDS)
+        .setPhase(Phase.EARLY)),
+    SKYGRID_CHUNK_TERRAIN_GENERATION_ENDLESS_IDS(new MixinBuilder("Make the world and all dims a skygrid")
+        .addCommonMixins("MixinChunkProviderServer_ForceSkygridTerrain_EndlessIDs")
+        .setApplyIf(() -> (VariantNames.activeContains(VariantNames.SKYGRID.id) && !GeneralConfig.disableVariants))
+        .addRequiredMod(TargetedMod.ENDLESSIDS)
+        .setPhase(Phase.EARLY)),
     ALLOW_VILLAGE_GENERATION_IN_ANY_BIOME(new MixinBuilder("Allow villages to generate in any biome")
         .addCommonMixins(
             "MixinStructureVillagePieces_AllowAnyBiome",

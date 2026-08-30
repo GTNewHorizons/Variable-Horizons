@@ -11,6 +11,7 @@ import net.minecraft.util.StatCollector;
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.variants.invasive.DimLocked;
 import com.LazyFlesh.variablehorizons.variants.invasive.GardenOfGrind;
+import com.LazyFlesh.variablehorizons.variants.invasive.SkyGrid;
 import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 import com.LazyFlesh.variablehorizons.variants.runtime.AlteredRecipeTime;
 import com.LazyFlesh.variablehorizons.variants.runtime.DiffDimStart;
@@ -36,6 +37,7 @@ public enum VariantNames {
     INFINITE_POWER("INFINITE_POWER", new InfinitePower()),
     CUSTOM_DIM_START("CUSTOM_DIM_START", new DiffDimStart()), // sets a different dim as the spawn dimension instead of OW
     SUPERFLAT("SUPERFLAT", new VariantNames[]{ VOID_WORLD, VOID_ISLAND }),
+    SKYGRID("SKYGRID", new SkyGrid(), new VariantNames[]{}, new VariantNames[]{ VOID_WORLD, VOID_ISLAND, SUPERFLAT }),
 
     // full variants
     // i.e. defines both world type and recipes
