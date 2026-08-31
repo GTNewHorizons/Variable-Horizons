@@ -2,13 +2,16 @@ package com.LazyFlesh.variablehorizons.mixin.mixins.early;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.server.management.PlayerManager;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraft.world.gen.ChunkProviderServer;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -27,34 +30,63 @@ public abstract class MixinChunkProviderServer_ReplaceBlocks {
     }
 
     @Inject(method = "populate", at = @At("RETURN"))
-    private void variablehorizons$exitGenAndSweep(IChunkProvider provider, int chunkX, int chunkZ, CallbackInfo ci) {
-
+    private void variablehorizons$exitGen(IChunkProvider provider, int chunkX, int chunkZ, CallbackInfo ci) {
         randomUtil.WorldGenFlag.exit();
-        int startX = chunkX * 16 + 8;
-        int startZ = chunkZ * 16 + 8;
 
-        for (int x = startX; x < startX + 16; x++) {
-            for (int z = startZ; z < startZ + 16; z++) {
+        variablehorizons$sweepChunk(chunkX, chunkZ);
 
-                Chunk chunk = this.worldObj.getChunkFromBlockCoords(x, z);
-                int localX = x & 15;
-                int localZ = z & 15;
+        ChunkProviderServer self = (ChunkProviderServer) (Object) this;
 
-                for (int y = 0; y < 256; y++) {
-                    Block block = chunk.getBlock(localX, y, localZ);
+        for (int x = -1; x <= 1; x++) {
+            for (int z = -1; z <= 1; z++) {
+                if (x == 0 && z == 0) continue;
+                int nx = chunkX + x, nz = chunkZ + z;
 
-                    if (block != null && block != Blocks.air && block != randomUtil.REPLACEMENT_BLOCK) {
-                        chunk.removeTileEntity(localX, y, localZ);
-                        chunk.func_150807_a(
-                            localX,
-                            y,
-                            localZ,
-                            randomUtil.REPLACEMENT_BLOCK,
-                            randomUtil.REPLACEMENT_META);
-                    }
+                if (!self.chunkExists(nx, nz)) continue;
+
+                Chunk neighbor = self.provideChunk(nx, nz);
+                if (neighbor.isTerrainPopulated) {
+                    variablehorizons$sweepChunk(nx, nz);
                 }
             }
         }
     }
 
+    @Unique
+    private void variablehorizons$sweepChunk(int chunkX, int chunkZ) {
+        Chunk chunk = this.worldObj.getChunkFromChunkCoords(chunkX, chunkZ);
+        ExtendedBlockStorage[] storage = chunk.getBlockStorageArray();
+        boolean anyChanged = false;
+        PlayerManager playerManager = this.worldObj.getPlayerManager();
+
+        for (int sy = 0; sy < storage.length; sy++) {
+            ExtendedBlockStorage ebs = storage[sy];
+            if (ebs == null) continue;
+
+            for (int x = 0; x < 16; x++) {
+                for (int y = 0; y < 16; y++) {
+                    for (int z = 0; z < 16; z++) {
+                        Block block = ebs.getBlockByExtId(x, y, z);
+                        if (block == Blocks.air || block == randomUtil.REPLACEMENT_BLOCK) continue;
+
+                        ebs.func_150818_a(x, y, z, randomUtil.REPLACEMENT_BLOCK);
+                        ebs.setExtBlockMetadata(x, y, z, randomUtil.REPLACEMENT_META);
+                        anyChanged = true;
+
+                        if (playerManager != null) {
+                            int worldX = (chunkX << 4) + x;
+                            int worldY = (sy << 4) + y;
+                            int worldZ = (chunkZ << 4) + z;
+                            playerManager.markBlockForUpdate(worldX, worldY, worldZ);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (anyChanged) {
+            chunk.isModified = true;
+            chunk.generateSkylightMap();
+        }
+    }
 }
