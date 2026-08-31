@@ -26,6 +26,8 @@ import com.LazyFlesh.variablehorizons.util.superflat.SuperflatBlocks;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+
 public class randomUtil {
 
     private static final Map<EntityPlayerMP, Long> WARN_TIMES = new WeakHashMap<>();
@@ -36,6 +38,9 @@ public class randomUtil {
     private static final boolean CUSTOM_STARTING_DIM_ACTIVE = VariantNames
         .activeContains(VariantNames.CUSTOM_DIM_START.id);
     private static final int BLOCKS_PER_CHUNK = 65536;
+    private static final String[] SPLIT_BLOCK_STRING = GeneralConfig.replacementBlock.split(":");
+    public static final Block REPLACEMENT_BLOCK = getMonoblockBlock();
+    public static final int REPLACEMENT_META = getMonoblockMeta();
 
     public static String getRandomPortalMessage(EntityPlayerMP player, World world) {
         int randomNumber = MathHelper.getRandomIntegerInRange(new Random(), 1, 32);
@@ -76,7 +81,7 @@ public class randomUtil {
         VariableHorizons.LOG.info("Generating Sky Island for dimension: {}", dimID);
 
         Object[][] island = VoidIsland.getIsland(dimID); // [0][] is offset from player/spawn, [1][] is mapping key,
-                                                         // after that is structure
+        // after that is structure
         int structX = spawn.posX + (Integer) island[0][0];
         int structY = spawn.posY + (Integer) island[0][1];
         int structZ = spawn.posZ + (Integer) island[0][2];
@@ -188,4 +193,56 @@ public class randomUtil {
             return metadata;
         });
     }
+
+    public static Block getMonoblockBlock() {
+        if (SPLIT_BLOCK_STRING.length < 2) {
+            VariableHorizons.LOG.info(
+                "Invalid replacementBlock config value '{}' (expected format 'modid:blockname[:meta]'), falling back to minecraft:stone",
+                GeneralConfig.replacementBlock);
+            return Blocks.stone;
+        }
+
+        Block block = GameRegistry.findBlock(SPLIT_BLOCK_STRING[0], SPLIT_BLOCK_STRING[1]);
+        if (block == null) {
+            VariableHorizons.LOG.info(
+                "replacementBlock '{}:{}' not found in registry, falling back to minecraft:stone",
+                SPLIT_BLOCK_STRING[0],
+                SPLIT_BLOCK_STRING[1]);
+            return Blocks.stone;
+        }
+
+        return block;
+    }
+
+    public static int getMonoblockMeta() {
+        if (SPLIT_BLOCK_STRING.length <= 2) {
+            return 0;
+        }
+        try {
+            return Integer.parseInt(SPLIT_BLOCK_STRING[2]);
+        } catch (NumberFormatException e) {
+            VariableHorizons.LOG.info(
+                "replacementBlock meta value '{}' is not a valid number, falling back to 0",
+                SPLIT_BLOCK_STRING[2]);
+            return 0;
+        }
+    }
+
+    public static class WorldGenFlag {
+
+        private static final ThreadLocal<Integer> depth = ThreadLocal.withInitial(() -> 0);
+
+        public static void enter() {
+            depth.set(depth.get() + 1);
+        }
+
+        public static void exit() {
+            depth.set(Math.max(0, depth.get() - 1));
+        }
+
+        public static boolean isGenerating() {
+            return depth.get() > 0;
+        }
+    }
+
 }

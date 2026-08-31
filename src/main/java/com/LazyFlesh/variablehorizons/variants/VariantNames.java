@@ -36,6 +36,7 @@ public enum VariantNames {
     INFINITE_POWER("INFINITE_POWER", new InfinitePower()),
     CUSTOM_DIM_START("CUSTOM_DIM_START", new DiffDimStart()), // sets a different dim as the spawn dimension instead of OW
     SUPERFLAT("SUPERFLAT", new VariantNames[]{ VOID_WORLD, VOID_ISLAND }),
+    MONOBLOCK("MONOBLOCK"),
 
     // full variants
     // i.e. defines both world type and recipes
