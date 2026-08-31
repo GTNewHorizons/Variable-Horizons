@@ -544,6 +544,7 @@ public class VariantGuiMain extends GuiScreen {
                     .listFormattedStringToWidth(getTranslatedTextfieldTooltip(selectedVariant), 200);
                 this.drawHoveringText(tooltip, mouseX, mouseY, this.fontRendererObj);
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                GL11.glDisable(GL11.GL_LIGHTING);
                 break;
             }
         }
