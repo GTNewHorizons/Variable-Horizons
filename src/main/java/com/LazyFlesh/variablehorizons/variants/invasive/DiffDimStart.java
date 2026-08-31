@@ -1,4 +1,4 @@
-package com.LazyFlesh.variablehorizons.variants.runtime;
+package com.LazyFlesh.variablehorizons.variants.invasive;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
@@ -6,7 +6,7 @@ import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
 import serverutils.ServerUtilitiesConfig;
 
-public class DiffDimStart extends VariantLoader implements IRuntimeVariant {
+public class DiffDimStart extends VariantLoader {
 
     @Override
     public void loadVariant(VariantNames... activeVariants) {

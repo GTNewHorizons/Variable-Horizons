@@ -9,11 +9,11 @@ import java.util.Set;
 import net.minecraft.util.StatCollector;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+import com.LazyFlesh.variablehorizons.variants.invasive.DiffDimStart;
 import com.LazyFlesh.variablehorizons.variants.invasive.DimLocked;
 import com.LazyFlesh.variablehorizons.variants.invasive.GardenOfGrind;
 import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 import com.LazyFlesh.variablehorizons.variants.runtime.AlteredRecipeTime;
-import com.LazyFlesh.variablehorizons.variants.runtime.DiffDimStart;
 import com.LazyFlesh.variablehorizons.variants.runtime.InfinitePower;
 import com.LazyFlesh.variablehorizons.variants.runtime.NoQuestRewards;
 import com.LazyFlesh.variablehorizons.variants.runtime.NoRocket;
