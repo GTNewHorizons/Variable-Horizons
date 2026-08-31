@@ -76,8 +76,6 @@ public class VariantGuiMain extends GuiScreen {
     private final float initialEfficiencyMultiplier;
     private final boolean initialSuperflatPopulation;
     private final boolean initialSuperflatBiomes;
-    private final boolean initialVoidIslandTree;
-    private final boolean initialVoidIslandChest;
 
     public VariantGuiMain(GuiScreen parent) {
         this.parent = parent;
@@ -86,8 +84,6 @@ public class VariantGuiMain extends GuiScreen {
         this.initialEfficiencyMultiplier = GeneralConfig.efficiencyMultiplier;
         this.initialSuperflatPopulation = GeneralConfig.allowSuperflatPopulation;
         this.initialSuperflatBiomes = GeneralConfig.allowSuperflatBiomes;
-        this.initialVoidIslandTree = GeneralConfig.allowVoidIslandTree;
-        this.initialVoidIslandChest = GeneralConfig.allowVoidIslandChest;
     }
 
     private boolean hasUnsavedChanges() {
@@ -96,8 +92,6 @@ public class VariantGuiMain extends GuiScreen {
         if (initialEfficiencyMultiplier != GeneralConfig.efficiencyMultiplier) return true;
         if (initialSuperflatPopulation != GeneralConfig.allowSuperflatPopulation) return true;
         if (initialSuperflatBiomes != GeneralConfig.allowSuperflatBiomes) return true;
-        if (initialVoidIslandTree != GeneralConfig.allowVoidIslandTree) return true;
-        if (initialVoidIslandChest != GeneralConfig.allowVoidIslandChest) return true;
         return false;
     }
 
@@ -496,6 +490,9 @@ public class VariantGuiMain extends GuiScreen {
             }
             case ALTERED_RECIPE_TIME -> {
                 return StatCollector.translateToLocal("variantgui.recipetimefield.tooltip");
+            }
+            case MONOBLOCK -> {
+                return StatCollector.translateToLocal("variantgui.monoblockfield.tooltip");
             }
             default -> {
                 return "";
