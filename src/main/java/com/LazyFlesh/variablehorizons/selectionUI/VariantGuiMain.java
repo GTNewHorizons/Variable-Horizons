@@ -3,6 +3,7 @@ package com.LazyFlesh.variablehorizons.selectionUI;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,6 +12,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -62,11 +65,11 @@ public class VariantGuiMain extends GuiScreen {
     private boolean showingFullVariants = true;
     private VariantList optionList;
     private GuiTextField searchField;
-    private GuiTextField numberInputField;
     private Set<String> activeVariantsCache = new HashSet<>();
     private final List<VariantNames> filteredVariants = new ArrayList<>();
     private final Map<String, ResourceLocation> iconCache = new HashMap<>();
     private final List<CheckboxEntry> checkboxEntries = new ArrayList<>();
+    private final List<TextFieldEntry> textFieldEntries = new ArrayList<>();
 
     private final Set<String> initialActiveVariants;
     private final int initialStartingDimID;
@@ -141,6 +144,33 @@ public class VariantGuiMain extends GuiScreen {
         return new CheckboxEntry(box, variant, getter, setter);
     }
 
+    private static class TextFieldEntry {
+
+        final GuiTextField field;
+        final List<VariantNames> variants;
+        final Predicate<Character> charFilter;
+        final Supplier<String> configGetter;
+        final Consumer<String> configSetter;
+
+        TextFieldEntry(GuiTextField field, List<VariantNames> variants, Predicate<Character> charFilter,
+            Supplier<String> configGetter, Consumer<String> configSetter) {
+            this.field = field;
+            this.variants = variants;
+            this.charFilter = charFilter;
+            this.configGetter = configGetter;
+            this.configSetter = configSetter;
+        }
+    }
+
+    private TextFieldEntry makeTextField(List<VariantNames> variants, Predicate<Character> charFilter,
+        Supplier<String> getter, Consumer<String> setter) {
+        int fieldLength = charFilter == null ? 200 : 50;
+        GuiTextField field = new GuiTextField(this.fontRendererObj, SIDEBAR_WIDTH + PADDING * 2, 90, fieldLength, 16);
+        field.setMaxStringLength(charFilter == null ? 64 : 10);
+        field.setText(getter.get());
+        return new TextFieldEntry(field, variants, charFilter, getter, setter);
+    }
+
     private int calculateBottomY(VariantNames selected) {
         if (selected == null) return 50;
         int panelX = SIDEBAR_WIDTH + PADDING * 2;
@@ -209,25 +239,12 @@ public class VariantGuiMain extends GuiScreen {
         return this.fontRendererObj.listFormattedStringToWidth(description, wrapWidth);
     }
 
-    private void syncNumberField(VariantNames connectedVariant) {
-        if (selectedIndex < 0 || selectedIndex >= filteredVariants.size()) {
-            return;
+    private void syncTextFields(VariantNames connectedVariant) {
+        for (TextFieldEntry entry : textFieldEntries) {
+            if (entry.variants.contains(connectedVariant)) {
+                entry.field.setText(entry.configGetter.get());
+            }
         }
-        if (!inputFieldVariants.contains(connectedVariant)) {
-            return;
-        }
-
-        VariantNames selected = filteredVariants.get(selectedIndex);
-        if (selected.equals(VariantNames.DIMLOCKED) || selected.equals(VariantNames.CUSTOM_DIM_START)) {
-            numberInputField.setText(String.valueOf(GeneralConfig.startingDimID));
-        } else if (selected.equals(VariantNames.ALTERED_EFFICIENCY)) {
-            numberInputField.setText(String.valueOf(GeneralConfig.efficiencyMultiplier));
-        } else if (selected.equals(VariantNames.ALTERED_RECIPE_TIME)) {
-            numberInputField.setText(String.valueOf(GeneralConfig.recipeTimeMultiplier));
-        }
-
-        numberInputField.xPosition = SIDEBAR_WIDTH + PADDING * 2;
-        numberInputField.yPosition = calculateBottomY(selected);
     }
 
     private void refreshActiveVariantsCache() {
@@ -303,18 +320,56 @@ public class VariantGuiMain extends GuiScreen {
                 () -> GeneralConfig.allowVoidIslandChest,
                 value -> GeneralConfig.allowVoidIslandChest = value));
 
+        textFieldEntries.clear();
+        Predicate<Character> dimIdFilter = c -> Character.isDigit(c) || c == '-';
+        Predicate<Character> decimalFilter = c -> Character.isDigit(c) || c == '.';
+        textFieldEntries.add(
+            makeTextField(
+                Arrays.asList(VariantNames.DIMLOCKED, VariantNames.CUSTOM_DIM_START),
+                dimIdFilter,
+                () -> String.valueOf(GeneralConfig.startingDimID),
+                text -> {
+                    try {
+                        GeneralConfig.startingDimID = Integer.parseInt(text);
+                    } catch (NumberFormatException ignored) {}
+                }));
+        textFieldEntries.add(
+            makeTextField(
+                Collections.singletonList(VariantNames.ALTERED_RECIPE_TIME),
+                decimalFilter,
+                () -> String.valueOf(GeneralConfig.recipeTimeMultiplier),
+                text -> {
+                    try {
+                        GeneralConfig.recipeTimeMultiplier = Float.parseFloat(text);
+                    } catch (NumberFormatException ignored) {}
+                }));
+        textFieldEntries.add(
+            makeTextField(
+                Collections.singletonList(VariantNames.ALTERED_EFFICIENCY),
+                decimalFilter,
+                () -> String.valueOf(GeneralConfig.efficiencyMultiplier),
+                text -> {
+                    try {
+                        GeneralConfig.efficiencyMultiplier = Float.parseFloat(text);
+                    } catch (NumberFormatException ignored) {}
+                }));
+        textFieldEntries.add(
+            makeTextField(
+                Collections.singletonList(VariantNames.MONOBLOCK),
+                null,
+                () -> GeneralConfig.replacementBlock,
+                text -> GeneralConfig.replacementBlock = text));
+
         for (CheckboxEntry entry : checkboxEntries) {
             this.buttonList.add(entry.checkbox);
         }
         this.searchField = new GuiTextField(this.fontRendererObj, PADDING, 14, SIDEBAR_WIDTH - PADDING - 4, 16);
         this.searchField.setMaxStringLength(64);
         this.searchField.setFocused(true);
-        this.numberInputField = new GuiTextField(this.fontRendererObj, SIDEBAR_WIDTH + PADDING * 2, 90, 100, 16);
-        this.numberInputField.setMaxStringLength(10);
         this.optionList = new VariantList();
 
         refreshFilteredVariants();
-        syncNumberField(VariantNames.NORMAL);
+        syncTextFields(VariantNames.NORMAL);
         refreshActiveVariantsCache();
     }
 
@@ -350,7 +405,7 @@ public class VariantGuiMain extends GuiScreen {
             button.displayString = showingFullVariants ? StatCollector.translateToLocal("variantgui.showsub")
                 : StatCollector.translateToLocal("variantgui.showfull");
             refreshFilteredVariants();
-            syncNumberField(VariantNames.NORMAL);
+            syncTextFields(VariantNames.NORMAL);
         } else {
             for (CheckboxEntry entry : checkboxEntries) {
                 if (button.id == entry.checkbox.id) {
@@ -362,36 +417,21 @@ public class VariantGuiMain extends GuiScreen {
         }
     }
 
-    private boolean isAllowedNumericInput(char typedChar, int keyCode) {
-        if (Character.isDigit(typedChar)) return true;
+    private boolean isNavigationKey(int keyCode) {
         return keyCode == Keyboard.KEY_BACK || keyCode == Keyboard.KEY_DELETE
             || keyCode == Keyboard.KEY_LEFT
             || keyCode == Keyboard.KEY_RIGHT
             || keyCode == Keyboard.KEY_HOME
-            || keyCode == Keyboard.KEY_END
-            || keyCode == Keyboard.KEY_MINUS
-            || keyCode == Keyboard.KEY_DECIMAL;
+            || keyCode == Keyboard.KEY_END;
     }
 
-    private boolean isNumberFieldVisible() {
-        return selectedIndex >= 0 && selectedIndex < filteredVariants.size()
-            && inputFieldVariants.contains(filteredVariants.get(selectedIndex));
+    private VariantNames getSelectedVariant() {
+        return (selectedIndex >= 0 && selectedIndex < filteredVariants.size()) ? filteredVariants.get(selectedIndex)
+            : null;
     }
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) {
-        if (searchField.textboxKeyTyped(typedChar, keyCode)) {
-            refreshFilteredVariants();
-            return;
-        }
-
-        if (isNumberFieldVisible() && isAllowedNumericInput(typedChar, keyCode)) {
-            if (numberInputField.textboxKeyTyped(typedChar, keyCode)) {
-                applyNumberFieldValue(numberInputField);
-                return;
-            }
-        }
-
         if (keyCode == Keyboard.KEY_ESCAPE) {
             if (hasUnsavedChanges()) {
                 this.mc.displayGuiScreen(new GuiRestartRequired(parent));
@@ -401,32 +441,25 @@ public class VariantGuiMain extends GuiScreen {
             return;
         }
 
-        super.keyTyped(typedChar, keyCode);
-    }
-
-    private void applyNumberFieldValue(GuiTextField field) {
-        String text = field.getText();
-        if (text.isEmpty()) return;
-        int parsedInt = 0;
-        float parsedFloat = 1f;
-        VariantNames selectedVariant = filteredVariants.get(selectedIndex);
-        boolean dimLock = selectedVariant.equals(VariantNames.DIMLOCKED)
-            || selectedVariant.equals(VariantNames.CUSTOM_DIM_START);
-        try {
-            if (dimLock) {
-                parsedInt = Integer.parseInt(text);
-            } else {
-                parsedFloat = Float.parseFloat(text);
-            }
-        } catch (NumberFormatException ignored) {}
-        if (dimLock) {
-            GeneralConfig.startingDimID = parsedInt;
-        } else if (selectedVariant.equals(VariantNames.ALTERED_EFFICIENCY)) {
-            GeneralConfig.efficiencyMultiplier = parsedFloat;
-        } else if (selectedVariant.equals(VariantNames.ALTERED_RECIPE_TIME)) {
-            GeneralConfig.recipeTimeMultiplier = parsedFloat;
+        if (searchField.textboxKeyTyped(typedChar, keyCode)) {
+            refreshFilteredVariants();
+            return;
         }
-        ConfigurationManager.save(GeneralConfig.class);
+
+        VariantNames selected = getSelectedVariant();
+        for (TextFieldEntry entry : textFieldEntries) {
+            if (!entry.variants.contains(selected)) continue;
+
+            boolean allowed = entry.charFilter == null || isNavigationKey(keyCode) || entry.charFilter.test(typedChar);
+
+            if (allowed && entry.field.textboxKeyTyped(typedChar, keyCode)) {
+                entry.configSetter.accept(entry.field.getText());
+                ConfigurationManager.save(GeneralConfig.class);
+                return;
+            }
+        }
+
+        super.keyTyped(typedChar, keyCode);
     }
 
     @Override
@@ -434,10 +467,13 @@ public class VariantGuiMain extends GuiScreen {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         searchField.mouseClicked(mouseX, mouseY, mouseButton);
 
-        if (isNumberFieldVisible()) {
-            numberInputField.mouseClicked(mouseX, mouseY, mouseButton);
-        } else {
-            numberInputField.setFocused(false);
+        VariantNames selected = getSelectedVariant();
+        for (TextFieldEntry entry : textFieldEntries) {
+            if (entry.variants.contains(selected)) {
+                entry.field.mouseClicked(mouseX, mouseY, mouseButton);
+            } else {
+                entry.field.setFocused(false);
+            }
         }
     }
 
@@ -447,17 +483,24 @@ public class VariantGuiMain extends GuiScreen {
             && mouseY < field.yPosition + field.height;
     }
 
-    private String getTranslatedTextfieldTooltip() {
-        String tooltip = "";
-        VariantNames selectedVariant = filteredVariants.get(selectedIndex);
-        if (selectedVariant.equals(VariantNames.DIMLOCKED) || selectedVariant.equals(VariantNames.CUSTOM_DIM_START)) {
-            tooltip = StatCollector.translateToLocal("variantgui.dimidfield.tooltip");
-        } else if (selectedVariant.equals(VariantNames.ALTERED_EFFICIENCY)) {
-            tooltip = StatCollector.translateToLocal("variantgui.efficiencyfield.tooltip");
-        } else if (selectedVariant.equals(VariantNames.ALTERED_RECIPE_TIME)) {
-            tooltip = StatCollector.translateToLocal("variantgui.recipetimefield.tooltip");
+    private String getTranslatedTextfieldTooltip(VariantNames variant) {
+        if (variant == null) {
+            return "";
         }
-        return tooltip;
+        switch (variant) {
+            case DIMLOCKED, CUSTOM_DIM_START -> {
+                return StatCollector.translateToLocal("variantgui.dimidfield.tooltip");
+            }
+            case ALTERED_EFFICIENCY -> {
+                return StatCollector.translateToLocal("variantgui.efficiencyfield.tooltip");
+            }
+            case ALTERED_RECIPE_TIME -> {
+                return StatCollector.translateToLocal("variantgui.recipetimefield.tooltip");
+            }
+            default -> {
+                return "";
+            }
+        }
     }
 
     @Override
@@ -466,13 +509,7 @@ public class VariantGuiMain extends GuiScreen {
         searchField.drawTextBox();
         drawDetailsPanel();
 
-        if (isNumberFieldVisible()) {
-            numberInputField.drawTextBox();
-        }
-
-        VariantNames selectedVariant = (selectedIndex >= 0 && selectedIndex < filteredVariants.size())
-            ? filteredVariants.get(selectedIndex)
-            : null;
+        VariantNames selectedVariant = getSelectedVariant();
         int nextY = calculateBottomY(selectedVariant);
         for (CheckboxEntry entry : checkboxEntries) {
             boolean visible = selectedVariant != null && selectedVariant.equals(entry.variant);
@@ -491,14 +528,27 @@ public class VariantGuiMain extends GuiScreen {
             this.width / 2,
             20,
             0xFFFFFF);
-        super.drawScreen(mouseX, mouseY, partialTicks);
 
-        if (isNumberFieldVisible() && isMouseOverTextField(numberInputField, mouseX, mouseY)) {
-            List<String> tooltip = this.fontRendererObj
-                .listFormattedStringToWidth(getTranslatedTextfieldTooltip(), 200);
-            this.drawHoveringText(tooltip, mouseX, mouseY, this.fontRendererObj);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        for (TextFieldEntry entry : textFieldEntries) {
+            if (entry.variants.contains(selectedVariant)) {
+                entry.field.xPosition = SIDEBAR_WIDTH + PADDING * 2;
+                entry.field.yPosition = nextY;
+                entry.field.drawTextBox();
+                nextY += 20;
+            }
         }
+
+        for (TextFieldEntry entry : textFieldEntries) {
+            if (entry.variants.contains(selectedVariant) && isMouseOverTextField(entry.field, mouseX, mouseY)) {
+                List<String> tooltip = this.fontRendererObj
+                    .listFormattedStringToWidth(getTranslatedTextfieldTooltip(selectedVariant), 200);
+                this.drawHoveringText(tooltip, mouseX, mouseY, this.fontRendererObj);
+                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                break;
+            }
+        }
+
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     private ResourceLocation getVariantIcon(String variantId) {
@@ -581,7 +631,7 @@ public class VariantGuiMain extends GuiScreen {
         @Override
         protected void elementClicked(int index, boolean doubleClick, int mouseX, int mouseY) {
             selectedIndex = index;
-            syncNumberField(filteredVariants.get(selectedIndex));
+            syncTextFields(getSelectedVariant());
             updateBottomButtons();
         }
 
