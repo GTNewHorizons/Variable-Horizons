@@ -105,3 +105,4 @@ variants.error.message.6=Variant is incompatible with an active variant.
 variants.error.message.7=Client/world restart may be required for change to take effect.
 variants.error.message.8=Server/instance restart required for change to take effect.
 variants.error.message.9=Variant already inactive.
+variants.error.message.10=Variant required by another variant.
