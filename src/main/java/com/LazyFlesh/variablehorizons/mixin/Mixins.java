@@ -40,6 +40,7 @@ public enum Mixins implements IMixins {
             .setApplyIf(
                 () -> (VariantNames.activeContains(VariantNames.VOID_WORLD.id)
                     || VariantNames.activeContains(VariantNames.VOID_ISLAND.id)
+                    || VariantNames.activeContains(VariantNames.SKYGRID.id)
                     || (VariantNames.activeContains(VariantNames.SUPERFLAT.id)
                         && !GeneralConfig.allowSuperflatPopulation))
                     && !GeneralConfig.disableVariants)
@@ -49,6 +50,7 @@ public enum Mixins implements IMixins {
         .setApplyIf(
             () -> (VariantNames.activeContains(VariantNames.VOID_WORLD.id)
                 || VariantNames.activeContains(VariantNames.VOID_ISLAND.id)
+                || VariantNames.activeContains(VariantNames.SKYGRID.id)
                 || (VariantNames.activeContains(VariantNames.SUPERFLAT.id) && !GeneralConfig.allowSuperflatPopulation))
                 && !GogConfig.dragonTime
                 && !GeneralConfig.disableVariants)

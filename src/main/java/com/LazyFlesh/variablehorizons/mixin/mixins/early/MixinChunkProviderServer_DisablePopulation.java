@@ -66,8 +66,8 @@ public class MixinChunkProviderServer_DisablePopulation {
                     randomUtil.generateVoidIsland(spawn, worldObj, worldObj.provider.dimensionId);
                 }
             }
-            return;
+        } else {
+            chunkProvider.populate(chunkProvider2, chunkX, chunkZ);
         }
-        chunkProvider.populate(chunkProvider2, chunkX, chunkZ);
     }
 }

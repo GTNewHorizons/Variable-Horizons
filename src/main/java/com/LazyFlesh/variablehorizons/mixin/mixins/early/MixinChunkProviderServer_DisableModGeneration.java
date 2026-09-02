@@ -31,9 +31,8 @@ public class MixinChunkProviderServer_DisableModGeneration {
         if (IS_SUPERFLAT_ACTIVE) {
             return;
         }
-        if (randomUtil.generateVoidInThisDim(world.provider.dimensionId)) {
-            return;
+        if (!randomUtil.generateVoidInThisDim(world.provider.dimensionId)) {
+            GameRegistry.generateWorld(chunkX, chunkZ, world, chunkProvider, chunkGenerator);
         }
-        GameRegistry.generateWorld(chunkX, chunkZ, world, chunkProvider, chunkGenerator);
     }
 }
