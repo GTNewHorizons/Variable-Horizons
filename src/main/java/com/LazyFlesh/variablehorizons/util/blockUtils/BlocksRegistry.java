@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -34,6 +35,10 @@ public class BlocksRegistry {
                 } catch (Exception e) {
                     meta = 0;
                 }
+            }
+
+            if (block.hasTileEntity(meta) || block instanceof ITileEntityProvider) {
+                continue;
             }
 
             blocks.add(new BlockData(meta, String.valueOf(GameRegistry.findUniqueIdentifierFor(block)), block, null));
