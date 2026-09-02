@@ -26,7 +26,8 @@ public class MixinChunkProviderServer_ForceSkygridTerrain {
             target = "Lnet/minecraft/world/chunk/IChunkProvider;provideChunk(II)Lnet/minecraft/world/chunk/Chunk;"),
         method = "originalLoadChunk")
     public Chunk variablehorizons$forceSkygridTerrain(Chunk chunk) {
-        Pair<Block[], byte[]> p = GridGenerator.generateGrid(chunk.worldObj.rand.nextLong());
+        long seed = chunk.worldObj.getSeed();
+        Pair<Block[], byte[]> p = GridGenerator.generateGrid(seed, chunk.xPosition, chunk.zPosition);
         Block[] ids = p.first();
         byte[] metadata = p.second();
 
