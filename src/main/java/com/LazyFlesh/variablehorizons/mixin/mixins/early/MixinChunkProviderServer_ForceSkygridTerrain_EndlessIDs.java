@@ -37,7 +37,6 @@ public class MixinChunkProviderServer_ForceSkygridTerrain_EndlessIDs {
 
         Chunk newChunk = new Chunk(chunk.worldObj, ids, metadata, chunk.xPosition, chunk.zPosition);
         ((ChunkBiomeHook) newChunk).setBiomeShortArray(biomeArray);
-        newChunk.generateSkylightMap();
         return newChunk;
     }
 }

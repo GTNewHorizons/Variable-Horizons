@@ -1,6 +1,7 @@
 package com.LazyFlesh.variablehorizons.util.blockUtils;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -19,9 +20,9 @@ public class GridGenerator {
 
         Arrays.fill(blocks, Blocks.air);
 
-        for (int x = 1; x < 16; x += 2) {
-            for (int z = 1; z < 16; z += 2) {
-                for (int y = 3; y < 256; y += 6) {
+        for (int x = 1; x < 16; x += 4) {
+            for (int z = 1; z < 16; z += 4) {
+                for (int y = 3; y < 256; y += 4) {
                     int index = (x << 12) | (z << 8) | y;
                     Pair<Block, Byte> p = getRandomBlock(rand);
                     blocks[index] = p.first();
@@ -29,13 +30,12 @@ public class GridGenerator {
                 }
             }
         }
-        return new Pair(blocks, metadata);
+        return new Pair<>(blocks, metadata);
     }
 
     public static Pair<Block, Byte> getRandomBlock(Random rand) {
-        BlockData[] blocks = BlocksRegistry.getBlocks()
-            .toArray(new BlockData[] {});
-        BlockData data = blocks[rand.nextInt(blocks.length)];
-        return new Pair(data.block, data.meta);
+        List<BlockData> blocksList = BlocksRegistry.getBlocks();
+        BlockData data = blocksList.get(rand.nextInt(blocksList.size()));
+        return new Pair<>(data.block, data.meta);
     }
 }

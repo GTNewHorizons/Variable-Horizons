@@ -18,21 +18,22 @@ public class BlocksRegistry {
 
     public static List<BlockData> getBlocks() {
         if (blocks != null) return blocks;
+        blocks = new ArrayList<>();
 
         FMLControlledNamespacedRegistry<Block> blocksDiscovered = GameData.getBlockRegistry();
         Iterator<Block> blockIterator = blocksDiscovered.iterator();
 
-        List<BlockData> blocks = new ArrayList<>();
-
         while (blockIterator.hasNext()) {
             Block block = blockIterator.next();
-
-            List<ItemStack> subBlocks = new ArrayList<>();
 
             Item blockItem = Item.getItemFromBlock(block);
             byte meta = 0;
             if (blockItem != null) {
-                meta = (byte) blockItem.getDamage(new ItemStack(blockItem));
+                try {
+                    meta = (byte) blockItem.getDamage(new ItemStack(blockItem));
+                } catch (Exception e) {
+                    meta = 0;
+                }
             }
 
             blocks.add(new BlockData(meta, String.valueOf(GameRegistry.findUniqueIdentifierFor(block)), block, null));
@@ -40,5 +41,4 @@ public class BlocksRegistry {
 
         return blocks;
     }
-
 }
