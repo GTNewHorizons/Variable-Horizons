@@ -120,10 +120,15 @@ public abstract class VariantLoader {
                 return StatCollector.translateToLocal("variants.error.message.9");
             } else {
                 Set<String> active = VariantNames.getActiveVariantNames();
-                active.remove(name.id);
                 // and the composites, too
                 if (name.compositionVariant) {
+                    active.remove(name.id);
                     for (VariantNames n : name.composedOf) active.remove(n.id);
+                } else {
+                    for (VariantNames m : name.partOf) {
+                        if (active.contains(m.id)) return StatCollector.translateToLocal("variants.error.message.10");
+                    }
+                    active.remove(name.id);
                 }
                 GeneralConfig.activeVariants = active.toArray(new String[0]);
                 ConfigurationManager.save(GeneralConfig.class);
