@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -35,6 +36,14 @@ public class BlocksRegistry {
         blacklistBlock("HardcoreEnderExpansion:corrupted_energy_low", 0);
         blacklistBlock("OpenBlocks:tank", 0);
         blacklistBlock("ExtraUtilities:drum", 0, 1);
+        blacklistBlock("ExtraUtilities:magnumTorch", 0, 1);
+        blacklistBlock("DraconicEvolution:placedItem", -1);
+        blacklistBlock("EMT:electricCloud", -1);
+        blacklistBlock("BiblioCraft:BiblioSeats", -1);
+        blacklistBlock("BiblioWoodsBoP:BiblioWoodSeat", -1);
+        blacklistBlock("BiblioWoodsForestry:BiblioWoodSeat", -1);
+        blacklistBlock("BiblioWoodsForestry:BiblioWoodSeat2", -1);
+        blacklistBlock("BiblioWoodsNatura:BiblioWoodSeat", -1);
     }
 
     private static void blacklistBlock(String blockID, int... metas) {
@@ -54,8 +63,12 @@ public class BlocksRegistry {
         while (blockIterator.hasNext()) {
             Block block = blockIterator.next();
 
-            // No fluids or TEs
-            if (block instanceof ITileEntityProvider || block instanceof IFluidBlock) {
+            // No TEs
+            if (block instanceof ITileEntityProvider) {
+                continue;
+            }
+            // No fluids
+            if (block instanceof BlockLiquid || block instanceof IFluidBlock) {
                 continue;
             }
 
