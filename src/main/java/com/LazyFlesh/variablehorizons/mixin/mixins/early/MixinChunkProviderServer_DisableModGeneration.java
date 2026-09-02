@@ -20,6 +20,9 @@ public class MixinChunkProviderServer_DisableModGeneration {
     @Unique
     private static final boolean IS_SUPERFLAT_ACTIVE = VariantNames.activeContains(VariantNames.SUPERFLAT.id);
 
+    @Unique
+    private static final boolean IS_SKYGRID_ACTIVE = VariantNames.activeContains(VariantNames.SKYGRID.id);
+
     @Redirect(
         at = @At(
             remap = false,
@@ -28,7 +31,7 @@ public class MixinChunkProviderServer_DisableModGeneration {
         method = "populate(Lnet/minecraft/world/chunk/IChunkProvider;II)V")
     private void variablehorizons$disableModGeneration(int chunkX, int chunkZ, World world,
         IChunkProvider chunkProvider, IChunkProvider chunkGenerator) {
-        if (IS_SUPERFLAT_ACTIVE) {
+        if (IS_SUPERFLAT_ACTIVE || IS_SKYGRID_ACTIVE) {
             return;
         }
         if (!randomUtil.generateVoidInThisDim(world.provider.dimensionId)) {

@@ -29,6 +29,9 @@ public class MixinChunkProviderServer_DisablePopulation {
     @Unique
     private static final boolean IS_SUPERFLAT_ACTIVE = VariantNames.activeContains(VariantNames.SUPERFLAT.id);
 
+    @Unique
+    private static final boolean IS_SKYGRID_ACTIVE = VariantNames.activeContains(VariantNames.SKYGRID.id);
+
     @Redirect(
         at = @At(
             target = "Lnet/minecraft/world/chunk/IChunkProvider;populate(Lnet/minecraft/world/chunk/IChunkProvider;II)V",
@@ -36,6 +39,9 @@ public class MixinChunkProviderServer_DisablePopulation {
         method = "populate(Lnet/minecraft/world/chunk/IChunkProvider;II)V")
     private void variablehorizons$ignoreChunkPopulation(IChunkProvider chunkProvider, IChunkProvider chunkProvider2,
         int chunkX, int chunkZ) {
+        if (IS_SKYGRID_ACTIVE) {
+            return;
+        }
         if (IS_SUPERFLAT_ACTIVE) {
 
             MapGenVillage villageGen = null;
