@@ -1,8 +1,10 @@
 package com.LazyFlesh.variablehorizons.util.blockUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -17,6 +19,18 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class BlocksRegistry {
 
     private static List<BlockData> blocks;
+    private static Map<String, Integer> BLACKLIST = new HashMap<>() {
+        {
+            put("tectech:Eye of Harmony Renderer", 0);
+            put("tectech:ForgeOfGodsRenderBlock", 0);
+            put("gregtech:gt.nanoforgerenderer", 0);
+            put("gregtech:gt.blackholerenderer", 0);
+            put("gregtech:gt.wormholerenderer", 0);
+            put("GoodGenerator:antimatterRenderBlock", 0);
+            put("HardcoreEnderExpansion:corrupted_energy_high", 0);
+            put("HardcoreEnderExpansion:corrupted_energy_low", 0);
+        }
+    };
 
     public static List<BlockData> getBlocks() {
         if (blocks != null) return blocks;
@@ -37,6 +51,9 @@ public class BlocksRegistry {
             String uniqueId = String.valueOf(GameRegistry.findUniqueIdentifierFor(block));
 
             if (blockItem == null) {
+                if (checkIfBlacklisted(uniqueId, 0)) {
+                    continue;
+                }
                 // Item not found, use meta 0
                 blocks.add(new BlockData((byte) 0, uniqueId, block, null));
                 continue;
@@ -51,6 +68,9 @@ public class BlocksRegistry {
             }
 
             if (subItems.isEmpty()) {
+                if (checkIfBlacklisted(uniqueId, 0)) {
+                    continue;
+                }
                 // Only one block variant (meta 0)
                 blocks.add(new BlockData((byte) 0, uniqueId, block, null));
                 continue;
@@ -60,10 +80,20 @@ public class BlocksRegistry {
                 if (stack == null) continue;
                 int meta = stack.getItemDamage();
                 if (meta < 0 || meta > 15) continue;
+                if (checkIfBlacklisted(uniqueId, meta)) {
+                    continue;
+                }
                 blocks.add(new BlockData((byte) meta, uniqueId, block, null));
             }
         }
 
         return blocks;
+    }
+
+    private static boolean checkIfBlacklisted(String blockID, int meta) {
+        if (BLACKLIST.containsKey(blockID)) {
+            return BLACKLIST.get(blockID) == meta;
+        }
+        return false;
     }
 }
