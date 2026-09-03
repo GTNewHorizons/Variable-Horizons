@@ -9,12 +9,12 @@ import java.util.Set;
 import net.minecraft.util.StatCollector;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+import com.LazyFlesh.variablehorizons.variants.invasive.DiffDimStart;
 import com.LazyFlesh.variablehorizons.variants.invasive.DimLocked;
 import com.LazyFlesh.variablehorizons.variants.invasive.GardenOfGrind;
 import com.LazyFlesh.variablehorizons.variants.invasive.SkyGrid;
 import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 import com.LazyFlesh.variablehorizons.variants.runtime.AlteredRecipeTime;
-import com.LazyFlesh.variablehorizons.variants.runtime.DiffDimStart;
 import com.LazyFlesh.variablehorizons.variants.runtime.InfinitePower;
 import com.LazyFlesh.variablehorizons.variants.runtime.NoQuestRewards;
 import com.LazyFlesh.variablehorizons.variants.runtime.NoRocket;
@@ -38,6 +38,7 @@ public enum VariantNames {
     CUSTOM_DIM_START("CUSTOM_DIM_START", new DiffDimStart()), // sets a different dim as the spawn dimension instead of OW
     SUPERFLAT("SUPERFLAT", new VariantNames[]{ VOID_WORLD, VOID_ISLAND }),
     SKYGRID("SKYGRID", new SkyGrid(), new VariantNames[]{ VOID_WORLD, VOID_ISLAND, SUPERFLAT }),
+    MONOBLOCK("MONOBLOCK", new VariantNames[]{ NO_RECIPE_ADDITIONS }),
 
     // full variants
     // i.e. defines both world type and recipes

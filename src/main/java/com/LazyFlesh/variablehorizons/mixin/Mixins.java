@@ -112,6 +112,10 @@ public enum Mixins implements IMixins {
         new MixinBuilder("Increase slime spawns to y = 80").addCommonMixins("MixinEntitySlime_ExtendedSpawnRange")
             .setApplyIf(() -> VariantNames.activeContains(VariantNames.SUPERFLAT.id) && !GeneralConfig.disableVariants)
             .setPhase(Phase.EARLY)),
+    REPLACE_ALL_CHUNK_BLOCKS(new MixinBuilder("Replace all blocks in a chunk with a single block type")
+        .addCommonMixins("MixinChunkProviderServer_ReplaceBlocks", "MixinChunk_ReplaceGeneratedBlocks")
+        .setApplyIf(() -> VariantNames.activeContains(VariantNames.MONOBLOCK.id) && !GeneralConfig.disableVariants)
+        .setPhase(Phase.EARLY)),
     DISABLE_CELESTIAL_SELECTION(new MixinBuilder("Disable the galacticraft planet map")
         .addCommonMixins("MixinWorldUtil_DisableCelestialSelection")
         .setApplyIf(() -> VariantNames.activeContains(VariantNames.NO_ROCKET.id) && !GeneralConfig.disableVariants)

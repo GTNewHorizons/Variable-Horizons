@@ -47,4 +47,8 @@ public class GeneralConfig {
     @Config.DefaultBoolean(true)
     public static boolean allowVoidIslandChest;
 
+    @Config.Comment("Block type the entire world should be made of")
+    @Config.DefaultString("minecraft:stone:0")
+    public static String replacementBlock;
+
 }
