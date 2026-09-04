@@ -6,6 +6,8 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
+import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+
 import akka.japi.Pair;
 
 public class GridGenerator {
@@ -23,10 +25,13 @@ public class GridGenerator {
         long chunkSeed = worldSeed ^ (chunkX * CHUNK_X_MULT) ^ (chunkZ * CHUNK_Z_MULT);
         List<BlockData> blocksList = BlocksRegistry.getBlocks();
         int blocksListSize = blocksList.size();
+        int blockDistance = Math.max(GeneralConfig.skygridDistance + 1, 1);
 
-        for (int x = 1; x < 16; x += 4) {
-            for (int z = 1; z < 16; z += 4) {
-                for (int y = 3; y < 256; y += 4) {
+        int xCoord = getOffset(chunkX, blockDistance);
+        int zCoord = getOffset(chunkZ, blockDistance);
+        for (int x = xCoord; x < 16; x += blockDistance) {
+            for (int z = zCoord; z < 16; z += blockDistance) {
+                for (int y = 3; y < 256; y += blockDistance) {
                     int index = (x << 12) | (z << 8) | y;
                     long posSeed = mixSeed(chunkSeed, x, y, z);
                     BlockData data = blocksList.get(boundedIndex(posSeed, blocksListSize));
@@ -37,6 +42,19 @@ public class GridGenerator {
             }
         }
         return new Pair<>(blocks, metadata);
+    }
+
+    private static int getOffset(int chunkCoord, int blockDistance) {
+        int coord = chunkCoord * 16;
+        int steps = coord / blockDistance;
+        if (coord < 0 && coord % blockDistance != 0) {
+            steps--;
+        }
+        int start = steps * blockDistance;
+        if (start < coord) {
+            start += blockDistance;
+        }
+        return start - coord;
     }
 
     /**

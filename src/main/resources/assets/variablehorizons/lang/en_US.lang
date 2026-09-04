@@ -19,6 +19,7 @@ variants.SUPERFLAT.name=Superflat
 variants.EXPENSIVE_MODE.name=Expensive Mode
 variants.CHEAP_MODE.name=Cheap Mode
 variants.MONOBLOCK.name=Monoblock
+variants.SKYGRID.name=Skygrid
 
 #Variant descriptions
 #Full Variants
@@ -39,6 +40,7 @@ variants.INFINITE_POWER.desc=INFINITE POWER! This variant fills your wireless ne
 variants.CUSTOM_DIM_START.desc=This variant allows you to choose a starting dimension in which you are going to spawn and respawn, but there is nothing preventing you from leaving. You can specify the dimension ID you want this variant to start you in, some examples include the Nether (-1), the End (1) and Ross128B (64). A full list of dimension IDs can be found on the GTNH wiki.
 variants.SUPERFLAT.desc=4 layers thick flat terrain awaits you in this variant. All dimensions are now superflat, with each dimension having its own unique block layers. By default, this variant will disable all types of chunk population, meaning your world will be barren of foliage and structures, but you can enable this using the checkbox below. Similarly, all biomes are plains by default, unless biome diversity is enabled. Villages will always generate, regardless of the setting chosen.
 variants.MONOBLOCK.desc=Monoblock meaning one block. THE one block your whole world will be made of. Terrain will generate as usual, but it will all be replaced by the one chosen block type. You can choose any block you wish by entering its identifier as follows: modID:blockname:meta . §4WARNING: This variant can cause performance issues and crashes depending on the block chosen.
+variants.SKYGRID.desc=Enter the matrix... of blocks. All terrain has been replaced by a grid of randomly chosen blocks, time to scavenge! You can alter the density of the grid by changing the number below, it specifies the number of air blocks between each grid block. Beware, the denser the grid, the worse performance will be.
 
 #Variant GUI buttons
 variantgui.header=Pack Variants
@@ -56,6 +58,7 @@ variantgui.dimidfield.tooltip=Enter numeric ID of chosen dimension
 variantgui.efficiencyfield.tooltip=Enter machine efficiency multiplier
 variantgui.recipetimefield.tooltip=Enter recipe time multiplier
 variantgui.monoblockfield.tooltip=Enter chosen block (modid:blockname:meta)
+variantgui.skygridfield.tooltip=Enter number of air blocks between grid blocks
 
 #Misc
 variants.dimlock.message.1=Otherworldly forces reject your attempt at crossing dimensional boundaries

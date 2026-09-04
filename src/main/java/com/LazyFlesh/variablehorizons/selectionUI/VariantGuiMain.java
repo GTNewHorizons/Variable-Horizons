@@ -316,6 +316,7 @@ public class VariantGuiMain extends GuiScreen {
 
         textFieldEntries.clear();
         Predicate<Character> dimIdFilter = c -> Character.isDigit(c) || c == '-';
+        Predicate<Character> posDigitFilter = Character::isDigit;
         Predicate<Character> decimalFilter = c -> Character.isDigit(c) || c == '.';
         textFieldEntries.add(
             makeTextField(
@@ -353,6 +354,16 @@ public class VariantGuiMain extends GuiScreen {
                 null,
                 () -> GeneralConfig.replacementBlock,
                 text -> GeneralConfig.replacementBlock = text));
+        textFieldEntries.add(
+            makeTextField(
+                Collections.singletonList(VariantNames.SKYGRID),
+                posDigitFilter,
+                () -> String.valueOf(GeneralConfig.skygridDistance),
+                text -> {
+                    try {
+                        GeneralConfig.skygridDistance = Integer.parseInt(text);
+                    } catch (NumberFormatException ignored) {}
+                }));
 
         for (CheckboxEntry entry : checkboxEntries) {
             this.buttonList.add(entry.checkbox);
@@ -493,6 +504,9 @@ public class VariantGuiMain extends GuiScreen {
             }
             case MONOBLOCK -> {
                 return StatCollector.translateToLocal("variantgui.monoblockfield.tooltip");
+            }
+            case SKYGRID -> {
+                return StatCollector.translateToLocal("variantgui.skygridfield.tooltip");
             }
             default -> {
                 return "";

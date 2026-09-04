@@ -51,4 +51,8 @@ public class GeneralConfig {
     @Config.DefaultString("minecraft:stone:0")
     public static String replacementBlock;
 
+    @Config.Comment("How dense the Skygrid should be. This number denotes the number of air blocks between grid blocks.")
+    @Config.DefaultInt(3)
+    @Config.RangeInt(min = 0)
+    public static int skygridDistance;
 }
