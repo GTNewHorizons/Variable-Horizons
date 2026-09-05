@@ -1,6 +1,7 @@
 package com.LazyFlesh.variablehorizons.util.blockUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -23,31 +24,39 @@ public class BlocksRegistry {
 
     private static List<BlockData> blocks;
     private static final Map<String, Set<Integer>> BLACKLIST = new HashMap<>();
+    private static final Map<String, Set<Integer>> TE_WHITELIST = new HashMap<>();
 
     static {
-        // Meta -1 blacklists all metadata variants for a block
-        blacklistBlock("tectech:Eye of Harmony Renderer", 0);
-        blacklistBlock("tectech:ForgeOfGodsRenderBlock", 0);
-        blacklistBlock("gregtech:gt.nanoforgerenderer", 0);
-        blacklistBlock("gregtech:gt.blackholerenderer", 0);
-        blacklistBlock("gregtech:gt.wormholerenderer", 0);
-        blacklistBlock("GoodGenerator:antimatterRenderBlock", 0);
-        blacklistBlock("HardcoreEnderExpansion:corrupted_energy_high", 0);
-        blacklistBlock("HardcoreEnderExpansion:corrupted_energy_low", 0);
-        blacklistBlock("OpenBlocks:tank", 0);
-        blacklistBlock("ExtraUtilities:drum", 0, 1);
-        blacklistBlock("ExtraUtilities:magnumTorch", 0, 1);
-        blacklistBlock("DraconicEvolution:placedItem", -1);
-        blacklistBlock("EMT:electricCloud", -1);
-        blacklistBlock("BiblioCraft:BiblioSeats", -1);
-        blacklistBlock("BiblioWoodsBoP:BiblioWoodSeat", -1);
-        blacklistBlock("BiblioWoodsForestry:BiblioWoodSeat", -1);
-        blacklistBlock("BiblioWoodsForestry:BiblioWoodSeat2", -1);
-        blacklistBlock("BiblioWoodsNatura:BiblioWoodSeat", -1);
+        // Meta -1 affects all metadata variants for a block
+        addBlockToList(BLACKLIST, "tectech:Eye of Harmony Renderer", 0);
+        addBlockToList(BLACKLIST, "tectech:ForgeOfGodsRenderBlock", 0);
+        addBlockToList(BLACKLIST, "gregtech:gt.nanoforgerenderer", 0);
+        addBlockToList(BLACKLIST, "gregtech:gt.blackholerenderer", 0);
+        addBlockToList(BLACKLIST, "gregtech:gt.wormholerenderer", 0);
+        addBlockToList(BLACKLIST, "GoodGenerator:antimatterRenderBlock", 0);
+        addBlockToList(BLACKLIST, "HardcoreEnderExpansion:corrupted_energy_high", 0);
+        addBlockToList(BLACKLIST, "HardcoreEnderExpansion:corrupted_energy_low", 0);
+        addBlockToList(BLACKLIST, "OpenBlocks:tank", 0);
+        addBlockToList(BLACKLIST, "ExtraUtilities:drum", 0, 1);
+        addBlockToList(BLACKLIST, "ExtraUtilities:chandelier", 0);
+        addBlockToList(BLACKLIST, "ExtraUtilities:magnumTorch", 0);
+        addBlockToList(BLACKLIST, "DraconicEvolution:placedItem", -1);
+        addBlockToList(BLACKLIST, "EMT:electricCloud", -1);
+        addBlockToList(BLACKLIST, "BiblioCraft:BiblioSeats", -1);
+        addBlockToList(BLACKLIST, "BiblioWoodsBoP:BiblioWoodSeat", -1);
+        addBlockToList(BLACKLIST, "BiblioWoodsForestry:BiblioWoodSeat", -1);
+        addBlockToList(BLACKLIST, "BiblioWoodsForestry:BiblioWoodSeat2", -1);
+        addBlockToList(BLACKLIST, "BiblioWoodsNatura:BiblioWoodSeat", -1);
+        addBlockToList(BLACKLIST, "kubatech:kubablocks", 0, 1);
+        addBlockToList(BLACKLIST, "OpenComputers:print", 0);
+        addBlockToList(BLACKLIST, "OpenComputers:printer", 0);
+        addBlockToList(BLACKLIST, "ae2fc:walrus", 0);
+        addBlockToList(BLACKLIST, "EnderIO:blockHyperCube", 0);
+        addBlockToList(TE_WHITELIST, "gregtech:gt.blockmachines", getGTSingleblockMetas());
     }
 
-    private static void blacklistBlock(String blockID, int... metas) {
-        Set<Integer> metaSet = BLACKLIST.computeIfAbsent(blockID, k -> new HashSet<>());
+    private static void addBlockToList(Map<String, Set<Integer>> filter, String blockID, int... metas) {
+        Set<Integer> metaSet = filter.computeIfAbsent(blockID, k -> new HashSet<>());
         for (int m : metas) {
             metaSet.add(m);
         }
@@ -62,6 +71,7 @@ public class BlocksRegistry {
 
         while (blockIterator.hasNext()) {
             Block block = blockIterator.next();
+            String uniqueId = String.valueOf(GameRegistry.findUniqueIdentifierFor(block));
 
             // No TEs
             if (block instanceof ITileEntityProvider) {
@@ -73,8 +83,6 @@ public class BlocksRegistry {
             }
 
             Item blockItem = Item.getItemFromBlock(block);
-            String uniqueId = String.valueOf(GameRegistry.findUniqueIdentifierFor(block));
-
             if (blockItem == null) {
                 if (checkIfBlacklisted(uniqueId, 0)) {
                     continue;
@@ -112,6 +120,7 @@ public class BlocksRegistry {
             }
         }
 
+        addWhitelistedTEs();
         return blocks;
     }
 
@@ -121,5 +130,67 @@ public class BlocksRegistry {
             return (blacklistedMetas.contains(meta) || blacklistedMetas.contains(-1));
         }
         return false;
+    }
+
+    private static void addWhitelistedTEs() {
+        for (Map.Entry<String, Set<Integer>> entry : TE_WHITELIST.entrySet()) {
+            String blockID = entry.getKey();
+            Block block = Block.getBlockFromName(blockID);
+
+            if (block == null) {
+                continue;
+            }
+
+            Set<Integer> metas = entry.getValue();
+            if (metas.contains(-1)) {
+                // Wildcard meta of -1, add all variations
+                Item blockItem = Item.getItemFromBlock(block);
+                if (blockItem != null) {
+                    List<ItemStack> subItems = new ArrayList<>();
+                    try {
+                        blockItem.getSubItems(blockItem, block.getCreativeTabToDisplayOn(), subItems);
+                    } catch (Exception ignored) {}
+
+                    if (subItems.isEmpty()) {
+                        blocks.add(new BlockData((byte) 0, blockID, block, null));
+                    } else {
+                        for (ItemStack stack : subItems) {
+                            if (stack != null) {
+                                int meta = stack.getItemDamage();
+                                if (meta >= 0) {
+                                    blocks.add(new BlockData((byte) meta, blockID, block, null));
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    blocks.add(new BlockData((byte) 0, blockID, block, null));
+                }
+            } else {
+                // Explicitly chosen metas
+                for (int meta : metas) {
+                    if (meta >= 0) {
+                        blocks.add(new BlockData((byte) meta, blockID, block, null));
+                    }
+                }
+            }
+        }
+    }
+
+    private static int[] getGTSingleblockMetas() {
+        ArrayList<Integer> metas = new ArrayList<>();
+        int IDOffsetBasicSingleblocks = 200;
+        Set<Integer> skippedIDs = new HashSet<>(Arrays.asList(22, 41, 44));
+        for (int i = 0; i < 46; i++) {
+            if (skippedIDs.contains(i)) {
+                continue;
+            }
+            for (int j = 1; j < 6; j++) {
+                metas.add(IDOffsetBasicSingleblocks + j);
+            }
+        }
+        return metas.stream()
+            .mapToInt(i -> i)
+            .toArray();
     }
 }

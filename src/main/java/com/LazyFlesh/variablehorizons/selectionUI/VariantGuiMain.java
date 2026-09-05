@@ -54,11 +54,6 @@ public class VariantGuiMain extends GuiScreen {
 
     private static final Set<VariantNames> fullVariants = VariantNames.allCompositionVariants;
     private static final Set<VariantNames> subVariants = VariantNames.allSubVariants;
-    private static final List<VariantNames> inputFieldVariants = Arrays.asList(
-        VariantNames.DIMLOCKED,
-        VariantNames.CUSTOM_DIM_START,
-        VariantNames.ALTERED_EFFICIENCY,
-        VariantNames.ALTERED_RECIPE_TIME);
     private static final ResourceLocation DEFAULT_ICON = new ResourceLocation(
         "variablehorizons",
         "textures/gui/variants/ohno.png");
