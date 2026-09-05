@@ -53,6 +53,7 @@ public class BlocksRegistry {
         addBlockToList(BLACKLIST, "ae2fc:walrus", 0);
         addBlockToList(BLACKLIST, "EnderIO:blockHyperCube", 0);
         addBlockToList(TE_WHITELIST, "gregtech:gt.blockmachines", getGTSingleblockMetas());
+        addBlockToList(BLACKLIST, "ForgeMicroblock:microblock", -1);
     }
 
     private static void addBlockToList(Map<String, Set<Integer>> filter, String blockID, int... metas) {
