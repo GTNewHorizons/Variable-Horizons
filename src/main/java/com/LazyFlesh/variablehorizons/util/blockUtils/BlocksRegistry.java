@@ -44,6 +44,7 @@ public class BlocksRegistry {
         blacklistBlock("BiblioWoodsForestry:BiblioWoodSeat", -1);
         blacklistBlock("BiblioWoodsForestry:BiblioWoodSeat2", -1);
         blacklistBlock("BiblioWoodsNatura:BiblioWoodSeat", -1);
+        blacklistBlock("ForgeMicroblock:microblock", -1);
     }
 
     private static void blacklistBlock(String blockID, int... metas) {
