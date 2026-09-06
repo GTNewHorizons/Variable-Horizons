@@ -17,4 +17,12 @@ public class NoQuestRewards extends VariantLoader implements IRuntimeVariant {
 
     @Override
     public void variantRecipes(VariantNames... activeVariants) {}
+
+    @Override
+    public void undoVariant(VariantNames... activeVariants) {
+        VariantNames.NO_QUEST_REWARDS.hasLoaded = false;
+
+        // reset
+        BQ_Settings.noRewards = false;
+    }
 }

@@ -37,4 +37,23 @@ public class NoPollution extends VariantLoader implements IRuntimeVariant {
     public void variantRecipes(VariantNames... activeVariants) {
         // none
     }
+
+    @Override
+    public void undoVariant(VariantNames... activeVariants) {
+        VariantNames.NO_POLLUTION.hasLoaded = false;
+
+        // reset
+        PollutionConfig.pollution = true;
+        PollutionConfig.furnacesPollute = true;
+        PollutionConfig.rocketsPollute = true;
+        PollutionConfig.railcraftPollutes = true;
+        GTMod.proxy.mPollution = true;
+
+        // re-register; requires world restart
+        MinecraftForge.EVENT_BUS.register(Pollution.standardBlocks);
+        MinecraftForge.EVENT_BUS.register(Pollution.liquidBlocks);
+        MinecraftForge.EVENT_BUS.register(Pollution.doublePlants);
+        MinecraftForge.EVENT_BUS.register(Pollution.crossedSquares);
+        MinecraftForge.EVENT_BUS.register(Pollution.blockVine);
+    }
 }
