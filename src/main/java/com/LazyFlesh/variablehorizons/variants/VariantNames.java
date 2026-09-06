@@ -12,6 +12,7 @@ import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.variants.invasive.DiffDimStart;
 import com.LazyFlesh.variablehorizons.variants.invasive.DimLocked;
 import com.LazyFlesh.variablehorizons.variants.invasive.GardenOfGrind;
+import com.LazyFlesh.variablehorizons.variants.invasive.SkyGrid;
 import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 import com.LazyFlesh.variablehorizons.variants.runtime.AlteredRecipeTime;
 import com.LazyFlesh.variablehorizons.variants.runtime.InfinitePower;
@@ -38,6 +39,7 @@ public enum VariantNames {
     INFINITE_POWER("INFINITE_POWER", new InfinitePower()),
     CUSTOM_DIM_START("CUSTOM_DIM_START", new DiffDimStart()), // sets a different dim as the spawn dimension instead of OW
     SUPERFLAT("SUPERFLAT", new VariantNames[]{ VOID_WORLD, VOID_ISLAND }),
+    SKYGRID("SKYGRID", new SkyGrid(), new VariantNames[]{ VOID_WORLD, VOID_ISLAND, SUPERFLAT }),
     MONOBLOCK("MONOBLOCK", new VariantNames[]{ NO_RECIPE_ADDITIONS }),
 
     // full variants
@@ -130,6 +132,13 @@ public enum VariantNames {
                     addIncompatibility(this, name);
                 }
             }
+        }
+    }
+
+    VariantNames(String id, VariantLoader loaderClass, VariantNames[] incompatible) {
+        this(id, incompatible);
+        if (loaderClass != null) {
+            this.loaderClass = loaderClass;
         }
     }
 

@@ -40,6 +40,7 @@ public enum Mixins implements IMixins {
             .setApplyIf(
                 () -> (VariantNames.activeContains(VariantNames.VOID_WORLD.id)
                     || VariantNames.activeContains(VariantNames.VOID_ISLAND.id)
+                    || VariantNames.activeContains(VariantNames.SKYGRID.id)
                     || (VariantNames.activeContains(VariantNames.SUPERFLAT.id)
                         && !GeneralConfig.allowSuperflatPopulation))
                     && !GeneralConfig.disableVariants)
@@ -49,6 +50,7 @@ public enum Mixins implements IMixins {
         .setApplyIf(
             () -> (VariantNames.activeContains(VariantNames.VOID_WORLD.id)
                 || VariantNames.activeContains(VariantNames.VOID_ISLAND.id)
+                || VariantNames.activeContains(VariantNames.SKYGRID.id)
                 || (VariantNames.activeContains(VariantNames.SUPERFLAT.id) && !GeneralConfig.allowSuperflatPopulation))
                 && !GogConfig.dragonTime
                 && !GeneralConfig.disableVariants)
@@ -61,6 +63,16 @@ public enum Mixins implements IMixins {
     SUPERFLAT_CHUNK_TERRAIN_GENERATION_ENDLESS_IDS(new MixinBuilder("Make the world and all dims superflat")
         .addCommonMixins("MixinChunkProviderServer_ForceSuperflatTerrain_EndlessIDs")
         .setApplyIf(() -> (VariantNames.activeContains(VariantNames.SUPERFLAT.id) && !GeneralConfig.disableVariants))
+        .addRequiredMod(TargetedMod.ENDLESSIDS)
+        .setPhase(Phase.EARLY)),
+    SKYGRID_CHUNK_TERRAIN_GENERATION(new MixinBuilder("Make the world and all dims a skygrid")
+        .addCommonMixins("MixinChunkProviderServer_ForceSkygridTerrain")
+        .setApplyIf(() -> (VariantNames.activeContains(VariantNames.SKYGRID.id) && !GeneralConfig.disableVariants))
+        .addExcludedMod(TargetedMod.ENDLESSIDS)
+        .setPhase(Phase.EARLY)),
+    SKYGRID_CHUNK_TERRAIN_GENERATION_ENDLESS_IDS(new MixinBuilder("Make the world and all dims a skygrid")
+        .addCommonMixins("MixinChunkProviderServer_ForceSkygridTerrain_EndlessIDs")
+        .setApplyIf(() -> (VariantNames.activeContains(VariantNames.SKYGRID.id) && !GeneralConfig.disableVariants))
         .addRequiredMod(TargetedMod.ENDLESSIDS)
         .setPhase(Phase.EARLY)),
     ALLOW_VILLAGE_GENERATION_IN_ANY_BIOME(new MixinBuilder("Allow villages to generate in any biome")
@@ -84,7 +96,9 @@ public enum Mixins implements IMixins {
         .setPhase(Phase.EARLY)),
     SET_EXACT_SPAWN_LOCATION(new MixinBuilder("Set exact spawn location without variance and y = 65")
         .addCommonMixins("MixinWorldProvider_SetExactSpawn")
-        .setApplyIf(() -> VariantNames.activeContains(VariantNames.VOID_ISLAND.id) && !GeneralConfig.disableVariants)
+        .setApplyIf(
+            () -> VariantNames.activeContains(VariantNames.VOID_ISLAND.id)
+                || VariantNames.activeContains(VariantNames.SKYGRID.id) && !GeneralConfig.disableVariants)
         .setPhase(Phase.EARLY)),
     LOCK_TO_DIMENSION_TRAVEL_TO_DIM(new MixinBuilder(
         "Forcibly return a player to the specified dim upon trying to leave it, travelToDimension method")
