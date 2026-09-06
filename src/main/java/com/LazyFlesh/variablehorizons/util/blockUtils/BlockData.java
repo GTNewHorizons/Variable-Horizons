@@ -1,21 +1,18 @@
 package com.LazyFlesh.variablehorizons.util.blockUtils;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 
 public class BlockData {
 
+    byte chunkMeta;
+    int itemDamage; // Holds GT IDs up to 32000
+    String uniqueId;
     Block block;
-    String uID;
-    Byte meta;
-    List<ItemStack> subBlocks;
 
-    public BlockData(Byte meta, String uID, Block block, List<ItemStack> subBlocks) {
-        this.meta = meta;
-        this.uID = uID;
+    public BlockData(byte chunkMeta, int itemDamage, String uniqueId, Block block) {
+        this.chunkMeta = chunkMeta;
+        this.itemDamage = itemDamage;
+        this.uniqueId = uniqueId;
         this.block = block;
-        this.subBlocks = subBlocks;
     }
 }

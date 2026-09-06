@@ -1,14 +1,14 @@
 package com.LazyFlesh.variablehorizons.util.blockUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.init.Blocks;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
-
-import akka.japi.Pair;
 
 public class GridGenerator {
 
@@ -18,9 +18,36 @@ public class GridGenerator {
     private static final long CHUNK_X_MULT = 341873128712L;
     private static final long CHUNK_Z_MULT = 132897987541L;
 
-    public static Pair<Block[], byte[]> generateGrid(long worldSeed, int chunkX, int chunkZ) {
+    public static class TEWrapper {
+
+        public final int index;
+        public final int damage;
+        public final Block block;
+
+        public TEWrapper(int index, int damage, Block block) {
+            this.index = index;
+            this.damage = damage;
+            this.block = block;
+        }
+    }
+
+    public static class GridResult {
+
+        public final Block[] blocks;
+        public final byte[] metadata;
+        public final List<TEWrapper> teData;
+
+        public GridResult(Block[] blocks, byte[] metadata, List<TEWrapper> teData) {
+            this.blocks = blocks;
+            this.metadata = metadata;
+            this.teData = teData;
+        }
+    }
+
+    public static GridResult generateGrid(long worldSeed, int chunkX, int chunkZ) {
         Block[] blocks = new Block[BLOCKS_PER_CHUNK];
         byte[] metadata = new byte[BLOCKS_PER_CHUNK];
+        List<TEWrapper> teData = new ArrayList<>();
         Arrays.fill(blocks, Blocks.air);
         long chunkSeed = worldSeed ^ (chunkX * CHUNK_X_MULT) ^ (chunkZ * CHUNK_Z_MULT);
         List<BlockData> blocksList = BlocksRegistry.getBlocks();
@@ -37,11 +64,15 @@ public class GridGenerator {
                     BlockData data = blocksList.get(boundedIndex(posSeed, blocksListSize));
 
                     blocks[index] = data.block;
-                    metadata[index] = data.meta;
+                    metadata[index] = data.chunkMeta;
+
+                    if (data.block instanceof ITileEntityProvider || data.block.hasTileEntity(data.chunkMeta)) {
+                        teData.add(new TEWrapper(index, data.itemDamage, data.block));
+                    }
                 }
             }
         }
-        return new Pair<>(blocks, metadata);
+        return new GridResult(blocks, metadata, teData);
     }
 
     private static int getOffset(int chunkCoord, int blockDistance) {

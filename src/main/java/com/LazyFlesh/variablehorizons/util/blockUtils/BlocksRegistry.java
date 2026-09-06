@@ -91,7 +91,7 @@ public class BlocksRegistry {
                     continue;
                 }
                 // Item not found, use meta 0
-                blocks.add(new BlockData((byte) 0, uniqueId, block, null));
+                blocks.add(new BlockData((byte) 0, 0, uniqueId, block));
                 continue;
             }
 
@@ -108,7 +108,7 @@ public class BlocksRegistry {
                     continue;
                 }
                 // Only one block variant (meta 0)
-                blocks.add(new BlockData((byte) 0, uniqueId, block, null));
+                blocks.add(new BlockData((byte) 0, 0, uniqueId, block));
                 continue;
             }
 
@@ -116,10 +116,7 @@ public class BlocksRegistry {
                 if (stack == null) continue;
                 int meta = stack.getItemDamage();
                 if (meta < 0 || meta > 15) continue;
-                if (checkIfBlacklisted(uniqueId, meta)) {
-                    continue;
-                }
-                blocks.add(new BlockData((byte) meta, uniqueId, block, null));
+                processBlock(block, uniqueId, meta);
             }
         }
 
@@ -130,6 +127,14 @@ public class BlocksRegistry {
     private static boolean checkIfBlacklisted(String blockID, int meta) {
         if (BLACKLIST.containsKey(blockID)) {
             Set<Integer> blacklistedMetas = BLACKLIST.get(blockID);
+            return (blacklistedMetas.contains(meta) || blacklistedMetas.contains(-1));
+        }
+        return false;
+    }
+
+    private static boolean checkIfWhitelisted(String blockID, int meta) {
+        if (TE_WHITELIST.containsKey(blockID)) {
+            Set<Integer> blacklistedMetas = TE_WHITELIST.get(blockID);
             return (blacklistedMetas.contains(meta) || blacklistedMetas.contains(-1));
         }
         return false;
@@ -155,29 +160,41 @@ public class BlocksRegistry {
                     } catch (Exception ignored) {}
 
                     if (subItems.isEmpty()) {
-                        blocks.add(new BlockData((byte) 0, blockID, block, null));
+                        blocks.add(new BlockData((byte) 0, 0, blockID, block));
                     } else {
                         for (ItemStack stack : subItems) {
                             if (stack != null) {
                                 int meta = stack.getItemDamage();
                                 if (meta >= 0) {
-                                    blocks.add(new BlockData((byte) meta, blockID, block, null));
+                                    byte chunkMeta = (byte) (meta > 15 ? 0 : meta);
+                                    blocks.add(new BlockData(chunkMeta, meta, blockID, block));
                                 }
                             }
                         }
                     }
                 } else {
-                    blocks.add(new BlockData((byte) 0, blockID, block, null));
+                    blocks.add(new BlockData((byte) 0, 0, blockID, block));
                 }
             } else {
                 // Explicitly chosen metas
                 for (int meta : metas) {
                     if (meta >= 0) {
-                        blocks.add(new BlockData((byte) meta, blockID, block, null));
+                        byte chunkMeta = (byte) (meta > 15 ? 0 : meta);
+                        blocks.add(new BlockData(chunkMeta, meta, blockID, block));
                     }
                 }
             }
         }
+    }
+
+    private static void processBlock(Block block, String uniqueId, int meta) {
+        if (checkIfBlacklisted(uniqueId, meta)) return;
+
+        boolean hasTE = block instanceof ITileEntityProvider || block.hasTileEntity(meta > 15 ? 0 : meta);
+
+        if (hasTE && !checkIfWhitelisted(uniqueId, meta)) return;
+        byte chunkMeta = (byte) (meta > 15 ? 0 : meta);
+        blocks.add(new BlockData(chunkMeta, meta, uniqueId, block));
     }
 
     private static int[] getGTSingleblockMetas() {
