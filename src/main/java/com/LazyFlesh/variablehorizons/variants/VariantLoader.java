@@ -123,12 +123,17 @@ public abstract class VariantLoader {
                 // and the composites, too
                 if (name.compositionVariant) {
                     active.remove(name.id);
-                    for (VariantNames n : name.composedOf) active.remove(n.id);
+                    if (name.loaderClass instanceof IRuntimeVariant) ((IRuntimeVariant) name.loaderClass).undoVariant();
+                    for (VariantNames n : name.composedOf) {
+                        active.remove(n.id);
+                        if (n.loaderClass instanceof IRuntimeVariant) ((IRuntimeVariant) n.loaderClass).undoVariant();
+                    }
                 } else {
                     for (VariantNames m : name.partOf) {
                         if (active.contains(m.id)) return StatCollector.translateToLocal("variants.error.message.10");
                     }
                     active.remove(name.id);
+                    if (name.loaderClass instanceof IRuntimeVariant) ((IRuntimeVariant) name.loaderClass).undoVariant();
                 }
                 GeneralConfig.activeVariants = active.toArray(new String[0]);
                 ConfigurationManager.save(GeneralConfig.class);

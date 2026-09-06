@@ -71,4 +71,10 @@ public class InfinitePower extends VariantLoader implements IRuntimeVariant {
                 .addTo(assemblerRecipes);
         }
     }
+
+    @Override
+    public void undoVariant(VariantNames... activeVariants) {
+        // can't really turn off easily, so just... won't
+        // hence also not toggling the .hasLoaded
+    }
 }
