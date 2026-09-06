@@ -2,6 +2,7 @@ package com.LazyFlesh.variablehorizons.variants.runtime;
 
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
 import betterquesting.api.storage.BQ_Settings;
 
@@ -11,8 +12,9 @@ public class NoQuestRewards extends VariantLoader implements IRuntimeVariant {
     public void loadVariant(VariantNames... activeVariants) {
         VariantNames.NO_QUEST_REWARDS.hasLoaded = true;
 
-        // disable rewards, but *don't* save to config, otherwise have to undo when Variant is disabled.
+        // disable rewards
         BQ_Settings.noRewards = true;
+        ConfigurationManager.save(BQ_Settings.class);
     }
 
     @Override
@@ -22,7 +24,8 @@ public class NoQuestRewards extends VariantLoader implements IRuntimeVariant {
     public void undoVariant(VariantNames... activeVariants) {
         VariantNames.NO_QUEST_REWARDS.hasLoaded = false;
 
-        // reset
+        // reset and save to config
         BQ_Settings.noRewards = false;
+        ConfigurationManager.save(BQ_Settings.class);
     }
 }
