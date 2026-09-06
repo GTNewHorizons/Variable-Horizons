@@ -16,9 +16,16 @@ public class NoPollution extends VariantLoader implements IRuntimeVariant {
     public void loadVariant(VariantNames... activeVariants) {
         VariantNames.NO_POLLUTION.hasLoaded = true;
 
+        // turn off overall
         PollutionConfig.pollution = false;
+        // turn off for tooltips registration
+        PollutionConfig.furnacesPollute = false;
+        PollutionConfig.rocketsPollute = false;
+        PollutionConfig.railcraftPollutes = false;
+        // turn off for pollution event handler
         GTMod.proxy.mPollution = false;
 
+        // deregister so blocks aren't cached to map for lookup for w/e pollution stuff it needs 'em for
         MinecraftForge.EVENT_BUS.unregister(Pollution.standardBlocks);
         MinecraftForge.EVENT_BUS.unregister(Pollution.liquidBlocks);
         MinecraftForge.EVENT_BUS.unregister(Pollution.doublePlants);
