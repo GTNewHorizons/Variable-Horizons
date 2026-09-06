@@ -96,7 +96,9 @@ public enum Mixins implements IMixins {
         .setPhase(Phase.EARLY)),
     SET_EXACT_SPAWN_LOCATION(new MixinBuilder("Set exact spawn location without variance and y = 65")
         .addCommonMixins("MixinWorldProvider_SetExactSpawn")
-        .setApplyIf(() -> VariantNames.activeContains(VariantNames.VOID_ISLAND.id) && !GeneralConfig.disableVariants)
+        .setApplyIf(
+            () -> VariantNames.activeContains(VariantNames.VOID_ISLAND.id)
+                || VariantNames.activeContains(VariantNames.SKYGRID.id) && !GeneralConfig.disableVariants)
         .setPhase(Phase.EARLY)),
     LOCK_TO_DIMENSION_TRAVEL_TO_DIM(new MixinBuilder(
         "Forcibly return a player to the specified dim upon trying to leave it, travelToDimension method")
