@@ -54,6 +54,8 @@ public class BlocksRegistry {
         addBlockToList(BLACKLIST, "EnderIO:blockHyperCube", 0);
         addBlockToList(TE_WHITELIST, "gregtech:gt.blockmachines", getGTSingleblockMetas());
         addBlockToList(BLACKLIST, "ForgeMicroblock:microblock", -1);
+        addBlockToList(BLACKLIST, "IC2:blockDynamite", -1);
+        addBlockToList(BLACKLIST, "IC2:blockDynamiteRemote", -1);
     }
 
     private static void addBlockToList(Map<String, Set<Integer>> filter, String blockID, int... metas) {
@@ -187,7 +189,7 @@ public class BlocksRegistry {
                 continue;
             }
             for (int j = 1; j < 6; j++) {
-                metas.add(IDOffsetBasicSingleblocks + j);
+                metas.add(IDOffsetBasicSingleblocks + i * 10 + j);
             }
         }
         return metas.stream()
