@@ -67,6 +67,14 @@ public class AlteredRecipeTime extends VariantLoader implements IRuntimeVariant 
         // none to add
     }
 
+    @Override
+    public void undoVariant(VariantNames... activeVariants) {
+        VariantNames.ALTERED_RECIPE_TIME.hasLoaded = false;
+
+        GeneralConfig.recipeTimeMultiplier = 1;
+        ConfigurationManager.save(GeneralConfig.class);
+    }
+
     public static class AlteredRecipeTimeCommand extends CommandBase {
 
         @Override
