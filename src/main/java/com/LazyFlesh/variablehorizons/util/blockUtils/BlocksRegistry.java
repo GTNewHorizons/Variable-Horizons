@@ -15,6 +15,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.IFluidBlock;
 
+import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+import com.LazyFlesh.variablehorizons.VariableHorizons;
 import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
@@ -31,39 +33,70 @@ public class BlocksRegistry {
 
     static {
         // Meta -1 affects all metadata variants for a block
-        addBlockToList(BLACKLIST, "tectech:Eye of Harmony Renderer", 0);
-        addBlockToList(BLACKLIST, "tectech:ForgeOfGodsRenderBlock", 0);
-        addBlockToList(BLACKLIST, "gregtech:gt.nanoforgerenderer", 0);
-        addBlockToList(BLACKLIST, "gregtech:gt.blackholerenderer", 0);
-        addBlockToList(BLACKLIST, "gregtech:gt.wormholerenderer", 0);
-        addBlockToList(BLACKLIST, "GoodGenerator:antimatterRenderBlock", 0);
-        addBlockToList(BLACKLIST, "HardcoreEnderExpansion:corrupted_energy_high", 0);
-        addBlockToList(BLACKLIST, "HardcoreEnderExpansion:corrupted_energy_low", 0);
-        addBlockToList(BLACKLIST, "OpenBlocks:tank", 0);
-        addBlockToList(BLACKLIST, "ExtraUtilities:drum", 0, 1);
-        addBlockToList(BLACKLIST, "ExtraUtilities:chandelier", 0);
-        addBlockToList(BLACKLIST, "ExtraUtilities:magnumTorch", 0);
-        addBlockToList(BLACKLIST, "DraconicEvolution:placedItem", -1);
-        addBlockToList(BLACKLIST, "EMT:electricCloud", -1);
-        addBlockToList(BLACKLIST, "BiblioCraft:BiblioSeats", -1);
-        addBlockToList(BLACKLIST, "BiblioWoodsBoP:BiblioWoodSeat", -1);
-        addBlockToList(BLACKLIST, "BiblioWoodsForestry:BiblioWoodSeat", -1);
-        addBlockToList(BLACKLIST, "BiblioWoodsForestry:BiblioWoodSeat2", -1);
-        addBlockToList(BLACKLIST, "BiblioWoodsNatura:BiblioWoodSeat", -1);
-        addBlockToList(BLACKLIST, "kubatech:kubablocks", 0, 1);
-        addBlockToList(BLACKLIST, "OpenComputers:print", 0);
-        addBlockToList(BLACKLIST, "OpenComputers:printer", 0);
-        addBlockToList(BLACKLIST, "ae2fc:walrus", 0);
-        addBlockToList(BLACKLIST, "EnderIO:blockHyperCube", 0);
-        addBlockToList(BLACKLIST, "ForgeMicroblock:microblock", -1);
-        addBlockToList(BLACKLIST, "IC2:blockDynamite", -1);
-        addBlockToList(BLACKLIST, "IC2:blockDynamiteRemote", -1);
+        blacklistBlock("tectech:Eye of Harmony Renderer", 0);
+        blacklistBlock("tectech:ForgeOfGodsRenderBlock", 0);
+        blacklistBlock("gregtech:gt.nanoforgerenderer", 0);
+        blacklistBlock("gregtech:gt.blackholerenderer", 0);
+        blacklistBlock("gregtech:gt.wormholerenderer", 0);
+        blacklistBlock("GoodGenerator:antimatterRenderBlock", 0);
+        blacklistBlock("HardcoreEnderExpansion:corrupted_energy_high", 0);
+        blacklistBlock("HardcoreEnderExpansion:corrupted_energy_low", 0);
+        blacklistBlock("OpenBlocks:tank", 0);
+        blacklistBlock("ExtraUtilities:drum", 0, 1);
+        blacklistBlock("ExtraUtilities:chandelier", 0);
+        blacklistBlock("ExtraUtilities:magnumTorch", 0);
+        blacklistBlock("DraconicEvolution:placedItem", -1);
+        blacklistBlock("EMT:electricCloud", -1);
+        blacklistBlock("BiblioCraft:BiblioSeats", -1);
+        blacklistBlock("BiblioWoodsBoP:BiblioWoodSeat", -1);
+        blacklistBlock("BiblioWoodsForestry:BiblioWoodSeat", -1);
+        blacklistBlock("BiblioWoodsForestry:BiblioWoodSeat2", -1);
+        blacklistBlock("BiblioWoodsNatura:BiblioWoodSeat", -1);
+        blacklistBlock("kubatech:kubablocks", 0, 1);
+        blacklistBlock("OpenComputers:print", 0);
+        blacklistBlock("OpenComputers:printer", 0);
+        blacklistBlock("ae2fc:walrus", 0);
+        blacklistBlock("EnderIO:blockHyperCube", 0);
+        blacklistBlock("ForgeMicroblock:microblock", -1);
+        blacklistBlock("IC2:blockDynamite", -1);
+        blacklistBlock("IC2:blockDynamiteRemote", -1);
+
+        blacklistConfig();
     }
 
-    private static void addBlockToList(Map<String, Set<Integer>> filter, String blockID, int... metas) {
-        Set<Integer> metaSet = filter.computeIfAbsent(blockID, k -> new HashSet<>());
+    private static void blacklistBlock(String blockID, int... metas) {
+        Set<Integer> metaSet = BLACKLIST.computeIfAbsent(blockID, k -> new HashSet<>());
         for (int m : metas) {
             metaSet.add(m);
+        }
+    }
+
+    private static void blacklistConfig() {
+        String[] blacklisted = GeneralConfig.skygridBlacklist;
+        for (String blockString : blacklisted) {
+            String[] split = blockString.split(":");
+            if (split.length < 2) {
+                VariableHorizons.LOG.info(
+                    "Invalid Skygrid blacklist config value '{}' (expected format 'modid:blockname[:meta]'), ignoring this entry",
+                    blockString);
+                continue;
+            }
+            if (split.length == 2) {
+                VariableHorizons.LOG
+                    .info("Skygrid blacklist entry '{}:{}' has no meta value, falling back to 0", split[0], split[1]);
+                blacklistBlock(split[0] + ":" + split[1], 0);
+                continue;
+            }
+            int meta;
+            try {
+                meta = Integer.parseInt(split[2]);
+            } catch (NumberFormatException e) {
+                VariableHorizons.LOG
+                    .info("Skygrid blacklist entry meta value '{}' is not a valid number, falling back to 0", split[2]);
+                blacklistBlock(split[0] + ":" + split[1], 0);
+                continue;
+            }
+            blacklistBlock(split[0] + ":" + split[1], meta);
         }
     }
 

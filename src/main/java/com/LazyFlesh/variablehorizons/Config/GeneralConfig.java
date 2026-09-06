@@ -59,4 +59,8 @@ public class GeneralConfig {
     @Config.Comment("List of tileentities that should generate in the Skygrid. Format: modID:blockname:meta")
     @Config.DefaultStringList({ "" })
     public static String[] skygridTEWhitelist;
+
+    @Config.Comment("List of blocks that should not generate in the Skygrid. Format: modID:blockname:meta")
+    @Config.DefaultStringList({ "minecraft:command_block:0" })
+    public static String[] skygridBlacklist;
 }
