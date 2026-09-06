@@ -1,7 +1,6 @@
 package com.LazyFlesh.variablehorizons.util.blockUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -16,6 +15,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.IFluidBlock;
 
+import com.LazyFlesh.variablehorizons.util.randomUtil;
+import com.LazyFlesh.variablehorizons.variants.VariantNames;
+
+import akka.japi.Pair;
 import cpw.mods.fml.common.registry.FMLControlledNamespacedRegistry;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -24,7 +27,7 @@ public class BlocksRegistry {
 
     private static List<BlockData> blocks;
     private static final Map<String, Set<Integer>> BLACKLIST = new HashMap<>();
-    private static final Map<String, Set<Integer>> TE_WHITELIST = new HashMap<>();
+    private static final List<Pair<Block, Integer>> TE_WHITELIST = randomUtil.getBlocksFromConfig(VariantNames.SKYGRID);
 
     static {
         // Meta -1 affects all metadata variants for a block
@@ -52,7 +55,6 @@ public class BlocksRegistry {
         addBlockToList(BLACKLIST, "OpenComputers:printer", 0);
         addBlockToList(BLACKLIST, "ae2fc:walrus", 0);
         addBlockToList(BLACKLIST, "EnderIO:blockHyperCube", 0);
-        addBlockToList(TE_WHITELIST, "gregtech:gt.blockmachines", getGTSingleblockMetas());
         addBlockToList(BLACKLIST, "ForgeMicroblock:microblock", -1);
         addBlockToList(BLACKLIST, "IC2:blockDynamite", -1);
         addBlockToList(BLACKLIST, "IC2:blockDynamiteRemote", -1);
@@ -132,25 +134,22 @@ public class BlocksRegistry {
         return false;
     }
 
-    private static boolean checkIfWhitelisted(String blockID, int meta) {
-        if (TE_WHITELIST.containsKey(blockID)) {
-            Set<Integer> blacklistedMetas = TE_WHITELIST.get(blockID);
-            return (blacklistedMetas.contains(meta) || blacklistedMetas.contains(-1));
+    private static boolean checkIfWhitelisted(Block block, int meta) {
+        if (TE_WHITELIST.contains(new Pair<>(block, meta))) {
+            return true;
         }
-        return false;
+        return TE_WHITELIST.contains(new Pair<>(block, -1));
     }
 
     private static void addWhitelistedTEs() {
-        for (Map.Entry<String, Set<Integer>> entry : TE_WHITELIST.entrySet()) {
-            String blockID = entry.getKey();
-            Block block = Block.getBlockFromName(blockID);
-
+        for (Pair<Block, Integer> entry : TE_WHITELIST) {
+            Block block = entry.first();
             if (block == null) {
                 continue;
             }
-
-            Set<Integer> metas = entry.getValue();
-            if (metas.contains(-1)) {
+            String blockID = String.valueOf(GameRegistry.findUniqueIdentifierFor(block));
+            int entryMeta = entry.second();
+            if (entryMeta == -1) {
                 // Wildcard meta of -1, add all variations
                 Item blockItem = Item.getItemFromBlock(block);
                 if (blockItem != null) {
@@ -176,12 +175,10 @@ public class BlocksRegistry {
                     blocks.add(new BlockData((byte) 0, 0, blockID, block));
                 }
             } else {
-                // Explicitly chosen metas
-                for (int meta : metas) {
-                    if (meta >= 0) {
-                        byte chunkMeta = (byte) (meta > 15 ? 0 : meta);
-                        blocks.add(new BlockData(chunkMeta, meta, blockID, block));
-                    }
+                // Explicitly chosen meta
+                if (entryMeta >= 0) {
+                    byte chunkMeta = (byte) (entryMeta > 15 ? 0 : entryMeta);
+                    blocks.add(new BlockData(chunkMeta, entryMeta, blockID, block));
                 }
             }
         }
@@ -192,25 +189,8 @@ public class BlocksRegistry {
 
         boolean hasTE = block instanceof ITileEntityProvider || block.hasTileEntity(meta > 15 ? 0 : meta);
 
-        if (hasTE && !checkIfWhitelisted(uniqueId, meta)) return;
+        if (hasTE && !checkIfWhitelisted(block, meta)) return;
         byte chunkMeta = (byte) (meta > 15 ? 0 : meta);
         blocks.add(new BlockData(chunkMeta, meta, uniqueId, block));
-    }
-
-    private static int[] getGTSingleblockMetas() {
-        ArrayList<Integer> metas = new ArrayList<>();
-        int IDOffsetBasicSingleblocks = 200;
-        Set<Integer> skippedIDs = new HashSet<>(Arrays.asList(22, 41, 44));
-        for (int i = 0; i < 46; i++) {
-            if (skippedIDs.contains(i)) {
-                continue;
-            }
-            for (int j = 1; j < 6; j++) {
-                metas.add(IDOffsetBasicSingleblocks + i * 10 + j);
-            }
-        }
-        return metas.stream()
-            .mapToInt(i -> i)
-            .toArray();
     }
 }

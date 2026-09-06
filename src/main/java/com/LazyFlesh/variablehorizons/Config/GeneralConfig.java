@@ -55,4 +55,8 @@ public class GeneralConfig {
     @Config.DefaultInt(3)
     @Config.RangeInt(min = 0)
     public static int skygridDistance;
+
+    @Config.Comment("List of tileentities that should generate in the Skygrid. Format: modID:blockname:meta")
+    @Config.DefaultStringList({ "" })
+    public static String[] skygridTEWhitelist;
 }
