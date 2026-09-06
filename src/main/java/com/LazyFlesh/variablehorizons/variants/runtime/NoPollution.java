@@ -5,6 +5,7 @@ import net.minecraftforge.common.MinecraftForge;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
+import gregtech.GTMod;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionConfig;
 
@@ -16,6 +17,7 @@ public class NoPollution extends VariantLoader implements IRuntimeVariant {
         VariantNames.NO_POLLUTION.hasLoaded = true;
 
         PollutionConfig.pollution = false;
+        GTMod.proxy.mPollution = false;
 
         MinecraftForge.EVENT_BUS.unregister(Pollution.standardBlocks);
         MinecraftForge.EVENT_BUS.unregister(Pollution.liquidBlocks);
