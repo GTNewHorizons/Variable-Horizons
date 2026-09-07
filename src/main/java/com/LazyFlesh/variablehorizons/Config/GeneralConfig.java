@@ -31,6 +31,16 @@ public class GeneralConfig {
     @Config.DefaultFloat(1f)
     public static float efficiencyMultiplier;
 
+    @Config.Comment("Global output chance multiplier")
+    @Config.DefaultFloat(1f)
+    @Config.RangeFloat(min = 0, max = 1)
+    public static float outputChanceMultiplier;
+
+    @Config.Comment("Global input chance multiplier")
+    @Config.DefaultFloat(1f)
+    @Config.RangeFloat(min = 0, max = 1)
+    public static float inputChanceMultiplier;
+
     @Config.Comment("Should Superflat allow all structures and foliage to generate (villages are always generated)")
     @Config.DefaultBoolean(false)
     public static boolean allowSuperflatPopulation;
