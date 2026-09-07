@@ -15,6 +15,7 @@ import com.LazyFlesh.variablehorizons.variants.invasive.GardenOfGrind;
 import com.LazyFlesh.variablehorizons.variants.invasive.SkyGrid;
 import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 import com.LazyFlesh.variablehorizons.variants.runtime.AlteredRecipeTime;
+import com.LazyFlesh.variablehorizons.variants.runtime.ChancedRecipes;
 import com.LazyFlesh.variablehorizons.variants.runtime.InfinitePower;
 import com.LazyFlesh.variablehorizons.variants.runtime.NoPollution;
 import com.LazyFlesh.variablehorizons.variants.runtime.NoQuestRewards;
@@ -34,6 +35,7 @@ public enum VariantNames {
     NO_POLLUTION("NO_POLLUTION", new NoPollution()),
     ALTERED_RECIPE_TIME("ALTERED_TIME", new AlteredRecipeTime()),
     ALTERED_EFFICIENCY("ALTERED_EFFICIENCY"),
+    CHANCED_RECIPES("CHANCED_RECIPES", new ChancedRecipes()),
     CHEAP_MODE("CHEAP_MODE"),
     EXPENSIVE_MODE("EXPENSIVE_MODE"),
     INFINITE_POWER("INFINITE_POWER", new InfinitePower()),
@@ -168,6 +170,13 @@ public enum VariantNames {
             variantsCacheRefresh = false;
         }
         return activeVariantsCache;
+    }
+
+    public static Set<String> getActiveVariantsToCheck() {
+        Set<String> activeVariantsToCheck = new HashSet<>(activeVariantsCache);
+        activeVariantsToCheck.remove(VariantNames.CHANCED_RECIPES.id);
+        activeVariantsToCheck.remove(VariantNames.NO_POLLUTION.id);
+        return activeVariantsToCheck;
     }
 
     public static VariantNames getVariantFromID(String id) {

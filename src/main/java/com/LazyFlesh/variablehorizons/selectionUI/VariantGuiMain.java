@@ -74,7 +74,7 @@ public class VariantGuiMain extends GuiScreen {
 
     public VariantGuiMain(GuiScreen parent) {
         this.parent = parent;
-        this.initialActiveVariants = new HashSet<>(VariantNames.getActiveVariantNames());
+        this.initialActiveVariants = new HashSet<>(VariantNames.getActiveVariantsToCheck());
         this.initialStartingDimID = GeneralConfig.startingDimID;
         this.initialEfficiencyMultiplier = GeneralConfig.efficiencyMultiplier;
         this.initialSuperflatPopulation = GeneralConfig.allowSuperflatPopulation;
@@ -82,7 +82,7 @@ public class VariantGuiMain extends GuiScreen {
     }
 
     private boolean hasUnsavedChanges() {
-        if (!initialActiveVariants.equals(VariantNames.getActiveVariantNames())) return true;
+        if (!initialActiveVariants.equals(VariantNames.getActiveVariantsToCheck())) return true;
         if (initialStartingDimID != GeneralConfig.startingDimID) return true;
         if (initialEfficiencyMultiplier != GeneralConfig.efficiencyMultiplier) return true;
         if (initialSuperflatPopulation != GeneralConfig.allowSuperflatPopulation) return true;
@@ -357,6 +357,26 @@ public class VariantGuiMain extends GuiScreen {
                 text -> {
                     try {
                         GeneralConfig.skygridDistance = Integer.parseInt(text);
+                    } catch (NumberFormatException ignored) {}
+                }));
+        textFieldEntries.add(
+            makeTextField(
+                Collections.singletonList(VariantNames.CHANCED_RECIPES),
+                decimalFilter,
+                () -> String.valueOf(GeneralConfig.inputChanceMultiplier),
+                text -> {
+                    try {
+                        GeneralConfig.inputChanceMultiplier = Float.parseFloat(text);
+                    } catch (NumberFormatException ignored) {}
+                }));
+        textFieldEntries.add(
+            makeTextField(
+                Collections.singletonList(VariantNames.CHANCED_RECIPES),
+                decimalFilter,
+                () -> String.valueOf(GeneralConfig.outputChanceMultiplier),
+                text -> {
+                    try {
+                        GeneralConfig.outputChanceMultiplier = Float.parseFloat(text);
                     } catch (NumberFormatException ignored) {}
                 }));
 
