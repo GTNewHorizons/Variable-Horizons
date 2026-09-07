@@ -41,6 +41,16 @@ public class GeneralConfig {
     @Config.RangeFloat(min = 0, max = 1)
     public static float inputChanceMultiplier;
 
+    @Config.Comment("Global fluid output chance multiplier")
+    @Config.DefaultFloat(1f)
+    @Config.RangeFloat(min = 0, max = 1)
+    public static float fluidOutputChanceMultiplier;
+
+    @Config.Comment("Global fluid input chance multiplier")
+    @Config.DefaultFloat(1f)
+    @Config.RangeFloat(min = 0, max = 1)
+    public static float fluidInputChanceMultiplier;
+
     @Config.Comment("Should Superflat allow all structures and foliage to generate (villages are always generated)")
     @Config.DefaultBoolean(false)
     public static boolean allowSuperflatPopulation;

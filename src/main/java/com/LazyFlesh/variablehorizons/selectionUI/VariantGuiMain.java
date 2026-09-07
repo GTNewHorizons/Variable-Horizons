@@ -379,6 +379,26 @@ public class VariantGuiMain extends GuiScreen {
                         GeneralConfig.outputChanceMultiplier = Float.parseFloat(text);
                     } catch (NumberFormatException ignored) {}
                 }));
+        textFieldEntries.add(
+            makeTextField(
+                Collections.singletonList(VariantNames.CHANCED_RECIPES),
+                decimalFilter,
+                () -> String.valueOf(GeneralConfig.fluidInputChanceMultiplier),
+                text -> {
+                    try {
+                        GeneralConfig.fluidInputChanceMultiplier = Float.parseFloat(text);
+                    } catch (NumberFormatException ignored) {}
+                }));
+        textFieldEntries.add(
+            makeTextField(
+                Collections.singletonList(VariantNames.CHANCED_RECIPES),
+                decimalFilter,
+                () -> String.valueOf(GeneralConfig.fluidOutputChanceMultiplier),
+                text -> {
+                    try {
+                        GeneralConfig.fluidOutputChanceMultiplier = Float.parseFloat(text);
+                    } catch (NumberFormatException ignored) {}
+                }));
 
         for (CheckboxEntry entry : checkboxEntries) {
             this.buttonList.add(entry.checkbox);

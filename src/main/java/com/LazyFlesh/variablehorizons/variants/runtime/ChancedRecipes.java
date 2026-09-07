@@ -23,11 +23,17 @@ public class ChancedRecipes extends VariantLoader implements IRuntimeVariant {
 
     private static final Map<GTRecipe, int[]> originalRecipeOutputChances = new HashMap<>();
     private static final Map<GTRecipe, int[]> originalRecipeInputChances = new HashMap<>();
+    private static final Map<GTRecipe, int[]> originalRecipeFluidOutputChances = new HashMap<>();
+    private static final Map<GTRecipe, int[]> originalRecipeFluidInputChances = new HashMap<>();
 
     @SubscribeEvent
     public void onPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
         ChancedRecipes.normalizeChanceArrays();
-        modifyRecipeChances(GeneralConfig.inputChanceMultiplier, GeneralConfig.outputChanceMultiplier);
+        modifyRecipeChances(
+            GeneralConfig.inputChanceMultiplier,
+            GeneralConfig.outputChanceMultiplier,
+            GeneralConfig.fluidInputChanceMultiplier,
+            GeneralConfig.fluidOutputChanceMultiplier);
     }
 
     public static void normalizeChanceArrays() {
@@ -40,11 +46,18 @@ public class ChancedRecipes extends VariantLoader implements IRuntimeVariant {
                 if (recipe.mInputChances == null) {
                     recipe.mInputChances = fullChanceArray(recipe.mInputs.length);
                 }
+                if (recipe.mFluidOutputChances == null) {
+                    recipe.mFluidOutputChances = fullChanceArray(recipe.mFluidOutputs.length);
+                }
+                if (recipe.mFluidInputChances == null) {
+                    recipe.mFluidInputChances = fullChanceArray(recipe.mFluidInputs.length);
+                }
             }
         }
     }
 
-    private static void modifyRecipeChances(float inputChanceMultiplier, float outputChanceMultiplier) {
+    private static void modifyRecipeChances(float inputChanceMultiplier, float outputChanceMultiplier,
+        float fluidInputChanceMultiplier, float fluidOutputChanceMultiplier) {
         for (Map.Entry<String, RecipeMap<?>> entry : RecipeMap.ALL_RECIPE_MAPS.entrySet()) {
             for (GTRecipe recipe : entry.getValue()
                 .getAllRecipes()) {
@@ -59,6 +72,18 @@ public class ChancedRecipes extends VariantLoader implements IRuntimeVariant {
                     .computeIfAbsent(recipe, r -> r.mInputChances.clone());
                 for (int i = 0; i < recipe.mInputChances.length; i++) {
                     recipe.mInputChances[i] = scale(originalInputChance[i], inputChanceMultiplier);
+                }
+
+                int[] originalFluidOutputChance = originalRecipeFluidOutputChances
+                    .computeIfAbsent(recipe, r -> r.mFluidOutputChances.clone());
+                for (int i = 0; i < recipe.mFluidOutputChances.length; i++) {
+                    recipe.mFluidOutputChances[i] = scale(originalFluidOutputChance[i], fluidOutputChanceMultiplier);
+                }
+
+                int[] originalFluidInputChance = originalRecipeFluidInputChances
+                    .computeIfAbsent(recipe, r -> r.mFluidInputChances.clone());
+                for (int i = 0; i < recipe.mFluidInputChances.length; i++) {
+                    recipe.mFluidInputChances[i] = scale(originalFluidInputChance[i], fluidInputChanceMultiplier);
                 }
             }
         }
@@ -86,6 +111,8 @@ public class ChancedRecipes extends VariantLoader implements IRuntimeVariant {
 
         GeneralConfig.inputChanceMultiplier = 1;
         GeneralConfig.outputChanceMultiplier = 1;
+        GeneralConfig.fluidInputChanceMultiplier = 1;
+        GeneralConfig.fluidOutputChanceMultiplier = 1;
         ConfigurationManager.save(GeneralConfig.class);
     }
 }
