@@ -140,24 +140,26 @@ public class VariantGuiMain extends GuiScreen {
         final Predicate<Character> charFilter;
         final Supplier<String> configGetter;
         final Consumer<String> configSetter;
+        final String tooltip;
 
         TextFieldEntry(GuiTextField field, List<VariantNames> variants, Predicate<Character> charFilter,
-            Supplier<String> configGetter, Consumer<String> configSetter) {
+            Supplier<String> configGetter, Consumer<String> configSetter, String tooltip) {
             this.field = field;
             this.variants = variants;
             this.charFilter = charFilter;
             this.configGetter = configGetter;
             this.configSetter = configSetter;
+            this.tooltip = tooltip;
         }
     }
 
     private TextFieldEntry makeTextField(List<VariantNames> variants, Predicate<Character> charFilter,
-        Supplier<String> getter, Consumer<String> setter) {
+        Supplier<String> getter, Consumer<String> setter, String tooltip) {
         int fieldLength = charFilter == null ? 200 : 50;
         GuiTextField field = new GuiTextField(this.fontRendererObj, SIDEBAR_WIDTH + PADDING * 2, 90, fieldLength, 16);
         field.setMaxStringLength(charFilter == null ? 64 : 10);
         field.setText(getter.get());
-        return new TextFieldEntry(field, variants, charFilter, getter, setter);
+        return new TextFieldEntry(field, variants, charFilter, getter, setter, tooltip);
     }
 
     private int calculateBottomY(VariantNames selected) {
@@ -308,6 +310,20 @@ public class VariantGuiMain extends GuiScreen {
                 "variantgui.voidisland.chest",
                 () -> GeneralConfig.allowVoidIslandChest,
                 value -> GeneralConfig.allowVoidIslandChest = value));
+        checkboxEntries.add(
+            makeCheckbox(
+                7,
+                VariantNames.CHANCED_RECIPES,
+                "variantgui.chancedrecipes.randominputs",
+                () -> GeneralConfig.inputChanceRandom,
+                value -> GeneralConfig.inputChanceRandom = value));
+        checkboxEntries.add(
+            makeCheckbox(
+                8,
+                VariantNames.CHANCED_RECIPES,
+                "variantgui.chancedrecipes.randomoutputs",
+                () -> GeneralConfig.outputChanceRandom,
+                value -> GeneralConfig.outputChanceRandom = value));
 
         textFieldEntries.clear();
         Predicate<Character> dimIdFilter = c -> Character.isDigit(c) || c == '-';
@@ -322,7 +338,8 @@ public class VariantGuiMain extends GuiScreen {
                     try {
                         GeneralConfig.startingDimID = Integer.parseInt(text);
                     } catch (NumberFormatException ignored) {}
-                }));
+                },
+                StatCollector.translateToLocal("variantgui.dimidfield.tooltip")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.ALTERED_RECIPE_TIME),
@@ -332,7 +349,8 @@ public class VariantGuiMain extends GuiScreen {
                     try {
                         GeneralConfig.recipeTimeMultiplier = Float.parseFloat(text);
                     } catch (NumberFormatException ignored) {}
-                }));
+                },
+                StatCollector.translateToLocal("variantgui.recipetimefield.tooltip")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.ALTERED_EFFICIENCY),
@@ -342,13 +360,15 @@ public class VariantGuiMain extends GuiScreen {
                     try {
                         GeneralConfig.efficiencyMultiplier = Float.parseFloat(text);
                     } catch (NumberFormatException ignored) {}
-                }));
+                },
+                StatCollector.translateToLocal("variantgui.efficiencyfield.tooltip")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.MONOBLOCK),
                 null,
                 () -> GeneralConfig.replacementBlock,
-                text -> GeneralConfig.replacementBlock = text));
+                text -> GeneralConfig.replacementBlock = text,
+                StatCollector.translateToLocal("variantgui.monoblockfield.tooltip")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.SKYGRID),
@@ -358,7 +378,8 @@ public class VariantGuiMain extends GuiScreen {
                     try {
                         GeneralConfig.skygridDistance = Integer.parseInt(text);
                     } catch (NumberFormatException ignored) {}
-                }));
+                },
+                StatCollector.translateToLocal("variantgui.skygridfield.tooltip")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.CHANCED_RECIPES),
@@ -368,7 +389,8 @@ public class VariantGuiMain extends GuiScreen {
                     try {
                         GeneralConfig.inputChanceMultiplier = Float.parseFloat(text);
                     } catch (NumberFormatException ignored) {}
-                }));
+                },
+                StatCollector.translateToLocal("variantgui.chancedrecipes.randomiteminputs")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.CHANCED_RECIPES),
@@ -378,7 +400,8 @@ public class VariantGuiMain extends GuiScreen {
                     try {
                         GeneralConfig.outputChanceMultiplier = Float.parseFloat(text);
                     } catch (NumberFormatException ignored) {}
-                }));
+                },
+                StatCollector.translateToLocal("variantgui.chancedrecipes.randomitemoutputs")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.CHANCED_RECIPES),
@@ -388,7 +411,8 @@ public class VariantGuiMain extends GuiScreen {
                     try {
                         GeneralConfig.fluidInputChanceMultiplier = Float.parseFloat(text);
                     } catch (NumberFormatException ignored) {}
-                }));
+                },
+                StatCollector.translateToLocal("variantgui.chancedrecipes.randomfluidinputs")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.CHANCED_RECIPES),
@@ -398,7 +422,8 @@ public class VariantGuiMain extends GuiScreen {
                     try {
                         GeneralConfig.fluidOutputChanceMultiplier = Float.parseFloat(text);
                     } catch (NumberFormatException ignored) {}
-                }));
+                },
+                StatCollector.translateToLocal("variantgui.chancedrecipes.randomfluidinputs")));
 
         for (CheckboxEntry entry : checkboxEntries) {
             this.buttonList.add(entry.checkbox);
@@ -523,32 +548,6 @@ public class VariantGuiMain extends GuiScreen {
             && mouseY < field.yPosition + field.height;
     }
 
-    private String getTranslatedTextfieldTooltip(VariantNames variant) {
-        if (variant == null) {
-            return "";
-        }
-        switch (variant) {
-            case DIMLOCKED, CUSTOM_DIM_START -> {
-                return StatCollector.translateToLocal("variantgui.dimidfield.tooltip");
-            }
-            case ALTERED_EFFICIENCY -> {
-                return StatCollector.translateToLocal("variantgui.efficiencyfield.tooltip");
-            }
-            case ALTERED_RECIPE_TIME -> {
-                return StatCollector.translateToLocal("variantgui.recipetimefield.tooltip");
-            }
-            case MONOBLOCK -> {
-                return StatCollector.translateToLocal("variantgui.monoblockfield.tooltip");
-            }
-            case SKYGRID -> {
-                return StatCollector.translateToLocal("variantgui.skygridfield.tooltip");
-            }
-            default -> {
-                return "";
-            }
-        }
-    }
-
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.optionList.drawScreen(mouseX, mouseY, partialTicks);
@@ -586,8 +585,7 @@ public class VariantGuiMain extends GuiScreen {
 
         for (TextFieldEntry entry : textFieldEntries) {
             if (entry.variants.contains(selectedVariant) && isMouseOverTextField(entry.field, mouseX, mouseY)) {
-                List<String> tooltip = this.fontRendererObj
-                    .listFormattedStringToWidth(getTranslatedTextfieldTooltip(selectedVariant), 200);
+                List<String> tooltip = this.fontRendererObj.listFormattedStringToWidth(entry.tooltip, 200);
                 this.drawHoveringText(tooltip, mouseX, mouseY, this.fontRendererObj);
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 GL11.glDisable(GL11.GL_LIGHTING);

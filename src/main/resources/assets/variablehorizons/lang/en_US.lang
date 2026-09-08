@@ -21,6 +21,7 @@ variants.CHEAP_MODE.name=Cheap Mode
 variants.MONOBLOCK.name=Monoblock
 variants.SKYGRID.name=Skygrid
 variants.NO_POLLUTION.name=Squeaky Clean
+variants.CHANCED_RECIPES.name=Chanced Recipes
 
 #Variant descriptions
 #Full Variants
@@ -43,6 +44,7 @@ variants.SUPERFLAT.desc=4 layers thick flat terrain awaits you in this variant. 
 variants.MONOBLOCK.desc=Monoblock meaning one block. THE one block your whole world will be made of. Terrain will generate as usual, but it will all be replaced by the one chosen block type. You can choose any block you wish by entering its identifier as follows: modID:blockname:meta . §4WARNING: This variant can cause performance issues and crashes depending on the block chosen.
 variants.SKYGRID.desc=Enter the matrix... of blocks. All terrain has been replaced by a grid of randomly chosen blocks, time to scavenge! You can alter the density of the grid by changing the number below, it specifies the number of air blocks between each grid block. Beware, the denser the grid, the worse performance will be. Additionally, you can blacklist any block and whitelist specific tileentities in the config. Most tileentities are blacklisted by default.
 variants.NO_POLLUTION.desc=Tired of all the filth your machines are producing? Of the acid rain and the constant smog? Well, time to clean all that up. This variant disables GT pollution mechanics entirely, even works without a restart.
+variants.CHANCED_RECIPES.desc=Let's go gambling! This variant allows you to multiply all fluid/item input/output chances by a factor x between 0 and 1. Chanced inputs will only be consumed x% of the time and chanced outputs will only be produced x% of the time. You can also randomize these chances for every recipe, this is based on your world seed.
 
 #Variant GUI buttons
 variantgui.header=Pack Variants
@@ -54,6 +56,8 @@ variantgui.superflat.population=Enable chunk population
 variantgui.superflat.biomes=Enable biome diversity
 variantgui.voidisland.tree=Enable tree
 variantgui.voidisland.chest=Enable starting chest
+variantgui.chancedrecipes.randominputs=Randomize recipe input consumption chances
+variantgui.chancedrecipes.randomoutputs=Randomize recipe output production chances
 
 #Variant GUI tooltips
 variantgui.dimidfield.tooltip=Enter numeric ID of chosen dimension
@@ -61,6 +65,10 @@ variantgui.efficiencyfield.tooltip=Enter machine efficiency multiplier
 variantgui.recipetimefield.tooltip=Enter recipe time multiplier
 variantgui.monoblockfield.tooltip=Enter chosen block (modid:blockname:meta)
 variantgui.skygridfield.tooltip=Enter number of air blocks between grid blocks
+variantgui.chancedrecipes.randomiteminputs=Enter item input consumption chance multiplier
+variantgui.chancedrecipes.randomitemoutputs=Enter item output production chance multiplier
+variantgui.chancedrecipes.randomfluidinputs=Enter fluid input consumption chance multiplier
+variantgui.chancedrecipes.randomfluidoutputs=Enter fluid output production chance multiplier
 
 #Misc
 variants.dimlock.message.1=Otherworldly forces reject your attempt at crossing dimensional boundaries
