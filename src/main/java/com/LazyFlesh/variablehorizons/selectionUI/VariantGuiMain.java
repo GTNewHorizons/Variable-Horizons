@@ -66,6 +66,7 @@ public class VariantGuiMain extends GuiScreen {
     private final Map<String, ResourceLocation> iconCache = new HashMap<>();
     private final List<CheckboxEntry> checkboxEntries = new ArrayList<>();
     private final List<TextFieldEntry> textFieldEntries = new ArrayList<>();
+    private final List<CycleButtonEntry> cycleButtonEntries = new ArrayList<>();
 
     private final Set<String> initialActiveVariants;
     private final int initialStartingDimID;
@@ -154,6 +155,17 @@ public class VariantGuiMain extends GuiScreen {
         }
     }
 
+    private static class CycleButtonEntry {
+
+        final GuiCyclingButton button;
+        final List<VariantNames> variants;
+
+        CycleButtonEntry(GuiCyclingButton button, List<VariantNames> variants) {
+            this.button = button;
+            this.variants = variants;
+        }
+    }
+
     private TextFieldEntry makeTextField(List<VariantNames> variants, Predicate<Character> charFilter,
         Supplier<String> getter, Consumer<String> setter, String tooltip) {
         int fieldLength = charFilter == null ? 200 : 50;
@@ -175,6 +187,9 @@ public class VariantGuiMain extends GuiScreen {
         }
         for (TextFieldEntry entry : textFieldEntries) {
             if (entry.variants.contains(selected)) height += 20;
+        }
+        for (CycleButtonEntry entry : cycleButtonEntries) {
+            if (entry.variants.contains(selected)) height += 25;
         }
         return height;
     }
@@ -403,17 +418,6 @@ public class VariantGuiMain extends GuiScreen {
             makeTextField(
                 Collections.singletonList(VariantNames.CHANCED_RECIPES),
                 decimalFilter,
-                () -> String.valueOf(GeneralConfig.outputChanceMultiplier),
-                text -> {
-                    try {
-                        GeneralConfig.outputChanceMultiplier = Float.parseFloat(text);
-                    } catch (NumberFormatException ignored) {}
-                },
-                StatCollector.translateToLocal("variantgui.chancedrecipes.randomitemoutputs")));
-        textFieldEntries.add(
-            makeTextField(
-                Collections.singletonList(VariantNames.CHANCED_RECIPES),
-                decimalFilter,
                 () -> String.valueOf(GeneralConfig.fluidInputChanceMultiplier),
                 text -> {
                     try {
@@ -425,14 +429,92 @@ public class VariantGuiMain extends GuiScreen {
             makeTextField(
                 Collections.singletonList(VariantNames.CHANCED_RECIPES),
                 decimalFilter,
+                () -> String.valueOf(GeneralConfig.outputChanceMultiplier),
+                text -> {
+                    try {
+                        GeneralConfig.outputChanceMultiplier = Float.parseFloat(text);
+                    } catch (NumberFormatException ignored) {}
+                },
+                StatCollector.translateToLocal("variantgui.chancedrecipes.randomitemoutputs")));
+        textFieldEntries.add(
+            makeTextField(
+                Collections.singletonList(VariantNames.CHANCED_RECIPES),
+                decimalFilter,
                 () -> String.valueOf(GeneralConfig.fluidOutputChanceMultiplier),
                 text -> {
                     try {
                         GeneralConfig.fluidOutputChanceMultiplier = Float.parseFloat(text);
                     } catch (NumberFormatException ignored) {}
                 },
-                StatCollector.translateToLocal("variantgui.chancedrecipes.randomfluidinputs")));
+                StatCollector.translateToLocal("variantgui.chancedrecipes.randomfluidoutputs")));
 
+        cycleButtonEntries.clear();
+        cycleButtonEntries.add(
+            new CycleButtonEntry(
+                new GuiCyclingButton(
+                    1000,
+                    0,
+                    0,
+                    150,
+                    20,
+                    StatCollector.translateToLocal("variantgui.presets.preset"),
+                    new String[] { StatCollector.translateToLocal("variantgui.presets.customdimstart.0"),
+                        StatCollector.translateToLocal("variantgui.presets.customdimstart.1"),
+                        StatCollector.translateToLocal("variantgui.presets.customdimstart.2"),
+                        StatCollector.translateToLocal("variantgui.presets.customdimstart.3"),
+                        StatCollector.translateToLocal("variantgui.presets.customdimstart.4") },
+                    0,
+                    index -> {
+                        switch (index) {
+                            case 0 -> GeneralConfig.startingDimID = 0;
+                            case 1 -> GeneralConfig.startingDimID = -1;
+                            case 2 -> GeneralConfig.startingDimID = 1;
+                            case 3 -> GeneralConfig.startingDimID = 64;
+                            case 4 -> GeneralConfig.startingDimID = 28;
+                        }
+                        ConfigurationManager.save(GeneralConfig.class);
+                        syncTextFields(VariantNames.CUSTOM_DIM_START);
+                    }),
+                Arrays.asList(VariantNames.CUSTOM_DIM_START, VariantNames.DIMLOCKED)));
+        cycleButtonEntries.add(
+            new CycleButtonEntry(
+                new GuiCyclingButton(
+                    1000,
+                    0,
+                    0,
+                    150,
+                    20,
+                    StatCollector.translateToLocal("variantgui.presets.preset"),
+                    new String[] { StatCollector.translateToLocal("variantgui.presets.monoblock.0"),
+                        StatCollector.translateToLocal("variantgui.presets.monoblock.1"),
+                        StatCollector.translateToLocal("variantgui.presets.monoblock.2") },
+                    0,
+                    index -> {
+                        switch (index) {
+                            case 0 -> GeneralConfig.replacementBlock = "";
+                            case 1 -> GeneralConfig.replacementBlock = "minecraft:bedrock:0";
+                            case 2 -> GeneralConfig.replacementBlock = "chisel:neonite:10";
+                        }
+                        ConfigurationManager.save(GeneralConfig.class);
+                        syncTextFields(VariantNames.MONOBLOCK);
+                    }),
+                Collections.singletonList(VariantNames.MONOBLOCK)));
+        cycleButtonEntries.add(
+            new CycleButtonEntry(
+                new GuiCyclingButton(
+                    1000,
+                    0,
+                    0,
+                    150,
+                    20,
+                    StatCollector.translateToLocal("variantgui.presets.preset"),
+                    new String[] { StatCollector.translateToLocal("variantgui.presets.chancedrecipes.0"),
+                        StatCollector.translateToLocal("variantgui.presets.chancedrecipes.1"),
+                        StatCollector.translateToLocal("variantgui.presets.chancedrecipes.2"),
+                        StatCollector.translateToLocal("variantgui.presets.chancedrecipes.3") },
+                    0,
+                    this::switchChancedRecipesPreset),
+                Collections.singletonList(VariantNames.CHANCED_RECIPES)));
         this.searchField = new GuiTextField(this.fontRendererObj, PADDING, 14, SIDEBAR_WIDTH - PADDING - 4, 16);
         this.searchField.setMaxStringLength(64);
         this.searchField.setFocused(true);
@@ -446,6 +528,44 @@ public class VariantGuiMain extends GuiScreen {
         refreshFilteredVariants();
         syncTextFields(VariantNames.NORMAL);
         refreshActiveVariantsCache();
+    }
+
+    private void switchChancedRecipesPreset(int index) {
+        switch (index) {
+            case 0 -> {
+                GeneralConfig.fluidInputChanceMultiplier = 1;
+                GeneralConfig.fluidOutputChanceMultiplier = 1;
+                GeneralConfig.inputChanceMultiplier = 1;
+                GeneralConfig.outputChanceMultiplier = 1;
+            }
+            case 1 -> {
+                GeneralConfig.fluidInputChanceMultiplier = 0.4f;
+                GeneralConfig.fluidOutputChanceMultiplier = 0.8f;
+                GeneralConfig.inputChanceMultiplier = 0.4f;
+                GeneralConfig.outputChanceMultiplier = 0.8f;
+            }
+            case 2 -> {
+                GeneralConfig.fluidInputChanceMultiplier = 0.5f;
+                GeneralConfig.fluidOutputChanceMultiplier = 0.5f;
+                GeneralConfig.inputChanceMultiplier = 0.5f;
+                GeneralConfig.outputChanceMultiplier = 0.5f;
+            }
+            case 3 -> {
+                GeneralConfig.fluidInputChanceMultiplier = 0.8f;
+                GeneralConfig.fluidOutputChanceMultiplier = 0.4f;
+                GeneralConfig.inputChanceMultiplier = 0.8f;
+                GeneralConfig.outputChanceMultiplier = 0.4f;
+            }
+        }
+        GeneralConfig.inputChanceRandom = false;
+        GeneralConfig.outputChanceRandom = false;
+        ConfigurationManager.save(GeneralConfig.class);
+        for (CheckboxEntry entry : checkboxEntries) {
+            if (entry.variant.equals(getSelectedVariant())) {
+                entry.checkbox.setIsChecked(false);
+            }
+        }
+        syncTextFields(VariantNames.CHANCED_RECIPES);
     }
 
     private void updateBottomButtons() {
@@ -574,6 +694,14 @@ public class VariantGuiMain extends GuiScreen {
                     }
                 }
             }
+            for (CycleButtonEntry entry : cycleButtonEntries) {
+                if (entry.variants.contains(selected)) {
+                    if (entry.button.mousePressed(this.mc, mouseX, mouseY)) {
+                        // Play button click sound
+                        entry.button.func_146113_a(this.mc.getSoundHandler());
+                    }
+                }
+            }
         }
     }
 
@@ -695,10 +823,20 @@ public class VariantGuiMain extends GuiScreen {
 
             for (TextFieldEntry entry : textFieldEntries) {
                 if (entry.variants.contains(selected)) {
-                    entry.field.xPosition = x;
+                    entry.field.xPosition = x + 2;
                     entry.field.yPosition = nextY;
                     entry.field.drawTextBox();
                     nextY += 20;
+                }
+            }
+
+            for (CycleButtonEntry entry : cycleButtonEntries) {
+                if (entry.variants.contains(selected)) {
+                    entry.button.xPosition = x;
+                    entry.button.yPosition = nextY;
+                    entry.button.width = SIDEBAR_WIDTH;
+                    entry.button.drawButton(VariantGuiMain.this.mc, mouseX, mouseY);
+                    nextY += 25;
                 }
             }
         }
@@ -793,6 +931,40 @@ public class VariantGuiMain extends GuiScreen {
             }
 
             VariantGuiMain.this.drawCenteredString(VariantGuiMain.this.fontRendererObj, label, xOffset, yOffset, color);
+        }
+    }
+
+    public class GuiCyclingButton extends GuiButton {
+
+        private final String prefix;
+        private final String[] options;
+        private int currentIndex;
+        private final Consumer<Integer> onSelect;
+
+        public GuiCyclingButton(int id, int x, int y, int width, int height, String prefix, String[] options,
+            int startIndex, Consumer<Integer> onSelect) {
+            super(id, x, y, width, height, "");
+            this.prefix = prefix;
+            this.options = options;
+            this.currentIndex = startIndex;
+            this.onSelect = onSelect;
+            this.updateDisplayString();
+        }
+
+        private void updateDisplayString() {
+            this.displayString = StatCollector.translateToLocal(this.prefix) + ": "
+                + StatCollector.translateToLocal(this.options[this.currentIndex]);
+        }
+
+        @Override
+        public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
+            if (super.mousePressed(mc, mouseX, mouseY)) {
+                this.currentIndex = (this.currentIndex + 1) % this.options.length;
+                this.updateDisplayString();
+                this.onSelect.accept(this.currentIndex);
+                return true;
+            }
+            return false;
         }
     }
 

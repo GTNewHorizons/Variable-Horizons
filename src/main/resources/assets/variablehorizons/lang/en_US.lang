@@ -59,6 +59,20 @@ variantgui.voidisland.chest=Enable starting chest
 variantgui.chancedrecipes.randominputs=Randomize recipe input consumption chances
 variantgui.chancedrecipes.randomoutputs=Randomize recipe output production chances
 
+variantgui.presets.preset=Preset
+variantgui.presets.customdimstart.0=None
+variantgui.presets.customdimstart.1=Nether
+variantgui.presets.customdimstart.2=End
+variantgui.presets.customdimstart.3=Ross128B
+variantgui.presets.customdimstart.4=Moon
+variantgui.presets.monoblock.0=None
+variantgui.presets.monoblock.1=Bedrock
+variantgui.presets.monoblock.2=Neonite
+variantgui.presets.chancedrecipes.0=None
+variantgui.presets.chancedrecipes.1=Favourable
+variantgui.presets.chancedrecipes.2=Balanced
+variantgui.presets.chancedrecipes.3=Unfavourable
+
 #Variant GUI tooltips
 variantgui.dimidfield.tooltip=Enter numeric ID of chosen dimension
 variantgui.efficiencyfield.tooltip=Enter machine efficiency multiplier
