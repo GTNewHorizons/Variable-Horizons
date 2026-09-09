@@ -59,6 +59,7 @@ public class VariantGuiMain extends GuiScreen {
         "textures/gui/variants/ohno.png");
     private boolean showingFullVariants = true;
     private VariantList optionList;
+    private DetailsPanel detailsPanel;
     private GuiTextField searchField;
     private Set<String> activeVariantsCache = new HashSet<>();
     private final List<VariantNames> filteredVariants = new ArrayList<>();
@@ -162,13 +163,20 @@ public class VariantGuiMain extends GuiScreen {
         return new TextFieldEntry(field, variants, charFilter, getter, setter, tooltip);
     }
 
-    private int calculateBottomY(VariantNames selected) {
-        if (selected == null) return 50;
-        int panelX = SIDEBAR_WIDTH + PADDING * 2;
-        int panelY = 50;
-        int wrapWidth = this.width - panelX - PADDING;
+    private int descriptionBlockHeight(VariantNames selected, int wrapWidth) {
         List<String> lines = getWrappedDescriptionLines(selected, wrapWidth);
-        return panelY + ICON_TO_DESC_GAP + lines.size() * (this.fontRendererObj.FONT_HEIGHT + 2) + DESC_TO_FIELD_GAP;
+        return ICON_TO_DESC_GAP + lines.size() * (this.fontRendererObj.FONT_HEIGHT + 2) + DESC_TO_FIELD_GAP;
+    }
+
+    private int totalContentHeight(VariantNames selected, int wrapWidth) {
+        int height = descriptionBlockHeight(selected, wrapWidth);
+        for (CheckboxEntry entry : checkboxEntries) {
+            if (selected.equals(entry.variant)) height += 15;
+        }
+        for (TextFieldEntry entry : textFieldEntries) {
+            if (entry.variants.contains(selected)) height += 20;
+        }
+        return height;
     }
 
     private static class GuiVariantsButton extends GuiButton {
@@ -432,6 +440,11 @@ public class VariantGuiMain extends GuiScreen {
         this.searchField.setMaxStringLength(64);
         this.searchField.setFocused(true);
         this.optionList = new VariantList();
+        this.detailsPanel = new DetailsPanel(
+            SIDEBAR_WIDTH + PADDING * 2,
+            this.width - (SIDEBAR_WIDTH + PADDING * 2),
+            50,
+            this.height - 32);
 
         refreshFilteredVariants();
         syncTextFields(VariantNames.NORMAL);
@@ -552,18 +565,13 @@ public class VariantGuiMain extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.optionList.drawScreen(mouseX, mouseY, partialTicks);
         searchField.drawTextBox();
-        drawDetailsPanel();
 
         VariantNames selectedVariant = getSelectedVariant();
-        int nextY = calculateBottomY(selectedVariant);
-        for (CheckboxEntry entry : checkboxEntries) {
-            boolean visible = selectedVariant != null && selectedVariant.equals(entry.variant);
-            entry.checkbox.visible = visible;
-            entry.checkbox.enabled = visible;
-            if (visible) {
-                entry.checkbox.xPosition = SIDEBAR_WIDTH + PADDING * 2;
-                entry.checkbox.yPosition = nextY;
-                nextY += 15;
+        this.detailsPanel.drawScreen(mouseX, mouseY, partialTicks);
+        if (selectedVariant == null) {
+            for (CheckboxEntry entry : checkboxEntries) {
+                entry.checkbox.visible = false;
+                entry.checkbox.enabled = false;
             }
         }
 
@@ -573,15 +581,6 @@ public class VariantGuiMain extends GuiScreen {
             this.width / 2,
             20,
             0xFFFFFF);
-
-        for (TextFieldEntry entry : textFieldEntries) {
-            if (entry.variants.contains(selectedVariant)) {
-                entry.field.xPosition = SIDEBAR_WIDTH + PADDING * 2;
-                entry.field.yPosition = nextY;
-                entry.field.drawTextBox();
-                nextY += 20;
-            }
-        }
 
         for (TextFieldEntry entry : textFieldEntries) {
             if (entry.variants.contains(selectedVariant) && isMouseOverTextField(entry.field, mouseX, mouseY)) {
@@ -611,16 +610,87 @@ public class VariantGuiMain extends GuiScreen {
         });
     }
 
-    private void drawDetailsPanel() {
-        int panelX = SIDEBAR_WIDTH + PADDING * 2;
-        int panelY = 50;
+    class DetailsPanel extends GuiSlot {
 
-        if (selectedIndex < 0 || selectedIndex >= filteredVariants.size()) {
-            return;
+        DetailsPanel(int panelX, int panelWidth, int top, int bottom) {
+            super(VariantGuiMain.this.mc, panelWidth, VariantGuiMain.this.height, top, bottom, 20);
+            this.setSlotXBoundsFromLeft(panelX);
+            this.field_148163_i = false;
         }
 
-        VariantNames selectedVariant = filteredVariants.get(selectedIndex);
+        @Override
+        public int getListWidth() {
+            return this.width - PADDING * 2;
+        }
 
+        @Override
+        protected int getScrollBarX() {
+            return this.left + this.width - 6;
+        }
+
+        @Override
+        protected int getSize() {
+            return getSelectedVariant() != null ? 1 : 0;
+        }
+
+        @Override
+        protected int getContentHeight() {
+            VariantNames selected = getSelectedVariant();
+            if (selected == null) return 0;
+            return totalContentHeight(selected, getListWidth());
+        }
+
+        @Override
+        protected void elementClicked(int index, boolean doubleClick, int mouseX, int mouseY) {}
+
+        @Override
+        protected boolean isSelected(int index) {
+            return false;
+        }
+
+        @Override
+        protected void drawBackground() {}
+
+        @Override
+        protected void drawSelectionBox(int x, int y, int mouseX, int mouseY) {
+            if (getSize() == 0) return;
+            Tessellator tessellator = Tessellator.instance;
+            this.drawSlot(0, x, y, this.slotHeight - 4, tessellator, mouseX, mouseY);
+        }
+
+        @Override
+        protected void drawSlot(int index, int x, int y, int slotHeight, Tessellator tessellator, int mouseX,
+            int mouseY) {
+            VariantNames selected = getSelectedVariant();
+            if (selected == null) return;
+
+            int wrapWidth = getListWidth();
+            drawDetailsContent(selected, x, y, wrapWidth);
+
+            int nextY = y + descriptionBlockHeight(selected, wrapWidth);
+            for (CheckboxEntry entry : checkboxEntries) {
+                boolean visible = selected.equals(entry.variant);
+                entry.checkbox.visible = visible;
+                entry.checkbox.enabled = visible;
+                if (visible) {
+                    entry.checkbox.xPosition = x;
+                    entry.checkbox.yPosition = nextY;
+                    nextY += 15;
+                }
+            }
+
+            for (TextFieldEntry entry : textFieldEntries) {
+                if (entry.variants.contains(selected)) {
+                    entry.field.xPosition = x;
+                    entry.field.yPosition = nextY;
+                    entry.field.drawTextBox();
+                    nextY += 20;
+                }
+            }
+        }
+    }
+
+    private void drawDetailsContent(VariantNames selectedVariant, int panelX, int panelY, int wrapWidth) {
         ResourceLocation icon = getVariantIcon(selectedVariant.id);
         this.mc.getTextureManager()
             .bindTexture(icon);
@@ -636,7 +706,6 @@ public class VariantGuiMain extends GuiScreen {
             panelY + (ICON_SIZE - fontRendererObj.FONT_HEIGHT) / 2,
             0xFFFFFF);
 
-        int wrapWidth = this.width - panelX - PADDING;
         List<String> lines = getWrappedDescriptionLines(selectedVariant, wrapWidth);
         int lineY = panelY + ICON_TO_DESC_GAP;
         for (String line : lines) {
@@ -678,6 +747,7 @@ public class VariantGuiMain extends GuiScreen {
             selectedIndex = index;
             syncTextFields(getSelectedVariant());
             updateBottomButtons();
+            detailsPanel.scrollBy(-detailsPanel.getAmountScrolled());
         }
 
         @Override
