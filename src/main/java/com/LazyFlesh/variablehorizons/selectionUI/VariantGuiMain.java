@@ -433,9 +433,6 @@ public class VariantGuiMain extends GuiScreen {
                 },
                 StatCollector.translateToLocal("variantgui.chancedrecipes.randomfluidinputs")));
 
-        for (CheckboxEntry entry : checkboxEntries) {
-            this.buttonList.add(entry.checkbox);
-        }
         this.searchField = new GuiTextField(this.fontRendererObj, PADDING, 14, SIDEBAR_WIDTH - PADDING - 4, 16);
         this.searchField.setMaxStringLength(64);
         this.searchField.setFocused(true);
@@ -546,11 +543,36 @@ public class VariantGuiMain extends GuiScreen {
         searchField.mouseClicked(mouseX, mouseY, mouseButton);
 
         VariantNames selected = getSelectedVariant();
+        if (selected == null) return;
+
+        boolean mouseInPanelBounds = mouseX >= detailsPanel.left && mouseX <= detailsPanel.right
+            && mouseY >= detailsPanel.top
+            && mouseY <= detailsPanel.bottom;
+
         for (TextFieldEntry entry : textFieldEntries) {
             if (entry.variants.contains(selected)) {
-                entry.field.mouseClicked(mouseX, mouseY, mouseButton);
+                if (mouseInPanelBounds) {
+                    entry.field.mouseClicked(mouseX, mouseY, mouseButton);
+                } else {
+                    // Unfocus if clicked while scrolled out of bounds
+                    entry.field.setFocused(false);
+                }
             } else {
                 entry.field.setFocused(false);
+            }
+        }
+
+        if (mouseInPanelBounds) {
+            for (CheckboxEntry entry : checkboxEntries) {
+                if (entry.variant.equals(selected)) {
+                    if (entry.checkbox.mousePressed(this.mc, mouseX, mouseY)) {
+                        // Play button click sound
+                        entry.checkbox.func_146113_a(this.mc.getSoundHandler());
+                        // Toggle and save
+                        entry.configSetter.accept(entry.checkbox.isChecked());
+                        ConfigurationManager.save(GeneralConfig.class);
+                    }
+                }
             }
         }
     }
@@ -568,12 +590,6 @@ public class VariantGuiMain extends GuiScreen {
 
         VariantNames selectedVariant = getSelectedVariant();
         this.detailsPanel.drawScreen(mouseX, mouseY, partialTicks);
-        if (selectedVariant == null) {
-            for (CheckboxEntry entry : checkboxEntries) {
-                entry.checkbox.visible = false;
-                entry.checkbox.enabled = false;
-            }
-        }
 
         this.drawCenteredString(
             this.fontRendererObj,
@@ -669,12 +685,10 @@ public class VariantGuiMain extends GuiScreen {
 
             int nextY = y + descriptionBlockHeight(selected, wrapWidth);
             for (CheckboxEntry entry : checkboxEntries) {
-                boolean visible = selected.equals(entry.variant);
-                entry.checkbox.visible = visible;
-                entry.checkbox.enabled = visible;
-                if (visible) {
+                if (selected.equals(entry.variant)) {
                     entry.checkbox.xPosition = x;
                     entry.checkbox.yPosition = nextY;
+                    entry.checkbox.drawButton(VariantGuiMain.this.mc, mouseX, mouseY);
                     nextY += 15;
                 }
             }
