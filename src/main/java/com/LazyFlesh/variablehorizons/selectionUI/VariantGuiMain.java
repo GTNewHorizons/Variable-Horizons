@@ -59,12 +59,14 @@ public class VariantGuiMain extends GuiScreen {
         "textures/gui/variants/ohno.png");
     private boolean showingFullVariants = true;
     private VariantList optionList;
+    private DetailsPanel detailsPanel;
     private GuiTextField searchField;
     private Set<String> activeVariantsCache = new HashSet<>();
     private final List<VariantNames> filteredVariants = new ArrayList<>();
     private final Map<String, ResourceLocation> iconCache = new HashMap<>();
     private final List<CheckboxEntry> checkboxEntries = new ArrayList<>();
     private final List<TextFieldEntry> textFieldEntries = new ArrayList<>();
+    private final List<CycleButtonEntry> cycleButtonEntries = new ArrayList<>();
 
     private final Set<String> initialActiveVariants;
     private final int initialStartingDimID;
@@ -74,7 +76,7 @@ public class VariantGuiMain extends GuiScreen {
 
     public VariantGuiMain(GuiScreen parent) {
         this.parent = parent;
-        this.initialActiveVariants = new HashSet<>(VariantNames.getActiveVariantNames());
+        this.initialActiveVariants = new HashSet<>(VariantNames.getActiveVariantsToCheck());
         this.initialStartingDimID = GeneralConfig.startingDimID;
         this.initialEfficiencyMultiplier = GeneralConfig.efficiencyMultiplier;
         this.initialSuperflatPopulation = GeneralConfig.allowSuperflatPopulation;
@@ -82,7 +84,7 @@ public class VariantGuiMain extends GuiScreen {
     }
 
     private boolean hasUnsavedChanges() {
-        if (!initialActiveVariants.equals(VariantNames.getActiveVariantNames())) return true;
+        if (!initialActiveVariants.equals(VariantNames.getActiveVariantsToCheck())) return true;
         if (initialStartingDimID != GeneralConfig.startingDimID) return true;
         if (initialEfficiencyMultiplier != GeneralConfig.efficiencyMultiplier) return true;
         if (initialSuperflatPopulation != GeneralConfig.allowSuperflatPopulation) return true;
@@ -140,33 +142,56 @@ public class VariantGuiMain extends GuiScreen {
         final Predicate<Character> charFilter;
         final Supplier<String> configGetter;
         final Consumer<String> configSetter;
+        final String tooltip;
 
         TextFieldEntry(GuiTextField field, List<VariantNames> variants, Predicate<Character> charFilter,
-            Supplier<String> configGetter, Consumer<String> configSetter) {
+            Supplier<String> configGetter, Consumer<String> configSetter, String tooltip) {
             this.field = field;
             this.variants = variants;
             this.charFilter = charFilter;
             this.configGetter = configGetter;
             this.configSetter = configSetter;
+            this.tooltip = tooltip;
+        }
+    }
+
+    private static class CycleButtonEntry {
+
+        final GuiCyclingButton button;
+        final List<VariantNames> variants;
+
+        CycleButtonEntry(GuiCyclingButton button, List<VariantNames> variants) {
+            this.button = button;
+            this.variants = variants;
         }
     }
 
     private TextFieldEntry makeTextField(List<VariantNames> variants, Predicate<Character> charFilter,
-        Supplier<String> getter, Consumer<String> setter) {
+        Supplier<String> getter, Consumer<String> setter, String tooltip) {
         int fieldLength = charFilter == null ? 200 : 50;
         GuiTextField field = new GuiTextField(this.fontRendererObj, SIDEBAR_WIDTH + PADDING * 2, 90, fieldLength, 16);
         field.setMaxStringLength(charFilter == null ? 64 : 10);
         field.setText(getter.get());
-        return new TextFieldEntry(field, variants, charFilter, getter, setter);
+        return new TextFieldEntry(field, variants, charFilter, getter, setter, tooltip);
     }
 
-    private int calculateBottomY(VariantNames selected) {
-        if (selected == null) return 50;
-        int panelX = SIDEBAR_WIDTH + PADDING * 2;
-        int panelY = 50;
-        int wrapWidth = this.width - panelX - PADDING;
+    private int descriptionBlockHeight(VariantNames selected, int wrapWidth) {
         List<String> lines = getWrappedDescriptionLines(selected, wrapWidth);
-        return panelY + ICON_TO_DESC_GAP + lines.size() * (this.fontRendererObj.FONT_HEIGHT + 2) + DESC_TO_FIELD_GAP;
+        return ICON_TO_DESC_GAP + lines.size() * (this.fontRendererObj.FONT_HEIGHT + 2) + DESC_TO_FIELD_GAP;
+    }
+
+    private int totalContentHeight(VariantNames selected, int wrapWidth) {
+        int height = descriptionBlockHeight(selected, wrapWidth);
+        for (CheckboxEntry entry : checkboxEntries) {
+            if (selected.equals(entry.variant)) height += 15;
+        }
+        for (TextFieldEntry entry : textFieldEntries) {
+            if (entry.variants.contains(selected)) height += 20;
+        }
+        for (CycleButtonEntry entry : cycleButtonEntries) {
+            if (entry.variants.contains(selected)) height += 25;
+        }
+        return height;
     }
 
     private static class GuiVariantsButton extends GuiButton {
@@ -308,6 +333,20 @@ public class VariantGuiMain extends GuiScreen {
                 "variantgui.voidisland.chest",
                 () -> GeneralConfig.allowVoidIslandChest,
                 value -> GeneralConfig.allowVoidIslandChest = value));
+        checkboxEntries.add(
+            makeCheckbox(
+                7,
+                VariantNames.CHANCED_RECIPES,
+                "variantgui.chancedrecipes.randominputs",
+                () -> GeneralConfig.inputChanceRandom,
+                value -> GeneralConfig.inputChanceRandom = value));
+        checkboxEntries.add(
+            makeCheckbox(
+                8,
+                VariantNames.CHANCED_RECIPES,
+                "variantgui.chancedrecipes.randomoutputs",
+                () -> GeneralConfig.outputChanceRandom,
+                value -> GeneralConfig.outputChanceRandom = value));
 
         textFieldEntries.clear();
         Predicate<Character> dimIdFilter = c -> Character.isDigit(c) || c == '-';
@@ -322,7 +361,8 @@ public class VariantGuiMain extends GuiScreen {
                     try {
                         GeneralConfig.startingDimID = Integer.parseInt(text);
                     } catch (NumberFormatException ignored) {}
-                }));
+                },
+                StatCollector.translateToLocal("variantgui.dimidfield.tooltip")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.ALTERED_RECIPE_TIME),
@@ -332,7 +372,8 @@ public class VariantGuiMain extends GuiScreen {
                     try {
                         GeneralConfig.recipeTimeMultiplier = Float.parseFloat(text);
                     } catch (NumberFormatException ignored) {}
-                }));
+                },
+                StatCollector.translateToLocal("variantgui.recipetimefield.tooltip")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.ALTERED_EFFICIENCY),
@@ -342,13 +383,15 @@ public class VariantGuiMain extends GuiScreen {
                     try {
                         GeneralConfig.efficiencyMultiplier = Float.parseFloat(text);
                     } catch (NumberFormatException ignored) {}
-                }));
+                },
+                StatCollector.translateToLocal("variantgui.efficiencyfield.tooltip")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.MONOBLOCK),
                 null,
                 () -> GeneralConfig.replacementBlock,
-                text -> GeneralConfig.replacementBlock = text));
+                text -> GeneralConfig.replacementBlock = text,
+                StatCollector.translateToLocal("variantgui.monoblockfield.tooltip")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.SKYGRID),
@@ -358,19 +401,171 @@ public class VariantGuiMain extends GuiScreen {
                     try {
                         GeneralConfig.skygridDistance = Integer.parseInt(text);
                     } catch (NumberFormatException ignored) {}
-                }));
+                },
+                StatCollector.translateToLocal("variantgui.skygridfield.tooltip")));
+        textFieldEntries.add(
+            makeTextField(
+                Collections.singletonList(VariantNames.CHANCED_RECIPES),
+                decimalFilter,
+                () -> String.valueOf(GeneralConfig.inputChanceMultiplier),
+                text -> {
+                    try {
+                        GeneralConfig.inputChanceMultiplier = Float.parseFloat(text);
+                    } catch (NumberFormatException ignored) {}
+                },
+                StatCollector.translateToLocal("variantgui.chancedrecipes.randomiteminputs")));
+        textFieldEntries.add(
+            makeTextField(
+                Collections.singletonList(VariantNames.CHANCED_RECIPES),
+                decimalFilter,
+                () -> String.valueOf(GeneralConfig.fluidInputChanceMultiplier),
+                text -> {
+                    try {
+                        GeneralConfig.fluidInputChanceMultiplier = Float.parseFloat(text);
+                    } catch (NumberFormatException ignored) {}
+                },
+                StatCollector.translateToLocal("variantgui.chancedrecipes.randomfluidinputs")));
+        textFieldEntries.add(
+            makeTextField(
+                Collections.singletonList(VariantNames.CHANCED_RECIPES),
+                decimalFilter,
+                () -> String.valueOf(GeneralConfig.outputChanceMultiplier),
+                text -> {
+                    try {
+                        GeneralConfig.outputChanceMultiplier = Float.parseFloat(text);
+                    } catch (NumberFormatException ignored) {}
+                },
+                StatCollector.translateToLocal("variantgui.chancedrecipes.randomitemoutputs")));
+        textFieldEntries.add(
+            makeTextField(
+                Collections.singletonList(VariantNames.CHANCED_RECIPES),
+                decimalFilter,
+                () -> String.valueOf(GeneralConfig.fluidOutputChanceMultiplier),
+                text -> {
+                    try {
+                        GeneralConfig.fluidOutputChanceMultiplier = Float.parseFloat(text);
+                    } catch (NumberFormatException ignored) {}
+                },
+                StatCollector.translateToLocal("variantgui.chancedrecipes.randomfluidoutputs")));
 
-        for (CheckboxEntry entry : checkboxEntries) {
-            this.buttonList.add(entry.checkbox);
-        }
+        cycleButtonEntries.clear();
+        cycleButtonEntries.add(
+            new CycleButtonEntry(
+                new GuiCyclingButton(
+                    1000,
+                    0,
+                    0,
+                    150,
+                    20,
+                    StatCollector.translateToLocal("variantgui.presets.preset"),
+                    new String[] { StatCollector.translateToLocal("variantgui.presets.customdimstart.0"),
+                        StatCollector.translateToLocal("variantgui.presets.customdimstart.1"),
+                        StatCollector.translateToLocal("variantgui.presets.customdimstart.2"),
+                        StatCollector.translateToLocal("variantgui.presets.customdimstart.3"),
+                        StatCollector.translateToLocal("variantgui.presets.customdimstart.4") },
+                    0,
+                    index -> {
+                        switch (index) {
+                            case 0 -> GeneralConfig.startingDimID = 0;
+                            case 1 -> GeneralConfig.startingDimID = -1;
+                            case 2 -> GeneralConfig.startingDimID = 1;
+                            case 3 -> GeneralConfig.startingDimID = 64;
+                            case 4 -> GeneralConfig.startingDimID = 28;
+                        }
+                        ConfigurationManager.save(GeneralConfig.class);
+                        syncTextFields(VariantNames.CUSTOM_DIM_START);
+                    }),
+                Arrays.asList(VariantNames.CUSTOM_DIM_START, VariantNames.DIMLOCKED)));
+        cycleButtonEntries.add(
+            new CycleButtonEntry(
+                new GuiCyclingButton(
+                    1000,
+                    0,
+                    0,
+                    150,
+                    20,
+                    StatCollector.translateToLocal("variantgui.presets.preset"),
+                    new String[] { StatCollector.translateToLocal("variantgui.presets.monoblock.0"),
+                        StatCollector.translateToLocal("variantgui.presets.monoblock.1"),
+                        StatCollector.translateToLocal("variantgui.presets.monoblock.2") },
+                    0,
+                    index -> {
+                        switch (index) {
+                            case 0 -> GeneralConfig.replacementBlock = "";
+                            case 1 -> GeneralConfig.replacementBlock = "minecraft:bedrock:0";
+                            case 2 -> GeneralConfig.replacementBlock = "chisel:neonite:10";
+                        }
+                        ConfigurationManager.save(GeneralConfig.class);
+                        syncTextFields(VariantNames.MONOBLOCK);
+                    }),
+                Collections.singletonList(VariantNames.MONOBLOCK)));
+        cycleButtonEntries.add(
+            new CycleButtonEntry(
+                new GuiCyclingButton(
+                    1000,
+                    0,
+                    0,
+                    150,
+                    20,
+                    StatCollector.translateToLocal("variantgui.presets.preset"),
+                    new String[] { StatCollector.translateToLocal("variantgui.presets.chancedrecipes.0"),
+                        StatCollector.translateToLocal("variantgui.presets.chancedrecipes.1"),
+                        StatCollector.translateToLocal("variantgui.presets.chancedrecipes.2"),
+                        StatCollector.translateToLocal("variantgui.presets.chancedrecipes.3") },
+                    0,
+                    this::switchChancedRecipesPreset),
+                Collections.singletonList(VariantNames.CHANCED_RECIPES)));
         this.searchField = new GuiTextField(this.fontRendererObj, PADDING, 14, SIDEBAR_WIDTH - PADDING - 4, 16);
         this.searchField.setMaxStringLength(64);
         this.searchField.setFocused(true);
         this.optionList = new VariantList();
+        this.detailsPanel = new DetailsPanel(
+            SIDEBAR_WIDTH + PADDING * 2,
+            this.width - (SIDEBAR_WIDTH + PADDING * 2),
+            50,
+            this.height - 32);
 
         refreshFilteredVariants();
         syncTextFields(VariantNames.NORMAL);
         refreshActiveVariantsCache();
+    }
+
+    private void switchChancedRecipesPreset(int index) {
+        switch (index) {
+            case 0 -> {
+                GeneralConfig.fluidInputChanceMultiplier = 1;
+                GeneralConfig.fluidOutputChanceMultiplier = 1;
+                GeneralConfig.inputChanceMultiplier = 1;
+                GeneralConfig.outputChanceMultiplier = 1;
+            }
+            case 1 -> {
+                GeneralConfig.fluidInputChanceMultiplier = 0.4f;
+                GeneralConfig.fluidOutputChanceMultiplier = 0.8f;
+                GeneralConfig.inputChanceMultiplier = 0.4f;
+                GeneralConfig.outputChanceMultiplier = 0.8f;
+            }
+            case 2 -> {
+                GeneralConfig.fluidInputChanceMultiplier = 0.5f;
+                GeneralConfig.fluidOutputChanceMultiplier = 0.5f;
+                GeneralConfig.inputChanceMultiplier = 0.5f;
+                GeneralConfig.outputChanceMultiplier = 0.5f;
+            }
+            case 3 -> {
+                GeneralConfig.fluidInputChanceMultiplier = 0.8f;
+                GeneralConfig.fluidOutputChanceMultiplier = 0.4f;
+                GeneralConfig.inputChanceMultiplier = 0.8f;
+                GeneralConfig.outputChanceMultiplier = 0.4f;
+            }
+        }
+        GeneralConfig.inputChanceRandom = false;
+        GeneralConfig.outputChanceRandom = false;
+        ConfigurationManager.save(GeneralConfig.class);
+        for (CheckboxEntry entry : checkboxEntries) {
+            if (entry.variant.equals(getSelectedVariant())) {
+                entry.checkbox.setIsChecked(false);
+            }
+        }
+        syncTextFields(VariantNames.CHANCED_RECIPES);
     }
 
     private void updateBottomButtons() {
@@ -468,11 +663,44 @@ public class VariantGuiMain extends GuiScreen {
         searchField.mouseClicked(mouseX, mouseY, mouseButton);
 
         VariantNames selected = getSelectedVariant();
+        if (selected == null) return;
+
+        boolean mouseInPanelBounds = mouseX >= detailsPanel.left && mouseX <= detailsPanel.right
+            && mouseY >= detailsPanel.top
+            && mouseY <= detailsPanel.bottom;
+
         for (TextFieldEntry entry : textFieldEntries) {
             if (entry.variants.contains(selected)) {
-                entry.field.mouseClicked(mouseX, mouseY, mouseButton);
+                if (mouseInPanelBounds) {
+                    entry.field.mouseClicked(mouseX, mouseY, mouseButton);
+                } else {
+                    // Unfocus if clicked while scrolled out of bounds
+                    entry.field.setFocused(false);
+                }
             } else {
                 entry.field.setFocused(false);
+            }
+        }
+
+        if (mouseInPanelBounds) {
+            for (CheckboxEntry entry : checkboxEntries) {
+                if (entry.variant.equals(selected)) {
+                    if (entry.checkbox.mousePressed(this.mc, mouseX, mouseY)) {
+                        // Play button click sound
+                        entry.checkbox.func_146113_a(this.mc.getSoundHandler());
+                        // Toggle and save
+                        entry.configSetter.accept(entry.checkbox.isChecked());
+                        ConfigurationManager.save(GeneralConfig.class);
+                    }
+                }
+            }
+            for (CycleButtonEntry entry : cycleButtonEntries) {
+                if (entry.variants.contains(selected)) {
+                    if (entry.button.mousePressed(this.mc, mouseX, mouseY)) {
+                        // Play button click sound
+                        entry.button.func_146113_a(this.mc.getSoundHandler());
+                    }
+                }
             }
         }
     }
@@ -483,50 +711,13 @@ public class VariantGuiMain extends GuiScreen {
             && mouseY < field.yPosition + field.height;
     }
 
-    private String getTranslatedTextfieldTooltip(VariantNames variant) {
-        if (variant == null) {
-            return "";
-        }
-        switch (variant) {
-            case DIMLOCKED, CUSTOM_DIM_START -> {
-                return StatCollector.translateToLocal("variantgui.dimidfield.tooltip");
-            }
-            case ALTERED_EFFICIENCY -> {
-                return StatCollector.translateToLocal("variantgui.efficiencyfield.tooltip");
-            }
-            case ALTERED_RECIPE_TIME -> {
-                return StatCollector.translateToLocal("variantgui.recipetimefield.tooltip");
-            }
-            case MONOBLOCK -> {
-                return StatCollector.translateToLocal("variantgui.monoblockfield.tooltip");
-            }
-            case SKYGRID -> {
-                return StatCollector.translateToLocal("variantgui.skygridfield.tooltip");
-            }
-            default -> {
-                return "";
-            }
-        }
-    }
-
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.optionList.drawScreen(mouseX, mouseY, partialTicks);
         searchField.drawTextBox();
-        drawDetailsPanel();
 
         VariantNames selectedVariant = getSelectedVariant();
-        int nextY = calculateBottomY(selectedVariant);
-        for (CheckboxEntry entry : checkboxEntries) {
-            boolean visible = selectedVariant != null && selectedVariant.equals(entry.variant);
-            entry.checkbox.visible = visible;
-            entry.checkbox.enabled = visible;
-            if (visible) {
-                entry.checkbox.xPosition = SIDEBAR_WIDTH + PADDING * 2;
-                entry.checkbox.yPosition = nextY;
-                nextY += 15;
-            }
-        }
+        this.detailsPanel.drawScreen(mouseX, mouseY, partialTicks);
 
         this.drawCenteredString(
             this.fontRendererObj,
@@ -536,18 +727,8 @@ public class VariantGuiMain extends GuiScreen {
             0xFFFFFF);
 
         for (TextFieldEntry entry : textFieldEntries) {
-            if (entry.variants.contains(selectedVariant)) {
-                entry.field.xPosition = SIDEBAR_WIDTH + PADDING * 2;
-                entry.field.yPosition = nextY;
-                entry.field.drawTextBox();
-                nextY += 20;
-            }
-        }
-
-        for (TextFieldEntry entry : textFieldEntries) {
             if (entry.variants.contains(selectedVariant) && isMouseOverTextField(entry.field, mouseX, mouseY)) {
-                List<String> tooltip = this.fontRendererObj
-                    .listFormattedStringToWidth(getTranslatedTextfieldTooltip(selectedVariant), 200);
+                List<String> tooltip = this.fontRendererObj.listFormattedStringToWidth(entry.tooltip, 200);
                 this.drawHoveringText(tooltip, mouseX, mouseY, this.fontRendererObj);
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 GL11.glDisable(GL11.GL_LIGHTING);
@@ -573,16 +754,95 @@ public class VariantGuiMain extends GuiScreen {
         });
     }
 
-    private void drawDetailsPanel() {
-        int panelX = SIDEBAR_WIDTH + PADDING * 2;
-        int panelY = 50;
+    class DetailsPanel extends GuiSlot {
 
-        if (selectedIndex < 0 || selectedIndex >= filteredVariants.size()) {
-            return;
+        DetailsPanel(int panelX, int panelWidth, int top, int bottom) {
+            super(VariantGuiMain.this.mc, panelWidth, VariantGuiMain.this.height, top, bottom, 20);
+            this.setSlotXBoundsFromLeft(panelX);
+            this.field_148163_i = false;
         }
 
-        VariantNames selectedVariant = filteredVariants.get(selectedIndex);
+        @Override
+        public int getListWidth() {
+            return this.width - PADDING * 2;
+        }
 
+        @Override
+        protected int getScrollBarX() {
+            return this.left + this.width - 6;
+        }
+
+        @Override
+        protected int getSize() {
+            return getSelectedVariant() != null ? 1 : 0;
+        }
+
+        @Override
+        protected int getContentHeight() {
+            VariantNames selected = getSelectedVariant();
+            if (selected == null) return 0;
+            return totalContentHeight(selected, getListWidth());
+        }
+
+        @Override
+        protected void elementClicked(int index, boolean doubleClick, int mouseX, int mouseY) {}
+
+        @Override
+        protected boolean isSelected(int index) {
+            return false;
+        }
+
+        @Override
+        protected void drawBackground() {}
+
+        @Override
+        protected void drawSelectionBox(int x, int y, int mouseX, int mouseY) {
+            if (getSize() == 0) return;
+            Tessellator tessellator = Tessellator.instance;
+            this.drawSlot(0, x, y, this.slotHeight - 4, tessellator, mouseX, mouseY);
+        }
+
+        @Override
+        protected void drawSlot(int index, int x, int y, int slotHeight, Tessellator tessellator, int mouseX,
+            int mouseY) {
+            VariantNames selected = getSelectedVariant();
+            if (selected == null) return;
+
+            int wrapWidth = getListWidth();
+            drawDetailsContent(selected, x, y, wrapWidth);
+
+            int nextY = y + descriptionBlockHeight(selected, wrapWidth);
+            for (CheckboxEntry entry : checkboxEntries) {
+                if (selected.equals(entry.variant)) {
+                    entry.checkbox.xPosition = x;
+                    entry.checkbox.yPosition = nextY;
+                    entry.checkbox.drawButton(VariantGuiMain.this.mc, mouseX, mouseY);
+                    nextY += 15;
+                }
+            }
+
+            for (TextFieldEntry entry : textFieldEntries) {
+                if (entry.variants.contains(selected)) {
+                    entry.field.xPosition = x + 2;
+                    entry.field.yPosition = nextY;
+                    entry.field.drawTextBox();
+                    nextY += 20;
+                }
+            }
+
+            for (CycleButtonEntry entry : cycleButtonEntries) {
+                if (entry.variants.contains(selected)) {
+                    entry.button.xPosition = x;
+                    entry.button.yPosition = nextY;
+                    entry.button.width = SIDEBAR_WIDTH;
+                    entry.button.drawButton(VariantGuiMain.this.mc, mouseX, mouseY);
+                    nextY += 25;
+                }
+            }
+        }
+    }
+
+    private void drawDetailsContent(VariantNames selectedVariant, int panelX, int panelY, int wrapWidth) {
         ResourceLocation icon = getVariantIcon(selectedVariant.id);
         this.mc.getTextureManager()
             .bindTexture(icon);
@@ -598,7 +858,6 @@ public class VariantGuiMain extends GuiScreen {
             panelY + (ICON_SIZE - fontRendererObj.FONT_HEIGHT) / 2,
             0xFFFFFF);
 
-        int wrapWidth = this.width - panelX - PADDING;
         List<String> lines = getWrappedDescriptionLines(selectedVariant, wrapWidth);
         int lineY = panelY + ICON_TO_DESC_GAP;
         for (String line : lines) {
@@ -640,6 +899,7 @@ public class VariantGuiMain extends GuiScreen {
             selectedIndex = index;
             syncTextFields(getSelectedVariant());
             updateBottomButtons();
+            detailsPanel.scrollBy(-detailsPanel.getAmountScrolled());
         }
 
         @Override
@@ -671,6 +931,40 @@ public class VariantGuiMain extends GuiScreen {
             }
 
             VariantGuiMain.this.drawCenteredString(VariantGuiMain.this.fontRendererObj, label, xOffset, yOffset, color);
+        }
+    }
+
+    public class GuiCyclingButton extends GuiButton {
+
+        private final String prefix;
+        private final String[] options;
+        private int currentIndex;
+        private final Consumer<Integer> onSelect;
+
+        public GuiCyclingButton(int id, int x, int y, int width, int height, String prefix, String[] options,
+            int startIndex, Consumer<Integer> onSelect) {
+            super(id, x, y, width, height, "");
+            this.prefix = prefix;
+            this.options = options;
+            this.currentIndex = startIndex;
+            this.onSelect = onSelect;
+            this.updateDisplayString();
+        }
+
+        private void updateDisplayString() {
+            this.displayString = StatCollector.translateToLocal(this.prefix) + ": "
+                + StatCollector.translateToLocal(this.options[this.currentIndex]);
+        }
+
+        @Override
+        public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
+            if (super.mousePressed(mc, mouseX, mouseY)) {
+                this.currentIndex = (this.currentIndex + 1) % this.options.length;
+                this.updateDisplayString();
+                this.onSelect.accept(this.currentIndex);
+                return true;
+            }
+            return false;
         }
     }
 

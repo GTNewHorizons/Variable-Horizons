@@ -46,6 +46,10 @@ public class CommonProxy {
                 .register(VariantNames.ALTERED_RECIPE_TIME.loaderClass);
         }
 
+        FMLCommonHandler.instance()
+            .bus()
+            .register(VariantNames.CHANCED_RECIPES.loaderClass);
+
     }
 
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)

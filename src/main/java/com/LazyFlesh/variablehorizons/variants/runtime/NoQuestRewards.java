@@ -5,6 +5,7 @@ import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
 import betterquesting.api.storage.BQ_Settings;
+import betterquesting.handlers.ConfigHandler;
 
 public class NoQuestRewards extends VariantLoader implements IRuntimeVariant {
 
@@ -26,6 +27,6 @@ public class NoQuestRewards extends VariantLoader implements IRuntimeVariant {
 
         // reset and save to config
         BQ_Settings.noRewards = false;
-        ConfigurationManager.save(BQ_Settings.class);
+        ConfigHandler.config.save();
     }
 }
