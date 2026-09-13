@@ -1,5 +1,7 @@
 package com.LazyFlesh.variablehorizons;
 
+import net.minecraftforge.common.MinecraftForge;
+
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.util.RecipeRemover;
 import com.LazyFlesh.variablehorizons.util.VillagerRecipe;
@@ -53,7 +55,9 @@ public class CommonProxy {
     }
 
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
-    public void init(FMLInitializationEvent event) {}
+    public void init(FMLInitializationEvent event) {
+        MinecraftForge.EVENT_BUS.register(VariantNames.CRIMSON_APOCALYPSE.loaderClass);
+    }
 
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
     public void postInit(FMLPostInitializationEvent event) {}

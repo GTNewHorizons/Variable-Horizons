@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.Config.GogConfig;
+import com.LazyFlesh.variablehorizons.Config.MobConfig;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
@@ -38,6 +39,7 @@ public class VariableHorizons {
         try {
             ConfigurationManager.registerConfig(GeneralConfig.class);
             ConfigurationManager.registerConfig(GogConfig.class);
+            ConfigurationManager.registerConfig(MobConfig.class);
         } catch (ConfigException e) {
             throw new RuntimeException(e);
         }

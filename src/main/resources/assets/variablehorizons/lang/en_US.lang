@@ -83,6 +83,8 @@ variantgui.chancedrecipes.randomiteminputs=Enter item input consumption chance m
 variantgui.chancedrecipes.randomitemoutputs=Enter item output production chance multiplier
 variantgui.chancedrecipes.randomfluidinputs=Enter fluid input consumption chance multiplier
 variantgui.chancedrecipes.randomfluidoutputs=Enter fluid output production chance multiplier
+variantgui.crimsonapocalypse.mobhealth=Enter mob health multiplier
+variantgui.crimsonapocalypse.mobmelee=Enter mob melee damage multiplier
 
 #Misc
 variants.dimlock.message.1=Otherworldly forces reject your attempt at crossing dimensional boundaries

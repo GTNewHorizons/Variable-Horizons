@@ -30,6 +30,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+import com.LazyFlesh.variablehorizons.Config.MobConfig;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
@@ -447,6 +448,28 @@ public class VariantGuiMain extends GuiScreen {
                     } catch (NumberFormatException ignored) {}
                 },
                 StatCollector.translateToLocal("variantgui.chancedrecipes.randomfluidoutputs")));
+        textFieldEntries.add(
+            makeTextField(
+                Collections.singletonList(VariantNames.CRIMSON_APOCALYPSE),
+                decimalFilter,
+                () -> String.valueOf(MobConfig.mobHealthMultiplier),
+                text -> {
+                    try {
+                        MobConfig.mobHealthMultiplier = Double.parseDouble(text);
+                    } catch (NumberFormatException ignored) {}
+                },
+                StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobhealth")));
+        textFieldEntries.add(
+            makeTextField(
+                Collections.singletonList(VariantNames.CRIMSON_APOCALYPSE),
+                decimalFilter,
+                () -> String.valueOf(MobConfig.mobMeleeMultiplier),
+                text -> {
+                    try {
+                        MobConfig.mobMeleeMultiplier = Double.parseDouble(text);
+                    } catch (NumberFormatException ignored) {}
+                },
+                StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobmelee")));
 
         cycleButtonEntries.clear();
         cycleButtonEntries.add(
@@ -606,6 +629,7 @@ public class VariantGuiMain extends GuiScreen {
                 if (button.id == entry.checkbox.id) {
                     entry.configSetter.accept(entry.checkbox.isChecked());
                     ConfigurationManager.save(GeneralConfig.class);
+                    ConfigurationManager.save(MobConfig.class);
                     return;
                 }
             }
@@ -650,6 +674,7 @@ public class VariantGuiMain extends GuiScreen {
             if (allowed && entry.field.textboxKeyTyped(typedChar, keyCode)) {
                 entry.configSetter.accept(entry.field.getText());
                 ConfigurationManager.save(GeneralConfig.class);
+                ConfigurationManager.save(MobConfig.class);
                 return;
             }
         }
@@ -691,6 +716,7 @@ public class VariantGuiMain extends GuiScreen {
                         // Toggle and save
                         entry.configSetter.accept(entry.checkbox.isChecked());
                         ConfigurationManager.save(GeneralConfig.class);
+                        ConfigurationManager.save(MobConfig.class);
                     }
                 }
             }
