@@ -18,4 +18,12 @@ public class MobConfig {
     @Config.DefaultDouble(1d)
     public static double mobMeleeMultiplier;
 
+    @Config.Comment("Blood Moon mobcap multiplier")
+    @Config.DefaultInt(3)
+    @Config.RangeInt(min = 1)
+    public static int bloodMoonMobcapMultiplier;
+
+    @Config.Comment("Should all lighting have a red tint during a Blood Moon")
+    @Config.DefaultBoolean(true)
+    public static boolean bloodMoonTint;
 }

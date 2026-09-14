@@ -40,6 +40,7 @@ import cpw.mods.fml.client.config.GuiCheckBox;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
+import lumien.randomthings.Configuration.Settings;
 
 @EventBusSubscriber(side = Side.CLIENT)
 public class VariantGuiMain extends GuiScreen {
@@ -348,6 +349,18 @@ public class VariantGuiMain extends GuiScreen {
                 "variantgui.chancedrecipes.randomoutputs",
                 () -> GeneralConfig.outputChanceRandom,
                 value -> GeneralConfig.outputChanceRandom = value));
+        checkboxEntries.add(
+            makeCheckbox(
+                9,
+                VariantNames.CRIMSON_APOCALYPSE,
+                "variantgui.crimsonapocalypse.tint",
+                () -> MobConfig.bloodMoonTint,
+                value -> {
+                    MobConfig.bloodMoonTint = value;
+                    if (VariantNames.CRIMSON_APOCALYPSE.hasLoaded) {
+                        Settings.BLOODMOON_VISUAL_REDLIGHT = MobConfig.bloodMoonTint;
+                    }
+                }));
 
         textFieldEntries.clear();
         Predicate<Character> dimIdFilter = c -> Character.isDigit(c) || c == '-';
@@ -470,6 +483,20 @@ public class VariantGuiMain extends GuiScreen {
                     } catch (NumberFormatException ignored) {}
                 },
                 StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobmelee")));
+        textFieldEntries.add(
+            makeTextField(
+                Collections.singletonList(VariantNames.CRIMSON_APOCALYPSE),
+                posDigitFilter,
+                () -> String.valueOf(MobConfig.bloodMoonMobcapMultiplier),
+                text -> {
+                    try {
+                        MobConfig.bloodMoonMobcapMultiplier = Integer.parseInt(text);
+                        if (VariantNames.CRIMSON_APOCALYPSE.hasLoaded) {
+                            Settings.BLOODMOON_SPAWNLIMIT_MULTIPLIER = MobConfig.bloodMoonMobcapMultiplier;
+                        }
+                    } catch (NumberFormatException ignored) {}
+                },
+                StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobcap")));
 
         cycleButtonEntries.clear();
         cycleButtonEntries.add(

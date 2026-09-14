@@ -58,6 +58,7 @@ variantgui.voidisland.tree=Enable tree
 variantgui.voidisland.chest=Enable starting chest
 variantgui.chancedrecipes.randominputs=Randomize recipe input consumption chances
 variantgui.chancedrecipes.randomoutputs=Randomize recipe output production chances
+variantgui.crimsonapocalypse.tint=Enable red tinted lighting when the Blood Moon has risen
 
 variantgui.presets.preset=Preset
 variantgui.presets.customdimstart.0=None
@@ -85,6 +86,7 @@ variantgui.chancedrecipes.randomfluidinputs=Enter fluid input consumption chance
 variantgui.chancedrecipes.randomfluidoutputs=Enter fluid output production chance multiplier
 variantgui.crimsonapocalypse.mobhealth=Enter mob health multiplier
 variantgui.crimsonapocalypse.mobmelee=Enter mob melee damage multiplier
+variantgui.crimsonapocalypse.mobcap=Enter Blood Moon mobcap multiplier
 
 #Misc
 variants.dimlock.message.1=Otherworldly forces reject your attempt at crossing dimensional boundaries

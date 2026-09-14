@@ -16,6 +16,8 @@ import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import lumien.randomthings.Configuration.RTConfiguration;
+import lumien.randomthings.Configuration.Settings;
 import toast.specialMobs.Properties;
 import toast.specialMobs.RandomHelper;
 import toast.specialMobs._SpecialMobs;
@@ -35,6 +37,12 @@ public class CrimsonApocalypse extends VariantLoader implements IRuntimeVariant 
             }
         }
         modifySpecialMobsWeight("Skeleton", "Thief", 0);
+
+        Settings.BLOODMOON_DIM_WHITELIST = new int[] {};
+        Settings.BLOODMOON_CHANCE = 1;
+        Settings.BLOODMOON_INITIAL_PAUSE = 0;
+        Settings.BLOODMOON_SPAWNLIMIT_MULTIPLIER = MobConfig.bloodMoonMobcapMultiplier;
+        Settings.BLOODMOON_VISUAL_REDLIGHT = MobConfig.bloodMoonTint;
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -136,5 +144,11 @@ public class CrimsonApocalypse extends VariantLoader implements IRuntimeVariant 
         modifySpecialMobsWeight("Skeleton", "Thief", 0);
         modifySpecialMobsWeight("Enderman", "Thief", 0);
         modifySpecialMobsWeight("Witch", "Wind", 0);
+
+        Settings.BLOODMOON_DIM_WHITELIST = RTConfiguration.bloodMoon_dimension_whitelist.getIntList();
+        Settings.BLOODMOON_CHANCE = (float) RTConfiguration.bloodMoon_chance.getDouble(0.05);
+        Settings.BLOODMOON_INITIAL_PAUSE = RTConfiguration.bloodMoon_initial_pause.getInt(5);
+        Settings.BLOODMOON_SPAWNLIMIT_MULTIPLIER = RTConfiguration.bloodMoon_spawnLimitMult.getInt(3);
+        Settings.BLOODMOON_VISUAL_REDLIGHT = RTConfiguration.bloodMoon_visual_redLight.getBoolean();
     }
 }
