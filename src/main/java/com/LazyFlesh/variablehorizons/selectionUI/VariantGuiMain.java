@@ -435,7 +435,7 @@ public class VariantGuiMain extends GuiScreen {
                         GeneralConfig.inputChanceMultiplier = Float.parseFloat(text);
                     } catch (NumberFormatException ignored) {}
                 },
-                StatCollector.translateToLocal("variantgui.chancedrecipes.randomiteminputs"),
+                StatCollector.translateToLocal("variantgui.chancedrecipes.randomiteminputs.tooltip"),
                 StatCollector.translateToLocal("variantgui.chancedrecipes.randomiteminputs.label")));
         textFieldEntries.add(
             makeTextField(
@@ -447,7 +447,7 @@ public class VariantGuiMain extends GuiScreen {
                         GeneralConfig.fluidInputChanceMultiplier = Float.parseFloat(text);
                     } catch (NumberFormatException ignored) {}
                 },
-                StatCollector.translateToLocal("variantgui.chancedrecipes.randomfluidinputs"),
+                StatCollector.translateToLocal("variantgui.chancedrecipes.randomfluidinputs.tooltip"),
                 StatCollector.translateToLocal("variantgui.chancedrecipes.randomfluidinputs.label")));
         textFieldEntries.add(
             makeTextField(
@@ -459,7 +459,7 @@ public class VariantGuiMain extends GuiScreen {
                         GeneralConfig.outputChanceMultiplier = Float.parseFloat(text);
                     } catch (NumberFormatException ignored) {}
                 },
-                StatCollector.translateToLocal("variantgui.chancedrecipes.randomitemoutputs"),
+                StatCollector.translateToLocal("variantgui.chancedrecipes.randomitemoutputs.tooltip"),
                 StatCollector.translateToLocal("variantgui.chancedrecipes.randomitemoutputs.label")));
         textFieldEntries.add(
             makeTextField(
@@ -471,7 +471,7 @@ public class VariantGuiMain extends GuiScreen {
                         GeneralConfig.fluidOutputChanceMultiplier = Float.parseFloat(text);
                     } catch (NumberFormatException ignored) {}
                 },
-                StatCollector.translateToLocal("variantgui.chancedrecipes.randomfluidoutputs"),
+                StatCollector.translateToLocal("variantgui.chancedrecipes.randomfluidoutputs.tooltip"),
                 StatCollector.translateToLocal("variantgui.chancedrecipes.randomfluidoutputs.label")));
         textFieldEntries.add(
             makeTextField(
@@ -483,7 +483,7 @@ public class VariantGuiMain extends GuiScreen {
                         MobConfig.mobHealthMultiplier = Double.parseDouble(text);
                     } catch (NumberFormatException ignored) {}
                 },
-                StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobhealth"),
+                StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobhealth.tooltip"),
                 StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobhealth.label")));
         textFieldEntries.add(
             makeTextField(
@@ -495,7 +495,7 @@ public class VariantGuiMain extends GuiScreen {
                         MobConfig.mobMeleeMultiplier = Double.parseDouble(text);
                     } catch (NumberFormatException ignored) {}
                 },
-                StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobmelee"),
+                StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobmelee.tooltip"),
                 StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobmelee.label")));
         textFieldEntries.add(
             makeTextField(
@@ -510,7 +510,7 @@ public class VariantGuiMain extends GuiScreen {
                         }
                     } catch (NumberFormatException ignored) {}
                 },
-                StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobcap"),
+                StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobcap.tooltip"),
                 StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobcap.label")));
         textFieldEntries.add(
             makeTextField(
@@ -525,7 +525,7 @@ public class VariantGuiMain extends GuiScreen {
                         }
                     } catch (NumberFormatException ignored) {}
                 },
-                StatCollector.translateToLocal("variantgui.crimsonapocalypse.infernaldifficulty"),
+                StatCollector.translateToLocal("variantgui.crimsonapocalypse.infernaldifficulty.tooltip"),
                 StatCollector.translateToLocal("variantgui.crimsonapocalypse.infernaldifficulty.label")));
 
         cycleButtonEntries.clear();
