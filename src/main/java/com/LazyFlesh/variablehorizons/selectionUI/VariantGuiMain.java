@@ -33,6 +33,7 @@ import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.Config.MobConfig;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
+import com.LazyFlesh.variablehorizons.variants.runtime.CrimsonApocalypse;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
@@ -497,6 +498,20 @@ public class VariantGuiMain extends GuiScreen {
                     } catch (NumberFormatException ignored) {}
                 },
                 StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobcap")));
+        textFieldEntries.add(
+            makeTextField(
+                Collections.singletonList(VariantNames.CRIMSON_APOCALYPSE),
+                posDigitFilter,
+                () -> String.valueOf(MobConfig.infernalMobDifficulty),
+                text -> {
+                    try {
+                        MobConfig.infernalMobDifficulty = Math.min(Integer.parseInt(text), 3);
+                        if (VariantNames.CRIMSON_APOCALYPSE.hasLoaded) {
+                            CrimsonApocalypse.modifyInfernalMobDifficulty(MobConfig.infernalMobDifficulty);
+                        }
+                    } catch (NumberFormatException ignored) {}
+                },
+                StatCollector.translateToLocal("variantgui.crimsonapocalypse.infernaldifficulty")));
 
         cycleButtonEntries.clear();
         cycleButtonEntries.add(
@@ -565,6 +580,22 @@ public class VariantGuiMain extends GuiScreen {
                     0,
                     this::switchChancedRecipesPreset),
                 Collections.singletonList(VariantNames.CHANCED_RECIPES)));
+        cycleButtonEntries.add(
+            new CycleButtonEntry(
+                new GuiCyclingButton(
+                    1000,
+                    0,
+                    0,
+                    150,
+                    20,
+                    StatCollector.translateToLocal("variantgui.presets.preset"),
+                    new String[] { StatCollector.translateToLocal("variantgui.presets.crimsonapocalypse.0"),
+                        StatCollector.translateToLocal("variantgui.presets.crimsonapocalypse.1"),
+                        StatCollector.translateToLocal("variantgui.presets.crimsonapocalypse.2"),
+                        StatCollector.translateToLocal("variantgui.presets.crimsonapocalypse.3") },
+                    0,
+                    this::switchCrimsonApocalypsePreset),
+                Collections.singletonList(VariantNames.CRIMSON_APOCALYPSE)));
         this.searchField = new GuiTextField(this.fontRendererObj, PADDING, 14, SIDEBAR_WIDTH - PADDING - 4, 16);
         this.searchField.setMaxStringLength(64);
         this.searchField.setFocused(true);
@@ -616,6 +647,39 @@ public class VariantGuiMain extends GuiScreen {
             }
         }
         syncTextFields(VariantNames.CHANCED_RECIPES);
+    }
+
+    private void switchCrimsonApocalypsePreset(int index) {
+        switch (index) {
+            case 0 -> {
+                MobConfig.mobHealthMultiplier = 1;
+                MobConfig.mobMeleeMultiplier = 1;
+                MobConfig.bloodMoonMobcapMultiplier = 3;
+                MobConfig.infernalMobDifficulty = 0;
+            }
+            case 1 -> {
+                MobConfig.mobHealthMultiplier = 1.5;
+                MobConfig.mobMeleeMultiplier = 2;
+                MobConfig.bloodMoonMobcapMultiplier = 3;
+                MobConfig.infernalMobDifficulty = 1;
+            }
+            case 2 -> {
+                MobConfig.mobHealthMultiplier = 2;
+                MobConfig.mobMeleeMultiplier = 3;
+                MobConfig.bloodMoonMobcapMultiplier = 4;
+                MobConfig.infernalMobDifficulty = 2;
+            }
+            case 3 -> {
+                MobConfig.mobHealthMultiplier = 8;
+                MobConfig.mobMeleeMultiplier = 8;
+                MobConfig.bloodMoonMobcapMultiplier = 5;
+                MobConfig.infernalMobDifficulty = 3;
+            }
+        }
+        ConfigurationManager.save(MobConfig.class);
+        Settings.BLOODMOON_SPAWNLIMIT_MULTIPLIER = MobConfig.bloodMoonMobcapMultiplier;
+        CrimsonApocalypse.modifyInfernalMobDifficulty(MobConfig.infernalMobDifficulty);
+        syncTextFields(VariantNames.CRIMSON_APOCALYPSE);
     }
 
     private void updateBottomButtons() {

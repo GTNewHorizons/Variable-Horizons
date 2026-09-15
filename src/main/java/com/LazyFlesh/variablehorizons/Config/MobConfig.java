@@ -26,4 +26,9 @@ public class MobConfig {
     @Config.Comment("Should all lighting have a red tint during a Blood Moon")
     @Config.DefaultBoolean(true)
     public static boolean bloodMoonTint;
+
+    @Config.Comment("Global infernal mob difficulty level")
+    @Config.DefaultInt(1)
+    @Config.RangeInt(min = 0, max = 3)
+    public static int infernalMobDifficulty;
 }

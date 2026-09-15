@@ -1,6 +1,7 @@
 package com.LazyFlesh.variablehorizons.variants.runtime;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -14,6 +15,7 @@ import com.LazyFlesh.variablehorizons.VariableHorizons;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
+import atomicstryker.infernalmobs.common.InfernalMobsCore;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import lumien.randomthings.Configuration.RTConfiguration;
@@ -43,6 +45,8 @@ public class CrimsonApocalypse extends VariantLoader implements IRuntimeVariant 
         Settings.BLOODMOON_INITIAL_PAUSE = 0;
         Settings.BLOODMOON_SPAWNLIMIT_MULTIPLIER = MobConfig.bloodMoonMobcapMultiplier;
         Settings.BLOODMOON_VISUAL_REDLIGHT = MobConfig.bloodMoonTint;
+
+        modifyInfernalMobDifficulty(MobConfig.infernalMobDifficulty);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -124,6 +128,40 @@ public class CrimsonApocalypse extends VariantLoader implements IRuntimeVariant 
         }
     }
 
+    public static void modifyInfernalMobDifficulty(int level) {
+        InfernalMobsCore imCore = InfernalMobsCore.instance();
+        imCore.loadConfig();
+
+        imCore.dimensionBlackList = new ArrayList<>();
+
+        int modifierModifier = 0;
+        int rarityModifier = 1;
+        switch (level) {
+            case 1 -> {
+                modifierModifier = 2;
+            }
+            case 2 -> {
+                modifierModifier = 3;
+                rarityModifier = 2;
+            }
+            case 3 -> {
+                modifierModifier = 20;
+                rarityModifier = 100;
+            }
+        }
+
+        imCore.minEliteModifiers += modifierModifier;
+        imCore.maxEliteModifiers += modifierModifier;
+        imCore.minUltraModifiers += modifierModifier;
+        imCore.maxUltraModifiers += modifierModifier;
+        imCore.minInfernoModifiers += modifierModifier;
+        imCore.maxInfernoModifiers += modifierModifier;
+
+        imCore.eliteRarity = Math.max(imCore.eliteRarity / rarityModifier, 1);
+        imCore.ultraRarity = Math.max(imCore.ultraRarity / rarityModifier, 1);
+        imCore.infernoRarity = Math.max(imCore.infernoRarity / rarityModifier, 1);
+    }
+
     @Override
     public void variantRecipes(VariantNames... activeVariants) {
         // none to add
@@ -145,10 +183,8 @@ public class CrimsonApocalypse extends VariantLoader implements IRuntimeVariant 
         modifySpecialMobsWeight("Enderman", "Thief", 0);
         modifySpecialMobsWeight("Witch", "Wind", 0);
 
-        Settings.BLOODMOON_DIM_WHITELIST = RTConfiguration.bloodMoon_dimension_whitelist.getIntList();
-        Settings.BLOODMOON_CHANCE = (float) RTConfiguration.bloodMoon_chance.getDouble(0.05);
-        Settings.BLOODMOON_INITIAL_PAUSE = RTConfiguration.bloodMoon_initial_pause.getInt(5);
-        Settings.BLOODMOON_SPAWNLIMIT_MULTIPLIER = RTConfiguration.bloodMoon_spawnLimitMult.getInt(3);
-        Settings.BLOODMOON_VISUAL_REDLIGHT = RTConfiguration.bloodMoon_visual_redLight.getBoolean();
+        RTConfiguration.syncConfig();
+        InfernalMobsCore imCore = InfernalMobsCore.instance();
+        imCore.loadConfig();
     }
 }
