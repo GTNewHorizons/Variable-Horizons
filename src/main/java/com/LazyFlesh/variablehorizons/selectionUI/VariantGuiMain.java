@@ -146,15 +146,17 @@ public class VariantGuiMain extends GuiScreen {
         final Supplier<String> configGetter;
         final Consumer<String> configSetter;
         final String tooltip;
+        final String label;
 
         TextFieldEntry(GuiTextField field, List<VariantNames> variants, Predicate<Character> charFilter,
-            Supplier<String> configGetter, Consumer<String> configSetter, String tooltip) {
+            Supplier<String> configGetter, Consumer<String> configSetter, String tooltip, String label) {
             this.field = field;
             this.variants = variants;
             this.charFilter = charFilter;
             this.configGetter = configGetter;
             this.configSetter = configSetter;
             this.tooltip = tooltip;
+            this.label = label;
         }
     }
 
@@ -170,12 +172,12 @@ public class VariantGuiMain extends GuiScreen {
     }
 
     private TextFieldEntry makeTextField(List<VariantNames> variants, Predicate<Character> charFilter,
-        Supplier<String> getter, Consumer<String> setter, String tooltip) {
+        Supplier<String> getter, Consumer<String> setter, String tooltip, String label) {
         int fieldLength = charFilter == null ? 200 : 50;
         GuiTextField field = new GuiTextField(this.fontRendererObj, SIDEBAR_WIDTH + PADDING * 2, 90, fieldLength, 16);
         field.setMaxStringLength(charFilter == null ? 64 : 10);
         field.setText(getter.get());
-        return new TextFieldEntry(field, variants, charFilter, getter, setter, tooltip);
+        return new TextFieldEntry(field, variants, charFilter, getter, setter, tooltip, label);
     }
 
     private int descriptionBlockHeight(VariantNames selected, int wrapWidth) {
@@ -377,7 +379,8 @@ public class VariantGuiMain extends GuiScreen {
                         GeneralConfig.startingDimID = Integer.parseInt(text);
                     } catch (NumberFormatException ignored) {}
                 },
-                StatCollector.translateToLocal("variantgui.dimidfield.tooltip")));
+                StatCollector.translateToLocal("variantgui.dimidfield.tooltip"),
+                StatCollector.translateToLocal("variantgui.dimidfield.label")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.ALTERED_RECIPE_TIME),
@@ -388,7 +391,8 @@ public class VariantGuiMain extends GuiScreen {
                         GeneralConfig.recipeTimeMultiplier = Float.parseFloat(text);
                     } catch (NumberFormatException ignored) {}
                 },
-                StatCollector.translateToLocal("variantgui.recipetimefield.tooltip")));
+                StatCollector.translateToLocal("variantgui.recipetimefield.tooltip"),
+                StatCollector.translateToLocal("variantgui.recipetimefield.label")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.ALTERED_EFFICIENCY),
@@ -399,14 +403,16 @@ public class VariantGuiMain extends GuiScreen {
                         GeneralConfig.efficiencyMultiplier = Float.parseFloat(text);
                     } catch (NumberFormatException ignored) {}
                 },
-                StatCollector.translateToLocal("variantgui.efficiencyfield.tooltip")));
+                StatCollector.translateToLocal("variantgui.efficiencyfield.tooltip"),
+                StatCollector.translateToLocal("variantgui.efficiencyfield.label")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.MONOBLOCK),
                 null,
                 () -> GeneralConfig.replacementBlock,
                 text -> GeneralConfig.replacementBlock = text,
-                StatCollector.translateToLocal("variantgui.monoblockfield.tooltip")));
+                StatCollector.translateToLocal("variantgui.monoblockfield.tooltip"),
+                StatCollector.translateToLocal("variantgui.monoblockfield.label")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.SKYGRID),
@@ -417,7 +423,8 @@ public class VariantGuiMain extends GuiScreen {
                         GeneralConfig.skygridDistance = Integer.parseInt(text);
                     } catch (NumberFormatException ignored) {}
                 },
-                StatCollector.translateToLocal("variantgui.skygridfield.tooltip")));
+                StatCollector.translateToLocal("variantgui.skygridfield.tooltip"),
+                StatCollector.translateToLocal("variantgui.skygridfield.label")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.CHANCED_RECIPES),
@@ -428,7 +435,8 @@ public class VariantGuiMain extends GuiScreen {
                         GeneralConfig.inputChanceMultiplier = Float.parseFloat(text);
                     } catch (NumberFormatException ignored) {}
                 },
-                StatCollector.translateToLocal("variantgui.chancedrecipes.randomiteminputs")));
+                StatCollector.translateToLocal("variantgui.chancedrecipes.randomiteminputs"),
+                StatCollector.translateToLocal("variantgui.chancedrecipes.randomiteminputs.label")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.CHANCED_RECIPES),
@@ -439,7 +447,8 @@ public class VariantGuiMain extends GuiScreen {
                         GeneralConfig.fluidInputChanceMultiplier = Float.parseFloat(text);
                     } catch (NumberFormatException ignored) {}
                 },
-                StatCollector.translateToLocal("variantgui.chancedrecipes.randomfluidinputs")));
+                StatCollector.translateToLocal("variantgui.chancedrecipes.randomfluidinputs"),
+                StatCollector.translateToLocal("variantgui.chancedrecipes.randomfluidinputs.label")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.CHANCED_RECIPES),
@@ -450,7 +459,8 @@ public class VariantGuiMain extends GuiScreen {
                         GeneralConfig.outputChanceMultiplier = Float.parseFloat(text);
                     } catch (NumberFormatException ignored) {}
                 },
-                StatCollector.translateToLocal("variantgui.chancedrecipes.randomitemoutputs")));
+                StatCollector.translateToLocal("variantgui.chancedrecipes.randomitemoutputs"),
+                StatCollector.translateToLocal("variantgui.chancedrecipes.randomitemoutputs.label")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.CHANCED_RECIPES),
@@ -461,7 +471,8 @@ public class VariantGuiMain extends GuiScreen {
                         GeneralConfig.fluidOutputChanceMultiplier = Float.parseFloat(text);
                     } catch (NumberFormatException ignored) {}
                 },
-                StatCollector.translateToLocal("variantgui.chancedrecipes.randomfluidoutputs")));
+                StatCollector.translateToLocal("variantgui.chancedrecipes.randomfluidoutputs"),
+                StatCollector.translateToLocal("variantgui.chancedrecipes.randomfluidoutputs.label")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.CRIMSON_APOCALYPSE),
@@ -472,7 +483,8 @@ public class VariantGuiMain extends GuiScreen {
                         MobConfig.mobHealthMultiplier = Double.parseDouble(text);
                     } catch (NumberFormatException ignored) {}
                 },
-                StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobhealth")));
+                StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobhealth"),
+                StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobhealth.label")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.CRIMSON_APOCALYPSE),
@@ -483,7 +495,8 @@ public class VariantGuiMain extends GuiScreen {
                         MobConfig.mobMeleeMultiplier = Double.parseDouble(text);
                     } catch (NumberFormatException ignored) {}
                 },
-                StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobmelee")));
+                StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobmelee"),
+                StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobmelee.label")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.CRIMSON_APOCALYPSE),
@@ -497,7 +510,8 @@ public class VariantGuiMain extends GuiScreen {
                         }
                     } catch (NumberFormatException ignored) {}
                 },
-                StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobcap")));
+                StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobcap"),
+                StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobcap.label")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.CRIMSON_APOCALYPSE),
@@ -511,7 +525,8 @@ public class VariantGuiMain extends GuiScreen {
                         }
                     } catch (NumberFormatException ignored) {}
                 },
-                StatCollector.translateToLocal("variantgui.crimsonapocalypse.infernaldifficulty")));
+                StatCollector.translateToLocal("variantgui.crimsonapocalypse.infernaldifficulty"),
+                StatCollector.translateToLocal("variantgui.crimsonapocalypse.infernaldifficulty.label")));
 
         cycleButtonEntries.clear();
         cycleButtonEntries.add(
@@ -940,6 +955,13 @@ public class VariantGuiMain extends GuiScreen {
 
             for (TextFieldEntry entry : textFieldEntries) {
                 if (entry.variants.contains(selected)) {
+                    int rowY = nextY + (16 - VariantGuiMain.this.fontRendererObj.FONT_HEIGHT) / 2;
+                    VariantGuiMain.this.drawString(
+                        VariantGuiMain.this.fontRendererObj,
+                        entry.label,
+                        x + PADDING + (entry.charFilter == null ? 200 : 50),
+                        rowY,
+                        14737632);
                     entry.field.xPosition = x + 2;
                     entry.field.yPosition = nextY;
                     entry.field.drawTextBox();
