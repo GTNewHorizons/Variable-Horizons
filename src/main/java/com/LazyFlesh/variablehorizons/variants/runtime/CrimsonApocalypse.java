@@ -16,6 +16,9 @@ import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
 import atomicstryker.infernalmobs.common.InfernalMobsCore;
+import atomicstryker.infernalmobs.common.modifiers.MM_Ender;
+import atomicstryker.infernalmobs.common.modifiers.MM_Lifesteal;
+import atomicstryker.infernalmobs.common.modifiers.MM_Ninja;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import lumien.randomthings.Configuration.RTConfiguration;
@@ -131,8 +134,12 @@ public class CrimsonApocalypse extends VariantLoader implements IRuntimeVariant 
     public static void modifyInfernalMobDifficulty(int level) {
         InfernalMobsCore imCore = InfernalMobsCore.instance();
         imCore.loadConfig();
+        imCore.loadMods();
 
         imCore.dimensionBlackList = new ArrayList<>();
+        imCore.modifierLoaders.add(new MM_Lifesteal.Loader());
+        imCore.modifierLoaders.add(new MM_Ninja.Loader());
+        imCore.modifierLoaders.add(new MM_Ender.Loader());
 
         int modifierModifier = 0;
         int rarityModifier = 1;
@@ -186,5 +193,6 @@ public class CrimsonApocalypse extends VariantLoader implements IRuntimeVariant 
         RTConfiguration.syncConfig();
         InfernalMobsCore imCore = InfernalMobsCore.instance();
         imCore.loadConfig();
+        imCore.loadMods();
     }
 }
