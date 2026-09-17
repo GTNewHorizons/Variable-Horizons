@@ -51,7 +51,7 @@ public enum VariantNames {
     NORMAL("NORMAL", true, new VariantNames[] {}, new VariantNames[] {}), // does nothing
 
     GARDEN_OF_GRIND("GARDEN_OF_GRIND", new GardenOfGrind(),
-        new VariantNames[] { VOID_WORLD, NO_RECIPE_ADDITIONS, NO_ROCKET }, new VariantNames[] { SUPERFLAT }),
+        new VariantNames[] { VOID_WORLD, NO_ROCKET }, new VariantNames[] { SUPERFLAT }),
 
     SKYBLOCK("SKYBLOCK", true, new VariantNames[] { VOID_WORLD, VOID_ISLAND },
         new VariantNames[] { NO_RECIPE_ADDITIONS, SUPERFLAT }),

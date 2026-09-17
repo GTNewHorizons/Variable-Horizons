@@ -1,6 +1,7 @@
 package com.LazyFlesh.variablehorizons.variants.invasive;
 
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
