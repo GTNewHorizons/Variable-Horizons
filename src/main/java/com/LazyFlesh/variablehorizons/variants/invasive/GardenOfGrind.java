@@ -1,9 +1,16 @@
 package com.LazyFlesh.variablehorizons.variants.invasive;
 
+import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
+
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.config.Worldgen;
 
 public class GardenOfGrind extends VariantLoader {
@@ -22,7 +29,16 @@ public class GardenOfGrind extends VariantLoader {
 
     @Override
     public void variantRecipes(VariantNames... activeVariants) {
-        // no recipes to add (travel to dimensions is not restricted)
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Olivine, 15))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Asbestos, 6),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnetite, 2))
+            .fluidInputs(GTModHandler.getDistilledWater(9_000))
+            .fluidOutputs(Materials.Hydrogen.getGas(4_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(autoclaveRecipes);
         // maybe chaos shard, but there's a command to turn on chaos islands back on when you get around to it.
     }
 }
