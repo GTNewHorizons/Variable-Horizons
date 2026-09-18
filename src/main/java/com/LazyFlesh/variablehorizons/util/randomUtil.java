@@ -1,8 +1,10 @@
 package com.LazyFlesh.variablehorizons.util;
 
 import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.WeakHashMap;
@@ -26,6 +28,9 @@ import com.LazyFlesh.variablehorizons.util.superflat.SuperflatBlocks;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 
+import akka.japi.Pair;
+import cpw.mods.fml.common.registry.GameRegistry;
+
 public class randomUtil {
 
     private static final Map<EntityPlayerMP, Long> WARN_TIMES = new WeakHashMap<>();
@@ -36,6 +41,12 @@ public class randomUtil {
     private static final boolean CUSTOM_STARTING_DIM_ACTIVE = VariantNames
         .activeContains(VariantNames.CUSTOM_DIM_START.id);
     private static final int BLOCKS_PER_CHUNK = 65536;
+    public static final List<Pair<Block, Integer>> CONFIGURED_BLOCK_MONOBLOCK = getBlocksFromConfig(
+        VariantNames.MONOBLOCK);
+    public static final Block REPLACEMENT_BLOCK = CONFIGURED_BLOCK_MONOBLOCK.get(0)
+        .first();
+    public static final int REPLACEMENT_META = CONFIGURED_BLOCK_MONOBLOCK.get(0)
+        .second();
 
     public static String getRandomPortalMessage(EntityPlayerMP player, World world) {
         int randomNumber = MathHelper.getRandomIntegerInRange(new Random(), 1, 32);
@@ -76,7 +87,7 @@ public class randomUtil {
         VariableHorizons.LOG.info("Generating Sky Island for dimension: {}", dimID);
 
         Object[][] island = VoidIsland.getIsland(dimID); // [0][] is offset from player/spawn, [1][] is mapping key,
-                                                         // after that is structure
+        // after that is structure
         int structX = spawn.posX + (Integer) island[0][0];
         int structY = spawn.posY + (Integer) island[0][1];
         int structZ = spawn.posZ + (Integer) island[0][2];
@@ -188,4 +199,73 @@ public class randomUtil {
             return metadata;
         });
     }
+
+    public static List<Pair<Block, Integer>> getBlocksFromConfig(VariantNames variant) {
+        List<Pair<Block, Integer>> configBlocks = new ArrayList<>();
+        String[] blockStrings = new String[] {};
+        if (variant == VariantNames.SKYGRID) {
+            blockStrings = GeneralConfig.skygridTEWhitelist;
+        }
+        if (variant == VariantNames.MONOBLOCK) {
+            blockStrings = new String[] { GeneralConfig.replacementBlock };
+        }
+
+        int meta;
+        for (String blockString : blockStrings) {
+            String[] split = blockString.split(":");
+            if (split.length < 2) {
+                VariableHorizons.LOG.info(
+                    "Invalid block config value '{}' (expected format 'modid:blockname[:meta]'), falling back to minecraft:stone",
+                    GeneralConfig.replacementBlock);
+                configBlocks.add(new Pair<>(Blocks.stone, 0));
+                continue;
+            }
+
+            Block block = GameRegistry.findBlock(split[0], split[1]);
+            if (block == null) {
+                VariableHorizons.LOG.info(
+                    "Config block '{}:{}' not found in registry, falling back to minecraft:stone",
+                    split[0],
+                    split[1]);
+                configBlocks.add(new Pair<>(Blocks.stone, 0));
+                continue;
+            }
+
+            if (split.length == 2) {
+                VariableHorizons.LOG
+                    .info("Config block '{}:{}' has no meta value, falling back to 0", split[0], split[1]);
+                configBlocks.add(new Pair<>(block, 0));
+                continue;
+            }
+
+            try {
+                meta = Integer.parseInt(split[2]);
+            } catch (NumberFormatException e) {
+                VariableHorizons.LOG
+                    .info("Config block meta value '{}' is not a valid number, falling back to 0", split[2]);
+                configBlocks.add(new Pair<>(block, 0));
+                continue;
+            }
+            configBlocks.add(new Pair<>(block, meta));
+        }
+        return configBlocks;
+    }
+
+    public static class WorldGenFlag {
+
+        private static final ThreadLocal<Integer> depth = ThreadLocal.withInitial(() -> 0);
+
+        public static void enter() {
+            depth.set(depth.get() + 1);
+        }
+
+        public static void exit() {
+            depth.set(Math.max(0, depth.get() - 1));
+        }
+
+        public static boolean isGenerating() {
+            return depth.get() > 0;
+        }
+    }
+
 }

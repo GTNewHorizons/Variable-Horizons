@@ -42,6 +42,12 @@ public class NoRocket extends VariantLoader implements IRuntimeVariant {
 
     @Override
     public void variantRecipes(VariantNames... activeVariants) {
+        // none for now
+    }
 
+    @Override
+    public void undoVariant(VariantNames... activeVariants) {
+        // can't undo rocket recipe removals
+        // hence also not toggling the .hasLoaded
     }
 }

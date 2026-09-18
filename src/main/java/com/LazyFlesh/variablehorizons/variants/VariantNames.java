@@ -12,10 +12,13 @@ import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.variants.invasive.DiffDimStart;
 import com.LazyFlesh.variablehorizons.variants.invasive.DimLocked;
 import com.LazyFlesh.variablehorizons.variants.invasive.GardenOfGrind;
+import com.LazyFlesh.variablehorizons.variants.invasive.SkyGrid;
 import com.LazyFlesh.variablehorizons.variants.invasive.Skyblock;
 import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 import com.LazyFlesh.variablehorizons.variants.runtime.AlteredRecipeTime;
+import com.LazyFlesh.variablehorizons.variants.runtime.ChancedRecipes;
 import com.LazyFlesh.variablehorizons.variants.runtime.InfinitePower;
+import com.LazyFlesh.variablehorizons.variants.runtime.NoPollution;
 import com.LazyFlesh.variablehorizons.variants.runtime.NoQuestRewards;
 import com.LazyFlesh.variablehorizons.variants.runtime.NoRocket;
 
@@ -30,13 +33,17 @@ public enum VariantNames {
     VOID_ISLAND("VOID_ISLAND", new VoidIsland()), // Starting Dim is a sky island.
     NO_ROCKET("NO_ROCKET", new NoRocket()), // removes rocket recipes
     NO_QUEST_REWARDS("NO_QUEST_REWARDS", new NoQuestRewards()),
+    NO_POLLUTION("NO_POLLUTION", new NoPollution()),
     ALTERED_RECIPE_TIME("ALTERED_TIME", new AlteredRecipeTime()),
     ALTERED_EFFICIENCY("ALTERED_EFFICIENCY"),
+    CHANCED_RECIPES("CHANCED_RECIPES", new ChancedRecipes()),
     CHEAP_MODE("CHEAP_MODE"),
     EXPENSIVE_MODE("EXPENSIVE_MODE"),
     INFINITE_POWER("INFINITE_POWER", new InfinitePower()),
     CUSTOM_DIM_START("CUSTOM_DIM_START", new DiffDimStart()), // sets a different dim as the spawn dimension instead of OW
     SUPERFLAT("SUPERFLAT", new VariantNames[]{ VOID_WORLD, VOID_ISLAND }),
+    SKYGRID("SKYGRID", new SkyGrid(), new VariantNames[]{ VOID_WORLD, VOID_ISLAND, SUPERFLAT }),
+    MONOBLOCK("MONOBLOCK", new VariantNames[]{ NO_RECIPE_ADDITIONS }),
 
     // full variants
     // i.e. defines both world type and recipes
@@ -131,6 +138,13 @@ public enum VariantNames {
         }
     }
 
+    VariantNames(String id, VariantLoader loaderClass, VariantNames[] incompatible) {
+        this(id, incompatible);
+        if (loaderClass != null) {
+            this.loaderClass = loaderClass;
+        }
+    }
+
     VariantNames(String id, VariantLoader loaderClass, VariantNames[] composedOf, VariantNames[] incompatible) {
         this(id, true, composedOf, incompatible);
         if (loaderClass != null) {
@@ -157,6 +171,13 @@ public enum VariantNames {
             variantsCacheRefresh = false;
         }
         return activeVariantsCache;
+    }
+
+    public static Set<String> getActiveVariantsToCheck() {
+        Set<String> activeVariantsToCheck = new HashSet<>(activeVariantsCache);
+        activeVariantsToCheck.remove(VariantNames.CHANCED_RECIPES.id);
+        activeVariantsToCheck.remove(VariantNames.NO_POLLUTION.id);
+        return activeVariantsToCheck;
     }
 
     public static VariantNames getVariantFromID(String id) {
