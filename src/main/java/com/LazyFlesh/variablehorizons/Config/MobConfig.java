@@ -14,9 +14,9 @@ public class MobConfig {
     @Config.DefaultDouble(1d)
     public static double mobHealthMultiplier;
 
-    @Config.Comment("Global mob melee damage multiplier")
+    @Config.Comment("Global mob damage multiplier")
     @Config.DefaultDouble(1d)
-    public static double mobMeleeMultiplier;
+    public static double mobDamageMultiplier;
 
     @Config.Comment("Blood Moon mobcap multiplier")
     @Config.DefaultInt(3)

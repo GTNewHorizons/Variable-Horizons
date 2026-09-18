@@ -91,7 +91,7 @@ variantgui.chancedrecipes.randomitemoutputs.tooltip=Enter item output production
 variantgui.chancedrecipes.randomfluidinputs.tooltip=Enter fluid input consumption chance multiplier
 variantgui.chancedrecipes.randomfluidoutputs.tooltip=Enter fluid output production chance multiplier
 variantgui.crimsonapocalypse.mobhealth.tooltip=Enter mob health multiplier
-variantgui.crimsonapocalypse.mobmelee.tooltip=Enter mob melee damage multiplier
+variantgui.crimsonapocalypse.mobmelee.tooltip=Enter mob damage multiplier
 variantgui.crimsonapocalypse.mobcap.tooltip=Enter Blood Moon mobcap multiplier
 variantgui.crimsonapocalypse.infernaldifficulty.tooltip=Enter infernal mob difficulty level, from 0 (default) to 3 (hell)
 

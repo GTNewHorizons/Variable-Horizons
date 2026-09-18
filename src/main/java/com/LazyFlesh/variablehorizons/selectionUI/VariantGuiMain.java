@@ -489,10 +489,10 @@ public class VariantGuiMain extends GuiScreen {
             makeTextField(
                 Collections.singletonList(VariantNames.CRIMSON_APOCALYPSE),
                 decimalFilter,
-                () -> String.valueOf(MobConfig.mobMeleeMultiplier),
+                () -> String.valueOf(MobConfig.mobDamageMultiplier),
                 text -> {
                     try {
-                        MobConfig.mobMeleeMultiplier = Double.parseDouble(text);
+                        MobConfig.mobDamageMultiplier = Double.parseDouble(text);
                     } catch (NumberFormatException ignored) {}
                 },
                 StatCollector.translateToLocal("variantgui.crimsonapocalypse.mobmelee.tooltip"),
@@ -668,25 +668,25 @@ public class VariantGuiMain extends GuiScreen {
         switch (index) {
             case 0 -> {
                 MobConfig.mobHealthMultiplier = 1;
-                MobConfig.mobMeleeMultiplier = 1;
+                MobConfig.mobDamageMultiplier = 1;
                 MobConfig.bloodMoonMobcapMultiplier = 3;
                 MobConfig.infernalMobDifficulty = 0;
             }
             case 1 -> {
                 MobConfig.mobHealthMultiplier = 1.5;
-                MobConfig.mobMeleeMultiplier = 2;
+                MobConfig.mobDamageMultiplier = 2;
                 MobConfig.bloodMoonMobcapMultiplier = 3;
                 MobConfig.infernalMobDifficulty = 1;
             }
             case 2 -> {
                 MobConfig.mobHealthMultiplier = 2;
-                MobConfig.mobMeleeMultiplier = 3;
+                MobConfig.mobDamageMultiplier = 3;
                 MobConfig.bloodMoonMobcapMultiplier = 4;
                 MobConfig.infernalMobDifficulty = 2;
             }
             case 3 -> {
                 MobConfig.mobHealthMultiplier = 8;
-                MobConfig.mobMeleeMultiplier = 8;
+                MobConfig.mobDamageMultiplier = 8;
                 MobConfig.bloodMoonMobcapMultiplier = 5;
                 MobConfig.infernalMobDifficulty = 3;
             }

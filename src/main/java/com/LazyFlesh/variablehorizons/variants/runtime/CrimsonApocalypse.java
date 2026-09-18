@@ -9,6 +9,7 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 
 import com.LazyFlesh.variablehorizons.Config.MobConfig;
 import com.LazyFlesh.variablehorizons.VariableHorizons;
@@ -26,6 +27,8 @@ import lumien.randomthings.Configuration.Settings;
 import toast.specialMobs.Properties;
 import toast.specialMobs.RandomHelper;
 import toast.specialMobs._SpecialMobs;
+import toast.specialMobs.entity.ISpecialMob;
+import toast.specialMobs.entity.SpecialMobData;
 
 public class CrimsonApocalypse extends VariantLoader implements IRuntimeVariant {
 
@@ -64,7 +67,7 @@ public class CrimsonApocalypse extends VariantLoader implements IRuntimeVariant 
         }
 
         NBTTagCompound entityData = entity.getEntityData();
-        if (!entityData.getBoolean("CrimsonBuffsApplied")) {
+        if (!entityData.getBoolean("GenericCrimsonBuffsApplied")) {
             IAttributeInstance maxHealth = entity.getEntityAttribute(SharedMonsterAttributes.maxHealth);
             if (maxHealth != null) {
                 double newMaxHealth = maxHealth.getBaseValue() * MobConfig.mobHealthMultiplier;
@@ -73,10 +76,35 @@ public class CrimsonApocalypse extends VariantLoader implements IRuntimeVariant 
             }
             IAttributeInstance damage = entity.getEntityAttribute(SharedMonsterAttributes.attackDamage);
             if (damage != null) {
-                double newDamage = damage.getBaseValue() * MobConfig.mobMeleeMultiplier;
+                double newDamage = damage.getBaseValue() * MobConfig.mobDamageMultiplier;
                 damage.setBaseValue(newDamage);
             }
-            entityData.setBoolean("CrimsonBuffsApplied", true);
+            entityData.setBoolean("GenericCrimsonBuffsApplied", true);
+        }
+    }
+
+    @SubscribeEvent
+    public void onEntityUpdate(LivingEvent.LivingUpdateEvent event) {
+        if (!VariantNames.CRIMSON_APOCALYPSE.hasLoaded) {
+            return;
+        }
+
+        EntityLivingBase entity = event.entityLiving;
+        if (entity.worldObj.isRemote) {
+            return;
+        }
+
+        if (entity.ticksExisted == 1) {
+            NBTTagCompound entityData = entity.getEntityData();
+            if (!entityData.getBoolean("CrimsonArrowBuffsApplied")) {
+                if (entity instanceof ISpecialMob) {
+                    SpecialMobData specialData = ((ISpecialMob) entity).getSpecialData();
+                    if (specialData != null) {
+                        specialData.arrowDamage *= (float) MobConfig.mobDamageMultiplier;
+                    }
+                }
+                entityData.setBoolean("CrimsonArrowBuffsApplied", true);
+            }
         }
     }
 
