@@ -13,6 +13,7 @@ import com.LazyFlesh.variablehorizons.variants.invasive.DiffDimStart;
 import com.LazyFlesh.variablehorizons.variants.invasive.DimLocked;
 import com.LazyFlesh.variablehorizons.variants.invasive.GardenOfGrind;
 import com.LazyFlesh.variablehorizons.variants.invasive.SkyGrid;
+import com.LazyFlesh.variablehorizons.variants.invasive.Skyblock;
 import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 import com.LazyFlesh.variablehorizons.variants.runtime.AlteredRecipeTime;
 import com.LazyFlesh.variablehorizons.variants.runtime.ChancedRecipes;
@@ -53,7 +54,7 @@ public enum VariantNames {
     GARDEN_OF_GRIND("GARDEN_OF_GRIND", new GardenOfGrind(),
         new VariantNames[] { VOID_WORLD, NO_RECIPE_ADDITIONS, NO_ROCKET }, new VariantNames[] { SUPERFLAT }),
 
-    SKYBLOCK("SKYBLOCK", true, new VariantNames[] { VOID_WORLD, VOID_ISLAND },
+    SKYBLOCK("SKYBLOCK", new Skyblock(), new VariantNames[] { VOID_WORLD, VOID_ISLAND },
         new VariantNames[] { NO_RECIPE_ADDITIONS, SUPERFLAT }),
     // only OW is void, w/ sky island
     // if you want Skyblock with no recipe additions, do Garden of Grind + Void Island.
