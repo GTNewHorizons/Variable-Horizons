@@ -178,6 +178,7 @@ public enum VariantNames {
         Set<String> activeVariantsToCheck = new HashSet<>(activeVariantsCache);
         activeVariantsToCheck.remove(VariantNames.CHANCED_RECIPES.id);
         activeVariantsToCheck.remove(VariantNames.NO_POLLUTION.id);
+        activeVariantsToCheck.remove(VariantNames.CRIMSON_APOCALYPSE.id);
         return activeVariantsToCheck;
     }
 
