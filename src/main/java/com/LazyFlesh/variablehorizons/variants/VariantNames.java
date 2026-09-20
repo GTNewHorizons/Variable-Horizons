@@ -16,6 +16,7 @@ import com.LazyFlesh.variablehorizons.variants.invasive.SkyGrid;
 import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 import com.LazyFlesh.variablehorizons.variants.runtime.AlteredRecipeTime;
 import com.LazyFlesh.variablehorizons.variants.runtime.ChancedRecipes;
+import com.LazyFlesh.variablehorizons.variants.runtime.Chaos;
 import com.LazyFlesh.variablehorizons.variants.runtime.InfinitePower;
 import com.LazyFlesh.variablehorizons.variants.runtime.NoPollution;
 import com.LazyFlesh.variablehorizons.variants.runtime.NoQuestRewards;
@@ -60,6 +61,8 @@ public enum VariantNames {
     DIMLOCKED("DIMLOCKED", new DimLocked(), new VariantNames[] { CUSTOM_DIM_START, NO_ROCKET },
         new VariantNames[] { NO_RECIPE_ADDITIONS }),
 
+    CHAOS("CHAOS", new Chaos(), new VariantNames[] { ALTERED_RECIPE_TIME, CHANCED_RECIPES, SKYGRID},
+        new VariantNames[] { VOID_WORLD, VOID_ISLAND, SUPERFLAT}),
 
     ;
     // spotless:on
