@@ -3,6 +3,8 @@ package com.LazyFlesh.variablehorizons.variants.runtime;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiOptions;
@@ -232,6 +234,7 @@ public class CrimsonApocalypse extends VariantLoader implements IRuntimeVariant 
     }
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public void onInit(GuiScreenEvent.InitGuiEvent.Post event) {
         if (!VariantNames.CRIMSON_APOCALYPSE.hasLoaded) {
             return;
@@ -248,6 +251,7 @@ public class CrimsonApocalypse extends VariantLoader implements IRuntimeVariant 
     }
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public void onAction(GuiScreenEvent.ActionPerformedEvent.Pre event) {
         if (!VariantNames.CRIMSON_APOCALYPSE.hasLoaded) {
             return;
