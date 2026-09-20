@@ -14,6 +14,7 @@ import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import com.LazyFlesh.variablehorizons.variants.invasive.DimLocked;
 import com.LazyFlesh.variablehorizons.variants.runtime.AlteredRecipeTime;
+import com.LazyFlesh.variablehorizons.variants.runtime.CrimsonApocalypse;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -102,7 +103,7 @@ public class CommonProxy {
 
     public void serverStarted(FMLServerStartedEvent event) {
         IslandControlSaveData.init();
-
+        CrimsonApocalypse.applyDifficultyToServer();
         if (VariantNames.activeContains(VariantNames.INFINITE_POWER.id)) {
             FMLCommonHandler.instance()
                 .bus()

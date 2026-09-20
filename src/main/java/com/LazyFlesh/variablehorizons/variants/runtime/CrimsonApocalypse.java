@@ -3,13 +3,21 @@ package com.LazyFlesh.variablehorizons.variants.runtime;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiOptions;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.EnumDifficulty;
+import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.world.WorldEvent;
 
 import com.LazyFlesh.variablehorizons.Config.MobConfig;
 import com.LazyFlesh.variablehorizons.VariableHorizons;
@@ -195,6 +203,58 @@ public class CrimsonApocalypse extends VariantLoader implements IRuntimeVariant 
         imCore.eliteRarity = Math.max(imCore.eliteRarity / rarityModifier, 1);
         imCore.ultraRarity = Math.max(imCore.ultraRarity / rarityModifier, 1);
         imCore.infernoRarity = Math.max(imCore.infernoRarity / rarityModifier, 1);
+    }
+
+    private static boolean isDifficultyButton(GuiButton b) {
+        return b.id == 108 || b.displayString.startsWith(I18n.format("options.difficulty"));
+    }
+
+    public static void applyDifficultyToServer() {
+        if (!VariantNames.CRIMSON_APOCALYPSE.hasLoaded) {
+            return;
+        }
+        MinecraftServer server = MinecraftServer.getServer();
+        if (server == null) {
+            return;
+        }
+        // difficulty setter
+        server.func_147139_a(EnumDifficulty.HARD);
+    }
+
+    @SubscribeEvent
+    public void onWorldLoad(WorldEvent.Load event) {
+        if (!VariantNames.CRIMSON_APOCALYPSE.hasLoaded) {
+            return;
+        }
+        if (event.world.isRemote) {
+            Minecraft.getMinecraft().gameSettings.difficulty = EnumDifficulty.HARD;
+        }
+    }
+
+    @SubscribeEvent
+    public void onInit(GuiScreenEvent.InitGuiEvent.Post event) {
+        if (!VariantNames.CRIMSON_APOCALYPSE.hasLoaded) {
+            return;
+        }
+        if (!(event.gui instanceof GuiOptions)) {
+            return;
+        }
+        for (Object object : event.buttonList) {
+            GuiButton button = (GuiButton) object;
+            if (isDifficultyButton(button)) {
+                button.enabled = false;
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onAction(GuiScreenEvent.ActionPerformedEvent.Pre event) {
+        if (!VariantNames.CRIMSON_APOCALYPSE.hasLoaded) {
+            return;
+        }
+        if (event.gui instanceof GuiOptions && isDifficultyButton(event.button)) {
+            event.setCanceled(true);
+        }
     }
 
     @Override
