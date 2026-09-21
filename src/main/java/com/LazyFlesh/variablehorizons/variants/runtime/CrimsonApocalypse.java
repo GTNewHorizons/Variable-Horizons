@@ -3,8 +3,6 @@ package com.LazyFlesh.variablehorizons.variants.runtime;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiOptions;
@@ -32,6 +30,8 @@ import atomicstryker.infernalmobs.common.modifiers.MM_Lifesteal;
 import atomicstryker.infernalmobs.common.modifiers.MM_Ninja;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import lumien.randomthings.Configuration.RTConfiguration;
 import lumien.randomthings.Configuration.Settings;
 import toast.specialMobs.Properties;
