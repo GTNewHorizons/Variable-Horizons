@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
@@ -36,6 +37,27 @@ public class ChancedRecipes extends VariantLoader implements IRuntimeVariant {
             return;
         }
         long seed = event.player.getEntityWorld()
+            .getSeed();
+        ChancedRecipes.normalizeChanceArrays();
+        modifyRecipeChances(
+            GeneralConfig.inputChanceMultiplier,
+            GeneralConfig.outputChanceMultiplier,
+            GeneralConfig.fluidInputChanceMultiplier,
+            GeneralConfig.fluidOutputChanceMultiplier,
+            GeneralConfig.inputChanceRandom,
+            GeneralConfig.outputChanceRandom,
+            seed);
+    }
+
+    public static void applyToServer() {
+        if (!VariantNames.CHANCED_RECIPES.hasLoaded) {
+            return;
+        }
+        MinecraftServer server = MinecraftServer.getServer();
+        if (server == null) {
+            return;
+        }
+        long seed = server.getEntityWorld()
             .getSeed();
         ChancedRecipes.normalizeChanceArrays();
         modifyRecipeChances(

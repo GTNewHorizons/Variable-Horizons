@@ -16,6 +16,7 @@ import com.LazyFlesh.variablehorizons.variants.invasive.SkyGrid;
 import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 import com.LazyFlesh.variablehorizons.variants.runtime.AlteredRecipeTime;
 import com.LazyFlesh.variablehorizons.variants.runtime.ChancedRecipes;
+import com.LazyFlesh.variablehorizons.variants.runtime.CrimsonApocalypse;
 import com.LazyFlesh.variablehorizons.variants.runtime.InfinitePower;
 import com.LazyFlesh.variablehorizons.variants.runtime.NoPollution;
 import com.LazyFlesh.variablehorizons.variants.runtime.NoQuestRewards;
@@ -43,6 +44,7 @@ public enum VariantNames {
     SUPERFLAT("SUPERFLAT", new VariantNames[]{ VOID_WORLD, VOID_ISLAND }),
     SKYGRID("SKYGRID", new SkyGrid(), new VariantNames[]{ VOID_WORLD, VOID_ISLAND, SUPERFLAT }),
     MONOBLOCK("MONOBLOCK", new VariantNames[]{ NO_RECIPE_ADDITIONS }),
+    CRIMSON_APOCALYPSE("CRIMSON_APOCALYPSE", new CrimsonApocalypse()),
 
     // full variants
     // i.e. defines both world type and recipes
@@ -176,6 +178,7 @@ public enum VariantNames {
         Set<String> activeVariantsToCheck = new HashSet<>(activeVariantsCache);
         activeVariantsToCheck.remove(VariantNames.CHANCED_RECIPES.id);
         activeVariantsToCheck.remove(VariantNames.NO_POLLUTION.id);
+        activeVariantsToCheck.remove(VariantNames.CRIMSON_APOCALYPSE.id);
         return activeVariantsToCheck;
     }
 
