@@ -42,6 +42,7 @@ dependencies {
     implementation("com.github.GTNewHorizons:GTNHLib:0.11.41:dev")
     implementation("com.github.GTNewHorizons:BloodMagic:1.9.12:dev")
     implementation("com.github.GTNewHorizons:Botania:1.13.33-GTNH:dev")
+    implementation("com.github.GTNewHorizons:twilightforest:2.7.41:dev")
     implementation("com.github.GTNewHorizons:Realistic-World-Gen:alpha-1.5.2:dev") { transitive = false }
 
     // qb-less villager trade
