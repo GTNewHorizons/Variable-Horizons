@@ -82,10 +82,10 @@ dependencies {
     devOnlyNonPublishable("com.github.GTNewHorizons:amunra:0.8.14:dev") { transitive = false }
 
     // spectre
-    devOnlyNonPublishable("com.github.GTNewHorizons:Random-Things:2.7.10:dev") { transitive = false }
+    api("com.github.GTNewHorizons:Random-Things:2.7.11:dev") { transitive = false }
 
     // mobs
-    devOnlyNonPublishable("com.github.GTNewHorizons:Infernal-Mobs:1.10.7-GTNH:dev") { transitive = false }
-    devOnlyNonPublishable("com.github.GTNewHorizons:SpecialMobs:3.7.7:dev") { transitive = false }
+    api("com.github.GTNewHorizons:Infernal-Mobs:1.10.7-GTNH:dev") { transitive = false }
+    api("com.github.GTNewHorizons:SpecialMobs:3.7.7:dev") { transitive = false }
 
 }
