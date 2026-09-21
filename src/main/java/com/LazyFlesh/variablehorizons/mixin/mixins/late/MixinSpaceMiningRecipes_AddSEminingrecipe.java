@@ -49,22 +49,22 @@ public class MixinSpaceMiningRecipes_AddSEminingrecipe {
 
         invokeAddRecipesToDronesWithMaterials(
             "DeepDarkAsteroid",
-            new ItemStack[] { getModItem(ExtraUtilities.ID, "dark_portal", 1, 0) },
+            new ItemStack[] { getModItem(ExtraUtilities.ID, "dark_portal", 0, 0) },
             null,
-            new int[] { 9900, 9900, 9900, 9900, 9900 },
-            new Materials[] { Materials.DarkIron, Materials.Forcicium, Materials.Forcillium, Materials.Rubidium,
-                Materials.Pumice },
+            new int[] { 6000, 6000, 1000, 1000, 1000, 1000 },
+            new Materials[] { Materials.Rubidium, Materials.Tartarite, Materials.DarkIron, Materials.Forcicium,
+                Materials.Forcillium, Materials.Pumice },
             OrePrefixes.ore,
-            1,
-            1,
+            30,
+            50,
             50,
             100,
             100,
             3,
-            100 * 20,
+            10 * 20,
             (int) TierEU.RECIPE_UEV,
             ItemMiningDrones.DroneTiers.UIV.ordinal(),
             ItemMiningDrones.DroneTiers.UMV.ordinal(),
-            5);
+            60);
     }
 }
