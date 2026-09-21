@@ -35,6 +35,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
+import twilightforest.TFTreasure;
 import twilightforest.entity.EntityTFFireBeetle;
 import twilightforest.item.ItemTFTransformPowder;
 
@@ -54,11 +55,16 @@ public class DimLocked extends VariantLoader {
         }
         AlchemicalWizardry.demonRitualDimensionBlacklist = newBlacklist;
 
-        // Add magmacube -> fire beetle if not in twilight
-        Item item = GameRegistry.findItem("TwilightForest", "item.transformPowder");
+        if (TwilightForest.isModLoaded()) {
+            // Add magmacube -> fire beetle if not in twilight
+            Item item = GameRegistry.findItem("TwilightForest", "item.transformPowder");
 
-        if ((item instanceof ItemTFTransformPowder) && GeneralConfig.startingDimID != 7) {
-            ((ItemTFTransformPowder) item).addTwoWayTransformation(EntityTFFireBeetle.class, EntityMagmaCube.class);
+            // ok, so, remembered wrong, it's not actually in loot table. So, uh, add it.
+            TFTreasure.tree_cache.uncommon.add(item, 4);
+
+            if ((item instanceof ItemTFTransformPowder) && GeneralConfig.startingDimID != 7) {
+                ((ItemTFTransformPowder) item).addTwoWayTransformation(EntityTFFireBeetle.class, EntityMagmaCube.class);
+            }
         }
     }
 
