@@ -2,12 +2,15 @@ package com.LazyFlesh.variablehorizons.variants.runtime;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
@@ -30,23 +33,39 @@ public class AlteredRecipeTime extends VariantLoader implements IRuntimeVariant 
 
     @SubscribeEvent
     public void onPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
-        modifyRecipesDuration(GeneralConfig.recipeTimeMultiplier);
+        if (!VariantNames.ALTERED_RECIPE_TIME.hasLoaded) {
+            return;
+        }
+        modifyRecipesDuration(
+            GeneralConfig.recipeTimeMultiplier,
+            event.player.getEntityWorld()
+                .getSeed());
     }
 
     public static void applyToServer() {
-        if (VariantNames.ALTERED_RECIPE_TIME.hasLoaded) {
-            modifyRecipesDuration(GeneralConfig.recipeTimeMultiplier);
+        if (!VariantNames.ALTERED_RECIPE_TIME.hasLoaded) {
+            return;
         }
+        MinecraftServer server = MinecraftServer.getServer();
+        if (server == null) {
+            return;
+        }
+        long seed = server.getEntityWorld()
+            .getSeed();
+        modifyRecipesDuration(GeneralConfig.recipeTimeMultiplier, seed);
     }
 
-    private static void modifyRecipesDuration(float multiplier) {
+    private static void modifyRecipesDuration(float multiplier, long worldSeed) {
         // Do the work
         for (Map.Entry<String, RecipeMap<?>> entry : RecipeMap.ALL_RECIPE_MAPS.entrySet()) {
             for (GTRecipe recipe : entry.getValue()
                 .getAllRecipes()) {
                 if (recipe.mDuration > 0) {
                     int original = originalRecipeTimes.computeIfAbsent(recipe, r -> r.mDuration);
-                    recipe.mDuration = scale(original, multiplier);
+                    recipe.mDuration = scale(
+                        original,
+                        multiplier,
+                        worldSeed + randomUtil.persistentRecipeSeed(recipe, 25258927368899L));
                 }
             }
         }
@@ -54,16 +73,23 @@ public class AlteredRecipeTime extends VariantLoader implements IRuntimeVariant 
         for (GTRecipe.RecipeAssemblyLine recipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
             if (recipe.mDuration > 0) {
                 int originalDuration = originalAsslineRecipeTimes.computeIfAbsent(recipe, r -> r.mDuration);
-                recipe.mDuration = scale(originalDuration, multiplier);
+                recipe.mDuration = scale(originalDuration, multiplier, worldSeed + recipe.getPersistentHash());
             }
             if (recipe.mResearchTime > 0) {
                 int originalResearch = originalResearchTimes.computeIfAbsent(recipe, r -> r.mResearchTime);
-                recipe.mResearchTime = scale(originalResearch, multiplier);
+                recipe.mResearchTime = scale(originalResearch, multiplier, worldSeed + recipe.getPersistentHash());
             }
         }
     }
 
-    private static int scale(int original, float multiplier) {
+    private static int scale(int original, float multiplier, long seed) {
+        if (GeneralConfig.recipeTimeRandom) {
+            Random factorRandom = new Random(seed);
+            float factor = 1 - factorRandom.nextFloat();
+            boolean multiply = factorRandom.nextBoolean();
+            multiplier = multiply ? GeneralConfig.recipeTimeRandomBounds * factor
+                : 1 / (GeneralConfig.recipeTimeRandomBounds * factor);
+        }
         long result = Math.round(original * (double) multiplier);
         return (int) Math.max(1, Math.min(Integer.MAX_VALUE, result));
     }
@@ -100,7 +126,10 @@ public class AlteredRecipeTime extends VariantLoader implements IRuntimeVariant 
                 return;
             }
             float multiplier = Float.parseFloat(args[0]);
-            modifyRecipesDuration(multiplier);
+            modifyRecipesDuration(
+                multiplier,
+                sender.getEntityWorld()
+                    .getSeed());
             GeneralConfig.recipeTimeMultiplier = multiplier;
             ConfigurationManager.save(GeneralConfig.class);
             sender.addChatMessage(new ChatComponentText("Changes applied"));

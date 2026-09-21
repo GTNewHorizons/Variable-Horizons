@@ -27,6 +27,14 @@ public class GeneralConfig {
     @Config.DefaultFloat(1f)
     public static float recipeTimeMultiplier;
 
+    @Config.Comment("Should recipe times be randomized")
+    @Config.DefaultBoolean(false)
+    public static boolean recipeTimeRandom;
+
+    @Config.Comment("Recipe time randomizer max factor/divisor")
+    @Config.DefaultFloat(1f)
+    public static float recipeTimeRandomBounds;
+
     @Config.Comment("Global machine efficiency multiplier")
     @Config.DefaultFloat(1f)
     public static float efficiencyMultiplier;

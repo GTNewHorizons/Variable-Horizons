@@ -5,11 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.fluids.FluidStack;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
@@ -17,7 +16,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 
 public class ChancedRecipes extends VariantLoader implements IRuntimeVariant {
 
@@ -99,7 +97,7 @@ public class ChancedRecipes extends VariantLoader implements IRuntimeVariant {
 
                 int[] originalOutputChance = originalRecipeOutputChances
                     .computeIfAbsent(recipe, r -> r.mOutputChances.clone());
-                long recipeSeed = persistentRecipeSeed(recipe);
+                long recipeSeed = randomUtil.persistentRecipeSeed(recipe, 11258999068425L);
                 Random outputRandom = new Random(worldSeed + recipeSeed);
                 Random inputRandom = new Random(worldSeed - recipeSeed);
                 for (int i = 0; i < recipe.mOutputChances.length; i++) {
@@ -144,23 +142,6 @@ public class ChancedRecipes extends VariantLoader implements IRuntimeVariant {
     private static int scale(int original, float multiplier) {
         long result = Math.round(original * (double) multiplier);
         return (int) Math.min(10000, result);
-    }
-
-    private static long persistentRecipeSeed(GTRecipe recipe) {
-        long recipeSeed = 11258999068425L;
-        for (ItemStack stack : recipe.mInputs) {
-            recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(stack, true, false);
-        }
-        for (ItemStack stack : recipe.mOutputs) {
-            recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(stack, true, false);
-        }
-        for (FluidStack fluid : recipe.mFluidInputs) {
-            recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(fluid, true, false);
-        }
-        for (FluidStack fluid : recipe.mFluidOutputs) {
-            recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(fluid, true, false);
-        }
-        return recipeSeed;
     }
 
     @Override

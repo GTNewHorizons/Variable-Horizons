@@ -44,11 +44,9 @@ public class CommonProxy {
                 .registerVillageTradeHandler(Constants.ID_VILLAGER_BEEKEEPER, new VillagerRecipe());
         }
 
-        if (VariantNames.activeContains(VariantNames.ALTERED_RECIPE_TIME.id)) {
-            FMLCommonHandler.instance()
-                .bus()
-                .register(VariantNames.ALTERED_RECIPE_TIME.loaderClass);
-        }
+        FMLCommonHandler.instance()
+            .bus()
+            .register(VariantNames.ALTERED_RECIPE_TIME.loaderClass);
 
         FMLCommonHandler.instance()
             .bus()

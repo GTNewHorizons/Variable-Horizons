@@ -364,6 +364,13 @@ public class VariantGuiMain extends GuiScreen {
                         Settings.BLOODMOON_VISUAL_REDLIGHT = MobConfig.bloodMoonTint;
                     }
                 }));
+        checkboxEntries.add(
+            makeCheckbox(
+                10,
+                VariantNames.ALTERED_RECIPE_TIME,
+                "variantgui.alteredrecipetime.randomtimes",
+                () -> GeneralConfig.recipeTimeRandom,
+                value -> GeneralConfig.recipeTimeRandom = value));
 
         textFieldEntries.clear();
         Predicate<Character> dimIdFilter = c -> Character.isDigit(c) || c == '-';
@@ -391,8 +398,20 @@ public class VariantGuiMain extends GuiScreen {
                         GeneralConfig.recipeTimeMultiplier = Float.parseFloat(text);
                     } catch (NumberFormatException ignored) {}
                 },
-                StatCollector.translateToLocal("variantgui.recipetimefield.tooltip"),
-                StatCollector.translateToLocal("variantgui.recipetimefield.label")));
+                StatCollector.translateToLocal("variantgui.alteredrecipetime.recipetime.tooltip"),
+                StatCollector.translateToLocal("variantgui.alteredrecipetime.recipetime.label")));
+        textFieldEntries.add(
+            makeTextField(
+                Collections.singletonList(VariantNames.ALTERED_RECIPE_TIME),
+                decimalFilter,
+                () -> String.valueOf(GeneralConfig.recipeTimeRandomBounds),
+                text -> {
+                    try {
+                        GeneralConfig.recipeTimeRandomBounds = Float.parseFloat(text);
+                    } catch (NumberFormatException ignored) {}
+                },
+                StatCollector.translateToLocal("variantgui.alteredrecipetime.randombounds.tooltip"),
+                StatCollector.translateToLocal("variantgui.alteredrecipetime.randombounds.label")));
         textFieldEntries.add(
             makeTextField(
                 Collections.singletonList(VariantNames.ALTERED_EFFICIENCY),

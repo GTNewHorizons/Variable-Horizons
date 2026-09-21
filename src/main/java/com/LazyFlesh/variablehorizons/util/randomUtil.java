@@ -19,6 +19,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -30,6 +31,8 @@ import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 
 import akka.japi.Pair;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 
 public class randomUtil {
 
@@ -266,6 +269,22 @@ public class randomUtil {
         public static boolean isGenerating() {
             return depth.get() > 0;
         }
+    }
+
+    public static long persistentRecipeSeed(GTRecipe recipe, long recipeSeed) {
+        for (ItemStack stack : recipe.mInputs) {
+            recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(stack, true, false);
+        }
+        for (ItemStack stack : recipe.mOutputs) {
+            recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(stack, true, false);
+        }
+        for (FluidStack fluid : recipe.mFluidInputs) {
+            recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(fluid, true, false);
+        }
+        for (FluidStack fluid : recipe.mFluidOutputs) {
+            recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(fluid, true, false);
+        }
+        return recipeSeed;
     }
 
 }
