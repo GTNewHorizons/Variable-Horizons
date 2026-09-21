@@ -33,6 +33,12 @@ public class AlteredRecipeTime extends VariantLoader implements IRuntimeVariant 
         modifyRecipesDuration(GeneralConfig.recipeTimeMultiplier);
     }
 
+    public static void applyToServer() {
+        if (VariantNames.ALTERED_RECIPE_TIME.hasLoaded) {
+            modifyRecipesDuration(GeneralConfig.recipeTimeMultiplier);
+        }
+    }
+
     private static void modifyRecipesDuration(float multiplier) {
         // Do the work
         for (Map.Entry<String, RecipeMap<?>> entry : RecipeMap.ALL_RECIPE_MAPS.entrySet()) {

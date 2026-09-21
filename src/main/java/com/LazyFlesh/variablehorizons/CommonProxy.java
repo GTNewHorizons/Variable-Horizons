@@ -1,5 +1,7 @@
 package com.LazyFlesh.variablehorizons;
 
+import net.minecraftforge.common.MinecraftForge;
+
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.util.RecipeRemover;
 import com.LazyFlesh.variablehorizons.util.VillagerRecipe;
@@ -12,6 +14,8 @@ import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import com.LazyFlesh.variablehorizons.variants.invasive.DimLocked;
 import com.LazyFlesh.variablehorizons.variants.runtime.AlteredRecipeTime;
+import com.LazyFlesh.variablehorizons.variants.runtime.ChancedRecipes;
+import com.LazyFlesh.variablehorizons.variants.runtime.CrimsonApocalypse;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -53,7 +57,9 @@ public class CommonProxy {
     }
 
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
-    public void init(FMLInitializationEvent event) {}
+    public void init(FMLInitializationEvent event) {
+        MinecraftForge.EVENT_BUS.register(VariantNames.CRIMSON_APOCALYPSE.loaderClass);
+    }
 
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
     public void postInit(FMLPostInitializationEvent event) {}
@@ -98,7 +104,9 @@ public class CommonProxy {
 
     public void serverStarted(FMLServerStartedEvent event) {
         IslandControlSaveData.init();
-
+        CrimsonApocalypse.applyDifficultyToServer();
+        AlteredRecipeTime.applyToServer();
+        ChancedRecipes.applyToServer();
         if (VariantNames.activeContains(VariantNames.INFINITE_POWER.id)) {
             FMLCommonHandler.instance()
                 .bus()
