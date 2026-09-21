@@ -1,6 +1,8 @@
 package com.LazyFlesh.variablehorizons.variants.runtime;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -116,16 +118,54 @@ public class AlteredRecipeTime extends VariantLoader implements IRuntimeVariant 
 
         @Override
         public String getCommandUsage(ICommandSender sender) {
-            return "/alterrecipetimes <multiplier>";
+            return "/alterrecipetimes <multiplier|randomize> <true|false>";
         }
 
         @Override
         public void processCommand(ICommandSender sender, String[] args) {
-            if (args.length != 1) {
-                sender.addChatMessage(new ChatComponentText("Usage: /alterrecipetimes <multiplier>"));
+            if (args.length < 1 || args.length > 2) {
+                sender.addChatMessage(
+                    new ChatComponentText("Usage: /alterrecipetimes <multiplier|randomize> <true|false>"));
                 return;
             }
-            float multiplier = Float.parseFloat(args[0]);
+            float multiplier = 1;
+            boolean badInput = false;
+            if (args.length == 1) {
+                if (args[0].trim()
+                    .equalsIgnoreCase("randomize")) {
+                    GeneralConfig.recipeTimeRandom = !GeneralConfig.recipeTimeRandom;
+                } else {
+                    try {
+                        multiplier = Float.parseFloat(args[0]);
+                    } catch (NumberFormatException exception) {
+                        badInput = true;
+                    }
+                }
+            } else {
+                if (args[0].trim()
+                    .equalsIgnoreCase("randomize")) {
+                    switch (args[1].trim()
+                        .toLowerCase()) {
+                        case "active", "true", "1", "t" -> {
+                            GeneralConfig.recipeTimeRandom = true;
+                        }
+                        case "inactive", "false", "0", "f" -> {
+                            GeneralConfig.recipeTimeRandom = false;
+                        }
+                        default -> {
+                            badInput = true;
+                        }
+                    }
+                } else {
+                    badInput = true;
+                }
+            }
+            if (badInput) {
+                sender.addChatMessage(
+                    new ChatComponentText(
+                        "Wrong arguments, use a multiplier or 'randomize' (+ true/false) to modify recipe times"));
+                return;
+            }
             modifyRecipesDuration(
                 multiplier,
                 sender.getEntityWorld()
@@ -133,6 +173,16 @@ public class AlteredRecipeTime extends VariantLoader implements IRuntimeVariant 
             GeneralConfig.recipeTimeMultiplier = multiplier;
             ConfigurationManager.save(GeneralConfig.class);
             sender.addChatMessage(new ChatComponentText("Changes applied"));
+        }
+
+        @Override
+        public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
+            if (args.length == 1) {
+                return getListOfStringsMatchingLastWord(args, "randomize", "1");
+            } else if (args.length == 2) {
+                return getListOfStringsMatchingLastWord(args, "true", "false");
+            }
+            return Collections.emptyList();
         }
 
         @Override

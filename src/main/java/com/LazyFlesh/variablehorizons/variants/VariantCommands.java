@@ -68,12 +68,12 @@ public class VariantCommands extends CommandBase {
                         if (args.length >= 3) {
                             switch (args[2].trim()
                                 .toLowerCase()) {
-                                case "active", "true", "1" -> {
+                                case "active", "true", "1", "t" -> {
                                     sender.addChatMessage(
                                         new ChatComponentText(
                                             VariantLoader.toggleVariant(VariantNames.getVariantFromID(args[1]), true)));
                                 }
-                                case "inactive", "false", "0" -> {
+                                case "inactive", "false", "0", "f" -> {
                                     sender.addChatMessage(
                                         new ChatComponentText(
                                             VariantLoader
@@ -86,7 +86,7 @@ public class VariantCommands extends CommandBase {
                                                 + (VariantNames.activeContains(args[1]) ? "active" : "inactive")));
                                     sender.addChatMessage(
                                         new ChatComponentText(
-                                            "Use active/inactive, true/false, or 1/0 to toggle variant state."));
+                                            "Use active/inactive, true/false, 1/0, or t/f to toggle variant state."));
                                 }
                             }
                         } else {
