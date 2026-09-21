@@ -17,6 +17,8 @@ import java.util.Arrays;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.monster.EntityMagmaCube;
+import net.minecraft.item.Item;
 import net.minecraft.util.ChatComponentText;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
@@ -24,6 +26,7 @@ import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
 import WayofTime.alchemicalWizardry.AlchemicalWizardry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -32,6 +35,9 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
+import twilightforest.TFTreasure;
+import twilightforest.entity.EntityTFFireBeetle;
+import twilightforest.item.ItemTFTransformPowder;
 
 public class DimLocked extends VariantLoader {
 
@@ -48,6 +54,18 @@ public class DimLocked extends VariantLoader {
             newBlacklist = new int[] { 0 };
         }
         AlchemicalWizardry.demonRitualDimensionBlacklist = newBlacklist;
+
+        if (TwilightForest.isModLoaded()) {
+            // Add magmacube -> fire beetle if not in twilight
+            Item item = GameRegistry.findItem("TwilightForest", "item.transformPowder");
+
+            // ok, so, remembered wrong, it's not actually in loot table. So, uh, add it.
+            TFTreasure.tree_cache.uncommon.add(item, 4);
+
+            if ((item instanceof ItemTFTransformPowder) && GeneralConfig.startingDimID != 7) {
+                ((ItemTFTransformPowder) item).addTwoWayTransformation(EntityTFFireBeetle.class, EntityMagmaCube.class);
+            }
+        }
     }
 
     @Override
@@ -69,8 +87,8 @@ public class DimLocked extends VariantLoader {
         if (GeneralConfig.startingDimID != -1) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 64L),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.HellishMetal, 16L))
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 16L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.HellishMetal, 4L))
                 .fluidInputs(Materials.Air.getGas(1_000_000))
                 .fluidOutputs(Materials.NetherAir.getFluid(100_000))
                 .duration(2 * SECONDS)
