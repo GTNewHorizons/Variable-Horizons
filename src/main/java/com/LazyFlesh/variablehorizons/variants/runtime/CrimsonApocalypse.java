@@ -207,6 +207,7 @@ public class CrimsonApocalypse extends VariantLoader implements IRuntimeVariant 
         imCore.infernoRarity = Math.max(imCore.infernoRarity / rarityModifier, 1);
     }
 
+    @SideOnly(Side.CLIENT)
     private static boolean isDifficultyButton(GuiButton b) {
         return b.id == 108 || b.displayString.startsWith(I18n.format("options.difficulty"));
     }
