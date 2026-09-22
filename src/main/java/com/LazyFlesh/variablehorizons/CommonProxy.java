@@ -57,6 +57,7 @@ public class CommonProxy {
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
     public void init(FMLInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(VariantNames.CRIMSON_APOCALYPSE.loaderClass);
+        MinecraftForge.EVENT_BUS.register(VariantNames.CHAOS.loaderClass);
     }
 
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
