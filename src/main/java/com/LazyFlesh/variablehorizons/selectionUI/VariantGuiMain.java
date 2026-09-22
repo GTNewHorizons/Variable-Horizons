@@ -114,28 +114,28 @@ public class VariantGuiMain extends GuiScreen {
     private static class CheckboxEntry {
 
         final GuiCheckBox checkbox;
-        final VariantNames variant;
+        final List<VariantNames> variants;
         final BooleanSupplier configGetter;
         final Consumer<Boolean> configSetter;
 
-        CheckboxEntry(GuiCheckBox checkbox, VariantNames variant, BooleanSupplier configGetter,
+        CheckboxEntry(GuiCheckBox checkbox, List<VariantNames> variants, BooleanSupplier configGetter,
             Consumer<Boolean> configSetter) {
             this.checkbox = checkbox;
-            this.variant = variant;
+            this.variants = variants;
             this.configGetter = configGetter;
             this.configSetter = configSetter;
         }
     }
 
-    private CheckboxEntry makeCheckbox(int idOffset, VariantNames variant, String labelKey, BooleanSupplier getter,
-        Consumer<Boolean> setter) {
+    private CheckboxEntry makeCheckbox(int idOffset, List<VariantNames> variants, String labelKey,
+        BooleanSupplier getter, Consumer<Boolean> setter) {
         GuiCheckBox box = new GuiCheckBox(
             idOffset,
             SIDEBAR_WIDTH + PADDING * 2,
             90,
             StatCollector.translateToLocal(labelKey),
             getter.getAsBoolean());
-        return new CheckboxEntry(box, variant, getter, setter);
+        return new CheckboxEntry(box, variants, getter, setter);
     }
 
     private static class TextFieldEntry {
@@ -188,7 +188,7 @@ public class VariantGuiMain extends GuiScreen {
     private int totalContentHeight(VariantNames selected, int wrapWidth) {
         int height = descriptionBlockHeight(selected, wrapWidth);
         for (CheckboxEntry entry : checkboxEntries) {
-            if (selected.equals(entry.variant)) height += 15;
+            if (entry.variants.contains(selected)) height += 15;
         }
         for (TextFieldEntry entry : textFieldEntries) {
             if (entry.variants.contains(selected)) height += 20;
@@ -313,49 +313,49 @@ public class VariantGuiMain extends GuiScreen {
         checkboxEntries.add(
             makeCheckbox(
                 3,
-                VariantNames.SUPERFLAT,
+                Collections.singletonList(VariantNames.SUPERFLAT),
                 "variantgui.superflat.population",
                 () -> GeneralConfig.allowSuperflatPopulation,
                 value -> GeneralConfig.allowSuperflatPopulation = value));
         checkboxEntries.add(
             makeCheckbox(
                 4,
-                VariantNames.SUPERFLAT,
+                Collections.singletonList(VariantNames.SUPERFLAT),
                 "variantgui.superflat.biomes",
                 () -> GeneralConfig.allowSuperflatBiomes,
                 value -> GeneralConfig.allowSuperflatBiomes = value));
         checkboxEntries.add(
             makeCheckbox(
                 5,
-                VariantNames.VOID_ISLAND,
+                Collections.singletonList(VariantNames.VOID_ISLAND),
                 "variantgui.voidisland.tree",
                 () -> GeneralConfig.allowVoidIslandTree,
                 value -> GeneralConfig.allowVoidIslandTree = value));
         checkboxEntries.add(
             makeCheckbox(
                 6,
-                VariantNames.VOID_ISLAND,
+                Collections.singletonList(VariantNames.VOID_ISLAND),
                 "variantgui.voidisland.chest",
                 () -> GeneralConfig.allowVoidIslandChest,
                 value -> GeneralConfig.allowVoidIslandChest = value));
         checkboxEntries.add(
             makeCheckbox(
                 7,
-                VariantNames.CHANCED_RECIPES,
+                Collections.singletonList(VariantNames.CHANCED_RECIPES),
                 "variantgui.chancedrecipes.randominputs",
                 () -> GeneralConfig.inputChanceRandom,
                 value -> GeneralConfig.inputChanceRandom = value));
         checkboxEntries.add(
             makeCheckbox(
                 8,
-                VariantNames.CHANCED_RECIPES,
+                Collections.singletonList(VariantNames.CHANCED_RECIPES),
                 "variantgui.chancedrecipes.randomoutputs",
                 () -> GeneralConfig.outputChanceRandom,
                 value -> GeneralConfig.outputChanceRandom = value));
         checkboxEntries.add(
             makeCheckbox(
                 9,
-                VariantNames.CRIMSON_APOCALYPSE,
+                Collections.singletonList(VariantNames.CRIMSON_APOCALYPSE),
                 "variantgui.crimsonapocalypse.tint",
                 () -> MobConfig.bloodMoonTint,
                 value -> {
@@ -367,7 +367,7 @@ public class VariantGuiMain extends GuiScreen {
         checkboxEntries.add(
             makeCheckbox(
                 10,
-                VariantNames.ALTERED_RECIPE_TIME,
+                Collections.singletonList(VariantNames.ALTERED_RECIPE_TIME),
                 "variantgui.alteredrecipetime.randomtimes",
                 () -> GeneralConfig.recipeTimeRandom,
                 value -> GeneralConfig.recipeTimeRandom = value));
@@ -402,7 +402,7 @@ public class VariantGuiMain extends GuiScreen {
                 StatCollector.translateToLocal("variantgui.alteredrecipetime.recipetime.label")));
         textFieldEntries.add(
             makeTextField(
-                Collections.singletonList(VariantNames.ALTERED_RECIPE_TIME),
+                Arrays.asList(VariantNames.ALTERED_RECIPE_TIME, VariantNames.CHAOS),
                 decimalFilter,
                 () -> String.valueOf(GeneralConfig.recipeTimeRandomBounds),
                 text -> {
@@ -434,7 +434,7 @@ public class VariantGuiMain extends GuiScreen {
                 StatCollector.translateToLocal("variantgui.monoblockfield.label")));
         textFieldEntries.add(
             makeTextField(
-                Collections.singletonList(VariantNames.SKYGRID),
+                Arrays.asList(VariantNames.SKYGRID, VariantNames.CHAOS),
                 posDigitFilter,
                 () -> String.valueOf(GeneralConfig.skygridDistance),
                 text -> {
@@ -676,7 +676,7 @@ public class VariantGuiMain extends GuiScreen {
         GeneralConfig.outputChanceRandom = false;
         ConfigurationManager.save(GeneralConfig.class);
         for (CheckboxEntry entry : checkboxEntries) {
-            if (entry.variant.equals(getSelectedVariant())) {
+            if (entry.variants.contains(getSelectedVariant())) {
                 entry.checkbox.setIsChecked(false);
             }
         }
@@ -834,7 +834,7 @@ public class VariantGuiMain extends GuiScreen {
 
         if (mouseInPanelBounds) {
             for (CheckboxEntry entry : checkboxEntries) {
-                if (entry.variant.equals(selected)) {
+                if (entry.variants.contains(selected)) {
                     if (entry.checkbox.mousePressed(this.mc, mouseX, mouseY)) {
                         // Play button click sound
                         entry.checkbox.func_146113_a(this.mc.getSoundHandler());
@@ -964,7 +964,7 @@ public class VariantGuiMain extends GuiScreen {
 
             int nextY = y + descriptionBlockHeight(selected, wrapWidth);
             for (CheckboxEntry entry : checkboxEntries) {
-                if (selected.equals(entry.variant)) {
+                if (entry.variants.contains(selected)) {
                     entry.checkbox.xPosition = x;
                     entry.checkbox.yPosition = nextY;
                     entry.checkbox.drawButton(VariantGuiMain.this.mc, mouseX, mouseY);
