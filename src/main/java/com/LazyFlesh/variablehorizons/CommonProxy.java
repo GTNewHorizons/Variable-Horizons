@@ -15,6 +15,7 @@ import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import com.LazyFlesh.variablehorizons.variants.invasive.DimLocked;
 import com.LazyFlesh.variablehorizons.variants.runtime.AlteredRecipeTime;
 import com.LazyFlesh.variablehorizons.variants.runtime.ChancedRecipes;
+import com.LazyFlesh.variablehorizons.variants.runtime.Chaos;
 import com.LazyFlesh.variablehorizons.variants.runtime.CrimsonApocalypse;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -51,6 +52,10 @@ public class CommonProxy {
         FMLCommonHandler.instance()
             .bus()
             .register(VariantNames.CHANCED_RECIPES.loaderClass);
+
+        FMLCommonHandler.instance()
+            .bus()
+            .register(VariantNames.CHAOS.loaderClass);
 
     }
 
@@ -106,6 +111,7 @@ public class CommonProxy {
         CrimsonApocalypse.applyDifficultyToServer();
         AlteredRecipeTime.applyToServer();
         ChancedRecipes.applyToServer();
+        Chaos.applyToServer();
         if (VariantNames.activeContains(VariantNames.INFINITE_POWER.id)) {
             FMLCommonHandler.instance()
                 .bus()
