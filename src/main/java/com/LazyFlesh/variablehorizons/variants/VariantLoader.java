@@ -102,7 +102,12 @@ public abstract class VariantLoader {
                 active.add(name.id);
                 // add the composites, too
                 if (name.compositionVariant) {
-                    for (VariantNames n : name.composedOf) active.add(n.id);
+                    for (VariantNames n : name.composedOf) {
+                        active.add(n.id);
+                        if (n.loaderClass instanceof IRuntimeVariant) {
+                            n.loaderClass.loadVariant();
+                        }
+                    }
                 }
                 GeneralConfig.activeVariants = active.toArray(new String[0]);
                 ConfigurationManager.save(GeneralConfig.class);
