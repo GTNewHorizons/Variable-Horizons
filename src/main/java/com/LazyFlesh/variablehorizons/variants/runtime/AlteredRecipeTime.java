@@ -41,7 +41,8 @@ public class AlteredRecipeTime extends VariantLoader implements IRuntimeVariant 
         modifyRecipesDuration(
             GeneralConfig.recipeTimeMultiplier,
             event.player.getEntityWorld()
-                .getSeed());
+                .getSeed(),
+            GeneralConfig.recipeTimeRandom);
     }
 
     public static void applyToServer() {
@@ -54,10 +55,10 @@ public class AlteredRecipeTime extends VariantLoader implements IRuntimeVariant 
         }
         long seed = server.getEntityWorld()
             .getSeed();
-        modifyRecipesDuration(GeneralConfig.recipeTimeMultiplier, seed);
+        modifyRecipesDuration(GeneralConfig.recipeTimeMultiplier, seed, GeneralConfig.recipeTimeRandom);
     }
 
-    private static void modifyRecipesDuration(float multiplier, long worldSeed) {
+    private static void modifyRecipesDuration(float multiplier, long worldSeed, boolean randomize) {
         // Do the work
         for (Map.Entry<String, RecipeMap<?>> entry : RecipeMap.ALL_RECIPE_MAPS.entrySet()) {
             for (GTRecipe recipe : entry.getValue()
@@ -67,7 +68,8 @@ public class AlteredRecipeTime extends VariantLoader implements IRuntimeVariant 
                     recipe.mDuration = scale(
                         original,
                         multiplier,
-                        worldSeed + randomUtil.persistentRecipeSeed(recipe, 25258927368899L));
+                        worldSeed + randomUtil.persistentRecipeSeed(recipe, 25258927368899L),
+                        randomize);
                 }
             }
         }
@@ -75,17 +77,25 @@ public class AlteredRecipeTime extends VariantLoader implements IRuntimeVariant 
         for (GTRecipe.RecipeAssemblyLine recipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
             if (recipe.mDuration > 0) {
                 int originalDuration = originalAsslineRecipeTimes.computeIfAbsent(recipe, r -> r.mDuration);
-                recipe.mDuration = scale(originalDuration, multiplier, worldSeed + recipe.getPersistentHash());
+                recipe.mDuration = scale(
+                    originalDuration,
+                    multiplier,
+                    worldSeed + recipe.getPersistentHash(),
+                    randomize);
             }
             if (recipe.mResearchTime > 0) {
                 int originalResearch = originalResearchTimes.computeIfAbsent(recipe, r -> r.mResearchTime);
-                recipe.mResearchTime = scale(originalResearch, multiplier, worldSeed + recipe.getPersistentHash());
+                recipe.mResearchTime = scale(
+                    originalResearch,
+                    multiplier,
+                    worldSeed + recipe.getPersistentHash(),
+                    randomize);
             }
         }
     }
 
-    private static int scale(int original, float multiplier, long seed) {
-        if (GeneralConfig.recipeTimeRandom) {
+    private static int scale(int original, float multiplier, long seed, boolean randomize) {
+        if (randomize) {
             Random factorRandom = new Random(seed);
             float factor = 1 - factorRandom.nextFloat();
             boolean multiply = factorRandom.nextBoolean();
@@ -104,9 +114,7 @@ public class AlteredRecipeTime extends VariantLoader implements IRuntimeVariant 
     @Override
     public void undoVariant(VariantNames... activeVariants) {
         VariantNames.ALTERED_RECIPE_TIME.hasLoaded = false;
-
-        GeneralConfig.recipeTimeMultiplier = 1;
-        ConfigurationManager.save(GeneralConfig.class);
+        modifyRecipesDuration(1, 0, false);
     }
 
     public static class AlteredRecipeTimeCommand extends CommandBase {
@@ -169,7 +177,8 @@ public class AlteredRecipeTime extends VariantLoader implements IRuntimeVariant 
             modifyRecipesDuration(
                 multiplier,
                 sender.getEntityWorld()
-                    .getSeed());
+                    .getSeed(),
+                GeneralConfig.recipeTimeRandom);
             GeneralConfig.recipeTimeMultiplier = multiplier;
             ConfigurationManager.save(GeneralConfig.class);
             sender.addChatMessage(new ChatComponentText("Changes applied"));
