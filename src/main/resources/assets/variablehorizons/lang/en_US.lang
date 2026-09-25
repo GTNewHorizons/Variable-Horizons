@@ -96,6 +96,7 @@ variantgui.crimsonapocalypse.mobhealth.tooltip=Enter mob health multiplier
 variantgui.crimsonapocalypse.mobmelee.tooltip=Enter mob damage multiplier
 variantgui.crimsonapocalypse.mobcap.tooltip=Enter Blood Moon mobcap multiplier
 variantgui.crimsonapocalypse.infernaldifficulty.tooltip=Enter infernal mob difficulty level, from 0 (default) to 3 (hell)
+variantgui.chaos.randombounds.tooltip=Enter maximum recipe input & output randomizer magnitude
 
 #Variant GUI labels
 variantgui.dimidfield.label=Dimension ID
@@ -112,6 +113,7 @@ variantgui.crimsonapocalypse.mobhealth.label=Mob health multiplier
 variantgui.crimsonapocalypse.mobmelee.label=Mob damage multiplier
 variantgui.crimsonapocalypse.mobcap.label=Mobcap multiplier
 variantgui.crimsonapocalypse.infernaldifficulty.label=Infernal difficulty level
+variantgui.chaos.randombounds.label=Recipe input & output randomizer bound
 
 #Misc
 variants.dimlock.message.1=Otherworldly forces reject your attempt at crossing dimensional boundaries

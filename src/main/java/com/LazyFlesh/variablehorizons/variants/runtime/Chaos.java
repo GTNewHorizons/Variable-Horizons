@@ -170,7 +170,8 @@ public class Chaos extends VariantLoader implements IRuntimeVariant {
     private static float getRandomizedFactor(Random rand) {
         float factor = 1 - rand.nextFloat();
         boolean multiply = rand.nextBoolean();
-        return multiply ? 10 * factor : 1 / (10 * factor);
+        return multiply ? GeneralConfig.recipeInOutRandomBounds * factor
+            : 1 / (GeneralConfig.recipeInOutRandomBounds * factor);
     }
 
     @Override

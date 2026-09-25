@@ -35,6 +35,10 @@ public class GeneralConfig {
     @Config.DefaultFloat(1f)
     public static float recipeTimeRandomBounds;
 
+    @Config.Comment("Recipe input & output randomizer max factor/divisor")
+    @Config.DefaultFloat(10f)
+    public static float recipeInOutRandomBounds;
+
     @Config.Comment("Global machine efficiency multiplier")
     @Config.DefaultFloat(1f)
     public static float efficiencyMultiplier;

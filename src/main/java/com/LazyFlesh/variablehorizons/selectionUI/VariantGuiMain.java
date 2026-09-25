@@ -546,6 +546,18 @@ public class VariantGuiMain extends GuiScreen {
                 },
                 StatCollector.translateToLocal("variantgui.crimsonapocalypse.infernaldifficulty.tooltip"),
                 StatCollector.translateToLocal("variantgui.crimsonapocalypse.infernaldifficulty.label")));
+        textFieldEntries.add(
+            makeTextField(
+                Collections.singletonList(VariantNames.CHAOS),
+                decimalFilter,
+                () -> String.valueOf(GeneralConfig.recipeInOutRandomBounds),
+                text -> {
+                    try {
+                        GeneralConfig.recipeInOutRandomBounds = Float.parseFloat(text);
+                    } catch (NumberFormatException ignored) {}
+                },
+                StatCollector.translateToLocal("variantgui.chaos.randombounds.tooltip"),
+                StatCollector.translateToLocal("variantgui.chaos.randombounds.label")));
 
         cycleButtonEntries.clear();
         cycleButtonEntries.add(
