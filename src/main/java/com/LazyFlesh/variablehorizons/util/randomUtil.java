@@ -273,16 +273,16 @@ public class randomUtil {
 
     public static long persistentRecipeSeed(GTRecipe recipe, long recipeSeed) {
         for (ItemStack stack : recipe.mInputs) {
-            recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(stack, true, false);
+            recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(stack, false, false);
         }
         for (ItemStack stack : recipe.mOutputs) {
-            recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(stack, true, false);
+            recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(stack, false, false);
         }
         for (FluidStack fluid : recipe.mFluidInputs) {
-            recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(fluid, true, false);
+            recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(fluid, false, false);
         }
         for (FluidStack fluid : recipe.mFluidOutputs) {
-            recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(fluid, true, false);
+            recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(fluid, false, false);
         }
         return recipeSeed;
     }
