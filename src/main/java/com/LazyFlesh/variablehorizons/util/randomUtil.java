@@ -273,10 +273,24 @@ public class randomUtil {
 
     public static long persistentRecipeSeed(GTRecipe recipe, long recipeSeed) {
         for (ItemStack stack : recipe.mInputs) {
-            recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(stack, false, false);
+            try {
+                recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(stack, false, false);
+            } catch (Exception e) {
+                VariableHorizons.LOG.info(
+                    "ItemStack input is null! Skipping item specific hash. Item in question: {}:{}",
+                    stack.getUnlocalizedName(),
+                    stack.getItemDamage());
+            }
         }
         for (ItemStack stack : recipe.mOutputs) {
-            recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(stack, false, false);
+            try {
+                recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(stack, false, false);
+            } catch (Exception e) {
+                VariableHorizons.LOG.info(
+                    "ItemStack output is null! Skipping item specific hash. Item in question: {}:{}",
+                    stack.getUnlocalizedName(),
+                    stack.getItemDamage());
+            }
         }
         for (FluidStack fluid : recipe.mFluidInputs) {
             recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(fluid, false, false);
