@@ -2,6 +2,7 @@ package com.LazyFlesh.variablehorizons.variants.runtime;
 
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 
 import net.minecraft.entity.EntityLivingBase;
@@ -22,6 +23,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import toast.specialMobs.entity.ISpecialMob;
 import toast.specialMobs.entity.SpecialMobData;
@@ -48,7 +50,14 @@ public class Chaos extends VariantLoader implements IRuntimeVariant {
                 .getAllRecipes()) {
                 originalInputAmounts.put(recipe, snapshotItems(recipe.mInputs));
                 originalOutputAmounts.put(recipe, snapshotItems(recipe.mOutputs));
-                originalFluidInputAmounts.put(recipe, snapshotFluids(recipe.mFluidInputs));
+                if (entry.getKey()
+                    .equals("gt.recipe.assemble-condensate")) {
+                    originalFluidInputAmounts.put(
+                        recipe,
+                        snapshotFluids(Objects.requireNonNull(recipe.getMetadata(GTRecipeConstants.CONDENSATE_INPUT))));
+                } else {
+                    originalFluidInputAmounts.put(recipe, snapshotFluids(recipe.mFluidInputs));
+                }
                 originalFluidOutputAmounts.put(recipe, snapshotFluids(recipe.mFluidOutputs));
             }
         }
@@ -109,11 +118,20 @@ public class Chaos extends VariantLoader implements IRuntimeVariant {
                     originalOutputAmounts.get(recipe),
                     multiplier,
                     worldSeed - randomUtil.persistentRecipeSeed(recipe, 88375192837465L));
-                scaleFluids(
-                    recipe.mFluidInputs,
-                    originalFluidInputAmounts.get(recipe),
-                    multiplier,
-                    worldSeed + randomUtil.persistentRecipeSeed(recipe, 76592769028753L));
+                if (entry.getKey()
+                    .equals("gt.recipe.assemble-condensate")) {
+                    scaleFluids(
+                        recipe.getMetadata(GTRecipeConstants.CONDENSATE_INPUT),
+                        originalFluidInputAmounts.get(recipe),
+                        multiplier,
+                        worldSeed + randomUtil.persistentRecipeSeed(recipe, 76592769028753L));
+                } else {
+                    scaleFluids(
+                        recipe.mFluidInputs,
+                        originalFluidInputAmounts.get(recipe),
+                        multiplier,
+                        worldSeed + randomUtil.persistentRecipeSeed(recipe, 76592769028753L));
+                }
                 scaleFluids(
                     recipe.mFluidOutputs,
                     originalFluidOutputAmounts.get(recipe),
