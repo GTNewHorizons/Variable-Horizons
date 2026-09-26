@@ -29,10 +29,37 @@ import toast.specialMobs.entity.creeper.Entity_SpecialCreeper;
 
 public class Chaos extends VariantLoader implements IRuntimeVariant {
 
-    private static final Map<ItemStack[], int[]> originalItemAmounts = new IdentityHashMap<>();
-    private static final Map<FluidStack[], int[]> originalFluidAmounts = new IdentityHashMap<>();
-    private static final Map<ItemStack[], int[]> originalAsslineItemAmounts = new IdentityHashMap<>();
-    private static final Map<FluidStack[], int[]> originalAsslineFluidAmounts = new IdentityHashMap<>();
+    private static final Map<GTRecipe, int[]> originalInputAmounts = new IdentityHashMap<>();
+    private static final Map<GTRecipe, int[]> originalOutputAmounts = new IdentityHashMap<>();
+    private static final Map<GTRecipe, int[]> originalFluidInputAmounts = new IdentityHashMap<>();
+    private static final Map<GTRecipe, int[]> originalFluidOutputAmounts = new IdentityHashMap<>();
+    private static final Map<GTRecipe.RecipeAssemblyLine, int[]> originalAsslineInputAmounts = new IdentityHashMap<>();
+    private static final Map<GTRecipe.RecipeAssemblyLine, int[]> originalAsslineOutputAmounts = new IdentityHashMap<>();
+    private static final Map<GTRecipe.RecipeAssemblyLine, int[]> originalAsslineFluidInputAmounts = new IdentityHashMap<>();
+
+    private static boolean saved = false;
+
+    private static void saveOriginalValues() {
+        if (saved) {
+            return;
+        }
+        for (Map.Entry<String, RecipeMap<?>> entry : RecipeMap.ALL_RECIPE_MAPS.entrySet()) {
+            for (GTRecipe recipe : entry.getValue()
+                .getAllRecipes()) {
+                originalInputAmounts.put(recipe, snapshotItems(recipe.mInputs));
+                originalOutputAmounts.put(recipe, snapshotItems(recipe.mOutputs));
+                originalFluidInputAmounts.put(recipe, snapshotFluids(recipe.mFluidInputs));
+                originalFluidOutputAmounts.put(recipe, snapshotFluids(recipe.mFluidOutputs));
+            }
+        }
+        for (GTRecipe.RecipeAssemblyLine recipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
+            originalAsslineInputAmounts.put(recipe, snapshotItems(recipe.mInputs));
+            originalAsslineOutputAmounts.put(recipe, snapshotItems(new ItemStack[] { recipe.mOutput }));
+            originalAsslineFluidInputAmounts.put(recipe, snapshotFluids(recipe.mFluidInputs));
+        }
+
+        saved = true;
+    }
 
     @Override
     public void loadVariant(VariantNames... activeVariants) {
@@ -67,58 +94,56 @@ public class Chaos extends VariantLoader implements IRuntimeVariant {
     }
 
     private static void modifyRecipeAmounts(float multiplier, long worldSeed) {
-        // Do the work
+        saveOriginalValues();
+
         for (Map.Entry<String, RecipeMap<?>> entry : RecipeMap.ALL_RECIPE_MAPS.entrySet()) {
             for (GTRecipe recipe : entry.getValue()
                 .getAllRecipes()) {
-                if (recipe.mInputs.length > 0) {
-                    scaleItems(
-                        recipe.mInputs,
-                        multiplier,
-                        worldSeed + randomUtil.persistentRecipeSeed(recipe, 88375192837465L),
-                        false);
-                }
-                if (recipe.mOutputs.length > 0) {
-                    scaleItems(
-                        recipe.mOutputs,
-                        multiplier,
-                        worldSeed - randomUtil.persistentRecipeSeed(recipe, 88375192837465L),
-                        false);
-                }
-                if (recipe.mFluidInputs.length > 0) {
-                    scaleFluids(
-                        recipe.mFluidInputs,
-                        multiplier,
-                        worldSeed + randomUtil.persistentRecipeSeed(recipe, 76592769028753L),
-                        false);
-                }
-                if (recipe.mFluidOutputs.length > 0) {
-                    scaleFluids(
-                        recipe.mFluidOutputs,
-                        multiplier,
-                        worldSeed - randomUtil.persistentRecipeSeed(recipe, 76592769028753L),
-                        false);
-                }
+                scaleItems(
+                    recipe.mInputs,
+                    originalInputAmounts.get(recipe),
+                    multiplier,
+                    worldSeed + randomUtil.persistentRecipeSeed(recipe, 88375192837465L));
+                scaleItems(
+                    recipe.mOutputs,
+                    originalOutputAmounts.get(recipe),
+                    multiplier,
+                    worldSeed - randomUtil.persistentRecipeSeed(recipe, 88375192837465L));
+                scaleFluids(
+                    recipe.mFluidInputs,
+                    originalFluidInputAmounts.get(recipe),
+                    multiplier,
+                    worldSeed + randomUtil.persistentRecipeSeed(recipe, 76592769028753L));
+                scaleFluids(
+                    recipe.mFluidOutputs,
+                    originalFluidOutputAmounts.get(recipe),
+                    multiplier,
+                    worldSeed - randomUtil.persistentRecipeSeed(recipe, 76592769028753L));
             }
         }
 
         for (GTRecipe.RecipeAssemblyLine recipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
-            if (recipe.mInputs.length > 0) {
-                scaleItems(recipe.mInputs, multiplier, worldSeed + recipe.getPersistentHash(), true);
-            }
-            scaleItems(new ItemStack[] { recipe.mOutput }, multiplier, worldSeed + recipe.getPersistentHash(), true);
-            if (recipe.mFluidInputs.length > 0) {
-                scaleFluids(recipe.mFluidInputs, multiplier, worldSeed + recipe.getPersistentHash(), true);
-            }
+            scaleItems(
+                recipe.mInputs,
+                originalAsslineInputAmounts.get(recipe),
+                multiplier,
+                worldSeed + recipe.getPersistentHash());
+            scaleItems(
+                new ItemStack[] { recipe.mOutput },
+                originalAsslineOutputAmounts.get(recipe),
+                multiplier,
+                worldSeed - recipe.getPersistentHash());
+            scaleFluids(
+                recipe.mFluidInputs,
+                originalAsslineFluidInputAmounts.get(recipe),
+                multiplier,
+                worldSeed + recipe.getPersistentHash() + 1);
         }
     }
 
-    private static void scaleItems(ItemStack[] stacks, float multiplier, long seed, boolean assline) {
-        int[] originals;
-        if (assline) {
-            originals = originalAsslineItemAmounts.computeIfAbsent(stacks, Chaos::snapshotItems);
-        } else {
-            originals = originalItemAmounts.computeIfAbsent(stacks, Chaos::snapshotItems);
+    private static void scaleItems(ItemStack[] stacks, int[] originals, float multiplier, long seed) {
+        if (originals == null) {
+            return;
         }
         Random randomizer = new Random(seed);
         for (int i = 0; i < stacks.length; i++) {
@@ -132,12 +157,9 @@ public class Chaos extends VariantLoader implements IRuntimeVariant {
         }
     }
 
-    private static void scaleFluids(FluidStack[] stacks, float multiplier, long seed, boolean assline) {
-        int[] originals;
-        if (assline) {
-            originals = originalAsslineFluidAmounts.computeIfAbsent(stacks, Chaos::snapshotFluids);
-        } else {
-            originals = originalFluidAmounts.computeIfAbsent(stacks, Chaos::snapshotFluids);
+    private static void scaleFluids(FluidStack[] stacks, int[] originals, float multiplier, long seed) {
+        if (originals == null) {
+            return;
         }
         Random randomizer = new Random(seed);
         for (int i = 0; i < stacks.length; i++) {
