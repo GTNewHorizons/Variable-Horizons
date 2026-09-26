@@ -19,6 +19,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -30,6 +31,8 @@ import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 
 import akka.japi.Pair;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 
 public class randomUtil {
 
@@ -266,6 +269,36 @@ public class randomUtil {
         public static boolean isGenerating() {
             return depth.get() > 0;
         }
+    }
+
+    public static long persistentRecipeSeed(GTRecipe recipe, long recipeSeed) {
+        for (ItemStack stack : recipe.mInputs) {
+            try {
+                recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(stack, false, false);
+            } catch (Exception e) {
+                VariableHorizons.LOG.info(
+                    "ItemStack input is null! Skipping item specific hash. Item in question: {}:{}",
+                    stack.getUnlocalizedName(),
+                    stack.getItemDamage());
+            }
+        }
+        for (ItemStack stack : recipe.mOutputs) {
+            try {
+                recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(stack, false, false);
+            } catch (Exception e) {
+                VariableHorizons.LOG.info(
+                    "ItemStack output is null! Skipping item specific hash. Item in question: {}:{}",
+                    stack.getUnlocalizedName(),
+                    stack.getItemDamage());
+            }
+        }
+        for (FluidStack fluid : recipe.mFluidInputs) {
+            recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(fluid, false, false);
+        }
+        for (FluidStack fluid : recipe.mFluidOutputs) {
+            recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(fluid, false, false);
+        }
+        return recipeSeed;
     }
 
 }
