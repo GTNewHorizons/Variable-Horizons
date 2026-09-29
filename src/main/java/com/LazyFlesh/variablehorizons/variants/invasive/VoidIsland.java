@@ -30,6 +30,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
+import gregtech.common.config.Gregtech;
 
 public class VoidIsland extends VariantLoader {
 
@@ -90,6 +91,7 @@ public class VoidIsland extends VariantLoader {
     @Override
     public void loadVariant(VariantNames... activeVariants) {
         VariantNames.VOID_ISLAND.hasLoaded = true;
+        Gregtech.general.oreveinPercentage = 0;
     }
 
     @Override
