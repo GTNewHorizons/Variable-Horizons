@@ -13,9 +13,11 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.DEFC_CASING_TIER;
 import static kubatech.loaders.DEFCRecipes.fusionCraftingRecipes;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.ItemFluidContainer;
@@ -26,6 +28,8 @@ import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
@@ -90,6 +94,15 @@ public class VoidIsland extends VariantLoader {
     @Override
     public void loadVariant(VariantNames... activeVariants) {
         VariantNames.VOID_ISLAND.hasLoaded = true;
+
+        if (!VariantNames.activeContains(VariantNames.VOID_WORLD.id)) {
+            WorldServer dim = FMLCommonHandler.instance()
+                .getMinecraftServerInstance()
+                .worldServerForDimension(GeneralConfig.startingDimID);
+            DimensionDef.getDefForWorld(dim)
+                .setOreVeinChance(0);
+        }
+
     }
 
     @Override
