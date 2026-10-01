@@ -23,6 +23,7 @@ variants.SKYGRID.name=Skygrid
 variants.NO_POLLUTION.name=Squeaky Clean
 variants.CHANCED_RECIPES.name=Chanced Recipes
 variants.CRIMSON_APOCALYPSE.name=Crimson Apocalypse
+variants.WIRELESS.name=Wireless Power
 
 #Variant descriptions
 #Full Variants
@@ -39,7 +40,7 @@ variants.NO_ROCKET.desc=One of the most popular challenge runs, No Rocket is wha
 variants.NO_QUEST_REWARDS.desc=Rather self explanatory, you will not be able to receive aid from the quest gods, as all quest rewards are disabled.
 variants.ALTERED_TIME.desc=Alter time with this variant, either lengthening or shortening all recipe times. The number you enter in the textbox is the multiplier that will be applied to recipes, use a number >1 if you want recipes to take longer, and <1 if you want them to be shorter. 0 makes all recipes 1 tick long.
 variants.ALTERED_EFFICIENCY.desc=Alter the laws of energy conservation with this variant, either increasing or decreasing generator efficiencies across the board. The number you enter in the textbox is the multiplier that will be applied to generators, use a number >1 if you want generators to generate more power, and <1 if you want them to generate less.
-variants.INFINITE_POWER.desc=INFINITE POWER! This variant fills your wireless network to a number so large that you will never be able to deplete it. Also, in order to be able to use that power, all energy hatches are now wireless! Rejoice in your wealth of unlimited energy!
+variants.INFINITE_POWER.desc=INFINITE POWER! This variant fills your wireless network to a number so large that you will never be able to deplete it. Also, the debug generator now has a recipe! Rejoice in your wealth of unlimited energy!
 variants.CUSTOM_DIM_START.desc=This variant allows you to choose a starting dimension in which you are going to spawn and respawn, but there is nothing preventing you from leaving. You can specify the dimension ID you want this variant to start you in, some examples include the Nether (-1), the End (1) and Ross128B (64). A full list of dimension IDs can be found on the GTNH wiki.
 variants.SUPERFLAT.desc=4 layers thick flat terrain awaits you in this variant. All dimensions are now superflat, with each dimension having its own unique block layers. By default, this variant will disable all types of chunk population, meaning your world will be barren of foliage and structures, but you can enable this using the checkbox below. Similarly, all biomes are plains by default, unless biome diversity is enabled. Villages will always generate, regardless of the setting chosen.
 variants.MONOBLOCK.desc=Monoblock meaning one block. THE one block your whole world will be made of. Terrain will generate as usual, but it will all be replaced by the one chosen block type. You can choose any block you wish by entering its identifier as follows: modID:blockname:meta . §4WARNING: This variant can cause performance issues and crashes depending on the block chosen.
@@ -47,6 +48,7 @@ variants.SKYGRID.desc=Enter the matrix... of blocks. All terrain has been replac
 variants.NO_POLLUTION.desc=Tired of all the filth your machines are producing? Of the acid rain and the constant smog? Well, time to clean all that up. This variant disables GT pollution mechanics entirely, even works without a restart.
 variants.CHANCED_RECIPES.desc=Let's go gambling! This variant allows you to multiply all fluid/item input/output chances by a factor x between 0 and 1. Chanced inputs will only be consumed x% of the time and chanced outputs will only be produced x% of the time. You can also randomize these chances for every recipe, this is based on your world seed.
 variants.CRIMSON_APOCALYPSE.desc=The Blood Moon is rising... and with it, hordes of powerful monsters. This variant empowers mobs in multiple ways, more mob variants, more infernals, more health, more damage and more spawns. Oh, and every night is a Blood Moon, in every dimension with a day/night cycle. Good Luck!
+variants.WIRELESS.desc=Cables, Wires, lasers, none of these annoyances will bind you any longer. This variant makes wireless energy hatches and covers as cheap as regular energy hatches, making them accessible right away!
 
 #Variant GUI buttons
 variantgui.header=Pack Variants
