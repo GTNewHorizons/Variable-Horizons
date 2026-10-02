@@ -138,9 +138,12 @@ public enum Mixins implements IMixins {
                 && GeneralConfig.startingDimID != -1
                 && !GeneralConfig.disableVariants)
         .addRequiredMod(TargetedMod.BOTANIA)
-        .setPhase(Phase.LATE))
-
-    ;
+        .setPhase(Phase.LATE)),
+    MAKE_LASERS_WIRELESS(
+        new MixinBuilder("Make all laser targets wireless").addCommonMixins("MixinMTEHatchEnergyTunnel_MakeWireless")
+            .setApplyIf(() -> VariantNames.activeContains(VariantNames.WIRELESS.id) && !GeneralConfig.disableVariants)
+            .addRequiredMod(TargetedMod.GREGTECH)
+            .setPhase(Phase.LATE));
 
     private final MixinBuilder builder;
 
