@@ -16,7 +16,9 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.SubstituteFluidStack;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import ic2.core.Ic2Items;
 import tectech.thing.CustomItemList;
 
 public class Wireless extends VariantLoader implements IRuntimeVariant {
@@ -39,21 +41,31 @@ public class Wireless extends VariantLoader implements IRuntimeVariant {
                 .addShapelessRecipe(ItemList.HATCHES_ENERGY[i].get(1), ItemList.WIRELESS_ENERGY_HATCHES[i].get(1));
         }
 
-        Materials[] plateMat = new Materials[] { Materials.Iron, Materials.Aluminium, Materials.StainlessSteel,
-            Materials.Titanium, Materials.TungstenSteel, WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial(),
-            Materials.Iridium, Materials.Osmium, Materials.Neutronium, Materials.Infinity, Materials.TranscendentMetal,
+        Materials[] plateMat = new Materials[] { Materials.Aluminium, Materials.StainlessSteel, Materials.Titanium,
+            Materials.TungstenSteel, WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial(), Materials.Iridium,
+            Materials.Osmium, Materials.Neutronium, Materials.Infinity, Materials.TranscendentMetal,
             Materials.SpaceTime, Materials.MHDCSM };
 
-        // skip MAX
-        for (int i = 0; i < ItemList.WIRELESS_ENERGY_COVERS.length - 1; i++) {
+        ItemList[] coil = new ItemList[] { ItemList.LV_Coil, ItemList.MV_Coil, ItemList.HV_Coil, ItemList.EV_Coil,
+            ItemList.IV_Coil, ItemList.LuV_Coil, ItemList.ZPM_Coil, ItemList.UV_Coil, ItemList.UHV_Coil,
+            ItemList.UEV_Coil, ItemList.UIV_Coil, ItemList.UMV_Coil };
+
+        // LV Recipe
+        GTModHandler.addCraftingRecipe(
+            ItemList.Cover_Wireless_Energy_LV.get(1),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            new Object[] { "SPS", "dBC", "SPS", 'S', OrePrefixes.screw.get(Materials.Steel), 'P',
+                OrePrefixes.plate.get(Materials.Iron), 'B', OrePrefixes.circuit.get(Materials.LV), 'C',
+                Ic2Items.coil });
+
+        // skip LV & MAX
+        for (int i = 0; i < ItemList.WIRELESS_ENERGY_COVERS.length - 2; i++) {
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.WIRELESS_ENERGY_HATCHES[i + 1].get(1),
-                    GTOreDictUnificator.get(OrePrefixes.plate, plateMat[i], 4L))
-                .itemOutputs(ItemList.WIRELESS_ENERGY_COVERS[i].get(1))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, plateMat[i], 1L), coil[i].get(1))
+                .itemOutputs(ItemList.WIRELESS_ENERGY_COVERS[i + 1].get(1))
                 .fluidInputs(SubstituteFluidStack.soldering(QUARTER_INGOTS))
                 .duration(5 * SECONDS)
-                .eut(GTValues.VP[i])
+                .eut(GTValues.VP[i + 1])
                 .addTo(assemblerRecipes);
         }
 
