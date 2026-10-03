@@ -21,6 +21,7 @@ import com.LazyFlesh.variablehorizons.variants.runtime.InfinitePower;
 import com.LazyFlesh.variablehorizons.variants.runtime.NoPollution;
 import com.LazyFlesh.variablehorizons.variants.runtime.NoQuestRewards;
 import com.LazyFlesh.variablehorizons.variants.runtime.NoRocket;
+import com.LazyFlesh.variablehorizons.variants.runtime.Wireless;
 
 public enum VariantNames {
     // spotless:off
@@ -40,6 +41,7 @@ public enum VariantNames {
     CHEAP_MODE("CHEAP_MODE"),
     EXPENSIVE_MODE("EXPENSIVE_MODE"),
     INFINITE_POWER("INFINITE_POWER", new InfinitePower()),
+    WIRELESS("WIRELESS", new Wireless ()),
     CUSTOM_DIM_START("CUSTOM_DIM_START", new DiffDimStart()), // sets a different dim as the spawn dimension instead of OW
     SUPERFLAT("SUPERFLAT", new VariantNames[]{ VOID_WORLD, VOID_ISLAND }),
     SKYGRID("SKYGRID", new SkyGrid(), new VariantNames[]{ VOID_WORLD, VOID_ISLAND, SUPERFLAT }),
