@@ -31,7 +31,7 @@ public class Wireless extends VariantLoader implements IRuntimeVariant {
     @Override
     public void variantRecipes(VariantNames... activeVariants) {
         // recipes for each wireless hatch, 1 to 1 conversion from normal e hatch
-        // skip adding dynamo to wireless dynamo, since pointless
+        // skip dynamos, those are handled by mixins
 
         // skip ulv and max
         for (int i = 1; i < ItemList.WIRELESS_ENERGY_HATCHES.length - 1; i++) {
@@ -41,6 +41,7 @@ public class Wireless extends VariantLoader implements IRuntimeVariant {
                 .addShapelessRecipe(ItemList.HATCHES_ENERGY[i].get(1), ItemList.WIRELESS_ENERGY_HATCHES[i].get(1));
         }
 
+        // Cover Recipes
         Materials[] plateMat = new Materials[] { Materials.Aluminium, Materials.StainlessSteel, Materials.Titanium,
             Materials.TungstenSteel, WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial(), Materials.Iridium,
             Materials.Osmium, Materials.Neutronium, Materials.Infinity, Materials.TranscendentMetal,
@@ -69,6 +70,7 @@ public class Wireless extends VariantLoader implements IRuntimeVariant {
                 .addTo(assemblerRecipes);
         }
 
+        // Multiamp energy hatch conversion recipes
         ItemStack[] energyHatches_4A = new ItemStack[] { CustomItemList.eM_energyMulti4_EV.get(1L),
             CustomItemList.eM_energyMulti4_IV.get(1L), CustomItemList.eM_energyMulti4_LuV.get(1L),
             CustomItemList.eM_energyMulti4_ZPM.get(1L), CustomItemList.eM_energyMulti4_UV.get(1L),
