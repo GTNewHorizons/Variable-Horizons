@@ -48,7 +48,7 @@ variants.SKYGRID.desc=Enter the matrix... of blocks. All terrain has been replac
 variants.NO_POLLUTION.desc=Tired of all the filth your machines are producing? Of the acid rain and the constant smog? Well, time to clean all that up. This variant disables GT pollution mechanics entirely, even works without a restart.
 variants.CHANCED_RECIPES.desc=Let's go gambling! This variant allows you to multiply all fluid/item input/output chances by a factor x between 0 and 1. Chanced inputs will only be consumed x% of the time and chanced outputs will only be produced x% of the time. You can also randomize these chances for every recipe, this is based on your world seed.
 variants.CRIMSON_APOCALYPSE.desc=The Blood Moon is rising... and with it, hordes of powerful monsters. This variant empowers mobs in multiple ways, more mob variants, more infernals, more health, more damage and more spawns. Oh, and every night is a Blood Moon, in every dimension with a day/night cycle. Good Luck!
-variants.WIRELESS.desc=Cables, Wires, lasers, none of these annoyances will bind you any longer. This variant makes wireless energy hatches and covers as cheap as regular energy hatches, making them accessible right away!
+variants.WIRELESS.desc=Cables, Wires, lasers, none of these annoyances will bind you any longer. This variant makes wireless energy hatches and covers as cheap as regular energy hatches, making them accessible right away! Additionally, all lasers and dynamos are wireless by default, no cables needed there either.
 
 #Variant GUI buttons
 variantgui.header=Pack Variants
