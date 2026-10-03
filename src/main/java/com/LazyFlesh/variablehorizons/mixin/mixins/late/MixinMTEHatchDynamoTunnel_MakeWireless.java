@@ -27,24 +27,24 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 public class MixinMTEHatchDynamoTunnel_MakeWireless extends MTEHatchDynamoMulti {
 
     @Unique
-    private UUID variablehorizons$owner;
+    private UUID variablehorizonsLaser$owner;
     @Unique
-    private long variablehorizons$ticksBetween;
+    private long variablehorizonsLaser$ticksBetween;
     @Unique
-    private long variablehorizons$capacity = 0;
+    private long variablehorizonsLaser$capacity = 0;
     @Unique
-    private int variablehorizons$cachedAmperes = -1;
+    private int variablehorizonsLaser$cachedAmperes = -1;
     @Unique
-    public final long variablehorizons$precisionMultiplier = LongMath.pow(10, 15);
+    public final long variablehorizonsLaser$precisionMultiplier = LongMath.pow(10, 15);
 
     protected MixinMTEHatchDynamoTunnel_MakeWireless() {
         super(null, 0, 0, null, null);
     }
 
     @Unique
-    private void variablehorizons$ensureInit() {
-        if (Amperes <= 0 || variablehorizons$cachedAmperes == Amperes) return;
-        variablehorizons$cachedAmperes = Amperes;
+    private void variablehorizonsLaser$ensureInit() {
+        if (Amperes <= 0 || variablehorizonsLaser$cachedAmperes == Amperes) return;
+        variablehorizonsLaser$cachedAmperes = Amperes;
 
         BigInteger perOp = BigInteger.valueOf(Amperes * V[mTier])
             .multiply(BigInteger.valueOf(WirelessNetworkManager.ticks_between_energy_addition));
@@ -52,29 +52,30 @@ public class MixinMTEHatchDynamoTunnel_MakeWireless extends MTEHatchDynamoMulti 
         double div = perOp.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) > 0 ? perOp.doubleValue() / Long.MAX_VALUE
             : 1d;
 
-        variablehorizons$ticksBetween = div > 1 ? (long) (WirelessNetworkManager.ticks_between_energy_addition / div)
+        variablehorizonsLaser$ticksBetween = div > 1
+            ? (long) (WirelessNetworkManager.ticks_between_energy_addition / div)
             : WirelessNetworkManager.ticks_between_energy_addition;
 
-        variablehorizons$capacity = div
-            > 1 ? perOp.divide(BigInteger.valueOf((long) (div * variablehorizons$precisionMultiplier)))
-                .multiply(BigInteger.valueOf(variablehorizons$precisionMultiplier))
+        variablehorizonsLaser$capacity = div
+            > 1 ? perOp.divide(BigInteger.valueOf((long) (div * variablehorizonsLaser$precisionMultiplier)))
+                .multiply(BigInteger.valueOf(variablehorizonsLaser$precisionMultiplier))
                 .longValue() : perOp.longValue();
     }
 
     @Inject(method = "onFirstTick", at = @At("TAIL"), remap = false)
-    private void variablehorizons$onFirstTick(IGregTechTileEntity base, CallbackInfo ci) {
+    private void variablehorizonsLaser$onFirstTick(IGregTechTileEntity base, CallbackInfo ci) {
         if (!base.isServerSide()) return;
-        variablehorizons$owner = base.getOwnerUuid();
-        strongCheckOrAddUser(variablehorizons$owner);
+        variablehorizonsLaser$owner = base.getOwnerUuid();
+        strongCheckOrAddUser(variablehorizonsLaser$owner);
     }
 
     @Inject(method = "onPostTick", at = @At("HEAD"), cancellable = true, remap = false)
-    private void variablehorizons$onPostTick(IGregTechTileEntity base, long tick, CallbackInfo ci) {
-        if (base.isServerSide() && variablehorizons$owner != null) {
-            variablehorizons$ensureInit();
-            if (tick % variablehorizons$ticksBetween == 0L) {
+    private void variablehorizonsLaser$onPostTick(IGregTechTileEntity base, long tick, CallbackInfo ci) {
+        if (base.isServerSide() && variablehorizonsLaser$owner != null) {
+            variablehorizonsLaser$ensureInit();
+            if (tick % variablehorizonsLaser$ticksBetween == 0L) {
                 long stored = base.getStoredEU();
-                if (stored > 0 && addEUToGlobalEnergyMap(variablehorizons$owner, stored)) {
+                if (stored > 0 && addEUToGlobalEnergyMap(variablehorizonsLaser$owner, stored)) {
                     setEUVar(0);
                 }
             }
@@ -83,25 +84,25 @@ public class MixinMTEHatchDynamoTunnel_MakeWireless extends MTEHatchDynamoMulti 
     }
 
     @Inject(method = "maxEUStore", at = @At("HEAD"), cancellable = true, remap = false)
-    private void variablehorizons$maxEUStore(CallbackInfoReturnable<Long> cir) {
-        variablehorizons$ensureInit();
-        if (variablehorizons$capacity > 0) {
-            cir.setReturnValue(variablehorizons$capacity);
+    private void variablehorizonsLaser$maxEUStore(CallbackInfoReturnable<Long> cir) {
+        variablehorizonsLaser$ensureInit();
+        if (variablehorizonsLaser$capacity > 0) {
+            cir.setReturnValue(variablehorizonsLaser$capacity);
         }
     }
 
     @Inject(method = "getTexturesActive", at = @At("HEAD"), cancellable = true, remap = false)
-    private void variablehorizons$texturesActive(ITexture base, CallbackInfoReturnable<ITexture[]> cir) {
+    private void variablehorizonsLaser$texturesActive(ITexture base, CallbackInfoReturnable<ITexture[]> cir) {
         cir.setReturnValue(new ITexture[] { base, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_LASER[0] });
     }
 
     @Inject(method = "getTexturesInactive", at = @At("HEAD"), cancellable = true, remap = false)
-    private void variablehorizons$texturesInactive(ITexture base, CallbackInfoReturnable<ITexture[]> cir) {
+    private void variablehorizonsLaser$texturesInactive(ITexture base, CallbackInfoReturnable<ITexture[]> cir) {
         cir.setReturnValue(new ITexture[] { base, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_LASER[0] });
     }
 
     @Inject(method = "getConnectionType", at = @At("HEAD"), cancellable = true, remap = false)
-    private void variablehorizons$connectionType(CallbackInfoReturnable<ConnectionType> cir) {
+    private void variablehorizonsLaser$connectionType(CallbackInfoReturnable<ConnectionType> cir) {
         cir.setReturnValue(ConnectionType.WIRELESS);
     }
 
