@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 import rwg.world.ChunkGeneratorRealistic;
 
-@Mixin(ChunkGeneratorRealistic.class)
+@Mixin(value = ChunkGeneratorRealistic.class, remap = false)
 public interface AccessorChunkGeneratorRealistic {
 
     @Accessor("villageGenerator")
