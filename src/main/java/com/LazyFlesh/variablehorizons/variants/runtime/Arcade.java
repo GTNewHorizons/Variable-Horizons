@@ -3,6 +3,7 @@ package com.LazyFlesh.variablehorizons.variants.runtime;
 import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerUHV;
 import static gregtech.api.enums.Mods.AE2FluidCraft;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.StorageDrawers;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -82,6 +83,14 @@ public class Arcade extends VariantLoader implements IRuntimeVariant {
                     GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemCreativeStorageCell", 1, 0));
                 player.inventory
                     .addItemStackToInventory(GTModHandler.getModItem(AE2FluidCraft.ID, "creative_fluid_storage", 1, 0));
+                player.inventory
+                    .setInventorySlotContents(39, GTModHandler.getModItem(Avaritia.ID, "Infinity_Helm", 1, 0));
+                player.inventory
+                    .setInventorySlotContents(38, GTModHandler.getModItem(Avaritia.ID, "Infinity_Chest", 1, 0));
+                player.inventory
+                    .setInventorySlotContents(37, GTModHandler.getModItem(Avaritia.ID, "Infinity_Pants", 1, 0));
+                player.inventory
+                    .setInventorySlotContents(36, GTModHandler.getModItem(Avaritia.ID, "Infinity_Shoes", 1, 0));
             }
         }
     }
