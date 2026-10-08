@@ -15,6 +15,7 @@ import com.LazyFlesh.variablehorizons.variants.invasive.GardenOfGrind;
 import com.LazyFlesh.variablehorizons.variants.invasive.SkyGrid;
 import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 import com.LazyFlesh.variablehorizons.variants.runtime.AlteredRecipeTime;
+import com.LazyFlesh.variablehorizons.variants.runtime.Arcade;
 import com.LazyFlesh.variablehorizons.variants.runtime.ChancedRecipes;
 import com.LazyFlesh.variablehorizons.variants.runtime.CrimsonApocalypse;
 import com.LazyFlesh.variablehorizons.variants.runtime.InfinitePower;
@@ -64,6 +65,7 @@ public enum VariantNames {
     DIMLOCKED("DIMLOCKED", new DimLocked(), new VariantNames[] { CUSTOM_DIM_START, NO_ROCKET },
         new VariantNames[] { NO_RECIPE_ADDITIONS }),
 
+    ARCADE("ARCADE", new Arcade(), new VariantNames[] { INFINITE_POWER, WIRELESS }, new VariantNames[] {})
 
     ;
     // spotless:on
