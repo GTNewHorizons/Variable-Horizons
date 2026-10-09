@@ -1,8 +1,6 @@
 package com.LazyFlesh.variablehorizons.variants.runtime;
 
 import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerUHV;
-import static gregtech.api.enums.Mods.AE2FluidCraft;
-import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.Backhand;
 import static gregtech.api.enums.Mods.StorageDrawers;
@@ -16,7 +14,6 @@ import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import detrav.items.DetravMetaGeneratedTool01;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.items.IDMetaTool01;
@@ -79,11 +76,6 @@ public class Arcade extends VariantLoader implements IRuntimeVariant {
                     .addItemStackToInventory(GTModHandler.getModItem(StorageDrawers.ID, "upgradeCreative", 64, 1));
                 player.inventory
                     .addItemStackToInventory(GTModHandler.getModItem(StorageDrawers.ID, "fullDrawers1", 64, 0));
-                player.inventory.addItemStackToInventory(ItemList.Debug_Fluid_Tank.get(1));
-                player.inventory.addItemStackToInventory(
-                    GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemCreativeStorageCell", 1, 0));
-                player.inventory
-                    .addItemStackToInventory(GTModHandler.getModItem(AE2FluidCraft.ID, "creative_fluid_storage", 1, 0));
                 int index = Backhand.isModLoaded() ? 40 : 39;
                 player.inventory
                     .setInventorySlotContents(index, GTModHandler.getModItem(Avaritia.ID, "Infinity_Helm", 1, 0));
