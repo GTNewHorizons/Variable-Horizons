@@ -54,6 +54,9 @@ public class CommonProxy {
             .bus()
             .register(VariantNames.CHANCED_RECIPES.loaderClass);
 
+        FMLCommonHandler.instance()
+            .bus()
+            .register(VariantNames.ARCADE.loaderClass);
     }
 
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
