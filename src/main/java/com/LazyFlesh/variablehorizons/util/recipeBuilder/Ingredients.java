@@ -82,7 +82,9 @@ public final class Ingredients<T> {
     }
 
     public Ingredients<T> replace(T target, T newStack) {
-        require(target).current = newStack; // keeps amount
+        Entry<T> entry = require(target);
+        entry.current = newStack;
+        entry.base = kind.amount(newStack);
         return this;
     }
 
