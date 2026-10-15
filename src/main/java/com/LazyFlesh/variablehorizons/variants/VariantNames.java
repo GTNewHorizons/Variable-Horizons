@@ -39,8 +39,7 @@ public enum VariantNames {
     ALTERED_RECIPE_TIME("ALTERED_TIME", new AlteredRecipeTime()),
     ALTERED_EFFICIENCY("ALTERED_EFFICIENCY"),
     CHANCED_RECIPES("CHANCED_RECIPES", new ChancedRecipes()),
-    CHEAP_MODE("CHEAP_MODE"),
-    EXPENSIVE_MODE("EXPENSIVE_MODE"),
+    ALTERED_PRICING("ALTERED_PRICING"),
     INFINITE_POWER("INFINITE_POWER", new InfinitePower()),
     WIRELESS("WIRELESS", new Wireless ()),
     CUSTOM_DIM_START("CUSTOM_DIM_START", new DiffDimStart()), // sets a different dim as the spawn dimension instead of OW

@@ -3,6 +3,7 @@ package com.LazyFlesh.variablehorizons;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+import com.LazyFlesh.variablehorizons.modifiableRecipes.RecipeLoader;
 import com.LazyFlesh.variablehorizons.util.RecipeRemover;
 import com.LazyFlesh.variablehorizons.util.VillagerRecipe;
 import com.LazyFlesh.variablehorizons.util.islands.IslandCommands;
@@ -65,7 +66,9 @@ public class CommonProxy {
     }
 
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
-    public void postInit(FMLPostInitializationEvent event) {}
+    public void postInit(FMLPostInitializationEvent event) {
+        new RecipeLoader().run();
+    }
 
     // damn nhcoremod... loads recipes too late. At least its not on server starting.
     public void completeLoad(FMLLoadCompleteEvent event) {
