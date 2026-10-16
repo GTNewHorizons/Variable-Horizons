@@ -16,7 +16,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.util.GTRecipeBuilder;
 
-public final class RecipeDraft {
+public final class RecipeDraft implements Registrable {
 
     private final RecipeMap<?> map;
     private final Ingredients<Object> itemIn = new Ingredients<>(Kinds.ITEM_INPUT);
@@ -149,6 +149,7 @@ public final class RecipeDraft {
         return this;
     }
 
+    @Override
     public void register() {
         GTRecipeBuilder builder = GTValues.RA.stdBuilder();
         if (!itemIn.isEmpty()) {

@@ -2,6 +2,7 @@ package com.LazyFlesh.variablehorizons.util.recipeBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.IntFunction;
 
 import net.minecraft.item.ItemStack;
@@ -304,6 +305,80 @@ public final class Ingredients<T> {
 
             public FluidStack withAmount(FluidStack stack, int amount) {
                 return new FluidStack(stack, amount);
+            }
+        };
+
+        static final Kind<Object> ASSLINE_INPUT = new Kind<>() {
+
+            private boolean isOreDictArray(Object object) {
+                return object instanceof Object[] && !(object instanceof ItemStack[])
+                    && ((Object[]) object).length >= 2;
+            }
+
+            public boolean same(Object a, Object b) {
+                if (a instanceof ItemStack && b instanceof ItemStack) {
+                    return GTUtility.areStacksEqual((ItemStack) a, (ItemStack) b);
+                }
+
+                if (a instanceof OreDictItemStack && b instanceof OreDictItemStack) {
+                    return ((OreDictItemStack) a).mOreName.equals(((OreDictItemStack) b).mOreName);
+                }
+
+                if (a instanceof ItemStack[]x && b instanceof ItemStack[]y) {
+                    if (x.length != y.length) {
+                        return false;
+                    }
+                    for (int i = 0; i < x.length; i++) {
+                        if (!GTUtility.areStacksEqual(x[i], y[i])) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+
+                if (isOreDictArray(a) && isOreDictArray(b)) {
+                    return Objects.equals(((Object[]) a)[0], ((Object[]) b)[0]);
+                }
+
+                return false;
+            }
+
+            public int amount(Object stack) {
+                if (stack instanceof ItemStack) {
+                    return ((ItemStack) stack).stackSize;
+                }
+
+                if (stack instanceof OreDictItemStack) {
+                    return ((OreDictItemStack) stack).mAmount;
+                }
+
+                if (stack instanceof ItemStack[]) {
+                    return ((ItemStack[]) stack)[0].stackSize;
+                }
+
+                return ((Number) ((Object[]) stack)[1]).intValue();
+            }
+
+            public Object withAmount(Object stack, int amount) {
+                if (stack instanceof ItemStack) {
+                    ItemStack copy = ((ItemStack) stack).copy();
+                    copy.stackSize = amount;
+                    return copy;
+                }
+
+                if (stack instanceof OreDictItemStack) {
+                    return new OreDictItemStack(((OreDictItemStack) stack).mOreName, amount);
+                }
+
+                if (stack instanceof ItemStack[]src) {
+                    ItemStack[] out = new ItemStack[src.length];
+                    for (int i = 0; i < src.length; i++) {
+                        out[i] = src[i].copy();
+                        out[i].stackSize = amount;
+                    }
+                    return out;
+                }
+                return new Object[] { ((Object[]) stack)[0], amount };
             }
         };
 

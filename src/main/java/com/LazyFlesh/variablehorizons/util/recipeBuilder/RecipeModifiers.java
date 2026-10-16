@@ -17,25 +17,35 @@ import com.github.bsideup.jabel.Desugar;
 public final class RecipeModifiers {
 
     @Desugar
-    private record Entry(RecipePhase phase, VariantNames source, Consumer<RecipeDraft> draftConsumer) {}
+    private record Entry(RecipePhase phase, VariantNames source, Consumer<Registrable> draftConsumer) {}
 
-    private static final Map<String, Supplier<RecipeDraft>> BASE = new LinkedHashMap<>();
+    private static final Map<String, Supplier<? extends Registrable>> BASE = new LinkedHashMap<>();
     private static final Map<String, List<Entry>> MODIFIERS = new HashMap<>();
 
-    public static void defineBase(String id, Supplier<RecipeDraft> base) {
+    public static void defineBase(String id, Supplier<? extends Registrable> base) {
         if (BASE.put(id, base) != null) {
             throw new IllegalStateException("Duplicate recipe id: " + id);
         }
     }
 
     public static void modify(String id, VariantNames variant, RecipePhase phase, Consumer<RecipeDraft> draftConsumer) {
-        MODIFIERS.computeIfAbsent(id, k -> new ArrayList<>())
-            .add(new Entry(phase, variant, draftConsumer));
+        add(id, variant, phase, RecipeDraft.class, draftConsumer);
     }
 
-    public static RecipeDraft resolve(String id, Set<VariantNames> active) {
+    public static void modifyAssemblyLine(String id, VariantNames variant, RecipePhase phase,
+        Consumer<AsslineDraft> draftConsumer) {
+        add(id, variant, phase, AsslineDraft.class, draftConsumer);
+    }
+
+    private static <D extends Registrable> void add(String id, VariantNames variant, RecipePhase phase, Class<D> type,
+        Consumer<D> draftConsumer) {
+        MODIFIERS.computeIfAbsent(id, k -> new ArrayList<>())
+            .add(new Entry(phase, variant, d -> draftConsumer.accept(type.cast(d))));
+    }
+
+    public static Registrable resolve(String id, Set<VariantNames> active) {
         // new draft each time, so modifiers never accumulate
-        RecipeDraft draft = BASE.get(id)
+        Registrable draft = BASE.get(id)
             .get();
         List<Entry> list = new ArrayList<>(MODIFIERS.getOrDefault(id, Collections.emptyList()));
         list.removeIf(e -> !active.contains(e.source));
