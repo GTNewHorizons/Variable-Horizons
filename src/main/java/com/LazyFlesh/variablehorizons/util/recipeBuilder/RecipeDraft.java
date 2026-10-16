@@ -79,21 +79,16 @@ public final class RecipeDraft {
         return this;
     }
 
-    // modifier side
-    public Ingredients<Object> itemIn() {
-        return itemIn;
+    public RecipeDraft scaleAllInputs(double factor) {
+        itemIn.scaleAll(factor);
+        fluidIn.scaleAll(factor);
+        return this;
     }
 
-    public Ingredients<ItemStack> itemOut() {
-        return itemOut;
-    }
-
-    public Ingredients<FluidStack> fluidIn() {
-        return fluidIn;
-    }
-
-    public Ingredients<FluidStack> fluidOut() {
-        return fluidOut;
+    public RecipeDraft scaleAllOutputs(double factor) {
+        itemOut.scaleAll(factor);
+        fluidOut.scaleAll(factor);
+        return this;
     }
 
     public RecipeDraft inputChances(int... chances) {
@@ -124,6 +119,23 @@ public final class RecipeDraft {
     public RecipeDraft mapEut(LongUnaryOperator fn) {
         this.eut = fn.applyAsLong(eut);
         return this;
+    }
+
+    // modifier side
+    public Ingredients<Object> itemIn() {
+        return itemIn;
+    }
+
+    public Ingredients<ItemStack> itemOut() {
+        return itemOut;
+    }
+
+    public Ingredients<FluidStack> fluidIn() {
+        return fluidIn;
+    }
+
+    public Ingredients<FluidStack> fluidOut() {
+        return fluidOut;
     }
 
     @SuppressWarnings("unchecked")

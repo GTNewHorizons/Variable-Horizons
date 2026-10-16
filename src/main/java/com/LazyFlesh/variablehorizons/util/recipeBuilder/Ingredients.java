@@ -142,18 +142,37 @@ public final class Ingredients<T> {
     }
 
     public Ingredients<T> scale(T target, double factor) {
-        if (!(factor > 0) || Double.isInfinite(factor)) {
-            throw new IllegalArgumentException("Scale factor must be positive and finite: " + factor);
-        }
+        checkFactor(factor);
         require(target).factor *= factor;
         return this;
     }
 
     public Ingredients<T> scaleChance(T target, double factor) {
-        if (!(factor >= 0) || Double.isInfinite(factor))
-            throw new IllegalArgumentException("Chance factor must be non-negative and finite: " + factor);
+        checkFactor(factor);
         require(target).chanceFactor *= factor;
         return this;
+    }
+
+    public Ingredients<T> scaleAll(double factor) {
+        checkFactor(factor);
+        for (Entry<T> entry : list) {
+            entry.factor *= factor;
+        }
+        return this;
+    }
+
+    public Ingredients<T> scaleAllChances(double factor) {
+        checkFactor(factor);
+        for (Entry<T> entry : list) {
+            entry.chanceFactor *= factor;
+        }
+        return this;
+    }
+
+    private static void checkFactor(double factor) {
+        if (!(factor > 0) || Double.isInfinite(factor)) {
+            throw new IllegalArgumentException("Scale factor must be positive and finite: " + factor);
+        }
     }
 
     public Ingredients<T> setAmount(T target, int amount) {
