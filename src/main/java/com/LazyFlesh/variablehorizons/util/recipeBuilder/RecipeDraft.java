@@ -96,6 +96,26 @@ public final class RecipeDraft {
         return fluidOut;
     }
 
+    public RecipeDraft inputChances(int... chances) {
+        itemIn.setChances(chances);
+        return this;
+    }
+
+    public RecipeDraft outputChances(int... chances) {
+        itemOut.setChances(chances);
+        return this;
+    }
+
+    public RecipeDraft fluidInputChances(int... chances) {
+        fluidIn.setChances(chances);
+        return this;
+    }
+
+    public RecipeDraft fluidOutputChances(int... chances) {
+        fluidOut.setChances(chances);
+        return this;
+    }
+
     public RecipeDraft mapDuration(IntUnaryOperator fn) {
         this.duration = fn.applyAsInt(duration);
         return this;
@@ -119,15 +139,35 @@ public final class RecipeDraft {
 
     public void register() {
         GTRecipeBuilder builder = GTValues.RA.stdBuilder();
-        if (!itemIn.isEmpty()) builder.itemInputs(itemIn.build(Object[]::new));
-        if (!fluidIn.isEmpty()) builder.fluidInputs(fluidIn.build(FluidStack[]::new));
-        if (!itemOut.isEmpty()) builder.itemOutputs(itemOut.build(ItemStack[]::new));
-        if (!fluidOut.isEmpty()) builder.fluidOutputs(fluidOut.build(FluidStack[]::new));
+        if (!itemIn.isEmpty()) {
+            builder.itemInputs(itemIn.build(Object[]::new));
+            if (itemIn.hasChances()) {
+                builder.inputChances(itemIn.buildChances());
+            }
+        }
+        if (!fluidIn.isEmpty()) {
+            builder.fluidInputs(fluidIn.build(FluidStack[]::new));
+            if (fluidIn.hasChances()) {
+                builder.fluidInputChances(fluidIn.buildChances());
+            }
+        }
+        if (!itemOut.isEmpty()) {
+            builder.itemOutputs(itemOut.build(ItemStack[]::new));
+            if (itemOut.hasChances()) {
+                builder.outputChances(itemOut.buildChances());
+            }
+        }
+        if (!fluidOut.isEmpty()) {
+            builder.fluidOutputs(fluidOut.build(FluidStack[]::new));
+            if (fluidOut.hasChances()) {
+                builder.fluidOutputChances(fluidOut.buildChances());
+            }
+        }
+
         builder.duration(duration)
             .eut(eut);
-        for (Map.Entry<RecipeMetadataKey<?>, Object> entry : metadata.entrySet()) {
-            applyMeta(builder, entry.getKey(), entry.getValue());
-        }
+        for (Map.Entry<RecipeMetadataKey<?>, Object> e : metadata.entrySet())
+            applyMeta(builder, e.getKey(), e.getValue());
         builder.addTo(map);
     }
 

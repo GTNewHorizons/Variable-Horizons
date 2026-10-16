@@ -18,11 +18,18 @@ public final class Ingredients<T> {
         T current;
         double factor = 1d;
         int base;
+        int chanceBase = 10000;
+        double chanceFactor = 1d;
 
         Entry(T stack, int base) {
             this.origin = stack;
             this.current = stack;
             this.base = base;
+        }
+
+        int chance() {
+            long chance = Math.round(chanceBase * chanceFactor);
+            return (int) Math.max(0, Math.min(10000, chance));
         }
     }
 
@@ -51,6 +58,13 @@ public final class Ingredients<T> {
         return list.get(i);
     }
 
+    public Ingredients<T> setChance(T target, int chance) {
+        Entry<T> entry = require(target);
+        entry.chanceBase = chance;
+        entry.chanceFactor = 1d;
+        return this;
+    }
+
     private Entry<T> make(T stack) {
         return new Entry<>(stack, kind.amount(stack));
     }
@@ -60,8 +74,22 @@ public final class Ingredients<T> {
         return this;
     } // used for base definition
 
+    public Ingredients<T> add(T stack, int chance) {
+        Entry<T> entry = make(stack);
+        entry.chanceBase = chance;
+        list.add(entry);
+        return this;
+    }
+
     public Ingredients<T> addFirst(T stack) {
         list.add(0, make(stack));
+        return this;
+    }
+
+    public Ingredients<T> addFirst(T stack, int chance) {
+        Entry<T> entry = make(stack);
+        entry.chanceBase = chance;
+        list.add(0, entry);
         return this;
     }
 
@@ -70,14 +98,33 @@ public final class Ingredients<T> {
         return this;
     }
 
+    public Ingredients<T> addLast(T stack, int chance) {
+        return add(stack, chance);
+    }
+
     public Ingredients<T> addBefore(T anchor, T stack) {
         list.add(Math.max(indexOf(anchor), 0), make(stack));
+        return this;
+    }
+
+    public Ingredients<T> addBefore(T anchor, T stack, int chance) {
+        Entry<T> entry = make(stack);
+        entry.chanceBase = chance;
+        list.add(Math.max(indexOf(anchor), 0), entry);
         return this;
     }
 
     public Ingredients<T> addAfter(T anchor, T stack) {
         int i = indexOf(anchor);
         list.add(i < 0 ? list.size() : i + 1, make(stack));
+        return this;
+    }
+
+    public Ingredients<T> addAfter(T anchor, T stack, int chance) {
+        Entry<T> entry = make(stack);
+        entry.chanceBase = chance;
+        int i = indexOf(anchor);
+        list.add(i < 0 ? list.size() : i + 1, entry);
         return this;
     }
 
@@ -88,11 +135,24 @@ public final class Ingredients<T> {
         return this;
     }
 
+    public Ingredients<T> replace(T target, T newStack, int chance) {
+        replace(target, newStack);
+        require(newStack).chanceBase = chance;
+        return this;
+    }
+
     public Ingredients<T> scale(T target, double factor) {
         if (!(factor > 0) || Double.isInfinite(factor)) {
             throw new IllegalArgumentException("Scale factor must be positive and finite: " + factor);
         }
         require(target).factor *= factor;
+        return this;
+    }
+
+    public Ingredients<T> scaleChance(T target, double factor) {
+        if (!(factor >= 0) || Double.isInfinite(factor))
+            throw new IllegalArgumentException("Chance factor must be non-negative and finite: " + factor);
+        require(target).chanceFactor *= factor;
         return this;
     }
 
@@ -122,6 +182,32 @@ public final class Ingredients<T> {
             out[i] = kind.withAmount(entry.current, kind.scaled(entry.base, entry.factor));
         }
         return out;
+    }
+
+    public Ingredients<T> setChances(int... chances) {
+        if (chances.length != list.size()) {
+            throw new IllegalArgumentException("Expected " + list.size() + " chances, got " + chances.length);
+        }
+        for (int i = 0; i < chances.length; i++) {
+            list.get(i).chanceBase = chances[i];
+        }
+        return this;
+    }
+
+    public int[] buildChances() {
+        int[] out = new int[list.size()];
+        for (int i = 0; i < out.length; i++) out[i] = list.get(i)
+            .chance();
+        return out;
+    }
+
+    public boolean hasChances() {
+        for (Entry<T> entry : list) {
+            if (entry.chance() != 10000) {
+                return true;
+            }
+        }
+        return false;
     }
 
     interface Kind<T> {
