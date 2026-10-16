@@ -384,4 +384,31 @@ public final class Ingredients<T> {
         };
 
     }
+
+    static final class CraftIngredients {
+
+        static String oreName(Object object) {
+            if (object instanceof OreDictItemStack) {
+                return ((OreDictItemStack) object).mOreName;
+            }
+
+            if (object instanceof String) {
+                return (String) object;
+            }
+            return null;
+        }
+
+        static boolean same(Object a, Object b) {
+            if (a instanceof ItemStack && b instanceof ItemStack) {
+                return GTUtility.areStacksEqual((ItemStack) a, (ItemStack) b);
+            }
+            String x = oreName(a);
+            String y = oreName(b);
+            if (x != null && y != null) {
+                return x.equals(y);
+            }
+
+            return Objects.equals(a, b);
+        }
+    }
 }

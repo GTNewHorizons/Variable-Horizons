@@ -37,6 +37,11 @@ public final class RecipeModifiers {
         add(id, variant, phase, AsslineDraft.class, draftConsumer);
     }
 
+    public static void modifyCrafting(String id, VariantNames variant, RecipePhase phase,
+        Consumer<CraftingDraft> draftConsumer) {
+        add(id, variant, phase, CraftingDraft.class, draftConsumer);
+    }
+
     private static <D extends Registrable> void add(String id, VariantNames variant, RecipePhase phase, Class<D> type,
         Consumer<D> draftConsumer) {
         MODIFIERS.computeIfAbsent(id, k -> new ArrayList<>())
