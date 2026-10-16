@@ -29,7 +29,7 @@ public class AsslineDraft implements Registrable {
         return new AsslineDraft();
     }
 
-    // ---------- builder side ----------
+    // builder side
     public AsslineDraft research(ItemStack item, long totalComputation, long computationPerSec, int researchEut,
         int researchAmperage) {
         this.researchItem = item;
@@ -80,7 +80,7 @@ public class AsslineDraft implements Registrable {
         return this;
     }
 
-    // ---------- modifier side ----------
+    // modifier side
     public Ingredients<Object> itemIn() {
         return itemIn;
     }
@@ -128,7 +128,6 @@ public class AsslineDraft implements Registrable {
         return this;
     }
 
-    // ---------- finish ----------
     @Override
     public void register() {
         ItemStack[] outs = itemOut.build(ItemStack[]::new);

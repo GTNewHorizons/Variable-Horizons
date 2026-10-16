@@ -371,10 +371,11 @@ public final class Ingredients<T> {
                 }
 
                 if (stack instanceof ItemStack[]src) {
+                    int ref = src[0].stackSize;
                     ItemStack[] out = new ItemStack[src.length];
                     for (int i = 0; i < src.length; i++) {
                         out[i] = src[i].copy();
-                        out[i].stackSize = amount;
+                        out[i].stackSize = (int) Math.max(1, Math.round((double) src[i].stackSize * amount / ref));
                     }
                     return out;
                 }
