@@ -336,6 +336,24 @@ public final class Ingredients<T> {
                     return true;
                 }
 
+                if (a instanceof ItemStack[] && b instanceof ItemStack) {
+                    for (ItemStack alt : (ItemStack[]) a) {
+                        if (GTUtility.areStacksEqual(alt, (ItemStack) b)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+                if (a instanceof ItemStack && b instanceof ItemStack[]) {
+                    for (ItemStack alt : (ItemStack[]) b) {
+                        if (GTUtility.areStacksEqual((ItemStack) a, alt)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
                 if (isOreDictArray(a) && isOreDictArray(b)) {
                     return Objects.equals(((Object[]) a)[0], ((Object[]) b)[0]);
                 }
