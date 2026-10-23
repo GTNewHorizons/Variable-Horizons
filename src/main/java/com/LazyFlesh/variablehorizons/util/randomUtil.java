@@ -25,12 +25,16 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.VariableHorizons;
+import com.LazyFlesh.variablehorizons.util.recipeBuilder.CompressionType;
 import com.LazyFlesh.variablehorizons.util.superflat.SuperflatBlocks;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 
 import akka.japi.Pair;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.objects.ItemData;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 
@@ -299,6 +303,29 @@ public class randomUtil {
             recipeSeed = 31 * recipeSeed + GTUtility.persistentHash(fluid, false, false);
         }
         return recipeSeed;
+    }
+
+    public static ItemStack compressItems(ItemStack input, CompressionType type) {
+        if (input == null || input.stackSize <= 64) {
+            return input;
+        }
+        ItemData data = GTOreDictUnificator.getAssociation(input);
+        long totalMaterialAmount;
+        if (data == null || data.mPrefix == null || data.mMaterial == null) {
+            return input;
+        }
+        totalMaterialAmount = data.mPrefix.getMaterialAmount() * input.stackSize;
+
+        for (OrePrefixes oredict : type.oredicts) {
+            int itemAmount = Math.round((float) totalMaterialAmount / oredict.getMaterialAmount());
+            if (itemAmount >= 1 && itemAmount <= 64) {
+                ItemStack result = GTOreDictUnificator.get(oredict, data.mMaterial.mMaterial, itemAmount);
+                if (result != null) {
+                    return result;
+                }
+            }
+        }
+        return input;
     }
 
 }

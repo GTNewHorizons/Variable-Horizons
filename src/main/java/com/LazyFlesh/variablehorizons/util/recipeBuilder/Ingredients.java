@@ -8,6 +8,8 @@ import java.util.function.IntFunction;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.LazyFlesh.variablehorizons.util.randomUtil;
+
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTUtility;
 
@@ -21,6 +23,7 @@ public final class Ingredients<T> {
         int base;
         int chanceBase = 10000;
         double chanceFactor = 1d;
+        CompressionType condense;
 
         Entry(T stack, int base) {
             this.origin = stack;
@@ -170,6 +173,18 @@ public final class Ingredients<T> {
         return this;
     }
 
+    public Ingredients<T> condense(T target, CompressionType type) {
+        require(target).condense = type;
+        return this;
+    }
+
+    public Ingredients<T> condenseAll(CompressionType type) {
+        for (Entry<T> entry : list) {
+            entry.condense = type;
+        }
+        return this;
+    }
+
     private static void checkFactor(double factor) {
         if (!(factor > 0) || Double.isInfinite(factor)) {
             throw new IllegalArgumentException("Scale factor must be positive and finite: " + factor);
@@ -199,7 +214,11 @@ public final class Ingredients<T> {
         T[] out = gen.apply(list.size());
         for (int i = 0; i < out.length; i++) {
             Entry<T> entry = list.get(i);
-            out[i] = kind.withAmount(entry.current, kind.scaled(entry.base, entry.factor));
+            T stack = kind.withAmount(entry.current, kind.scaled(entry.base, entry.factor));
+            if (entry.condense != null) {
+                stack = kind.condense(stack, entry.condense);
+            }
+            out[i] = stack;
         }
         return out;
     }
@@ -248,6 +267,10 @@ public final class Ingredients<T> {
             }
             return (int) Math.max(1, rounded);
         }
+
+        default T condense(T stack, CompressionType type) {
+            return stack;
+        }
     }
 
     static final class Kinds {
@@ -277,6 +300,11 @@ public final class Ingredients<T> {
                 }
                 return new OreDictItemStack(((OreDictItemStack) stack).mOreName, amount);
             }
+
+            public Object condense(Object stack, CompressionType type) {
+                return stack instanceof ItemStack ? randomUtil.compressItems((ItemStack) stack, type) : stack;
+            }
+
         };
 
         static final Kind<ItemStack> ITEM_OUTPUT = new Kind<>() {
@@ -293,6 +321,10 @@ public final class Ingredients<T> {
                 ItemStack copy = stack.copy();
                 copy.stackSize = amount;
                 return copy;
+            }
+
+            public ItemStack condense(ItemStack stack, CompressionType type) {
+                return randomUtil.compressItems(stack, type);
             }
         };
 
@@ -401,6 +433,10 @@ public final class Ingredients<T> {
                     return out;
                 }
                 return new Object[] { ((Object[]) stack)[0], amount };
+            }
+
+            public Object condense(Object stack, CompressionType type) {
+                return stack instanceof ItemStack ? randomUtil.compressItems((ItemStack) stack, type) : stack;
             }
         };
 
