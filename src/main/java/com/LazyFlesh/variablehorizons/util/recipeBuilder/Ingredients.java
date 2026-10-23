@@ -239,6 +239,9 @@ public final class Ingredients<T> {
         T withAmount(T stack, int amount);
 
         default int scaled(int base, double factor) {
+            if (base == 0) {
+                return 0;
+            }
             long rounded = Math.round(base * factor);
             if (rounded > Integer.MAX_VALUE) {
                 throw new ArithmeticException("Scaled amount overflows int: " + base + " * " + factor);
