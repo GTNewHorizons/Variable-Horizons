@@ -91,4 +91,8 @@ public class GeneralConfig {
     @Config.Comment("List of blocks that should not generate in the Skygrid. Format: modID:blockname:meta")
     @Config.DefaultStringList({ "minecraft:command_block:0" })
     public static String[] skygridBlacklist;
+
+    @Config.Comment("Component/hull/circuit cost multiplier for the altered pricing variant")
+    @Config.DefaultDouble(1d)
+    public static double partCostMultiplier;
 }

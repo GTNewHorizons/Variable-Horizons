@@ -17,8 +17,7 @@ variants.ALTERED_EFFICIENCY.name=Altered Machine Efficiency
 variants.INFINITE_POWER.name=Infinite Power
 variants.CUSTOM_DIM_START.name=Custom Starting Dimension
 variants.SUPERFLAT.name=Superflat
-variants.EXPENSIVE_MODE.name=Expensive Mode
-variants.CHEAP_MODE.name=Cheap Mode
+variants.ALTERED_PRICING.name=Altered Pricing
 variants.MONOBLOCK.name=Monoblock
 variants.SKYGRID.name=Skygrid
 variants.NO_POLLUTION.name=Squeaky Clean
@@ -98,6 +97,7 @@ variantgui.crimsonapocalypse.mobhealth.tooltip=Enter mob health multiplier
 variantgui.crimsonapocalypse.mobmelee.tooltip=Enter mob damage multiplier
 variantgui.crimsonapocalypse.mobcap.tooltip=Enter Blood Moon mobcap multiplier
 variantgui.crimsonapocalypse.infernaldifficulty.tooltip=Enter infernal mob difficulty level, from 0 (default) to 3 (hell)
+variantgui.alteredpricing.tooltip=Enter part cost multiplier
 
 #Variant GUI labels
 variantgui.dimidfield.label=Dimension ID
@@ -113,6 +113,7 @@ variantgui.crimsonapocalypse.mobhealth.label=Mob health multiplier
 variantgui.crimsonapocalypse.mobmelee.label=Mob damage multiplier
 variantgui.crimsonapocalypse.mobcap.label=Mobcap multiplier
 variantgui.crimsonapocalypse.infernaldifficulty.label=Infernal difficulty level
+variantgui.alteredpricing.label=Cost Multiplier
 
 #Misc
 variants.dimlock.message.1=Otherworldly forces reject your attempt at crossing dimensional boundaries

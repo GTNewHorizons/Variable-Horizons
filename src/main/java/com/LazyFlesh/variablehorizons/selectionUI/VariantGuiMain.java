@@ -76,6 +76,7 @@ public class VariantGuiMain extends GuiScreen {
     private final float initialEfficiencyMultiplier;
     private final boolean initialSuperflatPopulation;
     private final boolean initialSuperflatBiomes;
+    private final double initialPartCostMultiplier;
 
     public VariantGuiMain(GuiScreen parent) {
         this.parent = parent;
@@ -84,6 +85,7 @@ public class VariantGuiMain extends GuiScreen {
         this.initialEfficiencyMultiplier = GeneralConfig.efficiencyMultiplier;
         this.initialSuperflatPopulation = GeneralConfig.allowSuperflatPopulation;
         this.initialSuperflatBiomes = GeneralConfig.allowSuperflatBiomes;
+        this.initialPartCostMultiplier = GeneralConfig.partCostMultiplier;
     }
 
     private boolean hasUnsavedChanges() {
@@ -92,6 +94,7 @@ public class VariantGuiMain extends GuiScreen {
         if (initialEfficiencyMultiplier != GeneralConfig.efficiencyMultiplier) return true;
         if (initialSuperflatPopulation != GeneralConfig.allowSuperflatPopulation) return true;
         if (initialSuperflatBiomes != GeneralConfig.allowSuperflatBiomes) return true;
+        if (initialPartCostMultiplier != GeneralConfig.partCostMultiplier) return true;
         return false;
     }
 
@@ -527,6 +530,18 @@ public class VariantGuiMain extends GuiScreen {
                 },
                 StatCollector.translateToLocal("variantgui.crimsonapocalypse.infernaldifficulty.tooltip"),
                 StatCollector.translateToLocal("variantgui.crimsonapocalypse.infernaldifficulty.label")));
+        textFieldEntries.add(
+            makeTextField(
+                Collections.singletonList(VariantNames.ALTERED_PRICING),
+                decimalFilter,
+                () -> String.valueOf(GeneralConfig.partCostMultiplier),
+                text -> {
+                    try {
+                        GeneralConfig.partCostMultiplier = Double.parseDouble(text);
+                    } catch (NumberFormatException ignored) {}
+                },
+                StatCollector.translateToLocal("variantgui.alteredpricing.tooltip"),
+                StatCollector.translateToLocal("variantgui.alteredpricing.label")));
 
         cycleButtonEntries.clear();
         cycleButtonEntries.add(
