@@ -43,4 +43,13 @@ public enum CompressionType {
     CompressionType(Boolean wrap) {
         this.isWrap = wrap;
     }
+
+    public static CompressionType getTypeForPrefix(OrePrefixes prefix) {
+        for (CompressionType type : values()) {
+            if (type.oredicts.contains(prefix)) {
+                return type;
+            }
+        }
+        return null;
+    }
 }

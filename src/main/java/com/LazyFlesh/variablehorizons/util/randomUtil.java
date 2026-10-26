@@ -305,7 +305,7 @@ public class randomUtil {
         return recipeSeed;
     }
 
-    public static ItemStack compressItems(ItemStack input, CompressionType type) {
+    public static ItemStack compressItems(ItemStack input) {
         if (input == null || input.stackSize <= 64) {
             return input;
         }
@@ -314,12 +314,25 @@ public class randomUtil {
         if (data == null || data.mPrefix == null || data.mMaterial == null) {
             return input;
         }
+        CompressionType type = CompressionType.getTypeForPrefix(data.mPrefix);
+        if (type == null) {
+            return input;
+        }
         totalMaterialAmount = data.mPrefix.getMaterialAmount() * input.stackSize;
 
-        for (OrePrefixes oredict : type.oredicts) {
-            int itemAmount = Math.round((float) totalMaterialAmount / oredict.getMaterialAmount());
+        int itemAmount;
+        for (int i = 0; i < type.oredicts.size(); i++) {
+            OrePrefixes oredict = type.oredicts.get(i);
+            itemAmount = Math.round((float) totalMaterialAmount / oredict.getMaterialAmount());
             if (itemAmount >= 1 && itemAmount <= 64) {
-                ItemStack result = GTOreDictUnificator.get(oredict, data.mMaterial.mMaterial, itemAmount);
+                ItemStack result = GTOreDictUnificator.get(oredict, data.mMaterial.mMaterial, itemAmount, false);
+                if (result != null) {
+                    return result;
+                }
+            }
+            if (i + 1 == type.oredicts.size()) {
+                ItemStack result = GTOreDictUnificator.get(oredict, data.mMaterial.mMaterial, 1, false);
+                result = GTUtility.copyAmountUnsafe(itemAmount, result);
                 if (result != null) {
                     return result;
                 }

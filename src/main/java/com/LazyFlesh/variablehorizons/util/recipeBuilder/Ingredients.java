@@ -23,7 +23,7 @@ public final class Ingredients<T> {
         int base;
         int chanceBase = 10000;
         double chanceFactor = 1d;
-        CompressionType condense;
+        boolean condense;
 
         Entry(T stack, int base) {
             this.origin = stack;
@@ -173,14 +173,14 @@ public final class Ingredients<T> {
         return this;
     }
 
-    public Ingredients<T> condense(T target, CompressionType type) {
-        require(target).condense = type;
+    public Ingredients<T> condense(T target) {
+        require(target).condense = true;
         return this;
     }
 
-    public Ingredients<T> condenseAll(CompressionType type) {
+    public Ingredients<T> condenseAll() {
         for (Entry<T> entry : list) {
-            entry.condense = type;
+            entry.condense = true;
         }
         return this;
     }
@@ -215,8 +215,8 @@ public final class Ingredients<T> {
         for (int i = 0; i < out.length; i++) {
             Entry<T> entry = list.get(i);
             T stack = kind.withAmount(entry.current, kind.scaled(entry.base, entry.factor));
-            if (entry.condense != null) {
-                stack = kind.condense(stack, entry.condense);
+            if (entry.condense) {
+                stack = kind.condense(stack);
             }
             out[i] = stack;
         }
@@ -268,7 +268,7 @@ public final class Ingredients<T> {
             return (int) Math.max(1, rounded);
         }
 
-        default T condense(T stack, CompressionType type) {
+        default T condense(T stack) {
             return stack;
         }
     }
@@ -301,8 +301,8 @@ public final class Ingredients<T> {
                 return new OreDictItemStack(((OreDictItemStack) stack).mOreName, amount);
             }
 
-            public Object condense(Object stack, CompressionType type) {
-                return stack instanceof ItemStack ? randomUtil.compressItems((ItemStack) stack, type) : stack;
+            public Object condense(Object stack) {
+                return stack instanceof ItemStack ? randomUtil.compressItems((ItemStack) stack) : stack;
             }
 
         };
@@ -323,8 +323,8 @@ public final class Ingredients<T> {
                 return copy;
             }
 
-            public ItemStack condense(ItemStack stack, CompressionType type) {
-                return randomUtil.compressItems(stack, type);
+            public ItemStack condense(ItemStack stack) {
+                return randomUtil.compressItems(stack);
             }
         };
 
@@ -435,8 +435,8 @@ public final class Ingredients<T> {
                 return new Object[] { ((Object[]) stack)[0], amount };
             }
 
-            public Object condense(Object stack, CompressionType type) {
-                return stack instanceof ItemStack ? randomUtil.compressItems((ItemStack) stack, type) : stack;
+            public Object condense(Object stack) {
+                return stack instanceof ItemStack ? randomUtil.compressItems((ItemStack) stack) : stack;
             }
         };
 
