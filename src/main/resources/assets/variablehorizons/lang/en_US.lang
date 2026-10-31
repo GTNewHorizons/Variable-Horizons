@@ -148,7 +148,9 @@ variants.dimlock.message.29=There's a time and place for everything
 variants.dimlock.message.30=You rolled a 1. Critical Failure!
 variants.dimlock.message.31=Sorry, but this portal requires a premium subscription to use.
 
-
+# Singeblocks
+variants.singleblocks.desc.manufacturingtable.0=Basically a big crafting table
+variants.singleblocks.desc.manufacturingtable.1=Does not use power 
 
 # logging and errors
 # variant loader

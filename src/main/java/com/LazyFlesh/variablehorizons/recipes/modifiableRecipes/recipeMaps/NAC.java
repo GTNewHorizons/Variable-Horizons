@@ -1,4 +1,4 @@
-package com.LazyFlesh.variablehorizons.modifiableRecipes.recipeMaps;
+package com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps;
 
 import static gregtech.api.recipe.RecipeMaps.nanochipAssemblyMatrixRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
