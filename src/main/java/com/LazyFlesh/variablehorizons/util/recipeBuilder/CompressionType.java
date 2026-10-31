@@ -40,6 +40,12 @@ public enum CompressionType {
         OrePrefixes.pipeLarge,
         OrePrefixes.pipeHuge)),
     SPRING(Arrays.asList(OrePrefixes.springSmall, OrePrefixes.spring)),
+   GEM(Arrays.asList(
+        OrePrefixes.gemChipped,
+        OrePrefixes.gemFlawed,
+        OrePrefixes.gem,
+        OrePrefixes.gemFlawless,
+        OrePrefixes.gemExquisite)),
     WRAP(true); // put in circuit wrap
 
     public List<OrePrefixes> oredicts;
