@@ -9,6 +9,7 @@ import gregtech.api.enums.OrePrefixes;
 public enum CompressionType {
 
     PLATE(Arrays.asList(
+        OrePrefixes.foil,
         OrePrefixes.plate,
         OrePrefixes.plateDouble,
         OrePrefixes.plateTriple,
@@ -16,8 +17,9 @@ public enum CompressionType {
         OrePrefixes.plateQuintuple,
         OrePrefixes.plateDense)),
     GEAR(Arrays.asList(OrePrefixes.gearGtSmall, OrePrefixes.gearGt)),
-    ROD(Arrays.asList(OrePrefixes.stick, OrePrefixes.stickLong)),
+    ROD(Arrays.asList(OrePrefixes.bolt, OrePrefixes.stick, OrePrefixes.stickLong)),
     WIRE(Arrays.asList(
+        OrePrefixes.wireFine,
         OrePrefixes.wireGt01,
         OrePrefixes.wireGt02,
         OrePrefixes.wireGt04,
@@ -31,6 +33,13 @@ public enum CompressionType {
         OrePrefixes.cableGt08,
         OrePrefixes.cableGt12,
         OrePrefixes.cableGt16)),
+    PIPE(Arrays.asList(
+        OrePrefixes.pipeTiny,
+        OrePrefixes.pipeSmall,
+        OrePrefixes.pipeMedium,
+        OrePrefixes.pipeLarge,
+        OrePrefixes.pipeHuge)),
+    SPRING(Arrays.asList(OrePrefixes.springSmall, OrePrefixes.spring)),
     WRAP(true); // put in circuit wrap
 
     public List<OrePrefixes> oredicts;
