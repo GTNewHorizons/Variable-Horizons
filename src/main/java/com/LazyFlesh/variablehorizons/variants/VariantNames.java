@@ -9,6 +9,7 @@ import java.util.Set;
 import net.minecraft.util.StatCollector;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+import com.LazyFlesh.variablehorizons.variants.invasive.AlteredPricing;
 import com.LazyFlesh.variablehorizons.variants.invasive.DiffDimStart;
 import com.LazyFlesh.variablehorizons.variants.invasive.DimLocked;
 import com.LazyFlesh.variablehorizons.variants.invasive.GardenOfGrind;
@@ -39,7 +40,7 @@ public enum VariantNames {
     ALTERED_RECIPE_TIME("ALTERED_TIME", new AlteredRecipeTime()),
     ALTERED_EFFICIENCY("ALTERED_EFFICIENCY"),
     CHANCED_RECIPES("CHANCED_RECIPES", new ChancedRecipes()),
-    ALTERED_PRICING("ALTERED_PRICING"),
+    ALTERED_PRICING("ALTERED_PRICING", new AlteredPricing()),
     INFINITE_POWER("INFINITE_POWER", new InfinitePower()),
     WIRELESS("WIRELESS", new Wireless ()),
     CUSTOM_DIM_START("CUSTOM_DIM_START", new DiffDimStart()), // sets a different dim as the spawn dimension instead of OW

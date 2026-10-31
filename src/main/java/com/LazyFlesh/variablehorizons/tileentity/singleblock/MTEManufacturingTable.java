@@ -3,6 +3,7 @@ package com.LazyFlesh.variablehorizons.tileentity.singleblock;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import com.LazyFlesh.variablehorizons.recipes.VHRecipeMaps;
@@ -23,6 +24,7 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTRecipe;
 import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 import gregtech.common.gui.modularui.util.MachineModularSlot;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -132,13 +134,29 @@ public class MTEManufacturingTable extends MTEBasicMachine {
 
     @Override
     public int checkRecipe() {
-        return super.checkRecipe(true);
+        return super.checkRecipe(false);
+    }
+
+    @Override
+    protected void calculateCustomOverclock(GTRecipe recipe) {
+        this.mEUt = 0;
+        this.mMaxProgresstime = recipe.mDuration;
+    }
+
+    @Override
+    protected boolean drainEnergyForProcess(long aEUt) {
+        return true;
     }
 
     @Override
     public String[] getDescription() {
         List<String> description = new ArrayList<>();
         description.add(StatCollector.translateToLocal("variants.singleblocks.desc.manufacturingtable.0"));
+        description.add(
+            StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
+                + EnumChatFormatting.YELLOW
+                + StatCollector.translateToLocal("variants.singleblocks.type.manufacturingtable")
+                + EnumChatFormatting.RESET);
         description.add(StatCollector.translateToLocal("variants.singleblocks.desc.manufacturingtable.1"));
         return description.toArray(new String[0]);
     }

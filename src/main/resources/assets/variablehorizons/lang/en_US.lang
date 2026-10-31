@@ -151,6 +151,10 @@ variants.dimlock.message.31=Sorry, but this portal requires a premium subscripti
 # Singeblocks
 variants.singleblocks.desc.manufacturingtable.0=Basically a big crafting table
 variants.singleblocks.desc.manufacturingtable.1=Does not use power 
+variants.singleblocks.type.manufacturingtable=Crafting Table
+
+# Recipemaps
+vh.recipe.manufacturingTable=Manufacturing Table
 
 # logging and errors
 # variant loader
