@@ -314,13 +314,25 @@ public class randomUtil {
         if (data == null || data.mPrefix == null || data.mMaterial == null) {
             return input;
         }
+
         CompressionType type = CompressionType.getTypeForPrefix(data.mPrefix);
+        int itemAmount;
+        if (type == CompressionType.CIRCUIT) {
+            itemAmount = Math.round((float) input.stackSize / 16);
+            ItemStack result = GTOreDictUnificator
+                .get(OrePrefixes.wrapCircuit, data.mMaterial.mMaterial, itemAmount, false);
+            if (result == null) {
+                return input;
+            } else {
+                return result;
+            }
+        }
+
         if (type == null) {
             return input;
         }
         totalMaterialAmount = data.mPrefix.getMaterialAmount() * input.stackSize;
 
-        int itemAmount;
         for (int i = 0; i < type.oredicts.size(); i++) {
             OrePrefixes oredict = type.oredicts.get(i);
             itemAmount = Math.round((float) totalMaterialAmount / oredict.getMaterialAmount());

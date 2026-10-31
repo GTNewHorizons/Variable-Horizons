@@ -1,7 +1,7 @@
 package com.LazyFlesh.variablehorizons.util.recipeBuilder;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import gregtech.api.enums.OrePrefixes;
@@ -40,25 +40,18 @@ public enum CompressionType {
         OrePrefixes.pipeLarge,
         OrePrefixes.pipeHuge)),
     SPRING(Arrays.asList(OrePrefixes.springSmall, OrePrefixes.spring)),
-   GEM(Arrays.asList(
+    GEM(Arrays.asList(
         OrePrefixes.gemChipped,
         OrePrefixes.gemFlawed,
         OrePrefixes.gem,
         OrePrefixes.gemFlawless,
         OrePrefixes.gemExquisite)),
-    WRAP(true); // put in circuit wrap
+    CIRCUIT(Collections.singletonList(OrePrefixes.circuit));
 
     public List<OrePrefixes> oredicts;
-    private final boolean isWrap;
 
     CompressionType(List<OrePrefixes> oredicts) {
         this.oredicts = oredicts;
-        this.isWrap = false;
-    }
-
-    CompressionType(Boolean wrap) {
-        this.oredicts = new ArrayList<>();
-        this.isWrap = wrap;
     }
 
     public static CompressionType getTypeForPrefix(OrePrefixes prefix) {
