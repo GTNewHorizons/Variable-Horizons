@@ -1,6 +1,8 @@
 package com.LazyFlesh.variablehorizons.util.recipeBuilder;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.IntUnaryOperator;
 import java.util.function.LongUnaryOperator;
@@ -88,6 +90,36 @@ public final class RecipeDraft implements Registrable {
     public RecipeDraft scaleAllOutputs(double factor) {
         itemOut.scaleAll(factor);
         fluidOut.scaleAll(factor);
+        return this;
+    }
+
+    public RecipeDraft scaleAllInputsExcept(double factor, Object... excluded) {
+        List<Object> items = new ArrayList<>();
+        List<FluidStack> fluids = new ArrayList<>();
+        for (Object object : excluded) {
+            if (object instanceof FluidStack) {
+                fluids.add((FluidStack) object);
+            } else {
+                items.add(object);
+            }
+        }
+        itemIn.scaleAllExcept(factor, items.toArray());
+        fluidIn.scaleAllExcept(factor, fluids.toArray(new FluidStack[0]));
+        return this;
+    }
+
+    public RecipeDraft scaleAllOutputsExcept(double factor, Object... excluded) {
+        List<ItemStack> items = new ArrayList<>();
+        List<FluidStack> fluids = new ArrayList<>();
+        for (Object object : excluded) {
+            if (object instanceof FluidStack) {
+                fluids.add((FluidStack) object);
+            } else {
+                items.add((ItemStack) object);
+            }
+        }
+        itemOut.scaleAllExcept(factor, items.toArray(new ItemStack[0]));
+        fluidOut.scaleAllExcept(factor, fluids.toArray(new FluidStack[0]));
         return this;
     }
 

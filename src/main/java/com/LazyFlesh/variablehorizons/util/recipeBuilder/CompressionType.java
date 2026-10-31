@@ -1,5 +1,6 @@
 package com.LazyFlesh.variablehorizons.util.recipeBuilder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,6 +42,7 @@ public enum CompressionType {
     }
 
     CompressionType(Boolean wrap) {
+        this.oredicts = new ArrayList<>();
         this.isWrap = wrap;
     }
 

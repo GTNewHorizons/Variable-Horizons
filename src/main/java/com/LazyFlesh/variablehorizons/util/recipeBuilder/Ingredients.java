@@ -173,6 +173,37 @@ public final class Ingredients<T> {
         return this;
     }
 
+    @SafeVarargs
+    public final Ingredients<T> scaleAllExcept(double factor, T... excluded) {
+        checkFactor(factor);
+        for (Entry<T> entry : list) {
+            if (!isIn(entry, excluded)) {
+                entry.factor *= factor;
+            }
+        }
+        return this;
+    }
+
+    @SafeVarargs
+    public final Ingredients<T> scaleAllChancesExcept(double factor, T... excluded) {
+        checkFactor(factor);
+        for (Entry<T> entry : list) {
+            if (!isIn(entry, excluded)) {
+                entry.chanceFactor *= factor;
+            }
+        }
+        return this;
+    }
+
+    private boolean isIn(Entry<T> entry, T[] targets) {
+        for (T target : targets) {
+            if (kind.same(entry.origin, target) || kind.same(entry.current, target)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Ingredients<T> condense(T target) {
         require(target).condense = true;
         return this;
