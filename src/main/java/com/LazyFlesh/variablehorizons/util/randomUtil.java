@@ -31,6 +31,7 @@ import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 
 import akka.japi.Pair;
+import bartworks.system.material.CircuitGeneration.CircuitWraps;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
@@ -305,10 +306,28 @@ public class randomUtil {
         return recipeSeed;
     }
 
+    private static CircuitWraps findPartWrap(ItemStack stack) {
+        for (CircuitWraps wrap : CircuitWraps.VALUES) {
+            if (wrap.itemSingle.hasBeenSet() && wrap.itemSingle.isStackEqual(stack, false, true)) {
+                return wrap;
+            }
+        }
+        return null;
+    }
+
     public static ItemStack compressItems(ItemStack input) {
         if (input == null || input.stackSize <= 64) {
             return input;
         }
+
+        int itemAmount;
+        CircuitWraps partWrap = findPartWrap(input);
+        if (partWrap != null) {
+            itemAmount = Math.round(input.stackSize / 16f);
+            ItemStack result = partWrap.itemWrap.get(itemAmount);
+            return result != null ? result : input;
+        }
+
         ItemData data = GTOreDictUnificator.getAssociation(input);
         long totalMaterialAmount;
         if (data == null || data.mPrefix == null || data.mMaterial == null) {
@@ -316,16 +335,12 @@ public class randomUtil {
         }
 
         CompressionType type = CompressionType.getTypeForPrefix(data.mPrefix);
-        int itemAmount;
+
         if (type == CompressionType.CIRCUIT) {
-            itemAmount = Math.round((float) input.stackSize / 16);
+            itemAmount = Math.round(input.stackSize / 16f);
             ItemStack result = GTOreDictUnificator
                 .get(OrePrefixes.wrapCircuit, data.mMaterial.mMaterial, itemAmount, false);
-            if (result == null) {
-                return input;
-            } else {
-                return result;
-            }
+            return result != null ? result : input;
         }
 
         if (type == null) {
