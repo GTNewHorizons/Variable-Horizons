@@ -83,18 +83,27 @@ public final class RecipeDraft implements Registrable {
         return this;
     }
 
+    /**
+     * Scale all inputs
+     */
     public RecipeDraft scaleAllInputs(double factor) {
         itemIn.scaleAll(factor);
         fluidIn.scaleAll(factor);
         return this;
     }
 
+    /**
+     * Scale all outputs
+     */
     public RecipeDraft scaleAllOutputs(double factor) {
         itemOut.scaleAll(factor);
         fluidOut.scaleAll(factor);
         return this;
     }
 
+    /**
+     * Scale all inputs except the listed ones
+     */
     public RecipeDraft scaleAllInputsExcept(double factor, Object... excluded) {
         List<Object> items = new ArrayList<>();
         List<Object> fluids = new ArrayList<>();
@@ -110,6 +119,9 @@ public final class RecipeDraft implements Registrable {
         return this;
     }
 
+    /**
+     * Scale all outputs except the listed ones
+     */
     public RecipeDraft scaleAllOutputsExcept(double factor, Object... excluded) {
         List<ItemStack> items = new ArrayList<>();
         List<FluidStack> fluids = new ArrayList<>();
@@ -145,31 +157,49 @@ public final class RecipeDraft implements Registrable {
         return this;
     }
 
+    /**
+     * Set item input chances
+     */
     public RecipeDraft inputChances(int... chances) {
         itemIn.setChances(chances);
         return this;
     }
 
+    /**
+     * Set item output chances
+     */
     public RecipeDraft outputChances(int... chances) {
         itemOut.setChances(chances);
         return this;
     }
 
+    /**
+     * Set fluid input chances
+     */
     public RecipeDraft fluidInputChances(int... chances) {
         fluidIn.setChances(chances);
         return this;
     }
 
+    /**
+     * Set fluid output chances
+     */
     public RecipeDraft fluidOutputChances(int... chances) {
         fluidOut.setChances(chances);
         return this;
     }
 
+    /**
+     * Set recipe time
+     */
     public RecipeDraft mapDuration(IntUnaryOperator fn) {
         this.duration = fn.applyAsInt(duration);
         return this;
     }
 
+    /**
+     * Set power draw
+     */
     public RecipeDraft mapEut(LongUnaryOperator fn) {
         this.eut = fn.applyAsLong(eut);
         return this;
