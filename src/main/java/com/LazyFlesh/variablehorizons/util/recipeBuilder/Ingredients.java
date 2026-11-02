@@ -11,6 +11,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.LazyFlesh.variablehorizons.util.randomUtil;
 
 import gregtech.api.objects.OreDictItemStack;
+import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTUtility;
 
 public final class Ingredients<T> {
@@ -371,6 +372,72 @@ public final class Ingredients<T> {
 
             public FluidStack withAmount(FluidStack stack, int amount) {
                 return new FluidStack(stack, amount);
+            }
+        };
+
+        // accepts FluidStack or SubstituteFluidStack
+        static final Kind<Object> FLUID_SUBSTITUTABLE = new Kind<>() {
+
+            private List<FluidStack> members(Object stack) {
+                return ((SubstituteFluidStack) stack).fluidStacks;
+            }
+
+            private boolean contains(SubstituteFluidStack group, FluidStack fluid) {
+                for (FluidStack member : group.fluidStacks) {
+                    if (member.isFluidEqual(fluid)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            public boolean same(Object a, Object b) {
+                if (a instanceof FluidStack x && b instanceof FluidStack y) {
+                    return x.isFluidEqual(y);
+                }
+
+                if (a instanceof SubstituteFluidStack x && b instanceof SubstituteFluidStack y) {
+                    if (x.fluidStacks.size() != y.fluidStacks.size()) {
+                        return false;
+                    }
+                    for (int i = 0; i < x.fluidStacks.size(); i++) {
+                        if (!x.fluidStacks.get(i)
+                            .isFluidEqual(y.fluidStacks.get(i))) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+
+                if (a instanceof SubstituteFluidStack x && b instanceof FluidStack y) {
+                    return contains(x, y);
+                }
+                if (a instanceof FluidStack x && b instanceof SubstituteFluidStack y) {
+                    return contains(y, x);
+                }
+                return false;
+            }
+
+            public int amount(Object stack) {
+                if (stack instanceof FluidStack) {
+                    return ((FluidStack) stack).amount;
+                }
+                return members(stack).get(0).amount;
+            }
+
+            public Object withAmount(Object stack, int amount) {
+                if (stack instanceof FluidStack) {
+                    return new FluidStack((FluidStack) stack, amount);
+                }
+
+                List<FluidStack> src = members(stack);
+                int ref = src.get(0).amount;
+                FluidStack[] out = new FluidStack[src.size()];
+                for (int i = 0; i < out.length; i++) {
+                    long scaled = ref == 0 ? amount : Math.round((double) src.get(i).amount * amount / ref);
+                    out[i] = new FluidStack(src.get(i), (int) Math.min(Integer.MAX_VALUE, Math.max(1, scaled)));
+                }
+                return new SubstituteFluidStack(out);
             }
         };
 

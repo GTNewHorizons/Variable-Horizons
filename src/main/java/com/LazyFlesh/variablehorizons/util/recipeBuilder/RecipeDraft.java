@@ -14,6 +14,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.Ingredients.Kinds;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.util.GTRecipeBuilder;
@@ -23,7 +24,7 @@ public final class RecipeDraft implements Registrable {
     private final RecipeMap<?> map;
     private final Ingredients<Object> itemIn = new Ingredients<>(Kinds.ITEM_INPUT);
     private final Ingredients<ItemStack> itemOut = new Ingredients<>(Kinds.ITEM_OUTPUT);
-    private final Ingredients<FluidStack> fluidIn = new Ingredients<>(Kinds.FLUID);
+    private final Ingredients<Object> fluidIn = new Ingredients<>(Ingredients.Kinds.FLUID_SUBSTITUTABLE);
     private final Ingredients<FluidStack> fluidOut = new Ingredients<>(Kinds.FLUID);
     private final Map<RecipeMetadataKey<?>, Object> metadata = new LinkedHashMap<>();
     private int duration;
@@ -52,8 +53,8 @@ public final class RecipeDraft implements Registrable {
         return this;
     }
 
-    public RecipeDraft fluidInputs(FluidStack... stacks) {
-        for (FluidStack stack : stacks) {
+    public RecipeDraft fluidInputs(Object... stacks) {
+        for (Object stack : stacks) {
             fluidIn.add(stack);
         }
         return this;
@@ -95,16 +96,16 @@ public final class RecipeDraft implements Registrable {
 
     public RecipeDraft scaleAllInputsExcept(double factor, Object... excluded) {
         List<Object> items = new ArrayList<>();
-        List<FluidStack> fluids = new ArrayList<>();
+        List<Object> fluids = new ArrayList<>();
         for (Object object : excluded) {
-            if (object instanceof FluidStack) {
-                fluids.add((FluidStack) object);
+            if (object instanceof FluidStack || object instanceof SubstituteFluidStack) {
+                fluids.add(object);
             } else {
                 items.add(object);
             }
         }
         itemIn.scaleAllExcept(factor, items.toArray());
-        fluidIn.scaleAllExcept(factor, fluids.toArray(new FluidStack[0]));
+        fluidIn.scaleAllExcept(factor, fluids.toArray());
         return this;
     }
 
@@ -162,7 +163,7 @@ public final class RecipeDraft implements Registrable {
         return itemOut;
     }
 
-    public Ingredients<FluidStack> fluidIn() {
+    public Ingredients<Object> fluidIn() {
         return fluidIn;
     }
 
@@ -191,7 +192,7 @@ public final class RecipeDraft implements Registrable {
             }
         }
         if (!fluidIn.isEmpty()) {
-            builder.fluidInputs(fluidIn.build(FluidStack[]::new));
+            builder.fluidInputs(fluidIn.build(Object[]::new));
             if (fluidIn.hasChances()) {
                 builder.fluidInputChances(fluidIn.buildChances());
             }
