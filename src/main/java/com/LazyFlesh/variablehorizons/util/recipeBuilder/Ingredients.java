@@ -25,6 +25,7 @@ public final class Ingredients<T> {
         int chanceBase = 10000;
         double chanceFactor = 1d;
         boolean condense;
+        double balanceFactor = 1d;
 
         Entry(T stack, int base) {
             this.origin = stack;
@@ -196,6 +197,17 @@ public final class Ingredients<T> {
         return this;
     }
 
+    @SafeVarargs
+    public final Ingredients<T> scaleAllBalanced(double factor, T... excluded) {
+        checkFactor(factor);
+        for (Entry<T> entry : list) {
+            if (!isIn(entry, excluded)) {
+                entry.balanceFactor *= factor;
+            }
+        }
+        return this;
+    }
+
     private boolean isIn(Entry<T> entry, T[] targets) {
         for (T target : targets) {
             if (kind.same(entry.origin, target) || kind.same(entry.current, target)) {
@@ -243,10 +255,15 @@ public final class Ingredients<T> {
     }
 
     public T[] build(IntFunction<T[]> gen) {
+        return build(gen, 1d);
+    }
+
+    public T[] build(IntFunction<T[]> gen, double extraFactor) {
         T[] out = gen.apply(list.size());
         for (int i = 0; i < out.length; i++) {
             Entry<T> entry = list.get(i);
-            T stack = kind.withAmount(entry.current, kind.scaled(entry.base, entry.factor));
+            double factor = entry.factor * Math.max(1d, entry.balanceFactor) * extraFactor;
+            T stack = kind.withAmount(entry.current, kind.scaled(entry.base, factor));
             if (entry.condense) {
                 stack = kind.condense(stack);
             }

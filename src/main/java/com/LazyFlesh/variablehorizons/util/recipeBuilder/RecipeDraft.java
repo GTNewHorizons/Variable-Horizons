@@ -29,6 +29,7 @@ public final class RecipeDraft implements Registrable {
     private final Map<RecipeMetadataKey<?>, Object> metadata = new LinkedHashMap<>();
     private int duration;
     private long eut;
+    private double balance = 1d;
 
     private RecipeDraft(RecipeMap<?> map) {
         this.map = map;
@@ -124,6 +125,26 @@ public final class RecipeDraft implements Registrable {
         return this;
     }
 
+    /**
+     * Scale all inputs (except the listed ones) and, if the combined factor ends up below 1, raise the outputs by
+     * 1/factor
+     */
+    public RecipeDraft scaleAllInputsBalanced(double factor, Object... excluded) {
+        List<Object> items = new ArrayList<>();
+        List<FluidStack> fluids = new ArrayList<>();
+        for (Object object : excluded) {
+            if (object instanceof FluidStack) {
+                fluids.add((FluidStack) object);
+            } else {
+                items.add(object);
+            }
+        }
+        itemIn.scaleAllBalanced(factor, items.toArray());
+        fluidIn.scaleAllBalanced(factor, fluids.toArray(new FluidStack[0]));
+        balance *= factor;
+        return this;
+    }
+
     public RecipeDraft inputChances(int... chances) {
         itemIn.setChances(chances);
         return this;
@@ -182,8 +203,14 @@ public final class RecipeDraft implements Registrable {
         return this;
     }
 
+    private double outputCompensation() {
+        return balance < 1d ? 1d / balance : 1d;
+    }
+
     @Override
     public void register() {
+        double compensation = outputCompensation();
+
         GTRecipeBuilder builder = GTValues.RA.stdBuilder();
         if (!itemIn.isEmpty()) {
             builder.itemInputs(itemIn.build(Object[]::new));
@@ -198,13 +225,13 @@ public final class RecipeDraft implements Registrable {
             }
         }
         if (!itemOut.isEmpty()) {
-            builder.itemOutputs(itemOut.build(ItemStack[]::new));
+            builder.itemOutputs(itemOut.build(ItemStack[]::new, compensation));
             if (itemOut.hasChances()) {
                 builder.outputChances(itemOut.buildChances());
             }
         }
         if (!fluidOut.isEmpty()) {
-            builder.fluidOutputs(fluidOut.build(FluidStack[]::new));
+            builder.fluidOutputs(fluidOut.build(FluidStack[]::new, compensation));
             if (fluidOut.hasChances()) {
                 builder.fluidOutputChances(fluidOut.buildChances());
             }
