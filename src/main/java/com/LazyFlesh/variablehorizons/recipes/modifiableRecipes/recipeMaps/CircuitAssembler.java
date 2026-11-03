@@ -32,7 +32,6 @@ public class CircuitAssembler implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 2),
                     ItemList.Circuit_Parts_Vacuum_Tube.get(2L))
                 .fluidInputs(SubstituteFluidStack.soldering(1 * HALF_INGOTS))
-                .duration(10 * SECONDS)
                 .itemOutputs(GTModHandler.getModItem(IndustrialCraft2.ID, "itemPartCircuit", 1, 0))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LV / 2));
@@ -53,7 +52,6 @@ public class CircuitAssembler implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 2),
                     ItemList.Circuit_Parts_Vacuum_Tube.get(2L))
                 .fluidInputs(SubstituteFluidStack.soldering(1 * HALF_INGOTS))
-                .duration(10 * SECONDS)
                 .itemOutputs(GTModHandler.getModItem(IndustrialCraft2.ID, "itemPartCircuit", 1, 0))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LV / 2));
@@ -61,6 +59,53 @@ public class CircuitAssembler implements Runnable {
         RecipeModifiers
             .modify("circuitassembler/electronic_circuit_smd", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "circuitassembler/good_electronic_circuit",
+            () -> RecipeDraft.of(circuitAssemblerRecipes)
+                .itemInputs(
+                    ItemList.Circuit_Board_Phenolic_Good.get(1),
+                    GTModHandler.getModItem(IndustrialCraft2.ID, "itemPartCircuit", 2, 0),
+                    ItemList.Circuit_Parts_Diode.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Copper, 2L))
+                .fluidInputs(SubstituteFluidStack.soldering(1 * HALF_INGOTS))
+                .itemOutputs(ItemList.Circuit_Good.get(1))
+                .duration(15 * SECONDS)
+                .eut(TierEU.RECIPE_LV));
+
+        RecipeModifiers
+            .modify("circuitassembler/good_electronic_circuit", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(
+                    GeneralConfig.partCostMultiplier,
+                    GTModHandler.getModItem(IndustrialCraft2.ID, "itemPartCircuit", 1, 0));
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "circuitassembler/good_electronic_circuit_smd",
+            () -> RecipeDraft.of(circuitAssemblerRecipes)
+                .itemInputs(
+                    ItemList.Circuit_Board_Phenolic_Good.get(1),
+                    GTModHandler.getModItem(IndustrialCraft2.ID, "itemPartCircuit", 2, 0),
+                    ItemList.Circuit_Parts_DiodeSMD.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Copper, 2L))
+                .fluidInputs(SubstituteFluidStack.soldering(1 * HALF_INGOTS))
+                .itemOutputs(ItemList.Circuit_Good.get(1))
+                .duration(15 * SECONDS)
+                .eut(TierEU.RECIPE_LV));
+
+        RecipeModifiers.modify(
+            "circuitassembler/good_electronic_circuit_smd",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> {
+                d.scaleAllInputsBalanced(
+                    GeneralConfig.partCostMultiplier,
+                    GTModHandler.getModItem(IndustrialCraft2.ID, "itemPartCircuit", 1, 0));
                 d.itemIn()
                     .condenseAll();
             });

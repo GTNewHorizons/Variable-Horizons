@@ -29,6 +29,23 @@ public class ManufacturingTable implements Runnable {
     @Override
     public void run() {
 
+        RecipeModifiers.defineBase(
+            "manufacturing/vacuum_tube",
+            () -> RecipeDraft.of(manufacturingTableRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Copper, 3L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2L),
+                    ItemList.Circuit_Parts_Glass_Tube.get(1L),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.bolt, Materials.RedAlloy, 1L))
+                .itemOutputs(ItemList.Circuit_Parts_Vacuum_Tube.get(1L)));
+
+        RecipeModifiers.modify("manufacturing/vacuum_tube", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
         // LV Parts
         {
             RecipeModifiers.defineBase(
@@ -235,9 +252,29 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers
             .modify("manufacturing/electronic_circuit", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Parts_Vacuum_Tube.get(2));
                 d.itemIn()
-                    .condense(GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.RedAlloy, 3L));
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "manufacturing/good_electronic_circuit",
+            () -> RecipeDraft.of(manufacturingTableRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Copper, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Steel, 1L),
+                    GTModHandler.getModItem(IndustrialCraft2.ID, "itemPartCircuit", 3, 0),
+                    ItemList.Circuit_Board_Phenolic_Good.get(1),
+                    ItemList.Circuit_Parts_Diode.get(2))
+                .itemOutputs(ItemList.Circuit_Good.get(1)));
+
+        RecipeModifiers
+            .modify("manufacturing/good_electronic_circuit", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(
+                    GeneralConfig.partCostMultiplier,
+                    GTModHandler.getModItem(IndustrialCraft2.ID, "itemPartCircuit", 1, 0));
+                d.itemIn()
+                    .condenseAll();
             });
 
         // Wraps
