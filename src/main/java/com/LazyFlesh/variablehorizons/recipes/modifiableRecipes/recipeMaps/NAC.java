@@ -2,7 +2,6 @@ package com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps;
 
 import static gregtech.api.recipe.RecipeMaps.nanochipAssemblyMatrixRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,18 +9,19 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeDraft;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeModifiers;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipePhase;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent.CircuitComponentStack;
-import gtPlusPlus.core.material.MaterialMisc;
 
 public class NAC implements Runnable {
 
@@ -69,19 +69,22 @@ public class NAC implements Runnable {
     @Override
     public void run() {
         addModifiableAssemblyMatrixRecipe(
-            "NAC/bioproc",
+            "NAC/integrated_processor",
             Arrays.asList(
-                new CircuitComponentStack(CircuitComponent.ChipZeptoPIC, 1),
-                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 1),
-                new CircuitComponentStack(CircuitComponent.ProcessedChipYoctoPIC, 16),
-                new CircuitComponentStack(CircuitComponent.ProcessedFoilShirabon, 4)),
-            Arrays.asList(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(9)),
-            new CircuitComponentStack(CircuitComponent.BiowareProcessor, 1),
-            11 * SECONDS + 5 * TICKS,
-            TierEU.RECIPE_UIV,
-            VoltageIndex.UHV);
+                new CircuitComponentStack(CircuitComponent.PrimedUnattunedCircuitry, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipASOC, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedBoltCopper, 16),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireRedAlloy, 16)),
+            Arrays.asList(Materials.SolderingAlloy.getMolten(8)),
+            new CircuitComponentStack(CircuitComponent.IntegratedProcessor, 16),
+            25 * SECONDS,
+            TierEU.RECIPE_UV,
+            VoltageIndex.UV);
 
-        RecipeModifiers
-            .modify("NAC/bioproc", VariantNames.ALTERED_PRICING, RecipePhase.STRUCTURE, d -> d.scaleAllInputs(3));
+        RecipeModifiers.modify(
+            "NAC/integrated_processor",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.STRUCTURE,
+            d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
     }
 }
