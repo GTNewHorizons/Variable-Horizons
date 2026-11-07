@@ -325,6 +325,7 @@ public class randomUtil {
         if (partWrap != null) {
             itemAmount = Math.round(input.stackSize / 16f);
             ItemStack result = partWrap.itemWrap.get(itemAmount);
+            result = GTUtility.copyAmountUnsafe(itemAmount, result);
             return result != null ? result : input;
         }
 
@@ -340,6 +341,7 @@ public class randomUtil {
             itemAmount = Math.round(input.stackSize / 16f);
             ItemStack result = GTOreDictUnificator
                 .get(OrePrefixes.wrapCircuit, data.mMaterial.mMaterial, itemAmount, false);
+            result = GTUtility.copyAmountUnsafe(itemAmount, result);
             return result != null ? result : input;
         }
 
