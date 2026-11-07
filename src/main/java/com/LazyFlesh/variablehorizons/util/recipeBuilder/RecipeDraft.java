@@ -27,6 +27,7 @@ public final class RecipeDraft implements Registrable {
     private final Ingredients<Object> fluidIn = new Ingredients<>(Ingredients.Kinds.FLUID_SUBSTITUTABLE);
     private final Ingredients<FluidStack> fluidOut = new Ingredients<>(Kinds.FLUID);
     private final Map<RecipeMetadataKey<?>, Object> metadata = new LinkedHashMap<>();
+    private Object special = null;
     private int duration;
     private long eut;
     private double balance = 1d;
@@ -80,6 +81,11 @@ public final class RecipeDraft implements Registrable {
 
     public <T> RecipeDraft metadata(RecipeMetadataKey<T> key, T value) {
         metadata.put(key, value);
+        return this;
+    }
+
+    public <T> RecipeDraft special(T value) {
+        this.special = value;
         return this;
     }
 
@@ -269,13 +275,21 @@ public final class RecipeDraft implements Registrable {
 
         builder.duration(duration)
             .eut(eut);
-        for (Map.Entry<RecipeMetadataKey<?>, Object> e : metadata.entrySet())
-            applyMeta(builder, e.getKey(), e.getValue());
+        for (Map.Entry<RecipeMetadataKey<?>, Object> entry : metadata.entrySet()) {
+            applyMeta(builder, entry.getKey(), entry.getValue());
+        }
+        if (special != null) {
+            applySpecial(builder, special);
+        }
         builder.addTo(map);
     }
 
     @SuppressWarnings("unchecked")
     private static <T> void applyMeta(GTRecipeBuilder builder, RecipeMetadataKey<T> key, Object value) {
         builder.metadata(key, (T) value);
+    }
+
+    private static <T> void applySpecial(GTRecipeBuilder builder, Object value) {
+        builder.special(value);
     }
 }
