@@ -7,6 +7,7 @@ import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeDraft;
@@ -23,17 +24,17 @@ import gtPlusPlus.core.material.MaterialsAlloy;
 
 public class CAL implements Runnable {
 
-    private static final String[] SMD_STRING = new String[] { "_smd", "_smd_advanced" };
+    private static final String[] SMD_STRING = new String[] { "_smd", "_smd_advanced", "_smd_optical" };
     private static final ItemList[] RESISTORS = new ItemList[] { ItemList.Wrap_SMDResistors,
-        ItemList.Wrap_AdvancedSMDResistors };
-    private static final ItemList[] DIODES = new ItemList[] { ItemList.Wrap_SMDDiodes,
-        ItemList.Wrap_AdvancedSMDDiodes };
+        ItemList.Wrap_AdvancedSMDResistors, ItemList.Wrap_OpticalSMDResistors };
+    private static final ItemList[] DIODES = new ItemList[] { ItemList.Wrap_SMDDiodes, ItemList.Wrap_AdvancedSMDDiodes,
+        ItemList.Wrap_OpticalSMDDiodes };
     private static final ItemList[] TRANSISTORS = new ItemList[] { ItemList.Wrap_SMDTransistors,
-        ItemList.Wrap_AdvancedSMDTransistors };
+        ItemList.Wrap_AdvancedSMDTransistors, ItemList.Wrap_OpticalSMDTransistors };
     private static final ItemList[] INDUCTORS = new ItemList[] { ItemList.Wrap_SMDInductors,
-        ItemList.Wrap_AdvancedSMDInductors };
+        ItemList.Wrap_AdvancedSMDInductors, ItemList.Wrap_OpticalSMDInductors };
     private static final ItemList[] CAPACITORS = new ItemList[] { ItemList.Wrap_SMDCapacitors,
-        ItemList.Wrap_AdvancedSMDCapacitors };
+        ItemList.Wrap_AdvancedSMDCapacitors, ItemList.Wrap_OpticalSMDCapacitors };
 
     @Override
     public void run() {
@@ -81,6 +82,7 @@ public class CAL implements Runnable {
                 .condenseAll();
         });
 
+        // SMD & advanced SMD
         for (int i = 0; i < 2; i++) {
             int finalI = i;
             boolean advancedSMD = i == 1;
@@ -401,6 +403,83 @@ public class CAL implements Runnable {
                 });
         }
 
+        // advanced SMD & optical SMD
+        for (int i = 1; i < 3; i++) {
+            int finalI = i;
+            boolean opticalSMD = i == 2;
+
+            RecipeModifiers.defineBase(
+                "CAL/wetware_processor" + SMD_STRING[i],
+                () -> RecipeDraft.of(circuitAssemblyLineRecipes)
+                    .itemInputs(
+                        ItemList.Wrap_NeuroProcessingUnits.get(1),
+                        ItemList.Wrap_CrystalProcessingUnits.get(1),
+                        ItemList.Wrap_NanocomponentCentralProcessingUnits.get(1),
+                        CAPACITORS[finalI].get(opticalSMD ? 2 : 8),
+                        TRANSISTORS[finalI].get(opticalSMD ? 2 : 8),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.YttriumBariumCuprate, 8))
+                    .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1 * HALF_INGOTS))
+                    .itemOutputs(ItemList.Circuit_Neuroprocessor.get(16L))
+                    .duration((opticalSMD ? 15 : 120) * SECONDS)
+                    .eut((opticalSMD ? TierEU.RECIPE_UV : TierEU.RECIPE_ZPM) * 5 / 16)
+                    .special(ItemList.CircuitImprint_WetwareProcessor.get(0)));
+
+            RecipeModifiers
+                .modify("CAL/wetware_processor" + SMD_STRING[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                    d.itemIn()
+                        .condenseAll();
+                });
+
+            RecipeModifiers.defineBase(
+                "CAL/wetware_assembly" + SMD_STRING[i],
+                () -> RecipeDraft.of(circuitAssemblyLineRecipes)
+                    .itemInputs(
+                        ItemList.Wrap_ExtremeWetwareLifesupportCircuitBoards.get(1),
+                        ItemList.Circuit_Neuroprocessor.get(32),
+                        INDUCTORS[finalI].get(opticalSMD ? 2 : 8),
+                        CAPACITORS[finalI].get(opticalSMD ? 3 : 12),
+                        ItemList.Wrap_RandomAccessMemoryChips.get(24),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.YttriumBariumCuprate, 16))
+                    .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1 * INGOTS))
+                    .itemOutputs(ItemList.Circuit_Wetwarecomputer.get(16L))
+                    .duration(opticalSMD ? 22 * SECONDS + 4 * TICKS : 3 * MINUTES)
+                    .eut((opticalSMD ? TierEU.RECIPE_UV : TierEU.RECIPE_ZPM) * 5 / 16)
+                    .special(ItemList.CircuitImprint_WetwareAssembly.get(0)));
+
+            RecipeModifiers
+                .modify("CAL/wetware_assembly" + SMD_STRING[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Neuroprocessor.get(32));
+                    d.itemIn()
+                        .condenseAll();
+                });
+
+            RecipeModifiers.defineBase(
+                "CAL/wetware_computer" + SMD_STRING[i],
+                () -> RecipeDraft.of(circuitAssemblyLineRecipes)
+                    .itemInputs(
+                        ItemList.Wrap_ExtremeWetwareLifesupportCircuitBoards.get(2),
+                        ItemList.Circuit_Wetwarecomputer.get(32),
+                        DIODES[finalI].get(opticalSMD ? 2 : 8),
+                        ItemList.Wrap_NORMemoryChips.get(16),
+                        ItemList.Wrap_RandomAccessMemoryChips.get(64),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.YttriumBariumCuprate, 24))
+                    .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1 * INGOTS))
+                    .itemOutputs(ItemList.Circuit_Wetwaresupercomputer.get(16L))
+                    .duration(opticalSMD ? 45 * SECONDS : 6 * MINUTES)
+                    .eut((opticalSMD ? TierEU.RECIPE_UV : TierEU.RECIPE_ZPM) * 5 / 16)
+                    .special(ItemList.CircuitImprint_WetwareSupercomputer.get(0)));
+
+            RecipeModifiers
+                .modify("CAL/wetware_computer" + SMD_STRING[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                    d.scaleAllInputsBalanced(
+                        GeneralConfig.partCostMultiplier,
+                        ItemList.Circuit_Wetwarecomputer.get(32));
+                    d.itemIn()
+                        .condenseAll();
+                });
+        }
+
         RecipeModifiers.defineBase(
             "CAL/integrated_processor_soc",
             () -> RecipeDraft.of(circuitAssemblyLineRecipes)
@@ -567,6 +646,26 @@ public class CAL implements Runnable {
             d.scaleAllInputsBalanced(
                 GeneralConfig.partCostMultiplier,
                 ItemList.Circuit_Ultimatecrystalcomputer.get(32));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "CAL/wetware_processor_soc",
+            () -> RecipeDraft.of(circuitAssemblyLineRecipes)
+                .itemInputs(
+                    ItemList.Wrap_ExtremeWetwareLifesupportCircuitBoards.get(1),
+                    ItemList.Wrap_LivingCrystalChips.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.YttriumBariumCuprate, 8),
+                    GTOreDictUnificator.get(OrePrefixes.bolt, Materials.CosmicNeutronium, 64))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1 * INGOTS))
+                .itemOutputs(ItemList.Circuit_Neuroprocessor.get(16L))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_UHV * 5 / 16)
+                .special(ItemList.CircuitImprint_WetwareProcessor.get(0)));
+
+        RecipeModifiers.modify("CAL/wetware_processor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });

@@ -1,6 +1,7 @@
 package com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps;
 
 import static gregtech.api.recipe.RecipeMaps.nanochipAssemblyMatrixRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
@@ -8,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
@@ -215,5 +217,105 @@ public class NAC implements Runnable {
             d -> d.scaleAllInputsBalanced(
                 GeneralConfig.partCostMultiplier,
                 CircuitComponent.CrystalComputer.getFakeStack(1)));
+
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/wetware_processor",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedBoardWetwareLifesupport, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipLivingCrystal, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireYttriumBariumCuprate, 8),
+                new CircuitComponentStack(CircuitComponent.ProcessedBoltCosmicNeutronium, 4)),
+            Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(4)),
+            new CircuitComponentStack(CircuitComponent.WetwareProcessor, 1),
+            11 * SECONDS + 4 * TICKS,
+            TierEU.RECIPE_UEV,
+            VoltageIndex.UV);
+
+        RecipeModifiers.modify(
+            "NAC/wetware_processor",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
+
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/wetware_assembly",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedBoardWetwareLifesupport, 1),
+                new CircuitComponentStack(CircuitComponent.WetwareProcessor, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDInductor, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 3),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 24),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireYttriumBariumCuprate, 16)),
+            Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(9)),
+            new CircuitComponentStack(CircuitComponent.WetwareAssembly, 1),
+            22 * SECONDS + 10 * TICKS,
+            TierEU.RECIPE_UEV,
+            VoltageIndex.UV);
+
+        RecipeModifiers.modify(
+            "NAC/wetware_assembly",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                CircuitComponent.WetwareProcessor.getFakeStack(1)));
+
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/wetware_computer",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedBoardWetwareLifesupport, 2),
+                new CircuitComponentStack(CircuitComponent.WetwareAssembly, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipNOR, 16),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireYttriumBariumCuprate, 24)),
+            Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(9)),
+            new CircuitComponentStack(CircuitComponent.WetwareComputer, 1),
+            45 * SECONDS,
+            TierEU.RECIPE_UEV,
+            VoltageIndex.UV);
+
+        RecipeModifiers.modify(
+            "NAC/wetware_computer",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                CircuitComponent.WetwareAssembly.getFakeStack(1)));
+
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/wetware_mainframe",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvancedMainframeCasing, 2),
+                new CircuitComponentStack(CircuitComponent.WetwareComputer, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDInductor, 4),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 4),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDResistor, 4),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 4),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 4),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 48),
+                new Object[] { new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorZPM, 64),
+                    new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUV, 32),
+                    new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUHV, 16),
+                    new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUEV, 8),
+                    new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUIV, 4),
+                    new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUMV, 2), }),
+            Arrays.asList(
+                MaterialsAlloy.INDALLOY_140.getFluidStack(2 * INGOTS),
+                FluidRegistry.getFluidStack("ic2coolant", 10000),
+                Materials.Radon.getGas(2500)),
+            new CircuitComponentStack(CircuitComponent.WetwareMainframe, 1),
+            90 * SECONDS,
+            TierEU.RECIPE_UEV,
+            VoltageIndex.UV);
+
+        RecipeModifiers.modify(
+            "NAC/wetware_mainframe",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                CircuitComponent.WetwareComputer.getFakeStack(1)));
+
     }
 }
