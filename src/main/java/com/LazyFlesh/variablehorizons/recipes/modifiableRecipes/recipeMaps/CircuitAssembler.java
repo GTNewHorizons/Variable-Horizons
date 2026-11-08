@@ -21,6 +21,7 @@ import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
+import gtPlusPlus.core.material.MaterialsAlloy;
 
 public class CircuitAssembler implements Runnable {
 
@@ -221,6 +222,171 @@ public class CircuitAssembler implements Runnable {
                     d.itemIn()
                         .condenseAll();
                 });
+
+            RecipeModifiers.defineBase(
+                "circuitassembler/workstation" + SMD_STRING[i],
+                () -> RecipeDraft.of(circuitAssemblerRecipes)
+                    .itemInputs(
+                        ItemList.Circuit_Board_Plastic_Advanced.get(1L),
+                        ItemList.Circuit_Advanced.get(2L),
+                        DIODES[finalI].get(advancedSMD ? 1 : 4),
+                        ItemList.Circuit_Chip_Ram.get(8L),
+                        GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Electrum, 16),
+                        GTOreDictUnificator.get(OrePrefixes.bolt, Materials.BlueAlloy, 16))
+                    .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
+                    .itemOutputs(ItemList.Circuit_Data.get(1L))
+                    .metadata(GTRecipeConstants.CLEANROOM, true)
+                    .duration((advancedSMD ? 10 : 20) * SECONDS)
+                    .eut(TierEU.RECIPE_MV));
+
+            RecipeModifiers.modify(
+                "circuitassembler/workstation" + SMD_STRING[i],
+                VariantNames.ALTERED_PRICING,
+                RecipePhase.SCALE,
+                d -> {
+                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Advanced.get(2L));
+                    d.itemIn()
+                        .condenseAll();
+                });
+
+            RecipeModifiers.defineBase(
+                "circuitassembler/mainframe" + SMD_STRING[i],
+                () -> RecipeDraft.of(circuitAssemblerRecipes)
+                    .itemInputs(
+                        GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 2),
+                        ItemList.Circuit_Data.get(2),
+                        INDUCTORS[finalI].get(advancedSMD ? 3 : 12),
+                        CAPACITORS[finalI].get(advancedSMD ? 4 : 24),
+                        ItemList.Circuit_Chip_Ram.get(16L),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.AnnealedCopper, advancedSMD ? 16 : 24))
+                    .fluidInputs(SubstituteFluidStack.soldering(2 * INGOTS))
+                    .itemOutputs(ItemList.Circuit_Elite.get(1L))
+                    .metadata(GTRecipeConstants.CLEANROOM, true)
+                    .duration((advancedSMD ? 40 : 80) * SECONDS)
+                    .eut(TierEU.RECIPE_HV));
+
+            RecipeModifiers.modify(
+                "circuitassembler/mainframe" + SMD_STRING[i],
+                VariantNames.ALTERED_PRICING,
+                RecipePhase.SCALE,
+                d -> {
+                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Data.get(2L));
+                    d.itemIn()
+                        .condenseAll();
+                });
+
+            // no more non-SMDs
+            if (i > 0) {
+                RecipeModifiers.defineBase(
+                    "circuitassembler/nano_processor" + SMD_STRING[i],
+                    () -> RecipeDraft.of(circuitAssemblerRecipes)
+                        .itemInputs(
+                            ItemList.Circuit_Board_Epoxy_Advanced.get(1L),
+                            ItemList.Circuit_Chip_NanoCPU.get(1L),
+                            RESISTORS[finalI].get(advancedSMD ? 2 : 8),
+                            CAPACITORS[finalI].get(advancedSMD ? 2 : 8),
+                            TRANSISTORS[finalI].get(advancedSMD ? 2 : 8),
+                            GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Electrum, 8))
+                        .fluidInputs(SubstituteFluidStack.soldering(1 * HALF_INGOTS))
+                        .itemOutputs(ItemList.Circuit_Nanoprocessor.get(1L))
+                        .metadata(GTRecipeConstants.CLEANROOM, true)
+                        .duration((advancedSMD ? 5 : 10) * SECONDS)
+                        .eut(TierEU.RECIPE_EV * 5 / 16));
+
+                RecipeModifiers.modify(
+                    "circuitassembler/nano_processor" + SMD_STRING[i],
+                    VariantNames.ALTERED_PRICING,
+                    RecipePhase.SCALE,
+                    d -> {
+                        d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                        d.itemIn()
+                            .condenseAll();
+                    });
+
+                RecipeModifiers.defineBase(
+                    "circuitassembler/nano_assembly" + SMD_STRING[i],
+                    () -> RecipeDraft.of(circuitAssemblerRecipes)
+                        .itemInputs(
+                            ItemList.Circuit_Board_Epoxy_Advanced.get(1L),
+                            ItemList.Circuit_Nanoprocessor.get(2L),
+                            INDUCTORS[finalI].get(advancedSMD ? 2 : 8),
+                            CAPACITORS[finalI].get(advancedSMD ? 2 : 8),
+                            ItemList.Circuit_Chip_Ram.get(8L),
+                            GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Electrum, 16))
+                        .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
+                        .itemOutputs(ItemList.Circuit_Nanocomputer.get(1L))
+                        .metadata(GTRecipeConstants.CLEANROOM, true)
+                        .duration((advancedSMD ? 10 : 20) * SECONDS)
+                        .eut(TierEU.RECIPE_EV * 5 / 16));
+
+                RecipeModifiers.modify(
+                    "circuitassembler/nano_assembly" + SMD_STRING[i],
+                    VariantNames.ALTERED_PRICING,
+                    RecipePhase.SCALE,
+                    d -> {
+                        d.scaleAllInputsBalanced(
+                            GeneralConfig.partCostMultiplier,
+                            ItemList.Circuit_Nanoprocessor.get(2L));
+                        d.itemIn()
+                            .condenseAll();
+                    });
+
+                RecipeModifiers.defineBase(
+                    "circuitassembler/nano_computer" + SMD_STRING[i],
+                    () -> RecipeDraft.of(circuitAssemblerRecipes)
+                        .itemInputs(
+                            ItemList.Circuit_Board_Epoxy_Advanced.get(1L),
+                            ItemList.Circuit_Nanocomputer.get(2L),
+                            DIODES[finalI].get(advancedSMD ? 2 : 8),
+                            ItemList.Circuit_Chip_NOR.get(4L),
+                            ItemList.Circuit_Chip_Ram.get(16L),
+                            GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Electrum, 16))
+                        .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
+                        .itemOutputs(ItemList.Circuit_Elitenanocomputer.get(1L))
+                        .metadata(GTRecipeConstants.CLEANROOM, true)
+                        .duration((advancedSMD ? 10 : 20) * SECONDS)
+                        .eut(TierEU.RECIPE_EV * 5 / 16));
+
+                RecipeModifiers.modify(
+                    "circuitassembler/nano_computer" + SMD_STRING[i],
+                    VariantNames.ALTERED_PRICING,
+                    RecipePhase.SCALE,
+                    d -> {
+                        d.scaleAllInputsBalanced(
+                            GeneralConfig.partCostMultiplier,
+                            ItemList.Circuit_Nanocomputer.get(2L));
+                        d.itemIn()
+                            .condenseAll();
+                    });
+
+                RecipeModifiers.defineBase(
+                    "circuitassembler/nano_mainframe" + SMD_STRING[i],
+                    () -> RecipeDraft.of(circuitAssemblerRecipes)
+                        .itemInputs(
+                            GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 2),
+                            ItemList.Circuit_Elitenanocomputer.get(2L),
+                            INDUCTORS[finalI].get(advancedSMD ? 4 : 16),
+                            CAPACITORS[finalI].get(advancedSMD ? 8 : 32),
+                            ItemList.Circuit_Chip_Ram.get(16L),
+                            GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.AnnealedCopper, 32))
+                        .fluidInputs(SubstituteFluidStack.soldering(2 * INGOTS))
+                        .itemOutputs(ItemList.Circuit_Master.get(1L))
+                        .metadata(GTRecipeConstants.CLEANROOM, true)
+                        .duration((advancedSMD ? 80 : 40) * SECONDS)
+                        .eut(TierEU.RECIPE_EV));
+
+                RecipeModifiers.modify(
+                    "circuitassembler/nano_mainframe" + SMD_STRING[i],
+                    VariantNames.ALTERED_PRICING,
+                    RecipePhase.SCALE,
+                    d -> {
+                        d.scaleAllInputsBalanced(
+                            GeneralConfig.partCostMultiplier,
+                            ItemList.Circuit_Elitenanocomputer.get(2L));
+                        d.itemIn()
+                            .condenseAll();
+                    });
+            }
         }
 
         RecipeModifiers.defineBase(
@@ -239,6 +405,27 @@ public class CircuitAssembler implements Runnable {
 
         RecipeModifiers
             .modify("circuitassembler/integrated_processor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "circuitassembler/nano_processor_soc",
+            () -> RecipeDraft.of(circuitAssemblerRecipes)
+                .itemInputs(
+                    ItemList.Circuit_Board_Epoxy_Advanced.get(6),
+                    ItemList.Circuit_Chip_SoC2.get(6),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Electrum, 48),
+                    GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Platinum, 48))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(2 * INGOTS))
+                .itemOutputs(ItemList.Circuit_Nanoprocessor.get(1L))
+                .metadata(GTRecipeConstants.CLEANROOM, true)
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_LuV * 5 / 16));
+
+        RecipeModifiers
+            .modify("circuitassembler/nano_processor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
                 d.itemIn()
                     .condenseAll();

@@ -22,6 +22,7 @@ import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent.CircuitComponentStack;
+import gtPlusPlus.core.material.MaterialsAlloy;
 
 public class NAC implements Runnable {
 
@@ -83,6 +84,25 @@ public class NAC implements Runnable {
 
         RecipeModifiers.modify(
             "NAC/integrated_processor",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.STRUCTURE,
+            d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
+
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/nano_processor",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.PrimedUnattunedCircuitry, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipASOC, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedBoltPlatinum, 16),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireElectrum, 16)),
+            Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(8)),
+            new CircuitComponentStack(CircuitComponent.NanoProcessor, 8),
+            25 * SECONDS,
+            TierEU.RECIPE_UV,
+            VoltageIndex.UV);
+
+        RecipeModifiers.modify(
+            "NAC/nano_processor",
             VariantNames.ALTERED_PRICING,
             RecipePhase.STRUCTURE,
             d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
