@@ -460,5 +460,115 @@ public class CAL implements Runnable {
             d.itemIn()
                 .condenseAll();
         });
+
+        RecipeModifiers.defineBase(
+            "CAL/crystal_processor",
+            () -> RecipeDraft.of(circuitAssemblyLineRecipes)
+                .itemInputs(
+                    ItemList.Wrap_EliteCircuitBoards.get(1),
+                    ItemList.Wrap_CrystalProcessingUnits.get(1),
+                    ItemList.Wrap_NanocomponentCentralProcessingUnits.get(2),
+                    ItemList.Wrap_AdvancedSMDCapacitors.get(6),
+                    ItemList.Wrap_AdvancedSMDTransistors.get(6),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NiobiumTitanium, 8))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1 * HALF_INGOTS))
+                .itemOutputs(ItemList.Circuit_Crystalprocessor.get(16L))
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_LuV * 5 / 16)
+                .special(ItemList.CircuitImprint_CrystalProcessor.get(0)));
+
+        RecipeModifiers.modify("CAL/crystal_processor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "CAL/crystal_processor_soc",
+            () -> RecipeDraft.of(circuitAssemblyLineRecipes)
+                .itemInputs(
+                    ItemList.Wrap_EliteCircuitBoards.get(1),
+                    ItemList.Wrap_CrystalSoCs.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NiobiumTitanium, 8),
+                    GTOreDictUnificator.get(OrePrefixes.bolt, Materials.YttriumBariumCuprate, 64))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1 * HALF_INGOTS))
+                .itemOutputs(ItemList.Circuit_Crystalprocessor.get(16L))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_UV * 5 / 16)
+                .special(ItemList.CircuitImprint_CrystalProcessor.get(0)));
+
+        RecipeModifiers.modify("CAL/crystal_processor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "CAL/crystal_assembly",
+            () -> RecipeDraft.of(circuitAssemblyLineRecipes)
+                .itemInputs(
+                    ItemList.Wrap_EliteCircuitBoards.get(1),
+                    ItemList.Circuit_Crystalprocessor.get(32),
+                    ItemList.Wrap_AdvancedSMDInductors.get(6),
+                    ItemList.Wrap_AdvancedSMDCapacitors.get(8),
+                    ItemList.Wrap_RandomAccessMemoryChips.get(24),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NiobiumTitanium, 16))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1 * INGOTS))
+                .itemOutputs(ItemList.Circuit_Crystalcomputer.get(16L))
+                .duration(2 * MINUTES)
+                .eut(TierEU.RECIPE_LuV * 5 / 16)
+                .special(ItemList.CircuitImprint_CrystalAssembly.get(0)));
+
+        RecipeModifiers.modify("CAL/crystal_assembly", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Crystalprocessor.get(32));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "CAL/crystal_computer",
+            () -> RecipeDraft.of(circuitAssemblyLineRecipes)
+                .itemInputs(
+                    ItemList.Wrap_EliteCircuitBoards.get(1),
+                    ItemList.Circuit_Crystalcomputer.get(32),
+                    ItemList.Wrap_RandomAccessMemoryChips.get(4),
+                    ItemList.Wrap_NORMemoryChips.get(32),
+                    ItemList.Wrap_NANDMemoryChips.get(64),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NiobiumTitanium, 32))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1 * INGOTS))
+                .itemOutputs(ItemList.Circuit_Ultimatecrystalcomputer.get(16L))
+                .duration(4 * MINUTES)
+                .eut(TierEU.RECIPE_LuV * 5 / 16)
+                .special(ItemList.CircuitImprint_CrystalSupercomputer.get(0)));
+
+        RecipeModifiers.modify("CAL/crystal_computer", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Crystalcomputer.get(32));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "CAL/crystal_mainframe",
+            () -> RecipeDraft.of(circuitAssemblyLineRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 32),
+                    ItemList.Circuit_Ultimatecrystalcomputer.get(32),
+                    ItemList.Wrap_AdvancedSMDInductors.get(8),
+                    ItemList.Wrap_AdvancedSMDCapacitors.get(16),
+                    ItemList.Wrap_RandomAccessMemoryChips.get(32),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorLuV, 16))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(2 * INGOTS))
+                .itemOutputs(ItemList.Circuit_Crystalmainframe.get(16L))
+                .duration(8 * MINUTES)
+                .eut(TierEU.RECIPE_LuV)
+                .special(ItemList.CircuitImprint_CrystalMainframe.get(0)));
+
+        RecipeModifiers.modify("CAL/crystal_mainframe", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                ItemList.Circuit_Ultimatecrystalcomputer.get(32));
+            d.itemIn()
+                .condenseAll();
+        });
     }
 }

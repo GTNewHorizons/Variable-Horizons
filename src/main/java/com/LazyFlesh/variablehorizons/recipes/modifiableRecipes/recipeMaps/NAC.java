@@ -2,6 +2,7 @@ package com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps;
 
 import static gregtech.api.recipe.RecipeMaps.nanochipAssemblyMatrixRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.Arrays;
 import java.util.List;
@@ -86,7 +87,7 @@ public class NAC implements Runnable {
         RecipeModifiers.modify(
             "NAC/integrated_processor",
             VariantNames.ALTERED_PRICING,
-            RecipePhase.STRUCTURE,
+            RecipePhase.SCALE,
             d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
 
         addModifiableAssemblyMatrixRecipe(
@@ -105,7 +106,7 @@ public class NAC implements Runnable {
         RecipeModifiers.modify(
             "NAC/nano_processor",
             VariantNames.ALTERED_PRICING,
-            RecipePhase.STRUCTURE,
+            RecipePhase.SCALE,
             d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
 
         addModifiableAssemblyMatrixRecipe(
@@ -124,7 +125,95 @@ public class NAC implements Runnable {
         RecipeModifiers.modify(
             "NAC/quantum_processor",
             VariantNames.ALTERED_PRICING,
-            RecipePhase.STRUCTURE,
+            RecipePhase.SCALE,
             d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
+
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/crystal_processor",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedBoardMultifiberglassElite, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipCrystalSoC, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 8),
+                new CircuitComponentStack(CircuitComponent.ProcessedBoltYttriumBariumCuprate, 4)),
+            Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(4)),
+            new CircuitComponentStack(CircuitComponent.CrystalProcessor, 1),
+            2 * SECONDS + 10 * TICKS,
+            TierEU.RECIPE_UHV,
+            VoltageIndex.UV);
+
+        RecipeModifiers.modify(
+            "NAC/crystal_processor",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
+
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/crystal_assembly",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedBoardMultifiberglassElite, 1),
+                new CircuitComponentStack(CircuitComponent.CrystalProcessor, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDInductor, 6),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 8),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 24),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 16)),
+            Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(9)),
+            new CircuitComponentStack(CircuitComponent.CrystalAssembly, 1),
+            5 * SECONDS,
+            TierEU.RECIPE_UHV,
+            VoltageIndex.UV);
+
+        RecipeModifiers.modify(
+            "NAC/crystal_assembly",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                CircuitComponent.CrystalProcessor.getFakeStack(2)));
+
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/crystal_computer",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedBoardMultifiberglassElite, 1),
+                new CircuitComponentStack(CircuitComponent.CrystalAssembly, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 6),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipNOR, 32),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipNAND, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 32)),
+            Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(9)),
+            new CircuitComponentStack(CircuitComponent.CrystalComputer, 1),
+            10 * SECONDS,
+            TierEU.RECIPE_UHV,
+            VoltageIndex.UV);
+
+        RecipeModifiers.modify(
+            "NAC/crystal_computer",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                CircuitComponent.CrystalAssembly.getFakeStack(2)));
+
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/crystal_mainframe",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedBasicMainframeCasing, 1),
+                new CircuitComponentStack(CircuitComponent.CrystalComputer, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDInductor, 8),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 16),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 32),
+                new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorLuV, 16)),
+            Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(18)),
+            new CircuitComponentStack(CircuitComponent.CrystalMainframe, 1),
+            20 * SECONDS,
+            TierEU.RECIPE_UHV,
+            VoltageIndex.UV);
+
+        RecipeModifiers.modify(
+            "NAC/crystal_mainframe",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                CircuitComponent.CrystalComputer.getFakeStack(1)));
     }
 }

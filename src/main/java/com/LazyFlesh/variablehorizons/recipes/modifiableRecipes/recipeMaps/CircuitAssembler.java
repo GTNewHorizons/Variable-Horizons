@@ -561,5 +561,120 @@ public class CircuitAssembler implements Runnable {
                 d.itemIn()
                     .condenseAll();
             });
+
+        RecipeModifiers.defineBase(
+            "circuitassembler/crystal_processor",
+            () -> RecipeDraft.of(circuitAssemblerRecipes)
+                .itemInputs(
+                    ItemList.Circuit_Board_Multifiberglass_Elite.get(6),
+                    ItemList.Circuit_Chip_CrystalCPU.get(6),
+                    ItemList.Circuit_Chip_NanoCPU.get(12),
+                    ItemList.Circuit_Parts_CapacitorASMD.get(36),
+                    ItemList.Circuit_Parts_TransistorASMD.get(36),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 48))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(2 * INGOTS))
+                .itemOutputs(ItemList.Circuit_Crystalprocessor.get(1L))
+                .metadata(GTRecipeConstants.CLEANROOM, true)
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_LuV * 5 / 16));
+
+        RecipeModifiers
+            .modify("circuitassembler/crystal_processor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "circuitassembler/crystal_processor_soc",
+            () -> RecipeDraft.of(circuitAssemblerRecipes)
+                .itemInputs(
+                    ItemList.Circuit_Board_Multifiberglass_Elite.get(6),
+                    ItemList.Circuit_Chip_CrystalSoC.get(6),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 48),
+                    GTOreDictUnificator.get(OrePrefixes.bolt, Materials.YttriumBariumCuprate, 48))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(2 * INGOTS))
+                .itemOutputs(ItemList.Circuit_Crystalprocessor.get(1L))
+                .metadata(GTRecipeConstants.CLEANROOM, true)
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_UV * 5 / 16));
+
+        RecipeModifiers
+            .modify("circuitassembler/crystal_processor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "circuitassembler/crystal_assembly",
+            () -> RecipeDraft.of(circuitAssemblerRecipes)
+                .itemInputs(
+                    ItemList.Circuit_Board_Multifiberglass_Elite.get(6),
+                    ItemList.Circuit_Crystalprocessor.get(2),
+                    ItemList.Circuit_Parts_InductorASMD.get(36),
+                    ItemList.Circuit_Parts_CapacitorASMD.get(48),
+                    ItemList.Circuit_Chip_Ram.get(64),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 64))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(4 * INGOTS))
+                .itemOutputs(ItemList.Circuit_Crystalcomputer.get(1L))
+                .metadata(GTRecipeConstants.CLEANROOM, true)
+                .duration(40 * SECONDS)
+                .eut(TierEU.RECIPE_LuV * 5 / 16));
+
+        RecipeModifiers
+            .modify("circuitassembler/crystal_assembly", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Crystalprocessor.get(2));
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "circuitassembler/crystal_computer",
+            () -> RecipeDraft.of(circuitAssemblerRecipes)
+                .itemInputs(
+                    ItemList.Circuit_Board_Multifiberglass_Elite.get(6),
+                    ItemList.Circuit_Crystalcomputer.get(2),
+                    ItemList.Circuit_Chip_Ram.get(24),
+                    ItemList.Circuit_Chip_NOR.get(64),
+                    ItemList.Circuit_Chip_NAND.get(64),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 64))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(4 * INGOTS))
+                .itemOutputs(ItemList.Circuit_Ultimatecrystalcomputer.get(1L))
+                .metadata(GTRecipeConstants.CLEANROOM, true)
+                .duration(80 * SECONDS)
+                .eut(TierEU.RECIPE_LuV * 5 / 16));
+
+        RecipeModifiers
+            .modify("circuitassembler/crystal_computer", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Crystalcomputer.get(2));
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "circuitassembler/crystal_mainframe",
+            () -> RecipeDraft.of(circuitAssemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 12),
+                    ItemList.Circuit_Ultimatecrystalcomputer.get(2),
+                    ItemList.Circuit_Parts_InductorASMD.get(48),
+                    ItemList.Circuit_Parts_CapacitorASMD.get(64),
+                    ItemList.Circuit_Chip_Ram.get(64),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 64))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(8 * INGOTS))
+                .itemOutputs(ItemList.Circuit_Crystalmainframe.get(1L))
+                .metadata(GTRecipeConstants.CLEANROOM, true)
+                .duration(160 * SECONDS)
+                .eut(TierEU.RECIPE_LuV));
+
+        RecipeModifiers
+            .modify("circuitassembler/crystal_mainframe", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(
+                    GeneralConfig.partCostMultiplier,
+                    ItemList.Circuit_Ultimatecrystalcomputer.get(2));
+                d.itemIn()
+                    .condenseAll();
+            });
     }
 }
