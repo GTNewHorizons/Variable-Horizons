@@ -327,18 +327,71 @@ public final class Ingredients<T> {
         // accepts ItemStack or OreDictItemStack
         static final Kind<Object> ITEM_INPUT = new Kind<>() {
 
+            private boolean isOreDictArray(Object object) {
+                return object instanceof Object[] && !(object instanceof ItemStack[])
+                    && ((Object[]) object).length >= 2;
+            }
+
             public boolean same(Object a, Object b) {
                 if (a instanceof ItemStack && b instanceof ItemStack) {
                     return GTUtility.areStacksEqual((ItemStack) a, (ItemStack) b);
                 }
+
                 if (a instanceof OreDictItemStack && b instanceof OreDictItemStack) {
                     return ((OreDictItemStack) a).mOreName.equals(((OreDictItemStack) b).mOreName);
                 }
+
+                if (a instanceof ItemStack[]x && b instanceof ItemStack[]y) {
+                    if (x.length != y.length) {
+                        return false;
+                    }
+                    for (int i = 0; i < x.length; i++) {
+                        if (!GTUtility.areStacksEqual(x[i], y[i])) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+
+                if (a instanceof ItemStack[] && b instanceof ItemStack) {
+                    for (ItemStack alt : (ItemStack[]) a) {
+                        if (GTUtility.areStacksEqual(alt, (ItemStack) b)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+                if (a instanceof ItemStack && b instanceof ItemStack[]) {
+                    for (ItemStack alt : (ItemStack[]) b) {
+                        if (GTUtility.areStacksEqual((ItemStack) a, alt)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+                if (isOreDictArray(a) && isOreDictArray(b)) {
+                    return Objects.equals(((Object[]) a)[0], ((Object[]) b)[0]);
+                }
+
                 return false;
             }
 
             public int amount(Object stack) {
-                return stack instanceof ItemStack ? ((ItemStack) stack).stackSize : ((OreDictItemStack) stack).mAmount;
+                if (stack instanceof ItemStack) {
+                    return ((ItemStack) stack).stackSize;
+                }
+
+                if (stack instanceof OreDictItemStack) {
+                    return ((OreDictItemStack) stack).mAmount;
+                }
+
+                if (stack instanceof ItemStack[]) {
+                    return ((ItemStack[]) stack)[0].stackSize;
+                }
+
+                return ((Number) ((Object[]) stack)[1]).intValue();
             }
 
             public Object withAmount(Object stack, int amount) {
@@ -347,7 +400,21 @@ public final class Ingredients<T> {
                     copy.stackSize = amount;
                     return copy;
                 }
-                return new OreDictItemStack(((OreDictItemStack) stack).mOreName, amount);
+
+                if (stack instanceof OreDictItemStack) {
+                    return new OreDictItemStack(((OreDictItemStack) stack).mOreName, amount);
+                }
+
+                if (stack instanceof ItemStack[]src) {
+                    int ref = src[0].stackSize;
+                    ItemStack[] out = new ItemStack[src.length];
+                    for (int i = 0; i < src.length; i++) {
+                        out[i] = src[i].copy();
+                        out[i].stackSize = (int) Math.max(1, Math.round((double) src[i].stackSize * amount / ref));
+                    }
+                    return out;
+                }
+                return new Object[] { ((Object[]) stack)[0], amount };
             }
 
             public Object condense(Object stack) {
@@ -455,103 +522,6 @@ public final class Ingredients<T> {
                     out[i] = new FluidStack(src.get(i), (int) Math.min(Integer.MAX_VALUE, Math.max(1, scaled)));
                 }
                 return new SubstituteFluidStack(out);
-            }
-        };
-
-        static final Kind<Object> ASSLINE_INPUT = new Kind<>() {
-
-            private boolean isOreDictArray(Object object) {
-                return object instanceof Object[] && !(object instanceof ItemStack[])
-                    && ((Object[]) object).length >= 2;
-            }
-
-            public boolean same(Object a, Object b) {
-                if (a instanceof ItemStack && b instanceof ItemStack) {
-                    return GTUtility.areStacksEqual((ItemStack) a, (ItemStack) b);
-                }
-
-                if (a instanceof OreDictItemStack && b instanceof OreDictItemStack) {
-                    return ((OreDictItemStack) a).mOreName.equals(((OreDictItemStack) b).mOreName);
-                }
-
-                if (a instanceof ItemStack[]x && b instanceof ItemStack[]y) {
-                    if (x.length != y.length) {
-                        return false;
-                    }
-                    for (int i = 0; i < x.length; i++) {
-                        if (!GTUtility.areStacksEqual(x[i], y[i])) {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-
-                if (a instanceof ItemStack[] && b instanceof ItemStack) {
-                    for (ItemStack alt : (ItemStack[]) a) {
-                        if (GTUtility.areStacksEqual(alt, (ItemStack) b)) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-
-                if (a instanceof ItemStack && b instanceof ItemStack[]) {
-                    for (ItemStack alt : (ItemStack[]) b) {
-                        if (GTUtility.areStacksEqual((ItemStack) a, alt)) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-
-                if (isOreDictArray(a) && isOreDictArray(b)) {
-                    return Objects.equals(((Object[]) a)[0], ((Object[]) b)[0]);
-                }
-
-                return false;
-            }
-
-            public int amount(Object stack) {
-                if (stack instanceof ItemStack) {
-                    return ((ItemStack) stack).stackSize;
-                }
-
-                if (stack instanceof OreDictItemStack) {
-                    return ((OreDictItemStack) stack).mAmount;
-                }
-
-                if (stack instanceof ItemStack[]) {
-                    return ((ItemStack[]) stack)[0].stackSize;
-                }
-
-                return ((Number) ((Object[]) stack)[1]).intValue();
-            }
-
-            public Object withAmount(Object stack, int amount) {
-                if (stack instanceof ItemStack) {
-                    ItemStack copy = ((ItemStack) stack).copy();
-                    copy.stackSize = amount;
-                    return copy;
-                }
-
-                if (stack instanceof OreDictItemStack) {
-                    return new OreDictItemStack(((OreDictItemStack) stack).mOreName, amount);
-                }
-
-                if (stack instanceof ItemStack[]src) {
-                    int ref = src[0].stackSize;
-                    ItemStack[] out = new ItemStack[src.length];
-                    for (int i = 0; i < src.length; i++) {
-                        out[i] = src[i].copy();
-                        out[i].stackSize = (int) Math.max(1, Math.round((double) src[i].stackSize * amount / ref));
-                    }
-                    return out;
-                }
-                return new Object[] { ((Object[]) stack)[0], amount };
-            }
-
-            public Object condense(Object stack) {
-                return stack instanceof ItemStack ? randomUtil.compressItems((ItemStack) stack) : stack;
             }
         };
 

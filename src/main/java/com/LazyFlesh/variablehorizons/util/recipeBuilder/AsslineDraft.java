@@ -1,5 +1,7 @@
 package com.LazyFlesh.variablehorizons.util.recipeBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.IntUnaryOperator;
 import java.util.function.LongUnaryOperator;
 
@@ -11,7 +13,7 @@ import tectech.recipe.TTRecipeAdder;
 
 public class AsslineDraft implements Registrable {
 
-    private final Ingredients<Object> itemIn = new Ingredients<>(Ingredients.Kinds.ASSLINE_INPUT);
+    private final Ingredients<Object> itemIn = new Ingredients<>(Ingredients.Kinds.ITEM_INPUT);
     private final Ingredients<FluidStack> fluidIn = new Ingredients<>(Ingredients.Kinds.FLUID);
     private final Ingredients<ItemStack> itemOut = new Ingredients<>(Ingredients.Kinds.ITEM_OUTPUT);
 
@@ -22,6 +24,7 @@ public class AsslineDraft implements Registrable {
     private int researchAmperage;
     private int duration;
     private int eut;
+    private double balance = 1d;
 
     private AsslineDraft() {}
 
@@ -69,14 +72,58 @@ public class AsslineDraft implements Registrable {
         return this;
     }
 
+    /**
+     * Scale item output
+     */
     public AsslineDraft scaleOutput(double factor) {
         itemOut.scaleAll(factor);
         return this;
     }
 
+    /**
+     * Scale all inputs
+     */
     public AsslineDraft scaleAllInputs(double factor) {
         itemIn.scaleAll(factor);
         fluidIn.scaleAll(factor);
+        return this;
+    }
+
+    /**
+     * Scale all inputs except the listed ones
+     */
+    public AsslineDraft scaleAllInputsExcept(double factor, Object... excluded) {
+        List<Object> items = new ArrayList<>();
+        List<FluidStack> fluids = new ArrayList<>();
+        for (Object object : excluded) {
+            if (object instanceof FluidStack) {
+                fluids.add((FluidStack) object);
+            } else {
+                items.add(object);
+            }
+        }
+        itemIn.scaleAllExcept(factor, items.toArray());
+        fluidIn.scaleAllExcept(factor, fluids.toArray(new FluidStack[0]));
+        return this;
+    }
+
+    /**
+     * Scale all inputs (except the listed ones) and, if the combined factor ends up below 1, raise the output by
+     * 1/factor
+     */
+    public AsslineDraft scaleAllInputsBalanced(double factor, Object... excluded) {
+        List<Object> items = new ArrayList<>();
+        List<FluidStack> fluids = new ArrayList<>();
+        for (Object object : excluded) {
+            if (object instanceof FluidStack) {
+                fluids.add((FluidStack) object);
+            } else {
+                items.add(object);
+            }
+        }
+        itemIn.scaleAllBalanced(factor, items.toArray());
+        fluidIn.scaleAllBalanced(factor, fluids.toArray(new FluidStack[0]));
+        balance *= factor;
         return this;
     }
 
@@ -128,11 +175,16 @@ public class AsslineDraft implements Registrable {
         return this;
     }
 
+    private double outputCompensation() {
+        return balance < 1d ? 1d / balance : 1d;
+    }
+
     @Override
     public void register() {
-        ItemStack[] outs = itemOut.build(ItemStack[]::new);
-        if (outs.length != 1)
-            throw new IllegalStateException("Assembly line recipe needs exactly one output, has " + outs.length);
+        ItemStack[] output = itemOut.build(ItemStack[]::new, outputCompensation());
+        if (output.length != 1) {
+            throw new IllegalStateException("Assembly line recipe needs exactly one output, has " + output.length);
+        }
 
         Object[] inputs = itemIn.build(Object[]::new);
         for (int i = 0; i < inputs.length; i++) {
@@ -151,13 +203,13 @@ public class AsslineDraft implements Registrable {
             researchAmperage,
             inputs,
             fluids,
-            outs[0],
+            output[0],
             duration,
             eut);
 
         if (!ok) {
             throw new IllegalStateException(
-                "Assembly line recipe rejected for output " + outs[0].getDisplayName()
+                "Assembly line recipe rejected for output " + output[0].getDisplayName()
                     + " (inputs="
                     + inputs.length
                     + ", fluids="
