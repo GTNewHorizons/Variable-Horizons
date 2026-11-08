@@ -301,6 +301,104 @@ public class CAL implements Runnable {
                     d.itemIn()
                         .condenseAll();
                 });
+
+            RecipeModifiers.defineBase(
+                "CAL/quantum_processor" + SMD_STRING[i],
+                () -> RecipeDraft.of(circuitAssemblyLineRecipes)
+                    .itemInputs(
+                        ItemList.Wrap_MoreAdvancedCircuitBoards.get(1),
+                        ItemList.Wrap_QBitProcessingUnits.get(1),
+                        ItemList.Wrap_NanocomponentCentralProcessingUnits.get(1),
+                        CAPACITORS[finalI].get(advancedSMD ? 3 : 12),
+                        TRANSISTORS[finalI].get(advancedSMD ? 3 : 12),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Platinum, 16))
+                    .fluidInputs(Materials.SolderingAlloy.getMolten(1 * HALF_INGOTS))
+                    .itemOutputs(ItemList.Circuit_Quantumprocessor.get(16L))
+                    .duration((advancedSMD ? 1 : 2) * MINUTES)
+                    .eut(TierEU.RECIPE_IV * 5 / 16)
+                    .special(ItemList.CircuitImprint_QuantumProcessor.get(0)));
+
+            RecipeModifiers
+                .modify("CAL/quantum_processor" + SMD_STRING[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                    d.itemIn()
+                        .condenseAll();
+                });
+
+            RecipeModifiers.defineBase(
+                "CAL/quantum_assembly" + SMD_STRING[i],
+                () -> RecipeDraft.of(circuitAssemblyLineRecipes)
+                    .itemInputs(
+                        ItemList.Wrap_MoreAdvancedCircuitBoards.get(1),
+                        ItemList.Circuit_Quantumprocessor.get(32),
+                        INDUCTORS[finalI].get(advancedSMD ? 3 : 12),
+                        CAPACITORS[finalI].get(advancedSMD ? 4 : 16),
+                        ItemList.Wrap_RandomAccessMemoryChips.get(4),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Platinum, 24))
+                    .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
+                    .itemOutputs(ItemList.Circuit_Quantumcomputer.get(16L))
+                    .duration((advancedSMD ? 2 : 4) * MINUTES)
+                    .eut(TierEU.RECIPE_IV * 5 / 16)
+                    .special(ItemList.CircuitImprint_QuantumAssembly.get(0)));
+
+            RecipeModifiers
+                .modify("CAL/quantum_assembly" + SMD_STRING[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                    d.scaleAllInputsBalanced(
+                        GeneralConfig.partCostMultiplier,
+                        ItemList.Circuit_Quantumprocessor.get(32));
+                    d.itemIn()
+                        .condenseAll();
+                });
+
+            RecipeModifiers.defineBase(
+                "CAL/quantum_computer" + SMD_STRING[i],
+                () -> RecipeDraft.of(circuitAssemblyLineRecipes)
+                    .itemInputs(
+                        ItemList.Wrap_MoreAdvancedCircuitBoards.get(1),
+                        ItemList.Circuit_Quantumcomputer.get(32),
+                        DIODES[finalI].get(advancedSMD ? 2 : 8),
+                        ItemList.Wrap_NORMemoryChips.get(4),
+                        ItemList.Wrap_RandomAccessMemoryChips.get(16),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Platinum, 48))
+                    .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
+                    .itemOutputs(ItemList.Circuit_Masterquantumcomputer.get(16L))
+                    .duration((advancedSMD ? 2 : 4) * MINUTES)
+                    .eut(TierEU.RECIPE_IV * 5 / 16)
+                    .special(ItemList.CircuitImprint_QuantumSupercomputer.get(0)));
+
+            RecipeModifiers
+                .modify("CAL/quantum_computer" + SMD_STRING[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                    d.scaleAllInputsBalanced(
+                        GeneralConfig.partCostMultiplier,
+                        ItemList.Circuit_Quantumcomputer.get(32));
+                    d.itemIn()
+                        .condenseAll();
+                });
+
+            RecipeModifiers.defineBase(
+                "CAL/quantum_mainframe" + SMD_STRING[i],
+                () -> RecipeDraft.of(circuitAssemblyLineRecipes)
+                    .itemInputs(
+                        GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 32),
+                        ItemList.Circuit_Masterquantumcomputer.get(32),
+                        INDUCTORS[finalI].get(advancedSMD ? 6 : 24),
+                        CAPACITORS[finalI].get(advancedSMD ? 12 : 48),
+                        ItemList.Wrap_RandomAccessMemoryChips.get(24),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.AnnealedCopper, 48))
+                    .fluidInputs(Materials.SolderingAlloy.getMolten(2 * INGOTS))
+                    .itemOutputs(ItemList.Circuit_Quantummainframe.get(16L))
+                    .duration((advancedSMD ? 8 : 16) * MINUTES)
+                    .eut(TierEU.RECIPE_IV)
+                    .special(ItemList.CircuitImprint_QuantumMainframe.get(0)));
+
+            RecipeModifiers
+                .modify("CAL/quantum_mainframe" + SMD_STRING[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                    d.scaleAllInputsBalanced(
+                        GeneralConfig.partCostMultiplier,
+                        ItemList.Circuit_Masterquantumcomputer.get(32));
+                    d.itemIn()
+                        .condenseAll();
+                });
         }
 
         RecipeModifiers.defineBase(
@@ -338,6 +436,26 @@ public class CAL implements Runnable {
                 .special(ItemList.CircuitImprint_NanoProcessor.get(0)));
 
         RecipeModifiers.modify("CAL/nano_processor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "CAL/quantum_processor_soc",
+            () -> RecipeDraft.of(circuitAssemblyLineRecipes)
+                .itemInputs(
+                    ItemList.Wrap_MoreAdvancedCircuitBoards.get(1),
+                    ItemList.Wrap_ASoCs.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Platinum, 16),
+                    GTOreDictUnificator.get(OrePrefixes.bolt, Materials.NiobiumTitanium, 64))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1 * HALF_INGOTS))
+                .itemOutputs(ItemList.Circuit_Quantumprocessor.get(16L))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM * 5 / 16)
+                .special(ItemList.CircuitImprint_QuantumProcessor.get(0)));
+
+        RecipeModifiers.modify("CAL/quantum_processor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
             d.itemIn()
                 .condenseAll();
