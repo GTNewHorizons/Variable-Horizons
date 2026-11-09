@@ -1,6 +1,8 @@
 package com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps;
 
 import static gregtech.api.recipe.RecipeMaps.nanochipAssemblyMatrixRecipes;
+import static gregtech.api.recipe.RecipeMaps.nanochipEncasementWrapper;
+import static gregtech.api.recipe.RecipeMaps.nanochipEtchingArray;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -19,6 +21,7 @@ import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipePhase;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
 import bartworks.system.material.WerkstoffLoader;
+import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.VoltageIndex;
@@ -74,6 +77,50 @@ public class NAC implements Runnable {
 
     @Override
     public void run() {
+        assemblyMatrix();
+        encasementWrapper();
+        etchingArray();
+    }
+
+    private void assemblyMatrix() {
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/nand_chip",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.PrimedUnattunedCircuitry, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipASOC, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedBoltRedAlloy, 16),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireCopper, 16)),
+            Arrays.asList(Materials.Lead.getMolten(16)),
+            new CircuitComponentStack(CircuitComponent.NandChip, 64),
+            25 * SECONDS,
+            TierEU.RECIPE_UV,
+            VoltageIndex.UV);
+
+        RecipeModifiers.modify(
+            "NAC/nand_chip",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
+
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/microprocessor",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.PrimedUnattunedCircuitry, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipASOC, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedBoltCopper, 16),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireCopper, 16)),
+            Arrays.asList(Materials.Tin.getMolten(8)),
+            new CircuitComponentStack(CircuitComponent.Microprocessor, 32),
+            25 * SECONDS,
+            TierEU.RECIPE_UV,
+            VoltageIndex.UV);
+
+        RecipeModifiers.modify(
+            "NAC/microprocessor",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
+
         addModifiableAssemblyMatrixRecipe(
             "NAC/integrated_processor",
             Arrays.asList(
@@ -560,5 +607,222 @@ public class NAC implements Runnable {
             d -> d.scaleAllInputsBalanced(
                 GeneralConfig.partCostMultiplier,
                 CircuitComponent.OpticalComputer.getFakeStack(1)));
+
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/pico_circuit",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedPicoCircuitCasing, 1),
+                new CircuitComponentStack(CircuitComponent.CleansedBoardPico, 2),
+                new CircuitComponentStack(CircuitComponent.PicoCPU, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDInductor, 32),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 32),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDResistor, 32),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 32),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 32),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireProtoHalkonite, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedBoltTranscendentMetal, 32),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireInfinity, 8)),
+            Arrays.asList(
+                MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(16 * INGOTS),
+                Materials.UUMatter.getFluid(8000),
+                GGMaterial.preciousMetalAlloy.getMolten(8 * INGOTS)),
+            new CircuitComponentStack(CircuitComponent.PicoCircuit, 1),
+            200 * SECONDS,
+            TierEU.RECIPE_MAX,
+            VoltageIndex.UEV);
+
+        RecipeModifiers.modify(
+            "NAC/pico_circuit",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, CircuitComponent.PicoCPU.getFakeStack(1)));
+
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/quantum_circuit",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedQuantumCircuitCasing, 1),
+                new CircuitComponentStack(CircuitComponent.CleansedBoardQuantum, 2),
+                new CircuitComponentStack(CircuitComponent.QuantumCPU, 1),
+                new CircuitComponentStack(CircuitComponent.BundledUnityWire, 4),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDInductor, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDResistor, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireProtoHalkonite, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedBoltUMVSuperconductor, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireSpacetime, 8)),
+            Arrays.asList(
+                MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(32 * INGOTS),
+                Materials.UUMatter.getFluid(16000),
+                Materials.SixPhasedCopper.getMolten(1 * INGOTS),
+                Materials.ExcitedDTEC.getFluid(1000)),
+            new CircuitComponentStack(CircuitComponent.QuantumCircuit, 1),
+            400 * SECONDS,
+            TierEU.RECIPE_MAX,
+            VoltageIndex.UIV);
+
+        RecipeModifiers.modify(
+            "NAC/quantum_circuit",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d
+                .scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, CircuitComponent.QuantumCPU.getFakeStack(1)));
+
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/planck_circuit",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedPlanckCircuitCasing, 1),
+                new CircuitComponentStack(CircuitComponent.CleansedBoardPlanck, 2),
+                new CircuitComponentStack(CircuitComponent.PlanckCPU, 1),
+                new CircuitComponentStack(CircuitComponent.BundledStellarHarmonyWire, 4),
+                new CircuitComponentStack(CircuitComponent.CalabiYauManifold, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDInductor, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDResistor, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireHypogen, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedBoltWhiteDwarfMatter, 32),
+                new CircuitComponentStack(CircuitComponent.ProcessedCoiledThermalSuperconductor, 8)),
+            Arrays.asList(
+                Materials.BoundlessCosmicSolder.getFluid(4000),
+                Materials.PrimordialMatter.getFluid(4000),
+                Materials.PhononMedium.getFluid(1000),
+                Materials.Space.getMolten(4000)),
+            new CircuitComponentStack(CircuitComponent.PlanckCircuit, 1),
+            600 * SECONDS,
+            TierEU.RECIPE_MAX,
+            VoltageIndex.UMV);
+
+        RecipeModifiers.modify(
+            "NAC/planck_circuit",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d
+                .scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, CircuitComponent.PlanckCPU.getFakeStack(1)));
+    }
+
+    private void encasementWrapper() {
+        RecipeModifiers.defineBase(
+            "NAC/pico_cpu",
+            () -> RecipeDraft.of(nanochipEncasementWrapper)
+                .itemInputs(
+                    CircuitComponent.OpticalMainframeRack.getFakeStack(1),
+                    CircuitComponent.ProcessedPlateRhugnor.getFakeStack(2),
+                    CircuitComponent.ProcessedChipAttoPIC.getFakeStack(8))
+                .fluidInputs(Materials.Space.getMolten(250))
+                .itemOutputs(CircuitComponent.PicoCPU.getFakeStack(1))
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_UMV));
+
+        RecipeModifiers.modify(
+            "NAC/pico_cpu",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                CircuitComponent.OpticalMainframeRack.getFakeStack(1)));
+
+        RecipeModifiers.defineBase(
+            "NAC/quantum_cpu",
+            () -> RecipeDraft.of(nanochipEncasementWrapper)
+                .itemInputs(
+                    CircuitComponent.PicoCircuitRack.getFakeStack(1),
+                    CircuitComponent.ProcessedPlateMetastableOganesson.getFakeStack(2),
+                    CircuitComponent.ProcessedChipZeptoPIC.getFakeStack(8))
+                .fluidInputs(Materials.Space.getMolten(500))
+                .itemOutputs(CircuitComponent.QuantumCPU.getFakeStack(1))
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_UXV));
+
+        RecipeModifiers.modify(
+            "NAC/quantum_cpu",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                CircuitComponent.PicoCircuitRack.getFakeStack(1)));
+
+        RecipeModifiers.defineBase(
+            "NAC/planck_cpu",
+            () -> RecipeDraft.of(nanochipEncasementWrapper)
+                .itemInputs(
+                    CircuitComponent.RealizedQuantumCircuitRack.getFakeStack(1),
+                    CircuitComponent.ProcessedPlateHexanite.getFakeStack(2),
+                    CircuitComponent.ProcessedChipYoctoPIC.getFakeStack(8))
+                .fluidInputs(Materials.Space.getMolten(1000))
+                .itemOutputs(CircuitComponent.PlanckCPU.getFakeStack(1))
+                .duration(7 * SECONDS)
+                .eut(TierEU.RECIPE_MAX));
+
+        RecipeModifiers.modify(
+            "NAC/planck_cpu",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                CircuitComponent.RealizedQuantumCircuitRack.getFakeStack(1)));
+    }
+
+    private void etchingArray() {
+        RecipeModifiers.defineBase(
+            "NAC/optical_mainframe_rack",
+            () -> RecipeDraft.of(nanochipEtchingArray)
+                .itemInputs(
+                    CircuitComponent.OpticalMainframe.getFakeStack(2),
+                    CircuitComponent.ScrewEnrichedNaquadahAlloy.getFakeStack(2))
+                .itemOutputs(CircuitComponent.OpticalMainframeRack.getFakeStack(1))
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_UXV));
+
+        RecipeModifiers.modify(
+            "NAC/optical_mainframe_rack",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                CircuitComponent.OpticalMainframe.getFakeStack(1)));
+
+        RecipeModifiers.defineBase(
+            "NAC/pico_circuit_rack",
+            () -> RecipeDraft.of(nanochipEtchingArray)
+                .itemInputs(
+                    CircuitComponent.OrganizedPicoCircuit.getFakeStack(2),
+                    CircuitComponent.ScrewQuantum.getFakeStack(2))
+                .itemOutputs(
+                    CircuitComponent.PicoCircuitRack.getFakeStack(1),
+                    CircuitComponent.CompressionResidue.getFakeStack(4))
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_UMV));
+
+        RecipeModifiers.modify("NAC/pico_circuit_rack", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                CircuitComponent.OrganizedPicoCircuit.getFakeStack(1));
+            d.scaleAllOutputsExcept(GeneralConfig.partCostMultiplier, CircuitComponent.PicoCircuitRack.getFakeStack(1));
+        });
+
+        RecipeModifiers.defineBase(
+            "NAC/lost_quantum_mainframe_rack",
+            () -> RecipeDraft.of(nanochipEtchingArray)
+                .itemInputs(
+                    CircuitComponent.OrganizedQuantumCircuit.getFakeStack(2),
+                    CircuitComponent.ScrewEternity.getFakeStack(2))
+                .itemOutputs(
+                    CircuitComponent.LostQuantumCircuitRack.getFakeStack(1),
+                    CircuitComponent.CollapsingResidue.getFakeStack(4))
+                .duration(13 * SECONDS)
+                .eut(TierEU.RECIPE_MAX));
+
+        RecipeModifiers
+            .modify("NAC/lost_quantum_mainframe_rack", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(
+                    GeneralConfig.partCostMultiplier,
+                    CircuitComponent.OrganizedQuantumCircuit.getFakeStack(1));
+                d.scaleAllOutputsExcept(
+                    GeneralConfig.partCostMultiplier,
+                    CircuitComponent.LostQuantumCircuitRack.getFakeStack(1));
+            });
     }
 }

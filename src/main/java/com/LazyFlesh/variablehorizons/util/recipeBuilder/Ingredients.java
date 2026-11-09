@@ -421,7 +421,7 @@ public final class Ingredients<T> {
                 if (stack instanceof ItemStack) {
                     return randomUtil.compressItems((ItemStack) stack);
                 }
-                if (stack instanceof ItemStack[] src) {
+                if (stack instanceof ItemStack[]src) {
                     ItemStack[] out = new ItemStack[src.length];
                     for (int i = 0; i < src.length; i++) {
                         out[i] = randomUtil.compressItems(src[i]);

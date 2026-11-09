@@ -40,6 +40,8 @@ public class CircuitAssembler implements Runnable {
     private static final ItemList[] CAPACITORS = new ItemList[] { ItemList.Circuit_Parts_Capacitor,
         ItemList.Circuit_Parts_CapacitorSMD, ItemList.Circuit_Parts_CapacitorASMD,
         ItemList.Circuit_Parts_CapacitorXSMD };
+    private static final ItemList[] NAND_CHIP_BOARDS = new ItemList[] { ItemList.Circuit_Board_Phenolic_Good,
+        ItemList.Wrap_PlasticCircuitBoards2, ItemList.Wrap_AdvancedCircuitBoards };
 
     @Override
     public void run() {
@@ -117,6 +119,32 @@ public class CircuitAssembler implements Runnable {
 
                 RecipeModifiers.modify(
                     "circuitassembler/integrated_logic_circuit" + SMD_STRING[i],
+                    VariantNames.ALTERED_PRICING,
+                    RecipePhase.SCALE,
+                    d -> {
+                        d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                        d.itemIn()
+                            .condenseAll();
+                    });
+
+                RecipeModifiers.defineBase(
+                    "circuitassembler/microprocessor" + SMD_STRING[i],
+                    () -> RecipeDraft.of(circuitAssemblerRecipes)
+                        .itemInputs(
+                            ItemList.Circuit_Board_Plastic_Advanced.get(1L),
+                            ItemList.Circuit_Chip_CPU.get(1L),
+                            RESISTORS[finalI].get(2),
+                            CAPACITORS[finalI].get(2),
+                            TRANSISTORS[finalI].get(2),
+                            GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2))
+                        .fluidInputs(SubstituteFluidStack.soldering(1 * HALF_INGOTS))
+                        .itemOutputs(ItemList.Circuit_Microprocessor.get(2))
+                        .metadata(GTRecipeConstants.CLEANROOM, true)
+                        .duration(10 * SECONDS)
+                        .eut(TierEU.RECIPE_MV / 2));
+
+                RecipeModifiers.modify(
+                    "circuitassembler/microprocessor" + SMD_STRING[i],
                     VariantNames.ALTERED_PRICING,
                     RecipePhase.SCALE,
                     d -> {
@@ -886,6 +914,54 @@ public class CircuitAssembler implements Runnable {
 
         RecipeModifiers
             .modify("circuitassembler/optical_processor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        // NAND Chip Array
+        for (int i = 0; i < 6; i++) {
+            boolean div2 = i % 2 == 0;
+            int divided = i / 2;
+            RecipeModifiers.defineBase(
+                "circuitassembler/nand_chip_array" + i,
+                () -> RecipeDraft.of(circuitAssemblerRecipes)
+                    .itemInputs(
+                        NAND_CHIP_BOARDS[divided].get(1),
+                        ItemList.Circuit_Chip_Simple_SoC.get((long) Math.pow(2, divided)),
+                        GTOreDictUnificator.get(OrePrefixes.bolt, Materials.RedAlloy, 1),
+                        GTOreDictUnificator
+                            .get(OrePrefixes.wireFine, div2 ? Materials.AnnealedCopper : Materials.Copper, 1))
+                    .fluidInputs(SubstituteFluidStack.soldering(18))
+                    .itemOutputs(ItemList.NandChipArray.get((long) Math.pow(2, divided)))
+                    .metadata(GTRecipeConstants.CLEANROOM, true)
+                    .duration(div2 ? 7 * SECONDS + 10 * TICKS : 15 * SECONDS)
+                    .eut((long) (TierEU.RECIPE_MV * Math.pow(4, divided))));
+
+            RecipeModifiers
+                .modify("circuitassembler/nand_chip_array" + i, VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                    d.itemIn()
+                        .condenseAll();
+                });
+        }
+
+        RecipeModifiers.defineBase(
+            "circuitassembler/microprocessor_soc",
+            () -> RecipeDraft.of(circuitAssemblerRecipes)
+                .itemInputs(
+                    ItemList.Circuit_Board_Plastic_Advanced.get(1L),
+                    ItemList.Circuit_Chip_SoC.get(1L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2),
+                    GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Copper, 2))
+                .fluidInputs(SubstituteFluidStack.soldering(1 * HALF_INGOTS))
+                .itemOutputs(ItemList.Circuit_Microprocessor.get(2L))
+                .metadata(GTRecipeConstants.CLEANROOM, true)
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_EV * 5 / 16));
+
+        RecipeModifiers
+            .modify("circuitassembler/microprocessor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
                 d.itemIn()
                     .condenseAll();

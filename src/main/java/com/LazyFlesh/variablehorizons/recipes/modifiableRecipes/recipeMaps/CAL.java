@@ -37,6 +37,8 @@ public class CAL implements Runnable {
         ItemList.Wrap_AdvancedSMDInductors, ItemList.Wrap_OpticalSMDInductors };
     private static final ItemList[] CAPACITORS = new ItemList[] { ItemList.Wrap_SMDCapacitors,
         ItemList.Wrap_AdvancedSMDCapacitors, ItemList.Wrap_OpticalSMDCapacitors };
+    private static final ItemList[] NAND_CHIP_BOARDS = new ItemList[] { ItemList.Wrap_GoodCircuitBoards,
+        ItemList.Wrap_PlasticCircuitBoards2, ItemList.Wrap_AdvancedCircuitBoards };
 
     @Override
     public void run() {
@@ -755,6 +757,74 @@ public class CAL implements Runnable {
                 .special(ItemList.CircuitImprint_OpticalProcessor.get(0)));
 
         RecipeModifiers.modify("CAL/optical_processor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        // NAND Chip Array
+        for (int i = 0; i < 6; i++) {
+            boolean div2 = i % 2 == 0;
+            int divided = i / 2;
+            RecipeModifiers.defineBase(
+                "CAL/nand_chip_array" + i,
+                () -> RecipeDraft.of(circuitAssemblyLineRecipes)
+                    .itemInputs(
+                        NAND_CHIP_BOARDS[divided].get(1),
+                        ItemList.Wrap_SimpleSOCs.get((long) Math.pow(2, divided)),
+                        GTOreDictUnificator.get(OrePrefixes.bolt, Materials.RedAlloy, 16),
+                        GTOreDictUnificator
+                            .get(OrePrefixes.wireGt04, div2 ? Materials.AnnealedCopper : Materials.Copper, 1))
+                    .fluidInputs(Materials.SolderingAlloy.getMolten(18))
+                    .itemOutputs(ItemList.NandChipArray.get((long) (16 * Math.pow(2, divided))))
+                    .duration((div2 ? 90 : 180) * SECONDS)
+                    .eut((long) (TierEU.RECIPE_MV * Math.pow(4, divided)))
+                    .special(ItemList.CircuitImprint_NANDChipArray.get(0)));
+
+            RecipeModifiers.modify("CAL/nand_chip_array" + i, VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.itemIn()
+                    .condenseAll();
+            });
+        }
+
+        RecipeModifiers.defineBase(
+            "CAL/microprocessor",
+            () -> RecipeDraft.of(circuitAssemblyLineRecipes)
+                .itemInputs(
+                    ItemList.Wrap_PlasticCircuitBoards2.get(1),
+                    ItemList.Wrap_CentralProcessingUnits.get(1),
+                    ItemList.Wrap_SMDResistors.get(2),
+                    ItemList.Wrap_SMDCapacitors.get(2),
+                    ItemList.Wrap_SMDTransistors.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Copper, 2))
+                .fluidInputs(Materials.SolderingAlloy.getMolten(1 * HALF_INGOTS))
+                .itemOutputs(ItemList.Circuit_Microprocessor.get(32))
+                .duration(2 * MINUTES)
+                .eut(TierEU.RECIPE_MV / 2)
+                .special(ItemList.CircuitImprint_Microprocessor.get(0)));
+
+        RecipeModifiers.modify("CAL/microprocessor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "CAL/microprocessor_soc",
+            () -> RecipeDraft.of(circuitAssemblyLineRecipes)
+                .itemInputs(
+                    ItemList.Wrap_PlasticCircuitBoards2.get(1),
+                    ItemList.Wrap_SoCs.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Copper, 2),
+                    GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Copper, 32))
+                .fluidInputs(Materials.SolderingAlloy.getMolten(1 * HALF_INGOTS))
+                .itemOutputs(ItemList.Circuit_Microprocessor.get(32))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_EV * 5 / 16)
+                .special(ItemList.CircuitImprint_Microprocessor.get(0)));
+
+        RecipeModifiers.modify("CAL/microprocessor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
             d.itemIn()
                 .condenseAll();
