@@ -737,5 +737,27 @@ public class CAL implements Runnable {
             d.itemIn()
                 .condenseAll();
         });
+
+        RecipeModifiers.defineBase(
+            "CAL/optical_processor",
+            () -> RecipeDraft.of(circuitAssemblyLineRecipes)
+                .itemInputs(
+                    ItemList.Wrap_OpticallyPerfectedCPUs.get(1),
+                    ItemList.Wrap_OpticallyCompatibleMemories.get(2),
+                    ItemList.Wrap_OpticalSMDCapacitors.get(16),
+                    ItemList.Wrap_OpticalSMDDiodes.get(16),
+                    tectech.thing.CustomItemList.DATApipe.get(64),
+                    GTOreDictUnificator.get(OrePrefixes.bolt, Materials.EnrichedHolmium, 64))
+                .fluidInputs(MUTATED_LIVING_SOLDER.getFluidStack(2 * INGOTS))
+                .itemOutputs(ItemList.Circuit_OpticalProcessor.get(4L))
+                .duration(4 * MINUTES)
+                .eut(TierEU.RECIPE_UHV * 5 / 16)
+                .special(ItemList.CircuitImprint_OpticalProcessor.get(0)));
+
+        RecipeModifiers.modify("CAL/optical_processor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
     }
 }

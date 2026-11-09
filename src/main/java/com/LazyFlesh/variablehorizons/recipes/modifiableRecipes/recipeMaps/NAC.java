@@ -18,6 +18,7 @@ import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeModifiers;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipePhase;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
+import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.VoltageIndex;
@@ -442,5 +443,122 @@ public class NAC implements Runnable {
             d -> d.scaleAllInputsBalanced(
                 GeneralConfig.partCostMultiplier,
                 CircuitComponent.BiowareComputer.getFakeStack(1)));
+
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/optical_processor",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedChipOpticalCPU, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalRAM, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 16),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 16),
+                new CircuitComponentStack(CircuitComponent.ProcessedCableOpticalFiber, 4),
+                new CircuitComponentStack(CircuitComponent.ProcessedBoltEnrichedHolmium, 4)),
+            Arrays.asList(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(18)),
+            new CircuitComponentStack(CircuitComponent.OpticalProcessor, 1),
+            25 * SECONDS,
+            TierEU.RECIPE_UIV,
+            VoltageIndex.UHV);
+
+        RecipeModifiers.modify(
+            "NAC/optical_processor",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
+
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/optical_assembly",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedBoardOptical, 1),
+                new CircuitComponentStack(CircuitComponent.OpticalProcessor, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDInductor, 16),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 20),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDResistor, 20),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipNOR, 32),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireLumiium, 24),
+                new Object[] { new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64),
+                    new CircuitComponentStack(CircuitComponent.ProcessedFoilStyreneRubber, 64) }),
+            Arrays.asList(
+                MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(10 * INGOTS),
+                Materials.Radon.getPlasma(10 * INGOTS),
+                Materials.SuperCoolant.getFluid(10000),
+                WerkstoffLoader.Oganesson.getFluidOrGas(500)),
+            new CircuitComponentStack(CircuitComponent.OpticalAssembly, 1),
+            50 * SECONDS,
+            TierEU.RECIPE_UIV,
+            VoltageIndex.UHV);
+
+        RecipeModifiers.modify(
+            "NAC/optical_assembly",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                CircuitComponent.OpticalProcessor.getFakeStack(1)));
+
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/optical_computer",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedBoardOptical, 2),
+                new CircuitComponentStack(CircuitComponent.OpticalAssembly, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 24),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDResistor, 24),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 24),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 24),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipNOR, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipASOC, 32),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireLumiium, 32),
+                new Object[] { new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64),
+                    new CircuitComponentStack(CircuitComponent.ProcessedFoilStyreneRubber, 64) },
+                new CircuitComponentStack(CircuitComponent.ProcessedFoilPolybenzimidazole, 64)),
+            Arrays.asList(
+                MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(20 * INGOTS),
+                Materials.Radon.getPlasma(20 * INGOTS),
+                Materials.SuperCoolant.getFluid(20000),
+                WerkstoffLoader.Oganesson.getFluidOrGas(1000)),
+            new CircuitComponentStack(CircuitComponent.OpticalComputer, 1),
+            100 * SECONDS,
+            TierEU.RECIPE_UIV,
+            VoltageIndex.UHV);
+
+        RecipeModifiers.modify(
+            "NAC/optical_computer",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                CircuitComponent.OpticalAssembly.getFakeStack(1)));
+
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/optical_mainframe",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvancedMainframeCasing, 8),
+                new CircuitComponentStack(CircuitComponent.OpticalComputer, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDInductor, 32),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 32),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDResistor, 32),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 32),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 32),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipASOC, 64),
+                new Object[] { new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUEV, 64),
+                    new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUIV, 32),
+                    new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUMV, 16), }),
+            Arrays.asList(
+                MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(40 * INGOTS),
+                Materials.Radon.getPlasma(40 * INGOTS),
+                Materials.SuperCoolant.getFluid(40000),
+                WerkstoffLoader.Oganesson.getFluidOrGas(2000)),
+            new CircuitComponentStack(CircuitComponent.OpticalMainframe, 1),
+            200 * SECONDS,
+            TierEU.RECIPE_UIV,
+            VoltageIndex.UHV);
+
+        RecipeModifiers.modify(
+            "NAC/optical_mainframe",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                CircuitComponent.OpticalComputer.getFakeStack(1)));
     }
 }

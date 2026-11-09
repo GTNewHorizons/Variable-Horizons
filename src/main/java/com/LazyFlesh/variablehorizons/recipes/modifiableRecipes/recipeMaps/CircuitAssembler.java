@@ -867,5 +867,28 @@ public class CircuitAssembler implements Runnable {
                 d.itemIn()
                     .condenseAll();
             });
+
+        RecipeModifiers.defineBase(
+            "circuitassembler/optical_processor",
+            () -> RecipeDraft.of(circuitAssemblerRecipes)
+                .itemInputs(
+                    ItemList.Optically_Perfected_CPU.get(6),
+                    ItemList.Optically_Compatible_Memory.get(12),
+                    ItemList.Circuit_Parts_CapacitorXSMD.get(64),
+                    ItemList.Circuit_Parts_DiodeXSMD.get(64),
+                    tectech.thing.CustomItemList.DATApipe.get(24),
+                    GTOreDictUnificator.get(OrePrefixes.bolt, Materials.EnrichedHolmium, 64))
+                .fluidInputs(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(8 * INGOTS))
+                .itemOutputs(ItemList.Circuit_OpticalProcessor.get(1L))
+                .metadata(GTRecipeConstants.CLEANROOM, true)
+                .duration(80 * SECONDS)
+                .eut(TierEU.RECIPE_UHV * 5 / 16));
+
+        RecipeModifiers
+            .modify("circuitassembler/optical_processor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.itemIn()
+                    .condenseAll();
+            });
     }
 }
