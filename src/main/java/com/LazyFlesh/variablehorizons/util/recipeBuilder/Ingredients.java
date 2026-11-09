@@ -418,7 +418,17 @@ public final class Ingredients<T> {
             }
 
             public Object condense(Object stack) {
-                return stack instanceof ItemStack ? randomUtil.compressItems((ItemStack) stack) : stack;
+                if (stack instanceof ItemStack) {
+                    return randomUtil.compressItems((ItemStack) stack);
+                }
+                if (stack instanceof ItemStack[] src) {
+                    ItemStack[] out = new ItemStack[src.length];
+                    for (int i = 0; i < src.length; i++) {
+                        out[i] = randomUtil.compressItems(src[i]);
+                    }
+                    return out;
+                }
+                return stack;
             }
 
         };
