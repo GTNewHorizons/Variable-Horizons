@@ -317,5 +317,130 @@ public class NAC implements Runnable {
                 GeneralConfig.partCostMultiplier,
                 CircuitComponent.WetwareComputer.getFakeStack(1)));
 
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/bio_processor",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedBioProcessingUnit, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipRawAdvancedCrystal, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipNanoCPU, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 3),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 3),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 16)),
+            Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(4)),
+            new CircuitComponentStack(CircuitComponent.BiowareProcessor, 1),
+            11 * SECONDS + 5 * TICKS,
+            TierEU.RECIPE_UIV,
+            VoltageIndex.UHV);
+
+        RecipeModifiers.modify(
+            "NAC/bio_processor",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
+
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/bio_processor_soc",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedBoardBioMutated, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedLivingBioChip, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 16),
+                new CircuitComponentStack(CircuitComponent.ProcessedBoltChromaticGlass, 4)),
+            Arrays.asList(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(9)),
+            new CircuitComponentStack(CircuitComponent.BiowareProcessor, 1),
+            11 * SECONDS + 5 * TICKS,
+            TierEU.RECIPE_UIV,
+            VoltageIndex.UHV);
+
+        RecipeModifiers.modify(
+            "NAC/bio_processor_soc",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
+
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/bio_assembly",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedBoardBioMutated, 1),
+                new CircuitComponentStack(CircuitComponent.BiowareProcessor, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDInductor, 3),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 4),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 32),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 24)),
+            Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(9)),
+            new CircuitComponentStack(CircuitComponent.BiowareAssembly, 1),
+            22 * SECONDS + 10 * TICKS,
+            TierEU.RECIPE_UIV,
+            VoltageIndex.UHV);
+
+        RecipeModifiers.modify(
+            "NAC/bio_assembly",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                CircuitComponent.BiowareProcessor.getFakeStack(1)));
+
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/bio_computer",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedBoardBioMutated, 2),
+                new CircuitComponentStack(CircuitComponent.BiowareAssembly, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 4),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDResistor, 4),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 4),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 4),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipNOR, 32),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 32),
+                new Object[] { new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64),
+                    new CircuitComponentStack(CircuitComponent.ProcessedFoilStyreneRubber, 64) }),
+            Arrays.asList(
+                MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(10 * INGOTS),
+                Materials.BioMediumSterilized.getFluid(5 * INGOTS),
+                Materials.SuperCoolant.getFluid(10000)),
+            new CircuitComponentStack(CircuitComponent.BiowareComputer, 1),
+            45 * SECONDS,
+            TierEU.RECIPE_UIV,
+            VoltageIndex.UHV);
+
+        RecipeModifiers.modify(
+            "NAC/bio_computer",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                CircuitComponent.BiowareAssembly.getFakeStack(1)));
+
+        addModifiableAssemblyMatrixRecipe(
+            "NAC/bio_mainframe",
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvancedMainframeCasing, 4),
+                new CircuitComponentStack(CircuitComponent.BiowareComputer, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDInductor, 6),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 6),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDResistor, 6),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 6),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 6),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 64),
+                new Object[] { new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUHV, 64),
+                    new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUEV, 32),
+                    new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUIV, 16),
+                    new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUMV, 8), }),
+            Arrays.asList(
+                MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(20 * INGOTS),
+                Materials.BioMediumSterilized.getFluid(10 * INGOTS),
+                Materials.SuperCoolant.getFluid(20000)),
+            new CircuitComponentStack(CircuitComponent.BiowareMainframe, 1),
+            90 * SECONDS,
+            TierEU.RECIPE_UIV,
+            VoltageIndex.UHV);
+
+        RecipeModifiers.modify(
+            "NAC/bio_mainframe",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                CircuitComponent.BiowareComputer.getFakeStack(1)));
     }
 }

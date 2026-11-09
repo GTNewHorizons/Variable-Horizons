@@ -21,7 +21,9 @@ import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
+import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.core.material.MaterialsElements;
 
 public class CircuitAssembler implements Runnable {
 
@@ -589,6 +591,60 @@ public class CircuitAssembler implements Runnable {
                         d.itemIn()
                             .condenseAll();
                     });
+
+                RecipeModifiers.defineBase(
+                    "circuitassembler/bio_processor" + SMD_STRING[i],
+                    () -> RecipeDraft.of(circuitAssemblerRecipes)
+                        .itemInputs(
+                            ItemList.Circuit_Chip_BioCPU.get(6),
+                            ItemList.Circuit_Chip_CrystalSoC2.get(6),
+                            ItemList.Circuit_Chip_NanoCPU.get(12),
+                            CAPACITORS[finalI].get(opticalSMD ? 18 : 64),
+                            TRANSISTORS[finalI].get(opticalSMD ? 18 : 64),
+                            GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 64))
+                        .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(2 * INGOTS))
+                        .itemOutputs(ItemList.Circuit_Bioprocessor.get(1L))
+                        .metadata(GTRecipeConstants.CLEANROOM, true)
+                        .duration(opticalSMD ? 7 * SECONDS + 8 * TICKS : 60 * SECONDS)
+                        .eut((opticalSMD ? TierEU.RECIPE_UHV : TierEU.RECIPE_UV) * 5 / 16));
+
+                RecipeModifiers.modify(
+                    "circuitassembler/bio_processor" + SMD_STRING[i],
+                    VariantNames.ALTERED_PRICING,
+                    RecipePhase.SCALE,
+                    d -> {
+                        d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                        d.itemIn()
+                            .condenseAll();
+                    });
+
+                RecipeModifiers.defineBase(
+                    "circuitassembler/bio_assembly" + SMD_STRING[i],
+                    () -> RecipeDraft.of(circuitAssemblerRecipes)
+                        .itemInputs(
+                            ItemList.Circuit_Board_Bio_Ultra.get(6),
+                            ItemList.Circuit_Bioprocessor.get(2),
+                            INDUCTORS[finalI].get(opticalSMD ? 18 : 64),
+                            CAPACITORS[finalI].get(opticalSMD ? 24 : 64),
+                            ItemList.Circuit_Chip_Ram.get(64),
+                            GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 64))
+                        .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(4 * INGOTS))
+                        .itemOutputs(ItemList.Circuit_Biowarecomputer.get(1L))
+                        .metadata(GTRecipeConstants.CLEANROOM, true)
+                        .duration((opticalSMD ? 10 : 80) * SECONDS)
+                        .eut((opticalSMD ? TierEU.RECIPE_UHV : TierEU.RECIPE_UV) * 5 / 16));
+
+                RecipeModifiers.modify(
+                    "circuitassembler/bio_assembly" + SMD_STRING[i],
+                    VariantNames.ALTERED_PRICING,
+                    RecipePhase.SCALE,
+                    d -> {
+                        d.scaleAllInputsBalanced(
+                            GeneralConfig.partCostMultiplier,
+                            ItemList.Circuit_Bioprocessor.get(2));
+                        d.itemIn()
+                            .condenseAll();
+                    });
             }
         }
 
@@ -786,6 +842,27 @@ public class CircuitAssembler implements Runnable {
 
         RecipeModifiers
             .modify("circuitassembler/wetware_processor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "circuitassembler/bio_processor_soc",
+            () -> RecipeDraft.of(circuitAssemblerRecipes)
+                .itemInputs(
+                    ItemList.Circuit_Board_Bio_Ultra.get(6),
+                    ItemList.Circuit_Parts_Chip_Bioware.get(6),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 64),
+                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getBolt(48))
+                .fluidInputs(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(4 * INGOTS))
+                .itemOutputs(ItemList.Circuit_Bioprocessor.get(1L))
+                .metadata(GTRecipeConstants.CLEANROOM, true)
+                .duration(15 * SECONDS)
+                .eut(TierEU.RECIPE_UEV * 5 / 16));
+
+        RecipeModifiers
+            .modify("circuitassembler/bio_processor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
                 d.itemIn()
                     .condenseAll();
