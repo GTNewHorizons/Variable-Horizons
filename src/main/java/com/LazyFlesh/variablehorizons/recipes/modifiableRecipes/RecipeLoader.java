@@ -5,6 +5,7 @@ import com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps.Assem
 import com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps.Autoclave;
 import com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps.CAL;
 import com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps.CircuitAssembler;
+import com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps.CoAL;
 import com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps.ManufacturingTable;
 import com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps.NAC;
 
@@ -17,6 +18,7 @@ public class RecipeLoader implements Runnable {
         new Autoclave().run();
         new CAL().run();
         new CircuitAssembler().run();
+        new CoAL().run();
         new NAC().run();
         new ManufacturingTable().run();
     }
