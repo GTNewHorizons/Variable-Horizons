@@ -33,11 +33,13 @@ import com.LazyFlesh.variablehorizons.variants.invasive.VoidIsland;
 import akka.japi.Pair;
 import bartworks.system.material.CircuitGeneration.CircuitWraps;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gtPlusPlus.core.material.Material;
 
 public class randomUtil {
 
@@ -315,6 +317,21 @@ public class randomUtil {
         return null;
     }
 
+    private static Material findGtppMaterial(String name) {
+        Material material = Material.mMaterialsByName.get(name);
+        if (material == null) {
+            material = Material.mMaterialCache.get(name.toLowerCase());
+        }
+        return material;
+    }
+
+    private static ItemStack getPart(OrePrefixes prefix, Materials gtMat, Material gtppMat, int amount) {
+        if (gtMat != null) {
+            return GTOreDictUnificator.get(prefix, gtMat, amount, false);
+        }
+        return gtppMat.getComponentByPrefix(prefix, amount);
+    }
+
     public static ItemStack compressItems(ItemStack input) {
         if (input == null || input.stackSize <= 64) {
             return input;
@@ -329,38 +346,64 @@ public class randomUtil {
             return result != null ? result : input;
         }
 
+        OrePrefixes prefix = null;
+        Materials gtMat = null;
+        Material gtppMat = null;
+
         ItemData data = GTOreDictUnificator.getAssociation(input);
-        long totalMaterialAmount;
-        if (data == null || data.mPrefix == null || data.mMaterial == null) {
+        if (data != null && data.mPrefix != null && data.mMaterial != null && data.mMaterial.mMaterial != null) {
+            prefix = data.mPrefix;
+            gtMat = data.mMaterial.mMaterial;
+        } else {
+            for (OrePrefixes.ParsedOreDictName parsed : OrePrefixes.detectPrefix(input)) {
+                if (CompressionType.getTypeForPrefix(parsed.prefix) == null) {
+                    continue;
+                }
+                Material material = findGtppMaterial(parsed.material);
+                if (material != null) {
+                    prefix = parsed.prefix;
+                    gtppMat = material;
+                    break;
+                }
+            }
+        }
+        if (prefix == null) {
             return input;
         }
 
-        CompressionType type = CompressionType.getTypeForPrefix(data.mPrefix);
+        CompressionType type = CompressionType.getTypeForPrefix(prefix);
+        if (type == null) {
+            return input;
+        }
 
         if (type == CompressionType.CIRCUIT) {
             itemAmount = Math.round(input.stackSize / 16f);
-            ItemStack result = GTOreDictUnificator
-                .get(OrePrefixes.wrapCircuit, data.mMaterial.mMaterial, itemAmount, false);
+            ItemStack result = GTOreDictUnificator.get(OrePrefixes.wrapCircuit, gtMat, itemAmount, false);
             result = GTUtility.copyAmountUnsafe(itemAmount, result);
             return result != null ? result : input;
         }
 
-        if (type == null) {
+        long unitIn = prefix.getMaterialAmount();
+        if (unitIn <= 0) {
             return input;
         }
-        totalMaterialAmount = data.mPrefix.getMaterialAmount() * input.stackSize;
+        long totalMaterialAmount = unitIn * input.stackSize;
 
         for (int i = 0; i < type.oredicts.size(); i++) {
             OrePrefixes oredict = type.oredicts.get(i);
-            itemAmount = Math.round((float) totalMaterialAmount / oredict.getMaterialAmount());
+            long unit = oredict.getMaterialAmount();
+            if (unit <= 0) {
+                continue;
+            }
+            itemAmount = Math.round((float) totalMaterialAmount / unit);
             if (itemAmount >= 1 && itemAmount <= 64) {
-                ItemStack result = GTOreDictUnificator.get(oredict, data.mMaterial.mMaterial, itemAmount, false);
+                ItemStack result = getPart(oredict, gtMat, gtppMat, itemAmount);
                 if (result != null) {
                     return result;
                 }
             }
             if (i + 1 == type.oredicts.size()) {
-                ItemStack result = GTOreDictUnificator.get(oredict, data.mMaterial.mMaterial, 1, false);
+                ItemStack result = getPart(oredict, gtMat, gtppMat, 1);
                 result = GTUtility.copyAmountUnsafe(itemAmount, result);
                 if (result != null) {
                     return result;
