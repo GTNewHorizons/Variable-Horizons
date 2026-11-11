@@ -1,33 +1,42 @@
 package com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps;
 
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.componentAssemblyLineRecipes;
+import static gregtech.api.enums.ItemList.Conveyor_Module_EV;
 import static gregtech.api.enums.ItemList.Conveyor_Module_HV;
 import static gregtech.api.enums.ItemList.Conveyor_Module_LV;
 import static gregtech.api.enums.ItemList.Conveyor_Module_MV;
+import static gregtech.api.enums.ItemList.Electric_Motor_EV;
 import static gregtech.api.enums.ItemList.Electric_Motor_HV;
 import static gregtech.api.enums.ItemList.Electric_Motor_LV;
 import static gregtech.api.enums.ItemList.Electric_Motor_MV;
+import static gregtech.api.enums.ItemList.Electric_Piston_EV;
 import static gregtech.api.enums.ItemList.Electric_Piston_HV;
 import static gregtech.api.enums.ItemList.Electric_Piston_LV;
 import static gregtech.api.enums.ItemList.Electric_Piston_MV;
+import static gregtech.api.enums.ItemList.Electric_Pump_EV;
 import static gregtech.api.enums.ItemList.Electric_Pump_HV;
 import static gregtech.api.enums.ItemList.Electric_Pump_LV;
 import static gregtech.api.enums.ItemList.Electric_Pump_MV;
+import static gregtech.api.enums.ItemList.Emitter_EV;
 import static gregtech.api.enums.ItemList.Emitter_HV;
 import static gregtech.api.enums.ItemList.Emitter_LV;
 import static gregtech.api.enums.ItemList.Emitter_MV;
+import static gregtech.api.enums.ItemList.Field_Generator_EV;
 import static gregtech.api.enums.ItemList.Field_Generator_HV;
 import static gregtech.api.enums.ItemList.Field_Generator_LV;
 import static gregtech.api.enums.ItemList.Field_Generator_MV;
 import static gregtech.api.enums.ItemList.QuantumEye;
+import static gregtech.api.enums.ItemList.Robot_Arm_EV;
 import static gregtech.api.enums.ItemList.Robot_Arm_HV;
 import static gregtech.api.enums.ItemList.Robot_Arm_LV;
 import static gregtech.api.enums.ItemList.Robot_Arm_MV;
+import static gregtech.api.enums.ItemList.Sensor_EV;
 import static gregtech.api.enums.ItemList.Sensor_HV;
 import static gregtech.api.enums.ItemList.Sensor_LV;
 import static gregtech.api.enums.ItemList.Sensor_MV;
 import static gregtech.api.enums.Materials.Aluminium;
 import static gregtech.api.enums.Materials.AnnealedCopper;
+import static gregtech.api.enums.Materials.BlackSteel;
 import static gregtech.api.enums.Materials.Brass;
 import static gregtech.api.enums.Materials.Bronze;
 import static gregtech.api.enums.Materials.CertusQuartz;
@@ -40,13 +49,18 @@ import static gregtech.api.enums.Materials.Emerald;
 import static gregtech.api.enums.Materials.EnderEye;
 import static gregtech.api.enums.Materials.EnderPearl;
 import static gregtech.api.enums.Materials.Gold;
+import static gregtech.api.enums.Materials.HSSG;
 import static gregtech.api.enums.Materials.HV;
 import static gregtech.api.enums.Materials.IV;
 import static gregtech.api.enums.Materials.Iron;
 import static gregtech.api.enums.Materials.IronMagnetic;
 import static gregtech.api.enums.Materials.LV;
+import static gregtech.api.enums.Materials.LuV;
 import static gregtech.api.enums.Materials.MV;
+import static gregtech.api.enums.Materials.NeodymiumMagnetic;
+import static gregtech.api.enums.Materials.NetherStar;
 import static gregtech.api.enums.Materials.NiobiumTitanium;
+import static gregtech.api.enums.Materials.Platinum;
 import static gregtech.api.enums.Materials.RedSteel;
 import static gregtech.api.enums.Materials.Silver;
 import static gregtech.api.enums.Materials.StainlessSteel;
@@ -66,6 +80,7 @@ import static gregtech.api.enums.OrePrefixes.screw;
 import static gregtech.api.enums.OrePrefixes.stickLong;
 import static gregtech.api.enums.OrePrefixes.wireGt16;
 import static gregtech.api.enums.OrePrefixes.wrapCircuit;
+import static gregtech.api.enums.TierEU.RECIPE_HV;
 import static gregtech.api.enums.TierEU.RECIPE_LV;
 import static gregtech.api.enums.TierEU.RECIPE_MV;
 import static gregtech.api.enums.TierEU.RECIPE_ULV;
@@ -109,6 +124,7 @@ public class CoAL implements Runnable {
         lvParts();
         mvParts();
         hvParts();
+        evParts();
     }
 
     private static void lvParts() {
@@ -617,6 +633,166 @@ public class CoAL implements Runnable {
 
         RecipeModifiers.modify("coal/hv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, IV, 12));
+            d.itemIn()
+                .condenseAll();
+        });
+    }
+
+    private static void evParts() {
+        RecipeModifiers.defineBase(
+            "coal/ev_motor",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(
+                    get(stickLong, NeodymiumMagnetic, 24),
+                    get(stickLong, Titanium, 48),
+                    get(wireGt16, BlackSteel, 48),
+                    get(cableGt16, Aluminium, 12))
+                .itemOutputs(Electric_Motor_EV.get(64))
+                .metadata(COAL_CASING_TIER, COAL_EV)
+                .duration(48 * SECONDS)
+                .eut(RECIPE_HV));
+
+        RecipeModifiers.modify("coal/ev_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "coal/ev_piston",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(
+                    get(Electric_Motor_EV, 48),
+                    get(plateDense, Titanium, 16),
+                    get(stickLong, Titanium, 48),
+                    get(cableGt16, Aluminium, 6),
+                    get(gearGt, Titanium, 12))
+                .itemOutputs(Electric_Piston_EV.get(64))
+                .metadata(COAL_CASING_TIER, COAL_EV)
+                .duration(48 * SECONDS)
+                .eut(RECIPE_HV));
+
+        RecipeModifiers.modify("coal/ev_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_EV, 48));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "coal/ev_robot_arm",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(
+                    get(Electric_Motor_EV, 96),
+                    get(Electric_Piston_EV, 48),
+                    get(stickLong, Titanium, 48),
+                    get(wrapCircuit, EV, 3),
+                    get(cableGt16, Aluminium, 9))
+                .itemOutputs(Robot_Arm_EV.get(64))
+                .metadata(COAL_CASING_TIER, COAL_EV)
+                .duration(48 * SECONDS)
+                .eut(RECIPE_HV));
+
+        RecipeModifiers.modify("coal/ev_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                get(Electric_Motor_EV, 96),
+                get(Electric_Piston_EV, 48),
+                get(wrapCircuit, EV, 3));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        for (int i = 0; i < RUBBERS.length; i++) {
+            int finalI = i;
+            RecipeModifiers.defineBase(
+                "coal/ev_pump_" + RUBBER_NAMES[i],
+                () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                    .itemInputs(
+                        get(Electric_Motor_EV, 48),
+                        get(rotor, StainlessSteel, 48),
+                        get(screw, StainlessSteel, 48),
+                        get(cableGt16, Aluminium, 3),
+                        get(pipeMedium, Titanium, 48))
+                    .fluidInputs(RUBBERS[finalI].getMolten(24 * INGOTS))
+                    .itemOutputs(Electric_Pump_EV.get(64))
+                    .metadata(COAL_CASING_TIER, COAL_EV)
+                    .duration(48 * SECONDS)
+                    .eut(RECIPE_HV));
+
+            RecipeModifiers
+                .modify("coal/ev_pump_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_EV, 96));
+                    d.itemIn()
+                        .condenseAll();
+                });
+
+            RecipeModifiers.defineBase(
+                "coal/ev_conveyor_" + RUBBER_NAMES[i],
+                () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                    .itemInputs(
+                        get(Electric_Motor_EV, 96),
+                        get(plateDense, RUBBERS[finalI], 32),
+                        get(cableGt16, Aluminium, 3))
+                    .itemOutputs(Conveyor_Module_EV.get(64))
+                    .metadata(COAL_CASING_TIER, COAL_EV)
+                    .duration(48 * SECONDS)
+                    .eut(RECIPE_HV));
+
+            RecipeModifiers
+                .modify("coal/ev_conveyor_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_EV, 96));
+                    d.itemIn()
+                        .condenseAll();
+                });
+        }
+
+        RecipeModifiers.defineBase(
+            "coal/ev_sensor",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(
+                    get(QuantumEye, 48),
+                    get(plateDense, Titanium, 21),
+                    get(stickLong, Platinum, 24),
+                    get(wrapCircuit, EV, 3))
+                .itemOutputs(Sensor_EV.get(64))
+                .metadata(COAL_CASING_TIER, COAL_EV)
+                .duration(48 * SECONDS)
+                .eut(RECIPE_HV));
+
+        RecipeModifiers.modify("coal/ev_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, EV, 3));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "coal/ev_emitter",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(get(QuantumEye, 48), get(wrapCircuit, EV, 6), get(cableGt16, Aluminium, 6))
+                .fluidInputs(Platinum.getMolten(1 * STACKS + 32 * INGOTS))
+                .itemOutputs(Emitter_EV.get(64))
+                .metadata(COAL_CASING_TIER, COAL_EV)
+                .duration(48 * SECONDS)
+                .eut(RECIPE_HV));
+
+        RecipeModifiers.modify("coal/ev_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, EV, 6));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "coal/ev_field_gen",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(get(gem, NetherStar, 48), get(wrapCircuit, LuV, 12))
+                .fluidInputs(HSSG.getMolten(3 * STACKS))
+                .itemOutputs(Field_Generator_EV.get(64))
+                .metadata(COAL_CASING_TIER, COAL_EV)
+                .duration(24 * MINUTES)
+                .eut(RECIPE_HV));
+
+        RecipeModifiers.modify("coal/ev_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, LuV, 12));
             d.itemIn()
                 .condenseAll();
         });

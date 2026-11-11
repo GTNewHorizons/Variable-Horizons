@@ -32,6 +32,7 @@ public class ManufacturingTable implements Runnable {
         lvParts();
         mvParts();
         hvParts();
+        evParts();
     }
 
     private static void circuitStuff() {
@@ -667,4 +668,186 @@ public class ManufacturingTable implements Runnable {
         });
     }
 
+    private static void evParts() {
+        RecipeModifiers.defineBase(
+            "manufacturing/ev_motor",
+            () -> RecipeDraft.of(manufacturingTableRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.NeodymiumMagnetic, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Titanium, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.BlackSteel, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Aluminium, 2L))
+                .itemOutputs(ItemList.Electric_Motor_EV.get(1L)));
+
+        RecipeModifiers.modify("manufacturing/ev_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        for (int i = 0; i < RUBBERS.length; i++) {
+            int finalI = i;
+            RecipeModifiers.defineBase(
+                "manufacturing/ev_pump_" + RUBBER_NAMES[i],
+                () -> RecipeDraft.of(manufacturingTableRecipes)
+                    .itemInputs(
+                        ItemList.Electric_Motor_EV.get(1),
+                        GTOreDictUnificator.get(OrePrefixes.ring, RUBBERS[finalI], 2L),
+                        GTOreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1L),
+                        GTOreDictUnificator.get(OrePrefixes.screw, Materials.StainlessSteel, 1L),
+                        GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 1L),
+                        GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1L))
+                    .itemOutputs(ItemList.Electric_Pump_EV.get(1L)));
+
+            RecipeModifiers.modify(
+                "manufacturing/ev_pump_" + RUBBER_NAMES[i],
+                VariantNames.ALTERED_PRICING,
+                RecipePhase.SCALE,
+                d -> {
+                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_EV.get(1));
+                    d.itemIn()
+                        .condenseAll();
+                });
+
+            RecipeModifiers.defineBase(
+                "manufacturing/ev_conveyor_" + RUBBER_NAMES[i],
+                () -> RecipeDraft.of(manufacturingTableRecipes)
+                    .itemInputs(
+                        ItemList.Electric_Motor_EV.get(2),
+                        GTOreDictUnificator.get(OrePrefixes.plate, RUBBERS[finalI], 6L),
+                        GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 1L))
+                    .itemOutputs(ItemList.Conveyor_Module_EV.get(1L)));
+
+            RecipeModifiers.modify(
+                "manufacturing/ev_conveyor_" + RUBBER_NAMES[i],
+                VariantNames.ALTERED_PRICING,
+                RecipePhase.SCALE,
+                d -> {
+                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_EV.get(1));
+                    d.itemIn()
+                        .condenseAll();
+                });
+        }
+
+        RecipeModifiers.defineBase(
+            "manufacturing/ev_piston",
+            () -> RecipeDraft.of(manufacturingTableRecipes)
+                .itemInputs(
+                    ItemList.Electric_Motor_EV.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 3L),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Titanium, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Titanium, 1L))
+                .itemOutputs(ItemList.Electric_Piston_EV.get(1L)));
+
+        RecipeModifiers.modify("manufacturing/ev_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_EV.get(1));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "manufacturing/ev_robot_arm",
+            () -> RecipeDraft.of(manufacturingTableRecipes)
+                .itemInputs(
+                    ItemList.Electric_Motor_EV.get(2),
+                    ItemList.Electric_Piston_EV.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Titanium, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 3L))
+                .itemOutputs(ItemList.Robot_Arm_EV.get(1L)));
+
+        RecipeModifiers.modify("manufacturing/ev_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                ItemList.Electric_Motor_EV.get(1),
+                ItemList.Electric_Piston_EV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "manufacturing/ev_emitter",
+            () -> RecipeDraft.of(manufacturingTableRecipes)
+                .itemInputs(
+                    ItemList.QuantumEye.get(1L),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Platinum, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 2L))
+                .itemOutputs(ItemList.Emitter_EV.get(1L)));
+
+        RecipeModifiers.modify("manufacturing/ev_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "manufacturing/ev_sensor",
+            () -> RecipeDraft.of(manufacturingTableRecipes)
+                .itemInputs(
+                    ItemList.QuantumEye.get(1L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Platinum, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L))
+                .itemOutputs(ItemList.Sensor_EV.get(1L)));
+
+        RecipeModifiers.modify("manufacturing/ev_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "manufacturing/ev_field_gen",
+            () -> RecipeDraft.of(manufacturingTableRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.HSSG, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 4L))
+                .itemOutputs(ItemList.Field_Generator_EV.get(1L)));
+
+        RecipeModifiers.modify("manufacturing/ev_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 1L));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "manufacturing/ev_casing",
+            () -> RecipeDraft.of(manufacturingTableRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 8L),
+                    GTUtility.getIntegratedCircuit(8))
+                .itemOutputs(ItemList.Casing_EV.get(1L)));
+
+        RecipeModifiers.modify("manufacturing/ev_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "manufacturing/ev_hull",
+            () -> RecipeDraft.of(manufacturingTableRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polyethylene, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1L),
+                    ItemList.Casing_EV.get(1))
+                .itemOutputs(ItemList.Hull_EV.get(1L)));
+
+        RecipeModifiers.modify("manufacturing/ev_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_EV.get(1));
+            d.itemIn()
+                .condenseAll();
+        });
+    }
 }
