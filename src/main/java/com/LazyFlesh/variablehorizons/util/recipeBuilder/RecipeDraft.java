@@ -14,14 +14,14 @@ import net.minecraftforge.fluids.FluidStack;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.Ingredients.Kinds;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.objects.SubstituteFluidStack;
-import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.util.GTRecipeBuilder;
 
 public final class RecipeDraft implements Registrable {
 
-    private final RecipeMap<?> map;
+    private final IRecipeMap map;
     private final Ingredients<Object> itemIn = new Ingredients<>(Kinds.ITEM_INPUT);
     private final Ingredients<ItemStack> itemOut = new Ingredients<>(Kinds.ITEM_OUTPUT);
     private final Ingredients<Object> fluidIn = new Ingredients<>(Ingredients.Kinds.FLUID_SUBSTITUTABLE);
@@ -32,11 +32,11 @@ public final class RecipeDraft implements Registrable {
     private long eut;
     private double balance = 1d;
 
-    private RecipeDraft(RecipeMap<?> map) {
+    private RecipeDraft(IRecipeMap map) {
         this.map = map;
     }
 
-    public static RecipeDraft of(RecipeMap<?> map) {
+    public static RecipeDraft of(IRecipeMap map) {
         return new RecipeDraft(map);
     }
 
