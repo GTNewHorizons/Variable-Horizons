@@ -30,6 +30,7 @@ public class Assembler implements Runnable {
         mvParts();
         hvParts();
         evParts();
+        ivParts();
     }
 
     private static void circuitStuff() {
@@ -902,6 +903,206 @@ public class Assembler implements Runnable {
 
         RecipeModifiers.modify("assembler/ev_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_EV.get(1));
+            d.itemIn()
+                .condenseAll();
+        });
+    }
+
+    private static void ivParts() {
+        RecipeModifiers.defineBase(
+            "assembler/iv_motor",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.NeodymiumMagnetic, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Graphene, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Tungsten, 2L))
+                .itemOutputs(ItemList.Electric_Motor_IV.get(1L))
+                .duration(20 * TICKS)
+                .eut(TierEU.RECIPE_LV));
+
+        RecipeModifiers.modify("assembler/iv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        for (int i = 1; i < RUBBERS.length; i++) {
+            int finalI = i;
+            RecipeModifiers.defineBase(
+                "assembler/iv_pump_" + RUBBER_NAMES[i],
+                () -> RecipeDraft.of(assemblerRecipes)
+                    .itemInputs(
+                        ItemList.Electric_Motor_IV.get(1),
+                        GTOreDictUnificator.get(OrePrefixes.ring, RUBBERS[finalI], 2L),
+                        GTOreDictUnificator.get(OrePrefixes.rotor, Materials.TungstenSteel, 1L),
+                        GTOreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 1L),
+                        GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tungsten, 1L),
+                        GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.TungstenSteel, 1L))
+                    .itemOutputs(ItemList.Electric_Pump_IV.get(1L))
+                    .duration(20 * TICKS)
+                    .eut(TierEU.RECIPE_LV));
+
+            RecipeModifiers
+                .modify("assembler/iv_pump_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_IV.get(1));
+                    d.itemIn()
+                        .condenseAll();
+                });
+
+            RecipeModifiers.defineBase(
+                "assembler/iv_conveyor_" + RUBBER_NAMES[i],
+                () -> RecipeDraft.of(assemblerRecipes)
+                    .itemInputs(
+                        ItemList.Electric_Motor_IV.get(2),
+                        GTOreDictUnificator.get(OrePrefixes.plate, RUBBERS[finalI], 6L),
+                        GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tungsten, 1L))
+                    .itemOutputs(ItemList.Conveyor_Module_IV.get(1L))
+                    .duration(20 * TICKS)
+                    .eut(TierEU.RECIPE_LV));
+
+            RecipeModifiers.modify(
+                "assembler/iv_conveyor_" + RUBBER_NAMES[i],
+                VariantNames.ALTERED_PRICING,
+                RecipePhase.SCALE,
+                d -> {
+                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_IV.get(1));
+                    d.itemIn()
+                        .condenseAll();
+                });
+        }
+
+        RecipeModifiers.defineBase(
+            "assembler/iv_piston",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    ItemList.Electric_Motor_IV.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 3L),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tungsten, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.TungstenSteel, 1L))
+                .itemOutputs(ItemList.Electric_Piston_IV.get(1L))
+                .duration(20 * TICKS)
+                .eut(TierEU.RECIPE_LV));
+
+        RecipeModifiers.modify("assembler/iv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_IV.get(1));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/iv_robot_arm",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    ItemList.Electric_Motor_IV.get(2),
+                    ItemList.Electric_Piston_IV.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tungsten, 3L))
+                .itemOutputs(ItemList.Robot_Arm_IV.get(1L))
+                .duration(20 * TICKS)
+                .eut(TierEU.RECIPE_LV));
+
+        RecipeModifiers.modify("assembler/iv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                ItemList.Electric_Motor_IV.get(1),
+                ItemList.Electric_Piston_IV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/iv_emitter",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    ItemList.QuantumStar.get(1L),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iridium, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tungsten, 2L))
+                .itemOutputs(ItemList.Emitter_IV.get(1L))
+                .duration(20 * TICKS)
+                .eut(TierEU.RECIPE_LV));
+
+        RecipeModifiers.modify("assembler/iv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/iv_sensor",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    ItemList.QuantumStar.get(1L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iridium, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L))
+                .itemOutputs(ItemList.Sensor_IV.get(1L))
+                .duration(20 * TICKS)
+                .eut(TierEU.RECIPE_LV));
+
+        RecipeModifiers.modify("assembler/iv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/iv_field_gen",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    ItemList.QuantumStar.get(1L),
+                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 4L),
+                    GTUtility.getIntegratedCircuit(1))
+                .fluidInputs(Materials.HSSS.getMolten(576L))
+                .itemOutputs(ItemList.Field_Generator_IV.get(1L))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_IV));
+
+        RecipeModifiers.modify("assembler/iv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 1L));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/iv_casing",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 8L),
+                    GTUtility.getIntegratedCircuit(8))
+                .itemOutputs(ItemList.Casing_IV.get(1L))
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/iv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/iv_hull",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tungsten, 2L),
+                    ItemList.Casing_IV.get(1))
+                .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(288L))
+                .itemOutputs(ItemList.Hull_IV.get(1L))
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/iv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_IV.get(1));
             d.itemIn()
                 .condenseAll();
         });
