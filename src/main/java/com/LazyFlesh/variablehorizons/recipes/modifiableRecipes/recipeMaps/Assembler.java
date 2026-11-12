@@ -4,12 +4,16 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeDraft;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeModifiers;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipePhase;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
+import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -31,6 +35,7 @@ public class Assembler implements Runnable {
         hvParts();
         evParts();
         ivParts();
+        hulls();
     }
 
     private static void circuitStuff() {
@@ -273,39 +278,6 @@ public class Assembler implements Runnable {
             d.itemIn()
                 .condenseAll();
         });
-
-        RecipeModifiers.defineBase(
-            "assembler/lv_casing",
-            () -> RecipeDraft.of(assemblerRecipes)
-                .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 8L),
-                    GTUtility.getIntegratedCircuit(8))
-                .itemOutputs(ItemList.Casing_LV.get(1L))
-                .duration(50 * TICKS)
-                .eut(TierEU.RECIPE_LV / 2));
-
-        RecipeModifiers.modify("assembler/lv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
-            d.itemIn()
-                .condenseAll();
-        });
-
-        RecipeModifiers.defineBase(
-            "assembler/lv_hull",
-            () -> RecipeDraft.of(assemblerRecipes)
-                .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tin, 2L),
-                    ItemList.Casing_LV.get(1))
-                .fluidInputs(Materials.Polyethylene.getMolten(288L))
-                .itemOutputs(ItemList.Hull_LV.get(1L))
-                .duration(50 * TICKS)
-                .eut(TierEU.RECIPE_LV / 2));
-
-        RecipeModifiers.modify("assembler/lv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_LV.get(1));
-            d.itemIn()
-                .condenseAll();
-        });
     }
 
     private static void mvParts() {
@@ -470,39 +442,6 @@ public class Assembler implements Runnable {
             d.scaleAllInputsBalanced(
                 GeneralConfig.partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L));
-            d.itemIn()
-                .condenseAll();
-        });
-
-        RecipeModifiers.defineBase(
-            "assembler/mv_casing",
-            () -> RecipeDraft.of(assemblerRecipes)
-                .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 8L),
-                    GTUtility.getIntegratedCircuit(8))
-                .itemOutputs(ItemList.Casing_MV.get(1L))
-                .duration(50 * TICKS)
-                .eut(TierEU.RECIPE_LV / 2));
-
-        RecipeModifiers.modify("assembler/mv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
-            d.itemIn()
-                .condenseAll();
-        });
-
-        RecipeModifiers.defineBase(
-            "assembler/mv_hull",
-            () -> RecipeDraft.of(assemblerRecipes)
-                .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Copper, 2L),
-                    ItemList.Casing_MV.get(1))
-                .fluidInputs(Materials.Polyethylene.getMolten(288L))
-                .itemOutputs(ItemList.Hull_MV.get(1L))
-                .duration(50 * TICKS)
-                .eut(TierEU.RECIPE_LV / 2));
-
-        RecipeModifiers.modify("assembler/mv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_MV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -673,39 +612,6 @@ public class Assembler implements Runnable {
             d.itemIn()
                 .condenseAll();
         });
-
-        RecipeModifiers.defineBase(
-            "assembler/hv_casing",
-            () -> RecipeDraft.of(assemblerRecipes)
-                .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 8L),
-                    GTUtility.getIntegratedCircuit(8))
-                .itemOutputs(ItemList.Casing_HV.get(1L))
-                .duration(50 * TICKS)
-                .eut(TierEU.RECIPE_LV / 2));
-
-        RecipeModifiers.modify("assembler/hv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
-            d.itemIn()
-                .condenseAll();
-        });
-
-        RecipeModifiers.defineBase(
-            "assembler/hv_hull",
-            () -> RecipeDraft.of(assemblerRecipes)
-                .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Gold, 2L),
-                    ItemList.Casing_HV.get(1))
-                .fluidInputs(Materials.Polyethylene.getMolten(288L))
-                .itemOutputs(ItemList.Hull_HV.get(1L))
-                .duration(50 * TICKS)
-                .eut(TierEU.RECIPE_LV / 2));
-
-        RecipeModifiers.modify("assembler/hv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_HV.get(1));
-            d.itemIn()
-                .condenseAll();
-        });
     }
 
     private static void evParts() {
@@ -870,39 +776,6 @@ public class Assembler implements Runnable {
             d.scaleAllInputsBalanced(
                 GeneralConfig.partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 1L));
-            d.itemIn()
-                .condenseAll();
-        });
-
-        RecipeModifiers.defineBase(
-            "assembler/ev_casing",
-            () -> RecipeDraft.of(assemblerRecipes)
-                .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 8L),
-                    GTUtility.getIntegratedCircuit(8))
-                .itemOutputs(ItemList.Casing_EV.get(1L))
-                .duration(50 * TICKS)
-                .eut(TierEU.RECIPE_LV / 2));
-
-        RecipeModifiers.modify("assembler/ev_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
-            d.itemIn()
-                .condenseAll();
-        });
-
-        RecipeModifiers.defineBase(
-            "assembler/ev_hull",
-            () -> RecipeDraft.of(assemblerRecipes)
-                .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 2L),
-                    ItemList.Casing_EV.get(1))
-                .fluidInputs(Materials.Polyethylene.getMolten(288L))
-                .itemOutputs(ItemList.Hull_EV.get(1L))
-                .duration(50 * TICKS)
-                .eut(TierEU.RECIPE_LV / 2));
-
-        RecipeModifiers.modify("assembler/ev_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_EV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -1073,6 +946,240 @@ public class Assembler implements Runnable {
             d.itemIn()
                 .condenseAll();
         });
+    }
+
+    private static void hulls() {
+        RecipeModifiers.defineBase(
+            "assembler/bronze_hull",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 8L),
+                    GTUtility.getIntegratedCircuit(8))
+                .itemOutputs(ItemList.Hull_Bronze.get(1L))
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/bronze_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/bricked_bronze_hull",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 5L),
+                    new ItemStack(Blocks.brick_block, 3),
+                    GTUtility.getIntegratedCircuit(6))
+                .itemOutputs(ItemList.Hull_Bronze_Bricks.get(1L))
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/bricked_bronze_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/steel_hull",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 8L),
+                    GTUtility.getIntegratedCircuit(7))
+                .itemOutputs(ItemList.Hull_HP.get(1L))
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/steel_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/bricked_cast_iron_hull",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.CastIron, 5L),
+                    new ItemStack(Blocks.brick_block, 3),
+                    GTUtility.getIntegratedCircuit(6))
+                .itemOutputs(ItemList.Hull_HP_Bricks.get(1L))
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers
+            .modify("assembler/bricked_cast_iron_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assembler/ulv_casing",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.CastIron, 8L),
+                    GTUtility.getIntegratedCircuit(8))
+                .itemOutputs(ItemList.Casing_ULV.get(1L))
+                .duration(25 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/ulv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/ulv_hull",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Lead, 2L),
+                    ItemList.Casing_ULV.get(1))
+                .fluidInputs(Materials.Polyethylene.getMolten(288L))
+                .itemOutputs(ItemList.Hull_ULV.get(1L))
+                .duration(25 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/ulv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_ULV.get(1));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/lv_casing",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 8L),
+                    GTUtility.getIntegratedCircuit(8))
+                .itemOutputs(ItemList.Casing_LV.get(1L))
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/lv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/lv_hull",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tin, 2L),
+                    ItemList.Casing_LV.get(1))
+                .fluidInputs(Materials.Polyethylene.getMolten(288L))
+                .itemOutputs(ItemList.Hull_LV.get(1L))
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/lv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_LV.get(1));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/mv_casing",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 8L),
+                    GTUtility.getIntegratedCircuit(8))
+                .itemOutputs(ItemList.Casing_MV.get(1L))
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/mv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/mv_hull",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Copper, 2L),
+                    ItemList.Casing_MV.get(1))
+                .fluidInputs(Materials.Polyethylene.getMolten(288L))
+                .itemOutputs(ItemList.Hull_MV.get(1L))
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/mv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_MV.get(1));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/hv_casing",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 8L),
+                    GTUtility.getIntegratedCircuit(8))
+                .itemOutputs(ItemList.Casing_HV.get(1L))
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/hv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/hv_hull",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Gold, 2L),
+                    ItemList.Casing_HV.get(1))
+                .fluidInputs(Materials.Polyethylene.getMolten(288L))
+                .itemOutputs(ItemList.Hull_HV.get(1L))
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/hv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_HV.get(1));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/ev_casing",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 8L),
+                    GTUtility.getIntegratedCircuit(8))
+                .itemOutputs(ItemList.Casing_EV.get(1L))
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/ev_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/ev_hull",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 2L),
+                    ItemList.Casing_EV.get(1))
+                .fluidInputs(Materials.Polyethylene.getMolten(288L))
+                .itemOutputs(ItemList.Hull_EV.get(1L))
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/ev_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_EV.get(1));
+            d.itemIn()
+                .condenseAll();
+        });
 
         RecipeModifiers.defineBase(
             "assembler/iv_casing",
@@ -1103,6 +1210,40 @@ public class Assembler implements Runnable {
 
         RecipeModifiers.modify("assembler/iv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_IV.get(1));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/luv_casing",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator
+                        .get(OrePrefixes.plate, WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial(), 8),
+                    GTUtility.getIntegratedCircuit(8))
+                .itemOutputs(ItemList.Casing_LuV.get(1L))
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/luv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/luv_hull",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.VanadiumGallium, 2L),
+                    ItemList.Casing_LuV.get(1))
+                .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(288L))
+                .itemOutputs(ItemList.Hull_LuV.get(1L))
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/luv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_LuV.get(1));
             d.itemIn()
                 .condenseAll();
         });
