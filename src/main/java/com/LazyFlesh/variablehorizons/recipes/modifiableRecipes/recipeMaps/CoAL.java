@@ -8,36 +8,42 @@ import static gregtech.api.enums.ItemList.Conveyor_Module_IV;
 import static gregtech.api.enums.ItemList.Conveyor_Module_LV;
 import static gregtech.api.enums.ItemList.Conveyor_Module_LuV;
 import static gregtech.api.enums.ItemList.Conveyor_Module_MV;
+import static gregtech.api.enums.ItemList.Conveyor_Module_ZPM;
 import static gregtech.api.enums.ItemList.Electric_Motor_EV;
 import static gregtech.api.enums.ItemList.Electric_Motor_HV;
 import static gregtech.api.enums.ItemList.Electric_Motor_IV;
 import static gregtech.api.enums.ItemList.Electric_Motor_LV;
 import static gregtech.api.enums.ItemList.Electric_Motor_LuV;
 import static gregtech.api.enums.ItemList.Electric_Motor_MV;
+import static gregtech.api.enums.ItemList.Electric_Motor_ZPM;
 import static gregtech.api.enums.ItemList.Electric_Piston_EV;
 import static gregtech.api.enums.ItemList.Electric_Piston_HV;
 import static gregtech.api.enums.ItemList.Electric_Piston_IV;
 import static gregtech.api.enums.ItemList.Electric_Piston_LV;
 import static gregtech.api.enums.ItemList.Electric_Piston_LuV;
 import static gregtech.api.enums.ItemList.Electric_Piston_MV;
+import static gregtech.api.enums.ItemList.Electric_Piston_ZPM;
 import static gregtech.api.enums.ItemList.Electric_Pump_EV;
 import static gregtech.api.enums.ItemList.Electric_Pump_HV;
 import static gregtech.api.enums.ItemList.Electric_Pump_IV;
 import static gregtech.api.enums.ItemList.Electric_Pump_LV;
 import static gregtech.api.enums.ItemList.Electric_Pump_LuV;
 import static gregtech.api.enums.ItemList.Electric_Pump_MV;
+import static gregtech.api.enums.ItemList.Electric_Pump_ZPM;
 import static gregtech.api.enums.ItemList.Emitter_EV;
 import static gregtech.api.enums.ItemList.Emitter_HV;
 import static gregtech.api.enums.ItemList.Emitter_IV;
 import static gregtech.api.enums.ItemList.Emitter_LV;
 import static gregtech.api.enums.ItemList.Emitter_LuV;
 import static gregtech.api.enums.ItemList.Emitter_MV;
+import static gregtech.api.enums.ItemList.Emitter_ZPM;
 import static gregtech.api.enums.ItemList.Field_Generator_EV;
 import static gregtech.api.enums.ItemList.Field_Generator_HV;
 import static gregtech.api.enums.ItemList.Field_Generator_IV;
 import static gregtech.api.enums.ItemList.Field_Generator_LV;
 import static gregtech.api.enums.ItemList.Field_Generator_LuV;
 import static gregtech.api.enums.ItemList.Field_Generator_MV;
+import static gregtech.api.enums.ItemList.Field_Generator_ZPM;
 import static gregtech.api.enums.ItemList.QuantumEye;
 import static gregtech.api.enums.ItemList.QuantumStar;
 import static gregtech.api.enums.ItemList.Robot_Arm_EV;
@@ -46,12 +52,14 @@ import static gregtech.api.enums.ItemList.Robot_Arm_IV;
 import static gregtech.api.enums.ItemList.Robot_Arm_LV;
 import static gregtech.api.enums.ItemList.Robot_Arm_LuV;
 import static gregtech.api.enums.ItemList.Robot_Arm_MV;
+import static gregtech.api.enums.ItemList.Robot_Arm_ZPM;
 import static gregtech.api.enums.ItemList.Sensor_EV;
 import static gregtech.api.enums.ItemList.Sensor_HV;
 import static gregtech.api.enums.ItemList.Sensor_IV;
 import static gregtech.api.enums.ItemList.Sensor_LV;
 import static gregtech.api.enums.ItemList.Sensor_LuV;
 import static gregtech.api.enums.ItemList.Sensor_MV;
+import static gregtech.api.enums.ItemList.Sensor_ZPM;
 import static gregtech.api.enums.Materials.Aluminium;
 import static gregtech.api.enums.Materials.AnnealedCopper;
 import static gregtech.api.enums.Materials.BlackSteel;
@@ -66,6 +74,8 @@ import static gregtech.api.enums.Materials.Electrum;
 import static gregtech.api.enums.Materials.Emerald;
 import static gregtech.api.enums.Materials.EnderEye;
 import static gregtech.api.enums.Materials.EnderPearl;
+import static gregtech.api.enums.Materials.Enderium;
+import static gregtech.api.enums.Materials.Europium;
 import static gregtech.api.enums.Materials.Gallium;
 import static gregtech.api.enums.Materials.Gold;
 import static gregtech.api.enums.Materials.Graphene;
@@ -80,9 +90,11 @@ import static gregtech.api.enums.Materials.LV;
 import static gregtech.api.enums.Materials.LuV;
 import static gregtech.api.enums.Materials.Lubricant;
 import static gregtech.api.enums.Materials.MV;
+import static gregtech.api.enums.Materials.NaquadahAlloy;
 import static gregtech.api.enums.Materials.NeodymiumMagnetic;
 import static gregtech.api.enums.Materials.NetherStar;
 import static gregtech.api.enums.Materials.NiobiumTitanium;
+import static gregtech.api.enums.Materials.Osmiridium;
 import static gregtech.api.enums.Materials.Platinum;
 import static gregtech.api.enums.Materials.RedSteel;
 import static gregtech.api.enums.Materials.SamariumMagnetic;
@@ -92,8 +104,11 @@ import static gregtech.api.enums.Materials.Steel;
 import static gregtech.api.enums.Materials.SteelMagnetic;
 import static gregtech.api.enums.Materials.Tin;
 import static gregtech.api.enums.Materials.Titanium;
+import static gregtech.api.enums.Materials.Trinium;
 import static gregtech.api.enums.Materials.Tungsten;
 import static gregtech.api.enums.Materials.TungstenSteel;
+import static gregtech.api.enums.Materials.UV;
+import static gregtech.api.enums.Materials.VanadiumGallium;
 import static gregtech.api.enums.Materials.YttriumBariumCuprate;
 import static gregtech.api.enums.Materials.ZPM;
 import static gregtech.api.enums.OrePrefixes.cableGt16;
@@ -113,6 +128,7 @@ import static gregtech.api.enums.TierEU.RECIPE_EV;
 import static gregtech.api.enums.TierEU.RECIPE_HV;
 import static gregtech.api.enums.TierEU.RECIPE_IV;
 import static gregtech.api.enums.TierEU.RECIPE_LV;
+import static gregtech.api.enums.TierEU.RECIPE_LuV;
 import static gregtech.api.enums.TierEU.RECIPE_MV;
 import static gregtech.api.enums.TierEU.RECIPE_ULV;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -160,6 +176,7 @@ public class CoAL implements Runnable {
         evParts();
         ivParts();
         luvParts();
+        zpmParts();
     }
 
     private static void lvParts() {
@@ -1215,6 +1232,221 @@ public class CoAL implements Runnable {
                 GeneralConfig.partCostMultiplier,
                 get(wrapCircuit, ZPM, 12),
                 get(Emitter_LuV, 192));
+            d.itemIn()
+                .condenseAll();
+        });
+    }
+
+    private static void zpmParts() {
+        RecipeModifiers.defineBase(
+            "coal/zpm_motor",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(
+                    get(stickLong, SamariumMagnetic, 48),
+                    get(cableGt16, VanadiumGallium, 24),
+                    GTUtility.getIntegratedCircuit(MOTOR_CIRCUIT))
+                .fluidInputs(
+                    INDALLOY_140.getFluidStack(1 * STACKS + 32 * INGOTS),
+                    Lubricant.getFluid(36_000),
+                    Europium.getMolten(18 * STACKS),
+                    NaquadahAlloy.getMolten(5 * STACKS + 5 * INGOTS + 3 * NUGGETS))
+                .itemOutputs(Electric_Motor_ZPM.get(64))
+                .metadata(COAL_CASING_TIER, COAL_ZPM)
+                .duration(24 * MINUTES)
+                .eut(RECIPE_LuV));
+
+        RecipeModifiers.modify("coal/zpm_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "coal/zpm_piston",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(
+                    get(Electric_Motor_ZPM, 48),
+                    get(plateDense, NaquadahAlloy, 32),
+                    get(cableGt16, VanadiumGallium, 48),
+                    GTUtility.getIntegratedCircuit(PISTON_CIRCUIT))
+                .fluidInputs(
+                    INDALLOY_140.getFluidStack(1 * STACKS + 32 * INGOTS),
+                    Lubricant.getFluid(36_000),
+                    NaquadahAlloy.getMolten(9 * STACKS + 26 * INGOTS + 6 * NUGGETS))
+                .itemOutputs(Electric_Piston_ZPM.get(64))
+                .metadata(COAL_CASING_TIER, COAL_ZPM)
+                .duration(24 * MINUTES)
+                .eut(RECIPE_LuV));
+
+        RecipeModifiers.modify("coal/zpm_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_ZPM, 48));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "coal/zpm_robot_arm",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(
+                    get(Electric_Motor_ZPM, 96),
+                    get(Electric_Piston_ZPM, 48),
+                    get(wrapCircuit, ZPM, 6),
+                    get(wrapCircuit, LuV, 12),
+                    get(wrapCircuit, IV, 24),
+                    GTUtility.getIntegratedCircuit(ROBOT_ARM_CIRCUIT))
+                .fluidInputs(
+                    INDALLOY_140.getFluidStack(6 * STACKS),
+                    Lubricant.getFluid(36_000),
+                    VanadiumGallium.getMolten(9 * STACKS),
+                    NaquadahAlloy.getMolten(8 * STACKS + 16 * INGOTS))
+                .itemOutputs(Robot_Arm_ZPM.get(64))
+                .metadata(COAL_CASING_TIER, COAL_ZPM)
+                .duration(24 * MINUTES)
+                .eut(RECIPE_LuV));
+
+        RecipeModifiers.modify("coal/zpm_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                get(Electric_Motor_ZPM, 96),
+                get(Electric_Piston_ZPM, 48),
+                get(wrapCircuit, ZPM, 6),
+                get(wrapCircuit, LuV, 12),
+                get(wrapCircuit, IV, 24));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        for (int i = 1; i < RUBBERS.length; i++) {
+            int finalI = i;
+            RecipeModifiers.defineBase(
+                "coal/zpm_pump_" + RUBBER_NAMES[i],
+                () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                    .itemInputs(
+                        get(Electric_Motor_ZPM, 48),
+                        get(plateDense, NaquadahAlloy, 10),
+                        get(cableGt16, VanadiumGallium, 24),
+                        GTUtility.getIntegratedCircuit(PUMP_CIRCUIT))
+                    .fluidInputs(
+                        INDALLOY_140.getFluidStack(1 * STACKS + 32 * INGOTS),
+                        Lubricant.getFluid(36_000),
+                        NaquadahAlloy.getMolten(7 * STACKS + 2 * INGOTS + 6 * NUGGETS),
+                        Enderium.getMolten(4 * STACKS + 32 * INGOTS),
+                        RUBBERS[finalI].getMolten(1 * STACKS + 32 * INGOTS))
+                    .itemOutputs(Electric_Pump_ZPM.get(64))
+                    .metadata(COAL_CASING_TIER, COAL_ZPM)
+                    .duration(24 * MINUTES)
+                    .eut(RECIPE_LuV));
+
+            RecipeModifiers
+                .modify("coal/zpm_pump_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_ZPM, 48));
+                    d.itemIn()
+                        .condenseAll();
+                });
+
+            RecipeModifiers.defineBase(
+                "coal/zpm_conveyor_" + RUBBER_NAMES[i],
+                () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                    .itemInputs(
+                        get(Electric_Motor_ZPM, 96),
+                        get(plateDense, NaquadahAlloy, 10),
+                        get(cableGt16, VanadiumGallium, 24),
+                        GTUtility.getIntegratedCircuit(CONVEYOR_CIRCUIT))
+                    .fluidInputs(
+                        INDALLOY_140.getFluidStack(1 * STACKS + 32 * INGOTS),
+                        Lubricant.getFluid(36_000),
+                        RUBBERS[finalI].getMolten(14 * STACKS + 58 * INGOTS),
+                        NaquadahAlloy.getMolten(3 * STACKS + 26 * INGOTS + 6 * NUGGETS))
+                    .itemOutputs(Conveyor_Module_ZPM.get(64))
+                    .metadata(COAL_CASING_TIER, COAL_ZPM)
+                    .duration(24 * MINUTES)
+                    .eut(RECIPE_LuV));
+
+            RecipeModifiers
+                .modify("coal/zpm_conveyor_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_ZPM, 96));
+                    d.itemIn()
+                        .condenseAll();
+                });
+        }
+
+        RecipeModifiers.defineBase(
+            "coal/zpm_sensor",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(
+                    get(frameGt, NaquadahAlloy, 48),
+                    get(Electric_Motor_ZPM, 48),
+                    get(plateDense, Osmiridium, 42),
+                    get(QuantumStar, 96),
+                    get(wrapCircuit, ZPM, 12),
+                    GTUtility.getIntegratedCircuit(SENSOR_CIRCUIT))
+                .fluidInputs(
+                    INDALLOY_140.getFluidStack(6 * STACKS),
+                    Trinium.getMolten(36 * STACKS),
+                    VanadiumGallium.getMolten(10 * STACKS + 32 * INGOTS))
+                .itemOutputs(Sensor_ZPM.get(64))
+                .metadata(COAL_CASING_TIER, COAL_ZPM)
+                .duration(24 * MINUTES)
+                .eut(RECIPE_LuV));
+
+        RecipeModifiers.modify("coal/zpm_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                get(wrapCircuit, ZPM, 3),
+                get(Electric_Motor_ZPM, 48));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "coal/zpm_emitter",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(
+                    get(frameGt, NaquadahAlloy, 48),
+                    get(Electric_Motor_ZPM, 48),
+                    get(QuantumStar, 96),
+                    get(wrapCircuit, ZPM, 12),
+                    GTUtility.getIntegratedCircuit(EMITTER_CIRCUIT))
+                .fluidInputs(
+                    INDALLOY_140.getFluidStack(6 * STACKS),
+                    Trinium.getMolten(36 * STACKS),
+                    VanadiumGallium.getMolten(10 * STACKS + 32 * INGOTS),
+                    Osmiridium.getMolten(3 * STACKS))
+                .itemOutputs(Emitter_ZPM.get(64))
+                .metadata(COAL_CASING_TIER, COAL_ZPM)
+                .duration(24 * MINUTES)
+                .eut(RECIPE_LuV));
+
+        RecipeModifiers.modify("coal/zpm_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                get(wrapCircuit, ZPM, 6),
+                get(Electric_Motor_ZPM, 48));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "coal/zpm_field_gen",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(
+                    get(frameGt, NaquadahAlloy, 48),
+                    get(plateDense, NaquadahAlloy, 32),
+                    get(QuantumStar, 96),
+                    get(Emitter_ZPM, 192),
+                    get(wrapCircuit, UV, 12),
+                    GTUtility.getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
+                .fluidInputs(
+                    INDALLOY_140.getFluidStack(6 * STACKS),
+                    Europium.getMolten(24 * STACKS),
+                    VanadiumGallium.getMolten(12 * STACKS))
+                .itemOutputs(Field_Generator_ZPM.get(64))
+                .metadata(COAL_CASING_TIER, COAL_ZPM)
+                .duration(24 * MINUTES)
+                .eut(RECIPE_LuV));
+
+        RecipeModifiers.modify("coal/zpm_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, UV, 12), get(Emitter_ZPM, 192));
             d.itemIn()
                 .condenseAll();
         });

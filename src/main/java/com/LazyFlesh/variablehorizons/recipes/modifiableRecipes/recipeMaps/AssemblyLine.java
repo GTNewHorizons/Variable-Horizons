@@ -35,6 +35,7 @@ public class AssemblyLine implements Runnable {
     public void run() {
         circuitStuff();
         luvParts();
+        zpmParts();
     }
 
     private static void circuitStuff() {
@@ -475,6 +476,225 @@ public class AssemblyLine implements Runnable {
                 GeneralConfig.partCostMultiplier,
                 ItemList.Emitter_LuV.get(1),
                 new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 });
+            d.itemIn()
+                .condenseAll();
+        });
+    }
+
+    private static void zpmParts() {
+        RecipeModifiers.defineBase(
+            "assemblyLine/zpm_motor",
+            () -> RecipeDraft.of(AssemblyLine)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.SamariumMagnetic, 2),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahAlloy, 4),
+                    GTOreDictUnificator.get(OrePrefixes.ring, Materials.NaquadahAlloy, 4),
+                    GTOreDictUnificator.get(OrePrefixes.round, Materials.NaquadahAlloy, 16),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 2))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(2 * INGOTS), Materials.Lubricant.getFluid(750))
+                .itemOutputs(ItemList.Electric_Motor_ZPM.get(1))
+                .metadata(RESEARCH_ITEM, ItemList.Electric_Motor_LuV.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
+                .eut(TierEU.RECIPE_LuV)
+                .duration(30 * SECONDS));
+
+        RecipeModifiers.modify("assemblyLine/zpm_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/zpm_pump",
+            () -> RecipeDraft.of(AssemblyLine)
+                .itemInputs(
+                    ItemList.Electric_Motor_ZPM.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Enderium, 2),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 2),
+                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.NaquadahAlloy, 8),
+                    new Object[] { OrePrefixes.ring.get(Materials.AnySyntheticRubber), 8 },
+                    GTOreDictUnificator.get(OrePrefixes.rotor, Materials.NaquadahAlloy, 2),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 2))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(2 * INGOTS), Materials.Lubricant.getFluid(750))
+                .itemOutputs(ItemList.Electric_Pump_ZPM.get(1))
+                .metadata(RESEARCH_ITEM, ItemList.Electric_Pump_LuV.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
+                .eut(TierEU.RECIPE_LuV)
+                .duration(30 * SECONDS));
+
+        RecipeModifiers.modify("assemblyLine/zpm_pump", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_ZPM.get(1));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/zpm_conveyor",
+            () -> RecipeDraft.of(AssemblyLine)
+                .itemInputs(
+                    ItemList.Electric_Motor_ZPM.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 2),
+                    GTOreDictUnificator.get(OrePrefixes.ring, Materials.NaquadahAlloy, 4),
+                    GTOreDictUnificator.get(OrePrefixes.round, Materials.NaquadahAlloy, 32),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 2),
+                    new Object[] { OrePrefixes.plate.get(Materials.AnySyntheticRubber), 20 })
+                .itemOutputs(ItemList.Conveyor_Module_ZPM.get(1))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(2 * INGOTS), Materials.Lubricant.getFluid(750))
+                .metadata(RESEARCH_ITEM, ItemList.Conveyor_Module_LuV.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_LuV));
+
+        RecipeModifiers.modify("assemblyLine/zpm_conveyor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_ZPM.get(1));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/zpm_piston",
+            () -> RecipeDraft.of(AssemblyLine)
+                .itemInputs(
+                    ItemList.Electric_Motor_ZPM.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 6),
+                    GTOreDictUnificator.get(OrePrefixes.ring, Materials.NaquadahAlloy, 4),
+                    GTOreDictUnificator.get(OrePrefixes.round, Materials.NaquadahAlloy, 32),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.NaquadahAlloy, 4),
+                    GTOreDictUnificator.get(OrePrefixes.gear, Materials.NaquadahAlloy, 1),
+                    GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.NaquadahAlloy, 2),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 4))
+                .itemOutputs(ItemList.Electric_Piston_ZPM.get(1))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(2 * INGOTS), Materials.Lubricant.getFluid(750))
+                .metadata(RESEARCH_ITEM, ItemList.Electric_Piston_LuV.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_LuV));
+
+        RecipeModifiers.modify("assemblyLine/zpm_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_ZPM.get(1));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/zpm_robot_arm",
+            () -> RecipeDraft.of(AssemblyLine)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahAlloy, 4),
+                    GTOreDictUnificator.get(OrePrefixes.gear, Materials.NaquadahAlloy, 1),
+                    GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.NaquadahAlloy, 3),
+                    ItemList.Electric_Motor_ZPM.get(2),
+                    ItemList.Electric_Piston_ZPM.get(1),
+                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 2 },
+                    new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
+                    new Object[] { OrePrefixes.circuit.get(Materials.IV), 8 },
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 6))
+                .itemOutputs(ItemList.Robot_Arm_ZPM.get(1))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(8 * INGOTS), Materials.Lubricant.getFluid(750))
+                .metadata(RESEARCH_ITEM, ItemList.Robot_Arm_LuV.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_LuV));
+
+        RecipeModifiers.modify("assemblyLine/zpm_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                ItemList.Electric_Motor_ZPM.get(2),
+                ItemList.Electric_Piston_ZPM.get(1),
+                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 2 },
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
+                new Object[] { OrePrefixes.circuit.get(Materials.IV), 8 });
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/zpm_emitter",
+            () -> RecipeDraft.of(AssemblyLine)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 1),
+                    ItemList.Electric_Motor_ZPM.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Osmiridium, 8),
+                    ItemList.QuantumStar.get(2),
+                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 },
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Trinium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Trinium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Trinium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 7))
+                .itemOutputs(ItemList.Emitter_ZPM.get(1))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(8 * INGOTS))
+                .metadata(RESEARCH_ITEM, ItemList.Emitter_LuV.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_LuV));
+
+        RecipeModifiers.modify("assemblyLine/zpm_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                ItemList.Electric_Motor_ZPM.get(1),
+                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 });
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/zpm_sensor",
+            () -> RecipeDraft.of(AssemblyLine)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 1),
+                    ItemList.Electric_Motor_ZPM.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 8),
+                    ItemList.QuantumStar.get(2),
+                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 },
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Trinium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Trinium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Trinium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 7))
+                .itemOutputs(ItemList.Sensor_ZPM.get(1))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(8 * INGOTS))
+                .metadata(RESEARCH_ITEM, ItemList.Sensor_LuV.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_LuV));
+
+        RecipeModifiers.modify("assemblyLine/zpm_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                ItemList.Electric_Motor_ZPM.get(1),
+                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 });
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/zpm_field_gen",
+            () -> RecipeDraft.of(AssemblyLine)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 1),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 6),
+                    ItemList.QuantumStar.get(2),
+                    ItemList.Emitter_ZPM.get(4),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 8))
+                .itemOutputs(ItemList.Field_Generator_ZPM.get(1))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(8 * INGOTS))
+                .metadata(RESEARCH_ITEM, ItemList.Field_Generator_LuV.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_LuV));
+
+        RecipeModifiers.modify("assemblyLine/zpm_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                ItemList.Emitter_ZPM.get(1),
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 });
             d.itemIn()
                 .condenseAll();
         });

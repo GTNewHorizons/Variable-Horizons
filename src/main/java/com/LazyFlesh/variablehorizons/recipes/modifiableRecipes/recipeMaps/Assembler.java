@@ -1247,5 +1247,38 @@ public class Assembler implements Runnable {
             d.itemIn()
                 .condenseAll();
         });
+
+        RecipeModifiers.defineBase(
+            "assembler/zpm_casing",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 8),
+                    GTUtility.getIntegratedCircuit(8))
+                .itemOutputs(ItemList.Casing_ZPM.get(1L))
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/zpm_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/zpm_hull",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 2L),
+                    ItemList.Casing_ZPM.get(1))
+                .fluidInputs(Materials.Polybenzimidazole.getMolten(288L))
+                .itemOutputs(ItemList.Hull_ZPM.get(1L))
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/zpm_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_ZPM.get(1));
+            d.itemIn()
+                .condenseAll();
+        });
     }
 }
