@@ -10,8 +10,10 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.LazyFlesh.variablehorizons.util.randomUtil;
 
+import gregtech.api.objects.ItemData;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.objects.SubstituteFluidStack;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 public final class Ingredients<T> {
@@ -324,7 +326,6 @@ public final class Ingredients<T> {
 
     static final class Kinds {
 
-        // accepts ItemStack or OreDictItemStack
         static final Kind<Object> ITEM_INPUT = new Kind<>() {
 
             private boolean isOreDictArray(Object object) {
@@ -371,11 +372,21 @@ public final class Ingredients<T> {
                     return false;
                 }
 
-                if (isOreDictArray(a) && isOreDictArray(b)) {
-                    return Objects.equals(((Object[]) a)[0], ((Object[]) b)[0]);
+                Object stackA = isOreDictArray(a) ? ((Object[]) a)[0] : a;
+                Object stackB = isOreDictArray(b) ? ((Object[]) b)[0] : b;
+
+                String nameA = getOreDictName(stackA);
+                String nameB = getOreDictName(stackB);
+
+                if (nameA != null && nameB != null) {
+                    return nameA.equals(nameB);
                 }
 
-                return false;
+                if (isOreDictArray(a) && isOreDictArray(b)) {
+                    return Objects.equals(stackA, stackB);
+                }
+
+                return Objects.equals(a, b);
             }
 
             public int amount(Object stack) {
@@ -396,9 +407,7 @@ public final class Ingredients<T> {
 
             public Object withAmount(Object stack, int amount) {
                 if (stack instanceof ItemStack) {
-                    ItemStack copy = ((ItemStack) stack).copy();
-                    copy.stackSize = amount;
-                    return copy;
+                    return GTUtility.copyAmountUnsafe(amount, (ItemStack) stack);
                 }
 
                 if (stack instanceof OreDictItemStack) {
@@ -409,12 +418,22 @@ public final class Ingredients<T> {
                     int ref = src[0].stackSize;
                     ItemStack[] out = new ItemStack[src.length];
                     for (int i = 0; i < src.length; i++) {
-                        out[i] = src[i].copy();
-                        out[i].stackSize = (int) Math.max(1, Math.round((double) src[i].stackSize * amount / ref));
+                        int newAmount = (int) Math.max(1, Math.round((double) src[i].stackSize * amount / ref));
+                        out[i] = GTUtility.copyAmountUnsafe(newAmount, src[i]);
                     }
                     return out;
                 }
-                return new Object[] { ((Object[]) stack)[0], amount };
+
+                if (isOreDictArray(stack)) {
+                    Object[] stacks = (Object[]) stack;
+                    ItemStack[] sorted = sortStacks(stacks[0], amount);
+                    if (sorted != null) {
+                        return sorted;
+                    }
+                    return new Object[] { stacks[0], amount };
+                }
+
+                return stack;
             }
 
             public Object condense(Object stack) {
@@ -428,6 +447,21 @@ public final class Ingredients<T> {
                     }
                     return out;
                 }
+
+                if (isOreDictArray(stack)) {
+                    Object[] stacks = (Object[]) stack;
+                    int amount = (int) stacks[1];
+                    ItemStack[] out = sortStacks(stacks[0], amount);
+
+                    if (out != null) {
+                        for (int i = 0; i < out.length; i++) {
+                            out[i] = randomUtil.compressItems(out[i]);
+                        }
+                        return out;
+                    }
+                    return stack;
+                }
+
                 return stack;
             }
 
@@ -534,6 +568,45 @@ public final class Ingredients<T> {
                 return new SubstituteFluidStack(out);
             }
         };
+
+        private static String getOreDictName(Object stack) {
+            if (stack instanceof String) {
+                return (String) stack;
+            }
+            if (stack instanceof OreDictItemStack) {
+                return ((OreDictItemStack) stack).mOreName;
+            }
+            if (stack instanceof ItemData data) {
+                if (data.mPrefix != null && data.mMaterial != null && data.mMaterial.mMaterial != null) {
+                    return data.mPrefix.getName() + data.mMaterial.mMaterial.mName;
+                }
+            }
+            return null;
+        }
+
+        // needed for research station assline recipes
+        private static ItemStack[] sortStacks(Object oreDict, int amount) {
+            List<ItemStack> ores = GTOreDictUnificator.getOres(oreDict);
+            if (ores.isEmpty()) {
+                return null;
+            }
+
+            List<ItemStack> sorted = new java.util.ArrayList<>(ores);
+            sorted.sort(
+                java.util.Comparator
+                    .<ItemStack, String>comparing(
+                        s -> cpw.mods.fml.common.registry.GameRegistry.findUniqueIdentifierFor(s.getItem()).modId)
+                    .thenComparing(
+                        s -> cpw.mods.fml.common.registry.GameRegistry.findUniqueIdentifierFor(s.getItem()).name)
+                    .thenComparingInt(ItemStack::getItemDamage)
+                    .thenComparingInt(s -> s.stackSize));
+
+            ItemStack[] out = new ItemStack[sorted.size()];
+            for (int i = 0; i < sorted.size(); i++) {
+                out[i] = GTUtility.copyAmountUnsafe(amount, sorted.get(i));
+            }
+            return out;
+        }
 
     }
 
