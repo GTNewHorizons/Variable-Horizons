@@ -3,6 +3,9 @@ package com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
+import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
+import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -10,6 +13,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.AsslineDraft;
+import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeDraft;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeModifiers;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipePhase;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
@@ -21,6 +25,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
 
@@ -28,6 +33,11 @@ public class AssemblyLine implements Runnable {
 
     @Override
     public void run() {
+        circuitStuff();
+        luvParts();
+    }
+
+    private static void circuitStuff() {
         RecipeModifiers.defineBase(
             "assemblyLine/wetware_mainframe",
             () -> AsslineDraft.of()
@@ -51,8 +61,7 @@ public class AssemblyLine implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEV, 8L),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUIV, 4L),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 2L) },
-                    new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.foil, Materials.StyreneButadieneRubber, 64L),
-                        GTOreDictUnificator.get(OrePrefixes.foil, Materials.RubberSilicone, 64L) })
+                    new Object[] { OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L })
                 .fluidInputs(
                     MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS),
                     GTModHandler.getIC2Coolant(10_000),
@@ -91,8 +100,7 @@ public class AssemblyLine implements Runnable {
                     ItemList.Circuit_Chip_NOR.get(32L),
                     ItemList.Circuit_Chip_Ram.get(64L),
                     GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 32L),
-                    new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.foil, Materials.StyreneButadieneRubber, 64L),
-                        GTOreDictUnificator.get(OrePrefixes.foil, Materials.RubberSilicone, 64L) })
+                    new Object[] { OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L })
                 .fluidInputs(
                     MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(10 * INGOTS),
                     Materials.BioMediumSterilized.getFluid(10 * INGOTS),
@@ -130,8 +138,7 @@ public class AssemblyLine implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEV, 32L),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUIV, 16L),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 8L) },
-                    new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.foil, Materials.StyreneButadieneRubber, 64L),
-                        GTOreDictUnificator.get(OrePrefixes.foil, Materials.RubberSilicone, 64L) },
+                    new Object[] { OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L },
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 64))
                 .fluidInputs(
                     MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(20 * INGOTS),
@@ -165,8 +172,7 @@ public class AssemblyLine implements Runnable {
                     new ItemStack(WerkstoffLoader.items.get(OrePrefixes.wireFine), 24, 10101), // Fine
                     // Lumiium
                     // Wire
-                    new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.foil, Materials.StyreneButadieneRubber, 64L),
-                        GTOreDictUnificator.get(OrePrefixes.foil, Materials.RubberSilicone, 64L) })
+                    new Object[] { OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L })
                 .fluidInputs(
                     MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(10 * INGOTS),
                     Materials.Radon.getPlasma(10 * INGOTS),
@@ -199,8 +205,7 @@ public class AssemblyLine implements Runnable {
                     new ItemStack(WerkstoffLoader.items.get(OrePrefixes.wireFine), 32, 10101), // Fine
                     // Lumiium
                     // Wire
-                    new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.foil, Materials.StyreneButadieneRubber, 64L),
-                        GTOreDictUnificator.get(OrePrefixes.foil, Materials.RubberSilicone, 64L) },
+                    new Object[] { OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L },
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 64))
                 .fluidInputs(
                     MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(20 * INGOTS),
@@ -234,10 +239,8 @@ public class AssemblyLine implements Runnable {
                     new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEV, 64L),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUIV, 32L),
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 16L) },
-                    new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.foil, Materials.StyreneButadieneRubber, 64L),
-                        GTOreDictUnificator.get(OrePrefixes.foil, Materials.RubberSilicone, 64L) },
-                    new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.foil, Materials.StyreneButadieneRubber, 64L),
-                        GTOreDictUnificator.get(OrePrefixes.foil, Materials.RubberSilicone, 64L) },
+                    new Object[] { OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L },
+                    new Object[] { OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L },
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 64),
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 64))
                 .fluidInputs(
@@ -259,5 +262,221 @@ public class AssemblyLine implements Runnable {
                 d.itemIn()
                     .condenseAll();
             });
+    }
+
+    private static void luvParts() {
+        RecipeModifiers.defineBase(
+            "assemblyLine/luv_motor",
+            () -> RecipeDraft.of(AssemblyLine)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.SamariumMagnetic, 1),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSS, 2),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, WerkstoffLoader.Ruridit.getGTMaterial(), 64),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, WerkstoffLoader.Ruridit.getGTMaterial(), 64),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 2))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1 * INGOTS), Materials.Lubricant.getFluid(250))
+                .itemOutputs(ItemList.Electric_Motor_LuV.get(1))
+                .metadata(RESEARCH_ITEM, ItemList.Electric_Motor_IV.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
+                .eut(TierEU.RECIPE_IV)
+                .duration(30 * SECONDS));
+
+        RecipeModifiers.modify("assemblyLine/luv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/luv_pump",
+            () -> RecipeDraft.of(AssemblyLine)
+                .itemInputs(
+                    ItemList.Electric_Motor_LuV.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.NiobiumTitanium, 2),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.HSSS, 2),
+                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.HSSS, 8),
+                    new Object[] { OrePrefixes.ring.get(Materials.AnySyntheticRubber), 4 },
+                    GTOreDictUnificator.get(OrePrefixes.rotor, Materials.HSSS, 2),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 2))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1 * INGOTS), Materials.Lubricant.getFluid(250))
+                .itemOutputs(ItemList.Electric_Pump_LuV.get(1))
+                .metadata(RESEARCH_ITEM, ItemList.Electric_Pump_IV.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
+                .eut(TierEU.RECIPE_IV)
+                .duration(30 * SECONDS));
+
+        RecipeModifiers.modify("assemblyLine/luv_pump", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_LuV.get(1));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/luv_conveyor",
+            () -> RecipeDraft.of(AssemblyLine)
+                .itemInputs(
+                    ItemList.Electric_Motor_LuV.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.HSSS, 2),
+                    GTOreDictUnificator.get(OrePrefixes.ring, Materials.HSSS, 4),
+                    GTOreDictUnificator.get(OrePrefixes.round, Materials.HSSS, 32),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 2),
+                    new Object[] { OrePrefixes.plate.get(Materials.AnySyntheticRubber), 10 })
+                .itemOutputs(ItemList.Conveyor_Module_LuV.get(1))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1 * INGOTS), Materials.Lubricant.getFluid(250))
+                .metadata(RESEARCH_ITEM, ItemList.Conveyor_Module_IV.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_IV));
+
+        RecipeModifiers.modify("assemblyLine/luv_conveyor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_LuV.get(1));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/luv_piston",
+            () -> RecipeDraft.of(AssemblyLine)
+                .itemInputs(
+                    ItemList.Electric_Motor_LuV.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.HSSS, 6),
+                    GTOreDictUnificator.get(OrePrefixes.ring, Materials.HSSS, 4),
+                    GTOreDictUnificator.get(OrePrefixes.round, Materials.HSSS, 32),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.HSSS, 4),
+                    GTOreDictUnificator.get(OrePrefixes.gear, Materials.HSSS, 1),
+                    GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSS, 2),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 4))
+                .itemOutputs(ItemList.Electric_Piston_LuV.get(1))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1 * INGOTS), Materials.Lubricant.getFluid(250))
+                .metadata(RESEARCH_ITEM, ItemList.Electric_Piston_IV.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_IV));
+
+        RecipeModifiers.modify("assemblyLine/luv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_LuV.get(1));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/luv_robot_arm",
+            () -> RecipeDraft.of(AssemblyLine)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSS, 4),
+                    GTOreDictUnificator.get(OrePrefixes.gear, Materials.HSSS, 1),
+                    GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSS, 3),
+                    ItemList.Electric_Motor_LuV.get(2),
+                    ItemList.Electric_Piston_LuV.get(1),
+                    new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },
+                    new Object[] { OrePrefixes.circuit.get(Materials.IV), 4 },
+                    new Object[] { OrePrefixes.circuit.get(Materials.EV), 8 },
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 6))
+                .itemOutputs(ItemList.Robot_Arm_LuV.get(1))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(4 * INGOTS), Materials.Lubricant.getFluid(250))
+                .metadata(RESEARCH_ITEM, ItemList.Robot_Arm_IV.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_IV));
+
+        RecipeModifiers.modify("assemblyLine/luv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                ItemList.Electric_Motor_LuV.get(1),
+                ItemList.Electric_Piston_LuV.get(1),
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },
+                new Object[] { OrePrefixes.circuit.get(Materials.IV), 4 },
+                new Object[] { OrePrefixes.circuit.get(Materials.EV), 8 });
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/luv_emitter",
+            () -> RecipeDraft.of(AssemblyLine)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSS, 1),
+                    ItemList.Electric_Motor_LuV.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.stick, WerkstoffLoader.Ruridit.getGTMaterial(), 8),
+                    ItemList.QuantumStar.get(1),
+                    new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 7))
+                .itemOutputs(ItemList.Emitter_LuV.get(1))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(4 * INGOTS))
+                .metadata(RESEARCH_ITEM, ItemList.Emitter_IV.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_IV));
+
+        RecipeModifiers.modify("assemblyLine/luv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                ItemList.Electric_Motor_LuV.get(1),
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 });
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/luv_sensor",
+            () -> RecipeDraft.of(AssemblyLine)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSS, 1),
+                    ItemList.Electric_Motor_LuV.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.plate, WerkstoffLoader.Ruridit.getGTMaterial(), 8),
+                    ItemList.QuantumStar.get(1),
+                    new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 7))
+                .itemOutputs(ItemList.Sensor_LuV.get(1))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(4 * INGOTS))
+                .metadata(RESEARCH_ITEM, ItemList.Sensor_IV.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_IV));
+
+        RecipeModifiers.modify("assemblyLine/luv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                ItemList.Electric_Motor_LuV.get(1),
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 });
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/luv_field_gen",
+            () -> RecipeDraft.of(AssemblyLine)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSS, 1),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.HSSS, 6),
+                    ItemList.QuantumStar.get(2),
+                    ItemList.Emitter_LuV.get(4),
+                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 },
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, WerkstoffLoader.Ruridit.getGTMaterial(), 64),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, WerkstoffLoader.Ruridit.getGTMaterial(), 64),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, WerkstoffLoader.Ruridit.getGTMaterial(), 64),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, WerkstoffLoader.Ruridit.getGTMaterial(), 64),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 8))
+                .itemOutputs(ItemList.Field_Generator_LuV.get(1))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(4 * INGOTS))
+                .metadata(RESEARCH_ITEM, ItemList.Field_Generator_IV.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_IV));
+
+        RecipeModifiers.modify("assemblyLine/luv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                ItemList.Emitter_LuV.get(1),
+                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 });
+            d.itemIn()
+                .condenseAll();
+        });
     }
 }

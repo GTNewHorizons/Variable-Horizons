@@ -1,35 +1,42 @@
 package com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps;
 
+import static bartworks.system.material.WerkstoffLoader.Ruridit;
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.componentAssemblyLineRecipes;
 import static gregtech.api.enums.ItemList.Conveyor_Module_EV;
 import static gregtech.api.enums.ItemList.Conveyor_Module_HV;
 import static gregtech.api.enums.ItemList.Conveyor_Module_IV;
 import static gregtech.api.enums.ItemList.Conveyor_Module_LV;
+import static gregtech.api.enums.ItemList.Conveyor_Module_LuV;
 import static gregtech.api.enums.ItemList.Conveyor_Module_MV;
 import static gregtech.api.enums.ItemList.Electric_Motor_EV;
 import static gregtech.api.enums.ItemList.Electric_Motor_HV;
 import static gregtech.api.enums.ItemList.Electric_Motor_IV;
 import static gregtech.api.enums.ItemList.Electric_Motor_LV;
+import static gregtech.api.enums.ItemList.Electric_Motor_LuV;
 import static gregtech.api.enums.ItemList.Electric_Motor_MV;
 import static gregtech.api.enums.ItemList.Electric_Piston_EV;
 import static gregtech.api.enums.ItemList.Electric_Piston_HV;
 import static gregtech.api.enums.ItemList.Electric_Piston_IV;
 import static gregtech.api.enums.ItemList.Electric_Piston_LV;
+import static gregtech.api.enums.ItemList.Electric_Piston_LuV;
 import static gregtech.api.enums.ItemList.Electric_Piston_MV;
 import static gregtech.api.enums.ItemList.Electric_Pump_EV;
 import static gregtech.api.enums.ItemList.Electric_Pump_HV;
 import static gregtech.api.enums.ItemList.Electric_Pump_IV;
 import static gregtech.api.enums.ItemList.Electric_Pump_LV;
+import static gregtech.api.enums.ItemList.Electric_Pump_LuV;
 import static gregtech.api.enums.ItemList.Electric_Pump_MV;
 import static gregtech.api.enums.ItemList.Emitter_EV;
 import static gregtech.api.enums.ItemList.Emitter_HV;
 import static gregtech.api.enums.ItemList.Emitter_IV;
 import static gregtech.api.enums.ItemList.Emitter_LV;
+import static gregtech.api.enums.ItemList.Emitter_LuV;
 import static gregtech.api.enums.ItemList.Emitter_MV;
 import static gregtech.api.enums.ItemList.Field_Generator_EV;
 import static gregtech.api.enums.ItemList.Field_Generator_HV;
 import static gregtech.api.enums.ItemList.Field_Generator_IV;
 import static gregtech.api.enums.ItemList.Field_Generator_LV;
+import static gregtech.api.enums.ItemList.Field_Generator_LuV;
 import static gregtech.api.enums.ItemList.Field_Generator_MV;
 import static gregtech.api.enums.ItemList.QuantumEye;
 import static gregtech.api.enums.ItemList.QuantumStar;
@@ -37,11 +44,13 @@ import static gregtech.api.enums.ItemList.Robot_Arm_EV;
 import static gregtech.api.enums.ItemList.Robot_Arm_HV;
 import static gregtech.api.enums.ItemList.Robot_Arm_IV;
 import static gregtech.api.enums.ItemList.Robot_Arm_LV;
+import static gregtech.api.enums.ItemList.Robot_Arm_LuV;
 import static gregtech.api.enums.ItemList.Robot_Arm_MV;
 import static gregtech.api.enums.ItemList.Sensor_EV;
 import static gregtech.api.enums.ItemList.Sensor_HV;
 import static gregtech.api.enums.ItemList.Sensor_IV;
 import static gregtech.api.enums.ItemList.Sensor_LV;
+import static gregtech.api.enums.ItemList.Sensor_LuV;
 import static gregtech.api.enums.ItemList.Sensor_MV;
 import static gregtech.api.enums.Materials.Aluminium;
 import static gregtech.api.enums.Materials.AnnealedCopper;
@@ -57,6 +66,7 @@ import static gregtech.api.enums.Materials.Electrum;
 import static gregtech.api.enums.Materials.Emerald;
 import static gregtech.api.enums.Materials.EnderEye;
 import static gregtech.api.enums.Materials.EnderPearl;
+import static gregtech.api.enums.Materials.Gallium;
 import static gregtech.api.enums.Materials.Gold;
 import static gregtech.api.enums.Materials.Graphene;
 import static gregtech.api.enums.Materials.HSSG;
@@ -68,12 +78,14 @@ import static gregtech.api.enums.Materials.Iron;
 import static gregtech.api.enums.Materials.IronMagnetic;
 import static gregtech.api.enums.Materials.LV;
 import static gregtech.api.enums.Materials.LuV;
+import static gregtech.api.enums.Materials.Lubricant;
 import static gregtech.api.enums.Materials.MV;
 import static gregtech.api.enums.Materials.NeodymiumMagnetic;
 import static gregtech.api.enums.Materials.NetherStar;
 import static gregtech.api.enums.Materials.NiobiumTitanium;
 import static gregtech.api.enums.Materials.Platinum;
 import static gregtech.api.enums.Materials.RedSteel;
+import static gregtech.api.enums.Materials.SamariumMagnetic;
 import static gregtech.api.enums.Materials.Silver;
 import static gregtech.api.enums.Materials.StainlessSteel;
 import static gregtech.api.enums.Materials.Steel;
@@ -82,8 +94,10 @@ import static gregtech.api.enums.Materials.Tin;
 import static gregtech.api.enums.Materials.Titanium;
 import static gregtech.api.enums.Materials.Tungsten;
 import static gregtech.api.enums.Materials.TungstenSteel;
+import static gregtech.api.enums.Materials.YttriumBariumCuprate;
 import static gregtech.api.enums.Materials.ZPM;
 import static gregtech.api.enums.OrePrefixes.cableGt16;
+import static gregtech.api.enums.OrePrefixes.frameGt;
 import static gregtech.api.enums.OrePrefixes.gearGt;
 import static gregtech.api.enums.OrePrefixes.gem;
 import static gregtech.api.enums.OrePrefixes.gemFlawless;
@@ -97,14 +111,17 @@ import static gregtech.api.enums.OrePrefixes.wireGt16;
 import static gregtech.api.enums.OrePrefixes.wrapCircuit;
 import static gregtech.api.enums.TierEU.RECIPE_EV;
 import static gregtech.api.enums.TierEU.RECIPE_HV;
+import static gregtech.api.enums.TierEU.RECIPE_IV;
 import static gregtech.api.enums.TierEU.RECIPE_LV;
 import static gregtech.api.enums.TierEU.RECIPE_MV;
 import static gregtech.api.enums.TierEU.RECIPE_ULV;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeConstants.COAL_CASING_TIER;
+import static gtPlusPlus.core.material.MaterialsAlloy.INDALLOY_140;
 
 import net.minecraft.item.ItemStack;
 
@@ -142,6 +159,7 @@ public class CoAL implements Runnable {
         hvParts();
         evParts();
         ivParts();
+        luvParts();
     }
 
     private static void lvParts() {
@@ -971,7 +989,10 @@ public class CoAL implements Runnable {
         RecipeModifiers.defineBase(
             "coal/iv_field_gen",
             () -> RecipeDraft.of(componentAssemblyLineRecipes)
-                .itemInputs(get(QuantumStar, 48), get(wrapCircuit, ZPM, 12))
+                .itemInputs(
+                    get(QuantumStar, 48),
+                    get(wrapCircuit, ZPM, 12),
+                    GTUtility.getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
                 .fluidInputs(HSSS.getMolten(3 * STACKS))
                 .itemOutputs(Field_Generator_IV.get(64))
                 .metadata(COAL_CASING_TIER, COAL_IV)
@@ -980,6 +1001,220 @@ public class CoAL implements Runnable {
 
         RecipeModifiers.modify("coal/iv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, ZPM, 12));
+            d.itemIn()
+                .condenseAll();
+        });
+    }
+
+    private static void luvParts() {
+        RecipeModifiers.defineBase(
+            "coal/luv_motor",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(
+                    get(stickLong, SamariumMagnetic, 24),
+                    get(cableGt16, YttriumBariumCuprate, 6),
+                    GTUtility.getIntegratedCircuit(MOTOR_CIRCUIT))
+                .fluidInputs(
+                    INDALLOY_140.getFluidStack(48 * INGOTS),
+                    Lubricant.getFluid(12_000),
+                    Ruridit.getMolten(12 * STACKS),
+                    HSSS.getMolten(1 * STACKS + 32 * INGOTS))
+                .itemOutputs(Electric_Motor_LuV.get(64))
+                .metadata(COAL_CASING_TIER, COAL_LuV)
+                .duration(24 * MINUTES)
+                .eut(RECIPE_IV));
+
+        RecipeModifiers.modify("coal/luv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "coal/luv_piston",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(
+                    get(Electric_Motor_LuV, 48),
+                    get(plateDense, HSSS, 32),
+                    get(cableGt16, YttriumBariumCuprate, 12),
+                    GTUtility.getIntegratedCircuit(PISTON_CIRCUIT))
+                .fluidInputs(
+                    INDALLOY_140.getFluidStack(48 * INGOTS),
+                    Lubricant.getFluid(12_000),
+                    HSSS.getMolten(9 * STACKS + 26 * INGOTS + 6 * NUGGETS))
+                .itemOutputs(Electric_Piston_LuV.get(64))
+                .metadata(COAL_CASING_TIER, COAL_LuV)
+                .duration(24 * MINUTES)
+                .eut(RECIPE_IV));
+
+        RecipeModifiers.modify("coal/luv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_LuV, 48));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "coal/luv_robot_arm",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(
+                    get(Electric_Motor_LuV, 96),
+                    get(Electric_Piston_LuV, 48),
+                    get(wrapCircuit, LuV, 6),
+                    get(wrapCircuit, IV, 12),
+                    get(wrapCircuit, EV, 24),
+                    get(cableGt16, YttriumBariumCuprate, 18),
+                    GTUtility.getIntegratedCircuit(ROBOT_ARM_CIRCUIT))
+                .fluidInputs(
+                    INDALLOY_140.getFluidStack(3 * STACKS),
+                    Lubricant.getFluid(12_000),
+                    HSSS.getMolten(8 * STACKS + 16 * INGOTS))
+                .itemOutputs(Robot_Arm_LuV.get(64))
+                .metadata(COAL_CASING_TIER, COAL_LuV)
+                .duration(24 * MINUTES)
+                .eut(RECIPE_IV));
+
+        RecipeModifiers.modify("coal/luv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                get(Electric_Motor_LuV, 96),
+                get(Electric_Piston_LuV, 48),
+                get(wrapCircuit, LuV, 6),
+                get(wrapCircuit, IV, 12),
+                get(wrapCircuit, EV, 24));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        for (int i = 1; i < RUBBERS.length; i++) {
+            int finalI = i;
+            RecipeModifiers.defineBase(
+                "coal/luv_pump_" + RUBBER_NAMES[i],
+                () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                    .itemInputs(
+                        get(Electric_Motor_LuV, 48),
+                        get(plateDense, HSSS, 10),
+                        get(cableGt16, YttriumBariumCuprate, 6),
+                        GTUtility.getIntegratedCircuit(PUMP_CIRCUIT))
+                    .fluidInputs(
+                        INDALLOY_140.getFluidStack(48 * INGOTS),
+                        Lubricant.getFluid(12_000),
+                        HSSS.getMolten(7 * STACKS + 2 * INGOTS + 6 * NUGGETS),
+                        NiobiumTitanium.getMolten(1 * STACKS + 32 * INGOTS),
+                        RUBBERS[finalI].getMolten(48 * INGOTS))
+                    .itemOutputs(Electric_Pump_LuV.get(64))
+                    .metadata(COAL_CASING_TIER, COAL_LuV)
+                    .duration(24 * MINUTES)
+                    .eut(RECIPE_IV));
+
+            RecipeModifiers
+                .modify("coal/luv_pump_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_LuV, 96));
+                    d.itemIn()
+                        .condenseAll();
+                });
+
+            RecipeModifiers.defineBase(
+                "coal/luv_conveyor_" + RUBBER_NAMES[i],
+                () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                    .itemInputs(
+                        get(Electric_Motor_LuV, 96),
+                        get(plateDense, HSSS, 10),
+                        get(cableGt16, YttriumBariumCuprate, 6),
+                        get(plateDense, RUBBERS[finalI], 53),
+                        GTUtility.getIntegratedCircuit(CONVEYOR_CIRCUIT))
+                    .fluidInputs(
+                        INDALLOY_140.getFluidStack(48 * INGOTS),
+                        Lubricant.getFluid(12_000),
+                        HSSS.getMolten(3 * STACKS + 26 * INGOTS + 6 * NUGGETS))
+                    .itemOutputs(Conveyor_Module_LuV.get(64))
+                    .metadata(COAL_CASING_TIER, COAL_LuV)
+                    .duration(24 * MINUTES)
+                    .eut(RECIPE_IV));
+
+            RecipeModifiers
+                .modify("coal/luv_conveyor_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_LuV, 96));
+                    d.itemIn()
+                        .condenseAll();
+                });
+        }
+
+        RecipeModifiers.defineBase(
+            "coal/luv_sensor",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(
+                    get(frameGt, HSSS, 48),
+                    get(Electric_Motor_LuV, 48),
+                    get(plateDense, Ruridit, 42),
+                    get(QuantumStar, 48),
+                    get(wrapCircuit, LuV, 12),
+                    get(cableGt16, YttriumBariumCuprate, 21),
+                    GTUtility.getIntegratedCircuit(SENSOR_CIRCUIT))
+                .fluidInputs(INDALLOY_140.getFluidStack(3 * STACKS), Gallium.getMolten(36 * STACKS))
+                .itemOutputs(Sensor_LuV.get(64))
+                .metadata(COAL_CASING_TIER, COAL_LuV)
+                .duration(24 * MINUTES)
+                .eut(RECIPE_IV));
+
+        RecipeModifiers.modify("coal/luv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                get(wrapCircuit, LuV, 3),
+                get(Electric_Motor_LuV, 48));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "coal/luv_emitter",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(
+                    get(frameGt, HSSS, 48),
+                    get(Electric_Motor_LuV, 48),
+                    get(QuantumStar, 48),
+                    get(wrapCircuit, LuV, 12),
+                    get(cableGt16, YttriumBariumCuprate, 21),
+                    GTUtility.getIntegratedCircuit(EMITTER_CIRCUIT))
+                .fluidInputs(
+                    INDALLOY_140.getFluidStack(3 * STACKS),
+                    Gallium.getMolten(36 * STACKS),
+                    Ruridit.getMolten(3 * STACKS))
+                .itemOutputs(Emitter_LuV.get(64))
+                .metadata(COAL_CASING_TIER, COAL_LuV)
+                .duration(24 * MINUTES)
+                .eut(RECIPE_IV));
+
+        RecipeModifiers.modify("coal/luv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                get(wrapCircuit, LuV, 6),
+                get(Electric_Motor_LuV, 48));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "coal/luv_field_gen",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(
+                    get(frameGt, HSSS, 48),
+                    get(plateDense, HSSS, 32),
+                    get(QuantumStar, 96),
+                    get(Emitter_LuV, 192),
+                    get(wrapCircuit, Materials.ZPM, 12),
+                    get(cableGt16, YttriumBariumCuprate, 24),
+                    GTUtility.getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
+                .fluidInputs(INDALLOY_140.getFluidStack(3 * STACKS), Ruridit.getMolten(24 * STACKS))
+                .itemOutputs(Field_Generator_LuV.get(64))
+                .metadata(COAL_CASING_TIER, COAL_LuV)
+                .duration(24 * MINUTES)
+                .eut(RECIPE_IV));
+
+        RecipeModifiers.modify("coal/luv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                get(wrapCircuit, ZPM, 12),
+                get(Emitter_LuV, 192));
             d.itemIn()
                 .condenseAll();
         });
