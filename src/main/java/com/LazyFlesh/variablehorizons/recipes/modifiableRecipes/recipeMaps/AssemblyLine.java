@@ -9,7 +9,11 @@ import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gtPlusPlus.core.material.MaterialsAlloy.CINOBITE;
 import static gtPlusPlus.core.material.MaterialsAlloy.LAFIUM;
 import static gtPlusPlus.core.material.MaterialsAlloy.PIKYONIUM;
+import static gtPlusPlus.core.material.MaterialsAlloy.QUANTUM;
+import static gtPlusPlus.core.material.MaterialsAlloy.TITANSTEEL;
 import static gtPlusPlus.core.material.MaterialsAlloy.TRINIUM_REINFORCED_STEEL;
+import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.ASTRAL_TITANIUM;
+import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.HYPOGEN;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -45,6 +49,7 @@ public class AssemblyLine implements Runnable {
         uhvParts();
         uevParts();
         uivParts();
+        umvParts();
     }
 
     private static void circuitStuff() {
@@ -1713,6 +1718,269 @@ public class AssemblyLine implements Runnable {
                     GeneralConfig.partCostMultiplier,
                     ItemList.Emitter_UIV.get(4L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4 });
+                d.itemIn()
+                    .condenseAll();
+            });
+    }
+
+    private static void umvParts() {
+        RecipeModifiers.defineBase(
+            "assemblyLine/umv_motor",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.TengamAttuned, 32L),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.SpaceTime, 16L),
+                    GTOreDictUnificator.get(OrePrefixes.ring, Materials.SpaceTime, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.round, Materials.SpaceTime, 32L),
+                    HYPOGEN.getFineWire(64),
+                    HYPOGEN.getFineWire(64),
+                    HYPOGEN.getFineWire(64),
+                    HYPOGEN.getFineWire(64),
+                    HYPOGEN.getFineWire(64),
+                    HYPOGEN.getFineWire(64),
+                    HYPOGEN.getFineWire(64),
+                    HYPOGEN.getFineWire(64),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 2L))
+                .fluidInputs(
+                    HYPOGEN.getFluidStack(4 * INGOTS),
+                    MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(4 * INGOTS),
+                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(18 * INGOTS),
+                    Materials.DimensionallyShiftedSuperfluid.getFluid(4_000))
+                .itemOutput(ItemList.Electric_Motor_UMV.get(1L))
+                .research(ItemList.Electric_Motor_UIV.get(1L), 192000, 256, (int) TierEU.RECIPE_UIV, 1)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UIV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/umv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/umv_pump",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    ItemList.Electric_Motor_UMV.get(1L),
+                    GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Infinity, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.SpaceTime, 16L),
+                    new Object[] { OrePrefixes.ring.get(Materials.AnySyntheticRubber), 64L },
+                    GTOreDictUnificator.get(OrePrefixes.rotor, Materials.SpaceTime, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 2L))
+                .fluidInputs(
+                    HYPOGEN.getFluidStack(4 * INGOTS),
+                    MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(4 * INGOTS),
+                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(18 * INGOTS),
+                    Materials.DimensionallyShiftedSuperfluid.getFluid(4_000))
+                .itemOutput(ItemList.Electric_Pump_UMV.get(1L))
+                .research(ItemList.Electric_Pump_UIV.get(1L), 192000, 256, (int) TierEU.RECIPE_UIV, 1)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UIV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/umv_pump", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UMV.get(1L));
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/umv_conveyor",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    ItemList.Electric_Motor_UMV.get(2L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.ring, Materials.SpaceTime, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.round, Materials.SpaceTime, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 2L),
+                    new Object[] { OrePrefixes.plate.get(Materials.AnySyntheticRubber), 64L },
+                    new Object[] { OrePrefixes.plate.get(Materials.AnySyntheticRubber), 16L })
+                .fluidInputs(
+                    HYPOGEN.getFluidStack(4 * INGOTS),
+                    MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(4 * INGOTS),
+                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(18 * INGOTS),
+                    Materials.DimensionallyShiftedSuperfluid.getFluid(4_000))
+                .itemOutput(ItemList.Conveyor_Module_UMV.get(1L))
+                .research(ItemList.Conveyor_Module_UIV.get(1L), 192000, 256, (int) TierEU.RECIPE_UIV, 1)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UIV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/umv_conveyor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UMV.get(1L));
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/umv_piston",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    ItemList.Electric_Motor_UMV.get(1L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 6L),
+                    GTOreDictUnificator.get(OrePrefixes.ring, Materials.SpaceTime, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.round, Materials.SpaceTime, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.SpaceTime, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.gear, Materials.SpaceTime, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.SpaceTime, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 4L))
+                .fluidInputs(
+                    HYPOGEN.getFluidStack(4 * INGOTS),
+                    MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(4 * INGOTS),
+                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(18 * INGOTS),
+                    Materials.DimensionallyShiftedSuperfluid.getFluid(4_000))
+                .itemOutput(ItemList.Electric_Piston_UMV.get(1L))
+                .research(ItemList.Electric_Piston_UIV.get(1L), 192000, 256, (int) TierEU.RECIPE_UIV, 1)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UIV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/umv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UMV.get(1L));
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/umv_robot_arm",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.SpaceTime, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.gear, Materials.SpaceTime, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.SpaceTime, 6L),
+                    ItemList.Electric_Motor_UMV.get(2L),
+                    ItemList.Electric_Piston_UMV.get(1L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UMV), 2L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UIV), 4L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UEV), 8L },
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 6L))
+                .fluidInputs(
+                    HYPOGEN.getFluidStack(4 * INGOTS),
+                    MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(4 * INGOTS),
+                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(18 * INGOTS),
+                    Materials.DimensionallyShiftedSuperfluid.getFluid(4_000))
+                .itemOutput(ItemList.Robot_Arm_UMV.get(1L))
+                .research(ItemList.Robot_Arm_UIV.get(1L), 192000, 256, (int) TierEU.RECIPE_UIV, 1)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UIV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/umv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(
+                    GeneralConfig.partCostMultiplier,
+                    ItemList.Electric_Motor_UMV.get(2L),
+                    ItemList.Electric_Piston_UMV.get(1L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UMV), 2L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UIV), 4L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UEV), 8L });
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/umv_emitter",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1L),
+                    ItemList.Electric_Motor_UMV.get(1L),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.SpaceTime, 16L),
+                    ItemList.NuclearStar.get(4L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4L },
+                    MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFoil(64),
+                    QUANTUM.getFoil(64),
+                    ASTRAL_TITANIUM.getFoil(64),
+                    TITANSTEEL.getFoil(64),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 7L))
+                .fluidInputs(
+                    HYPOGEN.getFluidStack(4 * INGOTS),
+                    MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(4 * INGOTS),
+                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(18 * INGOTS))
+                .itemOutput(ItemList.Emitter_UMV.get(1L))
+                .research(ItemList.Emitter_UIV.get(1L), 192000, 256, (int) TierEU.RECIPE_UIV, 1)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UIV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/umv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(
+                    GeneralConfig.partCostMultiplier,
+                    ItemList.Electric_Motor_UMV.get(2L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4L });
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/umv_sensor",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1L),
+                    ItemList.Electric_Motor_UMV.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 8L),
+                    ItemList.NuclearStar.get(4L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4L },
+                    MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFoil(64),
+                    QUANTUM.getFoil(64),
+                    ASTRAL_TITANIUM.getFoil(64),
+                    TITANSTEEL.getFoil(64),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 7L))
+                .fluidInputs(
+                    HYPOGEN.getFluidStack(4 * INGOTS),
+                    MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(4 * INGOTS),
+                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(18 * INGOTS))
+                .itemOutput(ItemList.Sensor_UMV.get(1L))
+                .research(ItemList.Sensor_UIV.get(1L), 192000, 256, (int) TierEU.RECIPE_UIV, 1)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UIV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/umv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(
+                    GeneralConfig.partCostMultiplier,
+                    ItemList.Electric_Motor_UMV.get(2L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4L });
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/umv_field_generator",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 6L),
+                    ItemList.NuclearStar.get(2L),
+                    ItemList.Emitter_UMV.get(4L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 4 },
+                    HYPOGEN.getFineWire(64),
+                    HYPOGEN.getFineWire(64),
+                    HYPOGEN.getFineWire(64),
+                    HYPOGEN.getFineWire(64),
+                    HYPOGEN.getFineWire(64),
+                    HYPOGEN.getFineWire(64),
+                    HYPOGEN.getFineWire(64),
+                    HYPOGEN.getFineWire(64),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 8L))
+                .fluidInputs(
+                    HYPOGEN.getFluidStack(4 * INGOTS),
+                    MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(4 * INGOTS),
+                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(18 * INGOTS))
+                .itemOutput(ItemList.Field_Generator_UMV.get(1L))
+                .research(ItemList.Field_Generator_UIV.get(1L), 192000, 256, (int) TierEU.RECIPE_UIV, 1)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UIV));
+
+        RecipeModifiers.modifyAssemblyLine(
+            "assemblyLine/umv_field_generator",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> {
+                d.scaleAllInputsBalanced(
+                    GeneralConfig.partCostMultiplier,
+                    ItemList.Emitter_UMV.get(4L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 4 });
                 d.itemIn()
                     .condenseAll();
             });
