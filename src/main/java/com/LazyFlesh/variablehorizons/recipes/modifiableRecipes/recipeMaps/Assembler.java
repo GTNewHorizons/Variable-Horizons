@@ -26,6 +26,25 @@ public class Assembler implements Runnable {
     private static final Materials[] RUBBERS = new Materials[] { Materials.Rubber, Materials.RubberSilicone,
         Materials.StyreneButadieneRubber };
     private static final String[] RUBBER_NAMES = new String[] { "rubber", "silicone", "styrene-butadiene" };
+    private static final Materials[] SC_BASE = new Materials[] { Materials.SuperconductorMVBase,
+        Materials.SuperconductorHVBase, Materials.SuperconductorEVBase, Materials.SuperconductorIVBase,
+        Materials.SuperconductorLuVBase, Materials.SuperconductorZPMBase, Materials.SuperconductorUVBase,
+        Materials.SuperconductorUHVBase, Materials.SuperconductorUEVBase, Materials.SuperconductorUIVBase,
+        Materials.SuperconductorUMVBase };
+    private static final Materials[] SC = new Materials[] { Materials.SuperconductorMV, Materials.SuperconductorHV,
+        Materials.SuperconductorEV, Materials.SuperconductorIV, Materials.SuperconductorLuV,
+        Materials.SuperconductorZPM, Materials.SuperconductorUV, Materials.SuperconductorUHV,
+        Materials.SuperconductorUEV, Materials.SuperconductorUIV, Materials.SuperconductorUMV };
+    private static final ItemStack[] PUMPS = new ItemStack[] { ItemList.Electric_Pump_MV.get(1),
+        ItemList.Electric_Pump_HV.get(1), ItemList.Electric_Pump_EV.get(1), ItemList.Electric_Pump_IV.get(1),
+        ItemList.Electric_Pump_LuV.get(1), ItemList.Electric_Pump_ZPM.get(1), ItemList.Electric_Pump_UV.get(1),
+        ItemList.Electric_Pump_UHV.get(1), ItemList.Electric_Pump_UEV.get(1), ItemList.Electric_Pump_UIV.get(1),
+        ItemList.Electric_Pump_UMV.get(1) };
+    private static final Materials[] SC_PIPES = new Materials[] { Materials.StainlessSteel, Materials.Titanium,
+        Materials.TungstenSteel, Materials.NiobiumTitanium, Materials.Enderium, Materials.Naquadah,
+        Materials.Neutronium, Materials.Bedrockium, Materials.Infinity, Materials.TranscendentMetal,
+        Materials.SpaceTime };
+    private static final int[] SC_SPACETIME_AMOUNTS = new int[] { 4, 8, 12, 16, 24, 32, 40, 48, 56, 68, 72 };
 
     @Override
     public void run() {
@@ -36,6 +55,7 @@ public class Assembler implements Runnable {
         evParts();
         ivParts();
         hulls();
+        superconductors();
     }
 
     private static void circuitStuff() {
@@ -1313,5 +1333,101 @@ public class Assembler implements Runnable {
             d.itemIn()
                 .condenseAll();
         });
+    }
+
+    private static void superconductors() {
+        for (int i = 0; i < 11; i++) {
+            int finalI = i;
+            int spacetimeRecipeTime = 10 * SECONDS;
+            if (i > 2) {
+                spacetimeRecipeTime *= 2;
+            }
+            if (i > 4) {
+                spacetimeRecipeTime *= 2;
+            }
+            if (i > 6) {
+                spacetimeRecipeTime *= 2;
+            }
+            if (i == 10) {
+                spacetimeRecipeTime *= 2;
+            }
+            int finalSpacetimeRecipeTime = spacetimeRecipeTime;
+
+            if (i < 8) {
+                RecipeModifiers.defineBase(
+                    "assembler/superconductor_helium_" + i,
+                    () -> RecipeDraft.of(assemblerRecipes)
+                        .itemInputs(
+                            GTOreDictUnificator.get(OrePrefixes.wireGt01, SC_BASE[finalI], 3 * (finalI + 1)),
+                            GTOreDictUnificator.get(OrePrefixes.pipeTiny, SC_PIPES[finalI], 2 * (finalI + 1)),
+                            PUMPS[finalI],
+                            GTUtility.getIntegratedCircuit(9))
+                        .fluidInputs(Materials.Helium.getGas(SC_SPACETIME_AMOUNTS[finalI] * 500))
+                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, SC[finalI], 3 * (finalI + 1)))
+                        .duration(finalSpacetimeRecipeTime * 2)
+                        .eut(TierEU.RECIPE_MV * (long) Math.pow(4, finalI)));
+
+                RecipeModifiers.modify(
+                    "assembler/superconductor_helium_" + i,
+                    VariantNames.ALTERED_PRICING,
+                    RecipePhase.SCALE,
+                    d -> {
+                        d.scaleAllInputsExcept(Math.max(1, GeneralConfig.partCostMultiplier), PUMPS[finalI]);
+                        d.itemIn()
+                            .condenseAll();
+                        d.scaleAllOutputs(Math.max(1, GeneralConfig.partCostMultiplier));
+                    });
+            }
+
+            if (i < 10) {
+                RecipeModifiers.defineBase(
+                    "assembler/superconductor_liquid_helium_" + i,
+                    () -> RecipeDraft.of(assemblerRecipes)
+                        .itemInputs(
+                            GTOreDictUnificator.get(OrePrefixes.wireGt01, SC_BASE[finalI], 3 * (finalI + 1)),
+                            GTOreDictUnificator.get(OrePrefixes.pipeTiny, SC_PIPES[finalI], 2 * (finalI + 1)),
+                            PUMPS[finalI],
+                            GTUtility.getIntegratedCircuit(9))
+                        .fluidInputs(WerkstoffLoader.LiquidHelium.getFluidOrGas(SC_SPACETIME_AMOUNTS[finalI] * 500))
+                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, SC[finalI], 3 * (finalI + 1)))
+                        .duration((int) (finalSpacetimeRecipeTime * (finalI > 7 ? 2 : 8 / 5f)))
+                        .eut(TierEU.RECIPE_MV * (long) Math.pow(4, finalI)));
+
+                RecipeModifiers.modify(
+                    "assembler/superconductor_liquid_helium_" + i,
+                    VariantNames.ALTERED_PRICING,
+                    RecipePhase.SCALE,
+                    d -> {
+                        d.scaleAllInputsExcept(Math.max(1, GeneralConfig.partCostMultiplier), PUMPS[finalI]);
+                        d.itemIn()
+                            .condenseAll();
+                        d.scaleAllOutputs(Math.max(1, GeneralConfig.partCostMultiplier));
+                    });
+            }
+
+            RecipeModifiers.defineBase(
+                "assembler/superconductor_spacetime_" + i,
+                () -> RecipeDraft.of(assemblerRecipes)
+                    .itemInputs(
+                        GTOreDictUnificator.get(OrePrefixes.wireGt01, SC_BASE[finalI], 3 * (finalI + 1)),
+                        GTOreDictUnificator.get(OrePrefixes.pipeTiny, SC_PIPES[finalI], 2 * (finalI + 1)),
+                        PUMPS[finalI],
+                        GTUtility.getIntegratedCircuit(9))
+                    .fluidInputs(Materials.SpaceTime.getMolten(SC_SPACETIME_AMOUNTS[finalI]))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, SC[finalI], 3 * (finalI + 1)))
+                    .duration(finalSpacetimeRecipeTime)
+                    .eut(TierEU.RECIPE_MV * (long) Math.pow(4, finalI)));
+
+            RecipeModifiers.modify(
+                "assembler/superconductor_spacetime_" + i,
+                VariantNames.ALTERED_PRICING,
+                RecipePhase.SCALE,
+                d -> {
+                    d.scaleAllInputsExcept(Math.max(1, GeneralConfig.partCostMultiplier), PUMPS[finalI]);
+                    d.itemIn()
+                        .condenseAll();
+                    d.scaleAllOutputs(Math.max(1, GeneralConfig.partCostMultiplier));
+                });
+        }
     }
 }
