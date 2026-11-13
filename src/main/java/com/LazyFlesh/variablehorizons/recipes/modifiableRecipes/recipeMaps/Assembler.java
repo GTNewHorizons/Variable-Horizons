@@ -1366,6 +1366,39 @@ public class Assembler implements Runnable {
             d.itemIn()
                 .condenseAll();
         });
+
+        RecipeModifiers.defineBase(
+            "assembler/uev_casing",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 8),
+                    GTUtility.getIntegratedCircuit(8))
+                .itemOutputs(ItemList.Casing_UEV.get(1L))
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/uev_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/uev_hull",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.Draconium, 2L),
+                    ItemList.Casing_UEV.get(1))
+                .fluidInputs(Materials.Polybenzimidazole.getMolten(576L))
+                .itemOutputs(ItemList.Hull_UEV.get(1L))
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/uev_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_UEV.get(1));
+            d.itemIn()
+                .condenseAll();
+        });
     }
 
     private static void superconductors() {
