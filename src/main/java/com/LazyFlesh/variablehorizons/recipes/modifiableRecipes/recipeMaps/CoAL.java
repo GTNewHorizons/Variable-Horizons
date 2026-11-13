@@ -10,6 +10,7 @@ import static gregtech.api.enums.ItemList.Conveyor_Module_LuV;
 import static gregtech.api.enums.ItemList.Conveyor_Module_MV;
 import static gregtech.api.enums.ItemList.Conveyor_Module_UEV;
 import static gregtech.api.enums.ItemList.Conveyor_Module_UHV;
+import static gregtech.api.enums.ItemList.Conveyor_Module_UIV;
 import static gregtech.api.enums.ItemList.Conveyor_Module_UV;
 import static gregtech.api.enums.ItemList.Conveyor_Module_ZPM;
 import static gregtech.api.enums.ItemList.Electric_Motor_EV;
@@ -20,6 +21,7 @@ import static gregtech.api.enums.ItemList.Electric_Motor_LuV;
 import static gregtech.api.enums.ItemList.Electric_Motor_MV;
 import static gregtech.api.enums.ItemList.Electric_Motor_UEV;
 import static gregtech.api.enums.ItemList.Electric_Motor_UHV;
+import static gregtech.api.enums.ItemList.Electric_Motor_UIV;
 import static gregtech.api.enums.ItemList.Electric_Motor_UV;
 import static gregtech.api.enums.ItemList.Electric_Motor_ZPM;
 import static gregtech.api.enums.ItemList.Electric_Piston_EV;
@@ -30,6 +32,7 @@ import static gregtech.api.enums.ItemList.Electric_Piston_LuV;
 import static gregtech.api.enums.ItemList.Electric_Piston_MV;
 import static gregtech.api.enums.ItemList.Electric_Piston_UEV;
 import static gregtech.api.enums.ItemList.Electric_Piston_UHV;
+import static gregtech.api.enums.ItemList.Electric_Piston_UIV;
 import static gregtech.api.enums.ItemList.Electric_Piston_UV;
 import static gregtech.api.enums.ItemList.Electric_Piston_ZPM;
 import static gregtech.api.enums.ItemList.Electric_Pump_EV;
@@ -40,6 +43,7 @@ import static gregtech.api.enums.ItemList.Electric_Pump_LuV;
 import static gregtech.api.enums.ItemList.Electric_Pump_MV;
 import static gregtech.api.enums.ItemList.Electric_Pump_UEV;
 import static gregtech.api.enums.ItemList.Electric_Pump_UHV;
+import static gregtech.api.enums.ItemList.Electric_Pump_UIV;
 import static gregtech.api.enums.ItemList.Electric_Pump_UV;
 import static gregtech.api.enums.ItemList.Electric_Pump_ZPM;
 import static gregtech.api.enums.ItemList.Emitter_EV;
@@ -50,6 +54,7 @@ import static gregtech.api.enums.ItemList.Emitter_LuV;
 import static gregtech.api.enums.ItemList.Emitter_MV;
 import static gregtech.api.enums.ItemList.Emitter_UEV;
 import static gregtech.api.enums.ItemList.Emitter_UHV;
+import static gregtech.api.enums.ItemList.Emitter_UIV;
 import static gregtech.api.enums.ItemList.Emitter_UV;
 import static gregtech.api.enums.ItemList.Emitter_ZPM;
 import static gregtech.api.enums.ItemList.Field_Generator_EV;
@@ -60,9 +65,11 @@ import static gregtech.api.enums.ItemList.Field_Generator_LuV;
 import static gregtech.api.enums.ItemList.Field_Generator_MV;
 import static gregtech.api.enums.ItemList.Field_Generator_UEV;
 import static gregtech.api.enums.ItemList.Field_Generator_UHV;
+import static gregtech.api.enums.ItemList.Field_Generator_UIV;
 import static gregtech.api.enums.ItemList.Field_Generator_UV;
 import static gregtech.api.enums.ItemList.Field_Generator_ZPM;
 import static gregtech.api.enums.ItemList.Gravistar;
+import static gregtech.api.enums.ItemList.NuclearStar;
 import static gregtech.api.enums.ItemList.QuantumEye;
 import static gregtech.api.enums.ItemList.QuantumStar;
 import static gregtech.api.enums.ItemList.Robot_Arm_EV;
@@ -73,6 +80,7 @@ import static gregtech.api.enums.ItemList.Robot_Arm_LuV;
 import static gregtech.api.enums.ItemList.Robot_Arm_MV;
 import static gregtech.api.enums.ItemList.Robot_Arm_UEV;
 import static gregtech.api.enums.ItemList.Robot_Arm_UHV;
+import static gregtech.api.enums.ItemList.Robot_Arm_UIV;
 import static gregtech.api.enums.ItemList.Robot_Arm_UV;
 import static gregtech.api.enums.ItemList.Robot_Arm_ZPM;
 import static gregtech.api.enums.ItemList.Sensor_EV;
@@ -83,6 +91,7 @@ import static gregtech.api.enums.ItemList.Sensor_LuV;
 import static gregtech.api.enums.ItemList.Sensor_MV;
 import static gregtech.api.enums.ItemList.Sensor_UEV;
 import static gregtech.api.enums.ItemList.Sensor_UHV;
+import static gregtech.api.enums.ItemList.Sensor_UIV;
 import static gregtech.api.enums.ItemList.Sensor_UV;
 import static gregtech.api.enums.ItemList.Sensor_ZPM;
 import static gregtech.api.enums.Materials.Aluminium;
@@ -96,8 +105,11 @@ import static gregtech.api.enums.Materials.CertusQuartz;
 import static gregtech.api.enums.Materials.Chrome;
 import static gregtech.api.enums.Materials.Copper;
 import static gregtech.api.enums.Materials.CosmicNeutronium;
+import static gregtech.api.enums.Materials.Creon;
 import static gregtech.api.enums.Materials.Cupronickel;
+import static gregtech.api.enums.Materials.DimensionallyShiftedSuperfluid;
 import static gregtech.api.enums.Materials.Draconium;
+import static gregtech.api.enums.Materials.DraconiumAwakened;
 import static gregtech.api.enums.Materials.EV;
 import static gregtech.api.enums.Materials.Electrum;
 import static gregtech.api.enums.Materials.ElectrumFlux;
@@ -122,6 +134,8 @@ import static gregtech.api.enums.Materials.LV;
 import static gregtech.api.enums.Materials.LuV;
 import static gregtech.api.enums.Materials.Lubricant;
 import static gregtech.api.enums.Materials.MV;
+import static gregtech.api.enums.Materials.Mellion;
+import static gregtech.api.enums.Materials.MoltenProtoHalkoniteBase;
 import static gregtech.api.enums.Materials.Naquadah;
 import static gregtech.api.enums.Materials.NaquadahAlloy;
 import static gregtech.api.enums.Materials.Naquadria;
@@ -142,6 +156,7 @@ import static gregtech.api.enums.Materials.SteelMagnetic;
 import static gregtech.api.enums.Materials.TengamPurified;
 import static gregtech.api.enums.Materials.Tin;
 import static gregtech.api.enums.Materials.Titanium;
+import static gregtech.api.enums.Materials.TranscendentMetal;
 import static gregtech.api.enums.Materials.Trinium;
 import static gregtech.api.enums.Materials.Tritanium;
 import static gregtech.api.enums.Materials.Tungsten;
@@ -149,6 +164,7 @@ import static gregtech.api.enums.Materials.TungstenSteel;
 import static gregtech.api.enums.Materials.UEV;
 import static gregtech.api.enums.Materials.UHV;
 import static gregtech.api.enums.Materials.UIV;
+import static gregtech.api.enums.Materials.UMV;
 import static gregtech.api.enums.Materials.UV;
 import static gregtech.api.enums.Materials.VanadiumGallium;
 import static gregtech.api.enums.Materials.YttriumBariumCuprate;
@@ -173,6 +189,7 @@ import static gregtech.api.enums.TierEU.RECIPE_IV;
 import static gregtech.api.enums.TierEU.RECIPE_LV;
 import static gregtech.api.enums.TierEU.RECIPE_LuV;
 import static gregtech.api.enums.TierEU.RECIPE_MV;
+import static gregtech.api.enums.TierEU.RECIPE_UEV;
 import static gregtech.api.enums.TierEU.RECIPE_UHV;
 import static gregtech.api.enums.TierEU.RECIPE_ULV;
 import static gregtech.api.enums.TierEU.RECIPE_UV;
@@ -184,7 +201,12 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeConstants.COAL_CASING_TIER;
 import static gtPlusPlus.core.material.MaterialMisc.MUTATED_LIVING_SOLDER;
+import static gtPlusPlus.core.material.MaterialsAlloy.CINOBITE;
 import static gtPlusPlus.core.material.MaterialsAlloy.INDALLOY_140;
+import static gtPlusPlus.core.material.MaterialsAlloy.LAFIUM;
+import static gtPlusPlus.core.material.MaterialsAlloy.PIKYONIUM;
+import static gtPlusPlus.core.material.MaterialsAlloy.TRINIUM_REINFORCED_STEEL;
+import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN;
 
 import net.minecraft.item.ItemStack;
 
@@ -227,6 +249,7 @@ public class CoAL implements Runnable {
         uvParts();
         uhvParts();
         uevParts();
+        uivParts();
     }
 
     private static void lvParts() {
@@ -2167,6 +2190,296 @@ public class CoAL implements Runnable {
             d.itemIn()
                 .condenseAll();
         });
+    }
+
+    private static void uivParts() {
+        RecipeModifiers.defineBase(
+            "coal/uiv_motor_infinity",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(get(cableGt16, NetherStar, 24), GTUtility.getIntegratedCircuit(MOTOR_CIRCUIT))
+                .fluidInputs(
+                    MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                    DimensionallyShiftedSuperfluid.getFluid(32 * STACKS + 53 * INGOTS + 3 * NUGGETS),
+                    MoltenProtoHalkoniteBase.getFluid(48 * STACKS),
+                    Infinity.getMolten(48 * STACKS),
+                    TranscendentMetal.getMolten(16 * STACKS + 10 * INGOTS + 6 * NUGGETS),
+                    TengamPurified.getMolten(12 * STACKS),
+                    CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                .itemOutputs(Electric_Motor_UIV.get(64))
+                .metadata(COAL_CASING_TIER, COAL_UIV)
+                .duration(40 * MINUTES)
+                .eut(RECIPE_UEV));
+
+        RecipeModifiers.modify("coal/uiv_motor_infinity", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "coal/uiv_motor_creon_mellion",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(get(cableGt16, NetherStar, 24), GTUtility.getIntegratedCircuit(MOTOR_CIRCUIT))
+                .fluidInputs(
+                    MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                    DimensionallyShiftedSuperfluid.getFluid(32 * STACKS + 53 * INGOTS + 3 * NUGGETS),
+                    MoltenProtoHalkoniteBase.getFluid(24 * STACKS),
+                    Creon.getMolten(24 * STACKS),
+                    Mellion.getMolten(24 * STACKS),
+                    TranscendentMetal.getMolten(16 * STACKS + 10 * INGOTS + 6 * NUGGETS),
+                    TengamPurified.getMolten(12 * STACKS),
+                    CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                .itemOutputs(Electric_Motor_UIV.get(64))
+                .metadata(COAL_CASING_TIER, COAL_UIV)
+                .duration(40 * MINUTES)
+                .eut(RECIPE_UEV));
+
+        RecipeModifiers.modify("coal/uiv_motor_creon_mellion", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "coal/uiv_piston",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(
+                    get(Electric_Motor_UIV, 48),
+                    get(plateDense, TranscendentMetal, 32),
+                    get(cableGt16, NetherStar, 48),
+                    GTUtility.getIntegratedCircuit(PISTON_CIRCUIT))
+                .fluidInputs(
+                    MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                    DimensionallyShiftedSuperfluid.getFluid(192_000),
+                    TranscendentMetal.getMolten(18 * STACKS + 53 * INGOTS + 3 * NUGGETS),
+                    CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                .itemOutputs(Electric_Piston_UIV.get(64))
+                .metadata(COAL_CASING_TIER, COAL_UIV)
+                .duration(40 * MINUTES)
+                .eut(RECIPE_UEV));
+
+        RecipeModifiers.modify("coal/uiv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_UIV, 48));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "coal/uiv_robot_arm",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(
+                    get(Electric_Motor_UIV, 96),
+                    get(Electric_Piston_UIV, 48),
+                    get(wrapCircuit, UIV, 6),
+                    get(wrapCircuit, UEV, 12),
+                    get(wrapCircuit, UHV, 24),
+                    get(cableGt16, NetherStar, 72),
+                    GTUtility.getIntegratedCircuit(ROBOT_ARM_CIRCUIT))
+                .fluidInputs(
+                    MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                    DimensionallyShiftedSuperfluid.getFluid(192_000),
+                    TranscendentMetal.getMolten(16 * STACKS + 32 * INGOTS),
+                    CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                .itemOutputs(Robot_Arm_UIV.get(64))
+                .metadata(COAL_CASING_TIER, COAL_UIV)
+                .duration(40 * MINUTES)
+                .eut(RECIPE_UEV));
+
+        RecipeModifiers.modify("coal/uiv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                get(Electric_Motor_UIV, 96),
+                get(Electric_Piston_UIV, 48),
+                get(wrapCircuit, UIV, 6),
+                get(wrapCircuit, UEV, 12),
+                get(wrapCircuit, UHV, 24));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        for (int i = 1; i < RUBBERS.length; i++) {
+            int finalI = i;
+            RecipeModifiers.defineBase(
+                "coal/uiv_pump_" + RUBBER_NAMES[i],
+                () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                    .itemInputs(
+                        get(Electric_Motor_UIV, 48),
+                        get(plateDense, TranscendentMetal, 21),
+                        get(cableGt16, NetherStar, 24),
+                        GTUtility.getIntegratedCircuit(PUMP_CIRCUIT))
+                    .fluidInputs(
+                        MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                        DimensionallyShiftedSuperfluid.getFluid(192_000),
+                        TranscendentMetal.getMolten(14 * STACKS + 5 * INGOTS + 3 * NUGGETS),
+                        RUBBERS[finalI].getMolten(12 * STACKS),
+                        DraconiumAwakened.getMolten(9 * STACKS),
+                        CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                    .itemOutputs(Electric_Pump_UIV.get(64))
+                    .metadata(COAL_CASING_TIER, COAL_UIV)
+                    .duration(40 * MINUTES)
+                    .eut(RECIPE_UEV));
+
+            RecipeModifiers
+                .modify("coal/uiv_pump_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_UIV, 48));
+                    d.itemIn()
+                        .condenseAll();
+                });
+
+            RecipeModifiers.defineBase(
+                "coal/uiv_conveyor_" + RUBBER_NAMES[i],
+                () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                    .itemInputs(
+                        get(Electric_Motor_UIV, 96),
+                        get(plateDense, TranscendentMetal, 10),
+                        get(cableGt16, NetherStar, 24),
+                        GTUtility.getIntegratedCircuit(CONVEYOR_CIRCUIT))
+                    .fluidInputs(
+                        MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                        DimensionallyShiftedSuperfluid.getFluid(192_000),
+                        RUBBERS[finalI].getMolten(59 * STACKS + 58 * INGOTS),
+                        TranscendentMetal.getMolten(6 * STACKS + 53 * INGOTS + 3 * NUGGETS),
+                        CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                    .itemOutputs(Conveyor_Module_UIV.get(64))
+                    .metadata(COAL_CASING_TIER, COAL_UIV)
+                    .duration(40 * MINUTES)
+                    .eut(RECIPE_UEV));
+
+            RecipeModifiers
+                .modify("coal/uiv_conveyor_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_UIV, 96));
+                    d.itemIn()
+                        .condenseAll();
+                });
+        }
+
+        RecipeModifiers.defineBase(
+            "coal/uiv_sensor",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(
+                    get(frameGt, TranscendentMetal, 48),
+                    get(Electric_Motor_UIV, 48),
+                    get(plateDense, TranscendentMetal, 42),
+                    get(NuclearStar, 96),
+                    get(wrapCircuit, UIV, 12),
+                    get(cableGt16, NetherStar, 84),
+                    GTUtility.getIntegratedCircuit(SENSOR_CIRCUIT))
+                .fluidInputs(
+                    MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                    TRINIUM_REINFORCED_STEEL.getFluidStack(12 * STACKS),
+                    LAFIUM.getFluidStack(12 * STACKS),
+                    CINOBITE.getFluidStack(12 * STACKS),
+                    PIKYONIUM.getFluidStack(12 * STACKS),
+                    CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                .itemOutputs(Sensor_UIV.get(64))
+                .metadata(COAL_CASING_TIER, COAL_UIV)
+                .duration(40 * MINUTES)
+                .eut(RECIPE_UEV));
+
+        RecipeModifiers.modify("coal/uiv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                get(wrapCircuit, UIV, 3),
+                get(Electric_Motor_UIV, 48));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "coal/uiv_emitter",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(
+                    get(frameGt, TranscendentMetal, 48),
+                    get(Electric_Motor_UIV, 48),
+                    get(NuclearStar, 96),
+                    get(wrapCircuit, UIV, 12),
+                    get(cableGt16, NetherStar, 84),
+                    GTUtility.getIntegratedCircuit(EMITTER_CIRCUIT))
+                .fluidInputs(
+                    MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                    TRINIUM_REINFORCED_STEEL.getFluidStack(12 * STACKS),
+                    LAFIUM.getFluidStack(12 * STACKS),
+                    CINOBITE.getFluidStack(12 * STACKS),
+                    PIKYONIUM.getFluidStack(12 * STACKS),
+                    TranscendentMetal.getMolten(6 * STACKS),
+                    CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                .itemOutputs(Emitter_UIV.get(64))
+                .metadata(COAL_CASING_TIER, COAL_UIV)
+                .duration(40 * MINUTES)
+                .eut(RECIPE_UEV));
+
+        RecipeModifiers.modify("coal/uiv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                get(wrapCircuit, UIV, 6),
+                get(Electric_Motor_UIV, 48));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "coal/uiv_field_gen_infinity",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(
+                    get(frameGt, TranscendentMetal, 48),
+                    get(plateDense, TranscendentMetal, 32),
+                    get(NuclearStar, 48),
+                    get(Emitter_UIV, 192),
+                    get(wrapCircuit, UMV, 12),
+                    get(cableGt16, NetherStar, 96),
+                    GTUtility.getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
+                .fluidInputs(
+                    MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                    DimensionallyShiftedSuperfluid.getFluid(12 * STACKS),
+                    MoltenProtoHalkoniteBase.getFluid(48 * STACKS),
+                    Infinity.getMolten(48 * STACKS),
+                    CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                .itemOutputs(Field_Generator_UIV.get(64))
+                .metadata(COAL_CASING_TIER, COAL_UIV)
+                .duration(40 * MINUTES)
+                .eut(RECIPE_UEV));
+
+        RecipeModifiers.modify("coal/uiv_field_gen_infinity", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(
+                GeneralConfig.partCostMultiplier,
+                get(wrapCircuit, UMV, 12),
+                get(Emitter_UIV, 192));
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "coal/uiv_field_gen_creon_mellion",
+            () -> RecipeDraft.of(componentAssemblyLineRecipes)
+                .itemInputs(
+                    get(frameGt, TranscendentMetal, 48),
+                    get(plateDense, TranscendentMetal, 32),
+                    get(NuclearStar, 48),
+                    get(Emitter_UIV, 192),
+                    get(wrapCircuit, UMV, 12),
+                    get(cableGt16, NetherStar, 96),
+                    GTUtility.getIntegratedCircuit(FIELD_GENERATOR_CIRCUIT))
+                .fluidInputs(
+                    MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                    DimensionallyShiftedSuperfluid.getFluid(12 * STACKS),
+                    MoltenProtoHalkoniteBase.getFluid(24 * STACKS),
+                    Creon.getMolten(24 * STACKS),
+                    Mellion.getMolten(24 * STACKS),
+                    CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                .itemOutputs(Field_Generator_UIV.get(64))
+                .metadata(COAL_CASING_TIER, COAL_UIV)
+                .duration(40 * MINUTES)
+                .eut(RECIPE_UEV));
+
+        RecipeModifiers
+            .modify("coal/uiv_field_gen_creon_mellion", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(
+                    GeneralConfig.partCostMultiplier,
+                    get(wrapCircuit, UMV, 12),
+                    get(Emitter_UIV, 192));
+                d.itemIn()
+                    .condenseAll();
+            });
     }
 
     private static ItemStack get(OrePrefixes prefix, Object material, int amount) {
