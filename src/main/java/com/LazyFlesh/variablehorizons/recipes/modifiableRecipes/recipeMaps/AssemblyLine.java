@@ -37,6 +37,7 @@ public class AssemblyLine implements Runnable {
         luvParts();
         zpmParts();
         uvParts();
+        uhvParts();
     }
 
     private static void circuitStuff() {
@@ -944,5 +945,259 @@ public class AssemblyLine implements Runnable {
             d.itemIn()
                 .condenseAll();
         });
+    }
+
+    private static void uhvParts() {
+        RecipeModifiers.defineBase(
+            "assemblyLine/uhv_motor",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.SamariumMagnetic, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.CosmicNeutronium, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.ring, Materials.CosmicNeutronium, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.round, Materials.CosmicNeutronium, 32L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Bedrockium, 2L))
+                .fluidInputs(
+                    Materials.Naquadria.getMolten(18 * INGOTS),
+                    MaterialsAlloy.INDALLOY_140.getFluidStack(18 * INGOTS),
+                    Materials.Lubricant.getFluid(4_000))
+                .itemOutput(ItemList.Electric_Motor_UHV.get(1L))
+                .research(ItemList.Electric_Motor_UV.get(1L), 24000, 32, (int) TierEU.RECIPE_UV, 1)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/uhv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/uhv_pump",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    ItemList.Electric_Motor_UHV.get(1L),
+                    GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Neutronium, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.CosmicNeutronium, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 16L),
+                    new Object[] { OrePrefixes.ring.get(Materials.AnySyntheticRubber), 32L },
+                    GTOreDictUnificator.get(OrePrefixes.rotor, Materials.CosmicNeutronium, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Bedrockium, 2L))
+                .fluidInputs(
+                    Materials.Naquadria.getMolten(18 * INGOTS),
+                    MaterialsAlloy.INDALLOY_140.getFluidStack(18 * INGOTS),
+                    Materials.Lubricant.getFluid(4_000))
+                .itemOutput(ItemList.Electric_Pump_UHV.get(1L))
+                .research(ItemList.Electric_Pump_UV.get(1L), 24000, 32, (int) TierEU.RECIPE_UV, 1)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/uhv_pump", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UHV.get(1L));
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/uhv_conveyor",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    ItemList.Electric_Motor_UHV.get(2L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.CosmicNeutronium, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.ring, Materials.CosmicNeutronium, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.round, Materials.CosmicNeutronium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Bedrockium, 2L),
+                    new Object[] { OrePrefixes.plate.get(Materials.AnySyntheticRubber), 40L })
+                .fluidInputs(
+                    Materials.Naquadria.getMolten(18 * INGOTS),
+                    MaterialsAlloy.INDALLOY_140.getFluidStack(18 * INGOTS),
+                    Materials.Lubricant.getFluid(4_000))
+                .itemOutput(ItemList.Conveyor_Module_UHV.get(1L))
+                .research(ItemList.Conveyor_Module_UV.get(1L), 24000, 32, (int) TierEU.RECIPE_UV, 1)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/uhv_conveyor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UHV.get(1L));
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/uhv_piston",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    ItemList.Electric_Motor_UHV.get(1L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.CosmicNeutronium, 6L),
+                    GTOreDictUnificator.get(OrePrefixes.ring, Materials.CosmicNeutronium, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.round, Materials.CosmicNeutronium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.CosmicNeutronium, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.gear, Materials.CosmicNeutronium, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.CosmicNeutronium, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Bedrockium, 4L))
+                .fluidInputs(
+                    Materials.Naquadria.getMolten(18 * INGOTS),
+                    MaterialsAlloy.INDALLOY_140.getFluidStack(18 * INGOTS),
+                    Materials.Lubricant.getFluid(4_000))
+                .itemOutput(ItemList.Electric_Piston_UHV.get(1L))
+                .research(ItemList.Electric_Piston_UV.get(1L), 24000, 32, (int) TierEU.RECIPE_UV, 1)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/uhv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UHV.get(1L));
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/uhv_robot_arm",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.CosmicNeutronium, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.gear, Materials.CosmicNeutronium, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.CosmicNeutronium, 6L),
+                    ItemList.Electric_Motor_UHV.get(2L),
+                    ItemList.Electric_Piston_UHV.get(1L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UHV), 2L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 8L },
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Bedrockium, 6L))
+                .fluidInputs(
+                    Materials.Naquadria.getMolten(18 * INGOTS),
+                    MaterialsAlloy.INDALLOY_140.getFluidStack(18 * INGOTS),
+                    Materials.Lubricant.getFluid(4_000))
+                .itemOutput(ItemList.Robot_Arm_UHV.get(1L))
+                .research(ItemList.Robot_Arm_UV.get(1L), 24000, 32, (int) TierEU.RECIPE_UV, 1)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/uhv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(
+                    GeneralConfig.partCostMultiplier,
+                    ItemList.Electric_Motor_UHV.get(2L),
+                    ItemList.Electric_Piston_UHV.get(1L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UHV), 2L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 8L });
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/uhv_emitter",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 1L),
+                    ItemList.Electric_Motor_UHV.get(1L),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.CosmicNeutronium, 8L),
+                    ItemList.Gravistar.get(8L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4L },
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.ElectrumFlux, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.ElectrumFlux, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.ElectrumFlux, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.ElectrumFlux, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Bedrockium, 7L))
+                .fluidInputs(
+                    Materials.Naquadria.getMolten(18 * INGOTS),
+                    MaterialsAlloy.INDALLOY_140.getFluidStack(18 * INGOTS))
+                .itemOutput(ItemList.Emitter_UHV.get(1L))
+                .research(ItemList.Emitter_UV.get(1L), 24000, 32, (int) TierEU.RECIPE_UV, 1)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/uhv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(
+                    GeneralConfig.partCostMultiplier,
+                    ItemList.Electric_Motor_UHV.get(1L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4L });
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/uhv_sensor",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 1L),
+                    ItemList.Electric_Motor_UHV.get(1L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.CosmicNeutronium, 8L),
+                    ItemList.Gravistar.get(8L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4L },
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.ElectrumFlux, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.ElectrumFlux, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.ElectrumFlux, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.ElectrumFlux, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Bedrockium, 7L))
+                .fluidInputs(
+                    Materials.Naquadria.getMolten(18 * INGOTS),
+                    MaterialsAlloy.INDALLOY_140.getFluidStack(18 * INGOTS))
+                .itemOutput(ItemList.Sensor_UHV.get(1L))
+                .research(ItemList.Sensor_UV.get(1L), 24000, 32, (int) TierEU.RECIPE_UV, 1)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/uhv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(
+                    GeneralConfig.partCostMultiplier,
+                    ItemList.Electric_Motor_UHV.get(1L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4L });
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/uhv_field_generator",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.CosmicNeutronium, 6L),
+                    ItemList.Gravistar.get(4L),
+                    ItemList.Emitter_UHV.get(4L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4L },
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Bedrockium, 8L))
+                .fluidInputs(
+                    Materials.Naquadria.getMolten(18 * INGOTS),
+                    MaterialsAlloy.INDALLOY_140.getFluidStack(18 * INGOTS))
+                .itemOutput(ItemList.Field_Generator_UHV.get(1L))
+                .research(ItemList.Field_Generator_UV.get(1L), 24000, 32, (int) TierEU.RECIPE_UV, 1)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UV));
+
+        RecipeModifiers.modifyAssemblyLine(
+            "assemblyLine/uhv_field_generator",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> {
+                d.scaleAllInputsBalanced(
+                    GeneralConfig.partCostMultiplier,
+                    ItemList.Emitter_UHV.get(1L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4L });
+                d.itemIn()
+                    .condenseAll();
+            });
     }
 }
