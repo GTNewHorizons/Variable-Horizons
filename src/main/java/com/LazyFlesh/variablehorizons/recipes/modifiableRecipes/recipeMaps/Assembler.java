@@ -1465,6 +1465,40 @@ public class Assembler implements Runnable {
             d.itemIn()
                 .condenseAll();
         });
+
+        RecipeModifiers.defineBase(
+            "assembler/uxv_casing",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.MHDCSM, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.MagMatter, 4),
+                    GTUtility.getIntegratedCircuit(8))
+                .itemOutputs(ItemList.Casing_UXV.get(1L))
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/uxv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "assembler/uxv_hull",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.cableGt16, Materials.BlackPlutonium, 2L),
+                    ItemList.Casing_UXV.get(1))
+                .fluidInputs(Materials.Kevlar.getMolten(576L))
+                .itemOutputs(ItemList.Hull_UXV.get(1L))
+                .duration(50 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2));
+
+        RecipeModifiers.modify("assembler/uxv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_UXV.get(1));
+            d.itemIn()
+                .condenseAll();
+        });
     }
 
     private static void superconductors() {

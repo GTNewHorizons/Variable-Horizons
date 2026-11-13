@@ -3,6 +3,7 @@ package com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
@@ -50,6 +51,7 @@ public class AssemblyLine implements Runnable {
         uevParts();
         uivParts();
         umvParts();
+        uxvParts();
     }
 
     private static void circuitStuff() {
@@ -1981,6 +1983,288 @@ public class AssemblyLine implements Runnable {
                     GeneralConfig.partCostMultiplier,
                     ItemList.Emitter_UMV.get(4L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UXV), 4 });
+                d.itemIn()
+                    .condenseAll();
+            });
+    }
+
+    private static void uxvParts() {
+        RecipeModifiers.defineBase(
+            "assemblyLine/uxv_motor",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    ItemList.EnergisedTesseract.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.MHDCSM, 16L),
+                    GTOreDictUnificator.get(OrePrefixes.ring, Materials.MHDCSM, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.round, Materials.MHDCSM, 32L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.SuperconductorUMVBase, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.SuperconductorUMVBase, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.MHDCSM, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.MHDCSM, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Universium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Universium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.MagMatter, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.MagMatter, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 4L),
+                    Materials.Neutronium.getNanite(4))
+                .fluidInputs(
+                    Materials.MHDCSM.getMolten(4 * INGOTS),
+                    Materials.SpaceTime.getMolten(4 * INGOTS),
+                    Materials.Universium.getMolten(4 * INGOTS),
+                    Materials.DimensionallyShiftedSuperfluid.getFluid(8_000))
+                .itemOutput(ItemList.Electric_Motor_UXV.get(1L))
+                .research(ItemList.Electric_Motor_UMV.get(1L), 384000, 512, 64_000_000, 2)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UMV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/uxv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/uxv_pump",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    ItemList.Electric_Motor_UXV.get(1L),
+                    GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.SpaceTime, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.MHDCSM, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.MHDCSM, 16L),
+                    GTOreDictUnificator.get(OrePrefixes.ring, Materials.Kevlar, 64L),
+                    GTOreDictUnificator.get("ringRadoxPoly", 64L),
+                    GTOreDictUnificator.get(OrePrefixes.rotor, Materials.MHDCSM, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.rotor, Materials.MagMatter, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 4L),
+                    Materials.Neutronium.getNanite(4))
+                .fluidInputs(
+                    Materials.MHDCSM.getMolten(4 * INGOTS),
+                    Materials.SpaceTime.getMolten(4 * INGOTS),
+                    Materials.Universium.getMolten(4 * INGOTS),
+                    Materials.DimensionallyShiftedSuperfluid.getFluid(8_000))
+                .itemOutput(ItemList.Electric_Pump_UXV.get(1L))
+                .research(ItemList.Electric_Pump_UMV.get(1L), 384000, 512, 64_000_000, 2)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UMV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/uxv_pump", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UXV.get(1L));
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/uxv_conveyor",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    ItemList.Electric_Motor_UXV.get(2L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.MHDCSM, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.ring, Materials.MHDCSM, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.round, Materials.MHDCSM, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 4L),
+                    Materials.Kevlar.getPlates(64),
+                    Materials.Kevlar.getPlates(16),
+                    GTOreDictUnificator.get("plateRadoxPoly", 64L),
+                    GTOreDictUnificator.get("plateRadoxPoly", 16L),
+                    Materials.Neutronium.getNanite(4))
+                .fluidInputs(
+                    Materials.MHDCSM.getMolten(4 * INGOTS),
+                    Materials.SpaceTime.getMolten(4 * INGOTS),
+                    Materials.Universium.getMolten(4 * INGOTS),
+                    Materials.DimensionallyShiftedSuperfluid.getFluid(8_000))
+                .itemOutput(ItemList.Conveyor_Module_UXV.get(1L))
+                .research(ItemList.Conveyor_Module_UMV.get(1L), 384000, 512, 64_000_000, 2)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UMV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/uxv_conveyor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UXV.get(1L));
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/uxv_piston",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    ItemList.Electric_Motor_UXV.get(1L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.MHDCSM, 6L),
+                    GTOreDictUnificator.get(OrePrefixes.ring, Materials.MHDCSM, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.round, Materials.MHDCSM, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.MHDCSM, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.gear, Materials.MHDCSM, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.MagMatter, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.MHDCSM, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.MagMatter, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 8L),
+                    Materials.Neutronium.getNanite(4))
+                .fluidInputs(
+                    Materials.MHDCSM.getMolten(4 * INGOTS),
+                    Materials.SpaceTime.getMolten(4 * INGOTS),
+                    Materials.Universium.getMolten(4 * INGOTS),
+                    Materials.DimensionallyShiftedSuperfluid.getFluid(8_000))
+                .itemOutput(ItemList.Electric_Piston_UXV.get(1L))
+                .research(ItemList.Electric_Piston_UMV.get(1L), 384000, 512, 64_000_000, 2)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UMV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/uxv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UXV.get(1L));
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/uxv_robot_arm",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.MHDCSM, 8L),
+                    GTOreDictUnificator.get(OrePrefixes.gear, Materials.MHDCSM, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.MagMatter, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.MHDCSM, 6L),
+                    GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.MagMatter, 6L),
+                    ItemList.Electric_Motor_UXV.get(2L),
+                    ItemList.Electric_Piston_UXV.get(1L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 2L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UIV), 8L },
+                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 12L),
+                    Materials.Neutronium.getNanite(8))
+                .fluidInputs(
+                    Materials.MHDCSM.getMolten(4 * INGOTS),
+                    Materials.SpaceTime.getMolten(4 * INGOTS),
+                    Materials.Universium.getMolten(4 * INGOTS),
+                    Materials.DimensionallyShiftedSuperfluid.getFluid(8_000))
+                .itemOutput(ItemList.Robot_Arm_UXV.get(1L))
+                .research(ItemList.Robot_Arm_UMV.get(1L), 384000, 512, 64_000_000, 2)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UMV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/uxv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(
+                    GeneralConfig.partCostMultiplier,
+                    ItemList.Electric_Motor_UXV.get(2L),
+                    ItemList.Electric_Piston_UXV.get(1L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 2L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UIV), 8L });
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/uxv_emitter",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MHDCSM, 1L),
+                    ItemList.Electric_Motor_UXV.get(1L),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.MHDCSM, 16L),
+                    ItemList.PseudoStar.get(1),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 4L },
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.MHDCSM, 64),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.MagMatter, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.SpaceTime, 64),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Universium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 14L),
+                    Materials.Neutronium.getNanite(8))
+                .fluidInputs(
+                    Materials.MHDCSM.getMolten(4 * INGOTS),
+                    Materials.SpaceTime.getMolten(4 * INGOTS),
+                    Materials.Universium.getMolten(4 * INGOTS),
+                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(1 * STACKS + 36 * INGOTS))
+                .itemOutput(ItemList.Emitter_UXV.get(1L))
+                .research(ItemList.Emitter_UMV.get(1L), 384000, 512, 64_000_000, 2)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UMV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/uxv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(
+                    GeneralConfig.partCostMultiplier,
+                    ItemList.Electric_Motor_UXV.get(2L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 2L });
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/uxv_sensor",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MHDCSM, 1L),
+                    ItemList.Electric_Motor_UXV.get(1L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.MHDCSM, 8L),
+                    ItemList.PseudoStar.get(1),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 4L },
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.MHDCSM, 64),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.MagMatter, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.SpaceTime, 64),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Universium, 64),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 14L),
+                    Materials.Neutronium.getNanite(8))
+                .fluidInputs(
+                    Materials.MHDCSM.getMolten(4 * INGOTS),
+                    Materials.SpaceTime.getMolten(4 * INGOTS),
+                    Materials.Universium.getMolten(4 * INGOTS),
+                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(1 * STACKS + 36 * INGOTS))
+                .itemOutput(ItemList.Sensor_UXV.get(1L))
+                .research(ItemList.Sensor_UMV.get(1L), 384000, 512, 64_000_000, 2)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UMV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/uxv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(
+                    GeneralConfig.partCostMultiplier,
+                    ItemList.Electric_Motor_UXV.get(2L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 2L });
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/uxv_field_generator",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MHDCSM, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.MHDCSM, 6L),
+                    ItemList.PseudoStar.get(4L),
+                    ItemList.Emitter_UXV.get(4L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.MAX), 4 },
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.SuperconductorUMVBase, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.SuperconductorUMVBase, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.MHDCSM, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.MHDCSM, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Universium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Universium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.MagMatter, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.MagMatter, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 16L),
+                    Materials.Neutronium.getNanite(12))
+                .fluidInputs(
+                    Materials.MHDCSM.getMolten(4 * INGOTS),
+                    Materials.SpaceTime.getMolten(4 * INGOTS),
+                    Materials.Universium.getMolten(4 * INGOTS),
+                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(1 * STACKS + 36 * INGOTS))
+                .itemOutput(ItemList.Field_Generator_UXV.get(1L))
+                .research(ItemList.Field_Generator_UMV.get(1L), 384000, 512, 64_000_000, 2)
+                .duration(50 * SECONDS)
+                .eut(TierEU.RECIPE_UMV));
+
+        RecipeModifiers.modifyAssemblyLine(
+            "assemblyLine/uxv_field_generator",
+            VariantNames.ALTERED_PRICING,
+            RecipePhase.SCALE,
+            d -> {
+                d.scaleAllInputsBalanced(
+                    GeneralConfig.partCostMultiplier,
+                    ItemList.Emitter_UXV.get(4L),
+                    new Object[] { OrePrefixes.circuit.get(Materials.MAX), 2L });
                 d.itemIn()
                     .condenseAll();
             });
