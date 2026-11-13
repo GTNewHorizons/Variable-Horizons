@@ -6,6 +6,7 @@ import com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps.Autoc
 import com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps.CAL;
 import com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps.CircuitAssembler;
 import com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps.CoAL;
+import com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps.EIC;
 import com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps.ManufacturingTable;
 import com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps.NAC;
 
@@ -19,6 +20,7 @@ public class RecipeLoader implements Runnable {
         new CAL().run();
         new CircuitAssembler().run();
         new CoAL().run();
+        new EIC().run();
         new NAC().run();
         new ManufacturingTable().run();
     }
