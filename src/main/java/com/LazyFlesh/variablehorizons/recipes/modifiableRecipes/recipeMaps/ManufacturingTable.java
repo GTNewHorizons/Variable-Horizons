@@ -28,6 +28,8 @@ public class ManufacturingTable implements Runnable {
     private static final Materials[] TIER_MATS = new Materials[] { Materials.ULV, Materials.LV, Materials.MV,
         Materials.HV, Materials.EV, Materials.IV, Materials.LuV, Materials.ZPM, Materials.UV, Materials.UHV,
         Materials.UEV, Materials.UIV, Materials.UMV, Materials.UXV, Materials.MAX };
+    private static final Materials[] DENSE_PLATE_MATS = new Materials[] { Materials.Bronze, Materials.CastIron,
+        Materials.Steel, Materials.Aluminium, Materials.Rubber };
 
     @Override
     public void run() {
@@ -38,6 +40,7 @@ public class ManufacturingTable implements Runnable {
         evParts();
         ivParts();
         hulls();
+        misc();
     }
 
     private static void circuitStuff() {
@@ -1129,5 +1132,17 @@ public class ManufacturingTable implements Runnable {
             d.itemIn()
                 .condenseAll();
         });
+    }
+
+    private static void misc() {
+        for (Materials plateMat : DENSE_PLATE_MATS) {
+            RecipeModifiers.defineBase(
+                "manufacturing/dense_" + plateMat.getName() + "_plate",
+                () -> RecipeDraft.of(manufacturingTableRecipes)
+                    .itemInputs(
+                        GTOreDictUnificator.get(OrePrefixes.plate, plateMat, 11L),
+                        GTUtility.getIntegratedCircuit(19))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDense, plateMat, 1L)));
+        }
     }
 }

@@ -187,6 +187,11 @@ public class MTEManufacturingTable extends MTEBasicMachine {
     }
 
     @Override
+    public boolean allowSelectCircuit() {
+        return true;
+    }
+
+    @Override
     protected BasicUIProperties getUIProperties() {
         return super.getUIProperties().toBuilder()
             .progressBarTextureMUI2(GTGuiTextures.PROGRESSBAR_ASSEMBLE)
