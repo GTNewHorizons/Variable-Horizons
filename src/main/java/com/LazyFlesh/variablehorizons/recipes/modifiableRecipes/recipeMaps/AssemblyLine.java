@@ -21,6 +21,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.AsslineDraft;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeDraft;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeModifiers;
@@ -41,8 +42,14 @@ import gtPlusPlus.core.material.MaterialsElements;
 
 public class AssemblyLine implements Runnable {
 
+    private static final VariantNames[] deps = new VariantNames[] { VariantNames.ALTERED_PRICING };
+
     @Override
     public void run() {
+        if (!randomUtil.checkDeps(deps)) {
+            return;
+        }
+
         circuitStuff();
         luvParts();
         zpmParts();

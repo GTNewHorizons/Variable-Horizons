@@ -12,6 +12,7 @@ import static gtPlusPlus.core.material.MaterialMisc.MUTATED_LIVING_SOLDER;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.CHRONOMATIC_GLASS;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeDraft;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeModifiers;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipePhase;
@@ -25,6 +26,8 @@ import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsAlloy;
 
 public class CAL implements Runnable {
+
+    private static final VariantNames[] deps = new VariantNames[] { VariantNames.ALTERED_PRICING };
 
     private static final String[] SMD_STRING = new String[] { "_smd", "_smd_advanced", "_smd_optical" };
     private static final ItemList[] RESISTORS = new ItemList[] { ItemList.Wrap_SMDResistors,
@@ -42,6 +45,10 @@ public class CAL implements Runnable {
 
     @Override
     public void run() {
+        if (!randomUtil.checkDeps(deps)) {
+            return;
+        }
+
         RecipeModifiers.defineBase(
             "CAL/good_electronic_circuit",
             () -> RecipeDraft.of(circuitAssemblyLineRecipes)

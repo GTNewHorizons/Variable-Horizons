@@ -15,6 +15,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeDraft;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeModifiers;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipePhase;
@@ -33,6 +34,8 @@ import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
 
 public class NAC implements Runnable {
+
+    private static final VariantNames[] deps = new VariantNames[] { VariantNames.ALTERED_PRICING };
 
     private static void addModifiableAssemblyMatrixRecipe(String id, List<Object> input, List<FluidStack> fluidInputs,
         CircuitComponentStack output, int duration, long eut, int recipeTier) {
@@ -77,6 +80,10 @@ public class NAC implements Runnable {
 
     @Override
     public void run() {
+        if (!randomUtil.checkDeps(deps)) {
+            return;
+        }
+
         assemblyMatrix();
         encasementWrapper();
         etchingArray();

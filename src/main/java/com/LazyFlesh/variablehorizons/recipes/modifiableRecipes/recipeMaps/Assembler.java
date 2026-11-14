@@ -8,6 +8,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeDraft;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeModifiers;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipePhase;
@@ -22,6 +23,8 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 public class Assembler implements Runnable {
+
+    private static final VariantNames[] deps = new VariantNames[] { VariantNames.ALTERED_PRICING };
 
     private static final Materials[] RUBBERS = new Materials[] { Materials.Rubber, Materials.RubberSilicone,
         Materials.StyreneButadieneRubber };
@@ -48,6 +51,10 @@ public class Assembler implements Runnable {
 
     @Override
     public void run() {
+        if (!randomUtil.checkDeps(deps)) {
+            return;
+        }
+
         circuitStuff();
         lvParts();
         mvParts();

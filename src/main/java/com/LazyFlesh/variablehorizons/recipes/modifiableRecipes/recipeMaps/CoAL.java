@@ -246,6 +246,7 @@ import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.HYPOGEN;
 import net.minecraft.item.ItemStack;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeDraft;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeModifiers;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipePhase;
@@ -259,6 +260,8 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 public class CoAL implements Runnable {
+
+    private static final VariantNames[] deps = new VariantNames[] { VariantNames.ALTERED_PRICING };
 
     private static final int COAL_LV = 1, COAL_MV = 2, COAL_HV = 3, COAL_EV = 4, COAL_IV = 5, COAL_LuV = 6,
         COAL_ZPM = 7, COAL_UV = 8, COAL_UHV = 9, COAL_UEV = 10, COAL_UIV = 11, COAL_UMV = 12, COAL_UXV = 13;
@@ -274,6 +277,10 @@ public class CoAL implements Runnable {
 
     @Override
     public void run() {
+        if (!randomUtil.checkDeps(deps)) {
+            return;
+        }
+
         lvParts();
         mvParts();
         hvParts();

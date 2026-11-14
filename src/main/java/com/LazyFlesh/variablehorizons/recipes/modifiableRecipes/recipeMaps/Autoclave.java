@@ -4,6 +4,7 @@ import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeDraft;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeModifiers;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipePhase;
@@ -15,8 +16,14 @@ import gregtech.api.enums.TierEU;
 
 public class Autoclave implements Runnable {
 
+    private static final VariantNames[] deps = new VariantNames[] { VariantNames.ALTERED_PRICING };
+
     @Override
     public void run() {
+        if (!randomUtil.checkDeps(deps)) {
+            return;
+        }
+
         RecipeModifiers.defineBase(
             "autoclave/realized_quantum_mainframe_rack",
             () -> RecipeDraft.of(autoclaveRecipes)

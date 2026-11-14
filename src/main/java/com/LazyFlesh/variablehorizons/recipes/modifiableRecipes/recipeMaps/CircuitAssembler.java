@@ -8,6 +8,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeDraft;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeModifiers;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipePhase;
@@ -27,6 +28,8 @@ import gtPlusPlus.core.material.MaterialsElements;
 
 public class CircuitAssembler implements Runnable {
 
+    private static final VariantNames[] deps = new VariantNames[] { VariantNames.ALTERED_PRICING };
+
     private static final String[] SMD_STRING = new String[] { "", "_smd", "_smd_advanced", "_smd_optical" };
     private static final ItemList[] RESISTORS = new ItemList[] { ItemList.Circuit_Parts_Resistor,
         ItemList.Circuit_Parts_ResistorSMD, ItemList.Circuit_Parts_ResistorASMD, ItemList.Circuit_Parts_ResistorXSMD };
@@ -45,6 +48,10 @@ public class CircuitAssembler implements Runnable {
 
     @Override
     public void run() {
+        if (!randomUtil.checkDeps(deps)) {
+            return;
+        }
+
         for (int i = 0; i < 4; i++) {
             int finalI = i;
             boolean basic = i == 0;

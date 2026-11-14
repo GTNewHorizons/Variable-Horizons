@@ -413,4 +413,12 @@ public class randomUtil {
         return input;
     }
 
+    public static boolean checkDeps(VariantNames[] deps) {
+        for (VariantNames variant : deps) {
+            if (variant.hasLoaded) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
