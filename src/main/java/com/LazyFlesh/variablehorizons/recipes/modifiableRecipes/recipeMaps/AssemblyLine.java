@@ -1,5 +1,7 @@
 package com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps;
 
+import static gregtech.api.enums.Mods.EternalSingularity;
+import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -59,6 +61,9 @@ public class AssemblyLine implements Runnable {
         uivParts();
         umvParts();
         uxvParts();
+        if (EternalSingularity.isModLoaded()) {
+            coils();
+        }
     }
 
     private static void circuitStuff() {
@@ -2272,6 +2277,78 @@ public class AssemblyLine implements Runnable {
                     GeneralConfig.partCostMultiplier,
                     ItemList.Emitter_UXV.get(4L),
                     new Object[] { OrePrefixes.circuit.get(Materials.MAX), 2L });
+                d.itemIn()
+                    .condenseAll();
+            });
+    }
+
+    private static void coils() {
+        RecipeModifiers.defineBase(
+            "assemblyLine/infinity_coil",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1L },
+                    GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Infinity, 8),
+                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 8),
+                    ItemList.Naquarite_Universal_Insulator_Foil.get(24))
+                .fluidInputs(Materials.DraconiumAwakened.getMolten(576))
+                .itemOutput(ItemList.Casing_Coil_Infinity.get(1L))
+                .research(ItemList.Casing_Coil_AwakenedDraconium.get(1L), 16_777_216, 2048, (int) TierEU.RECIPE_UEV, 1)
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_UEV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/infinity_coil", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(
+                    GeneralConfig.partCostMultiplier,
+                    new Object[] { OrePrefixes.circuit.get(Materials.UHV), 2L });
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/hypogen_coil",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    new Object[] { OrePrefixes.circuit.get(Materials.UEV), 1L },
+                    HYPOGEN.getWire02(64),
+                    HYPOGEN.getScrew(8),
+                    ItemList.Naquarite_Universal_Insulator_Foil.get(32))
+                .fluidInputs(Materials.Infinity.getMolten(576))
+                .itemOutput(ItemList.Casing_Coil_Hypogen.get(1L))
+                .research(ItemList.Casing_Coil_Infinity.get(1L), 16_777_216 * 2, 2048 * 2, (int) TierEU.RECIPE_UIV, 1)
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_UIV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/hypogen_coil", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(
+                    GeneralConfig.partCostMultiplier,
+                    new Object[] { OrePrefixes.circuit.get(Materials.UEV), 2L });
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "assemblyLine/eternal_coil",
+            () -> AsslineDraft.of()
+                .itemInputs(
+                    new Object[] { OrePrefixes.circuit.get(Materials.UIV), 1L },
+                    GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SpaceTime, 8),
+                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.SpaceTime, 8),
+                    getModItem(EternalSingularity.ID, "eternal_singularity", 1L),
+                    ItemList.Naquarite_Universal_Insulator_Foil.get(64))
+                .fluidInputs(HYPOGEN.getFluidStack(576))
+                .itemOutput(ItemList.Casing_Coil_Eternal.get(1L))
+                .research(ItemList.Casing_Coil_Hypogen.get(1L), 16_777_216 * 4, 2048 * 4, (int) TierEU.RECIPE_UMV, 1)
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_UMV));
+
+        RecipeModifiers
+            .modifyAssemblyLine("assemblyLine/eternal_coil", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(
+                    GeneralConfig.partCostMultiplier,
+                    new Object[] { OrePrefixes.circuit.get(Materials.UIV), 2L });
                 d.itemIn()
                     .condenseAll();
             });

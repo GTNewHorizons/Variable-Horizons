@@ -1,6 +1,7 @@
 package com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
@@ -13,12 +14,14 @@ import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeDraft;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeModifiers;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipePhase;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
+import com.dreammaster.item.NHItemList;
 
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
@@ -48,6 +51,15 @@ public class Assembler implements Runnable {
         Materials.Neutronium, Materials.Bedrockium, Materials.Infinity, Materials.TranscendentMetal,
         Materials.SpaceTime };
     private static final int[] SC_SPACETIME_AMOUNTS = new int[] { 4, 8, 12, 16, 24, 32, 40, 48, 56, 68, 72 };
+    private static final Materials[] COIL_MATS = new Materials[] { Materials.Cupronickel, Materials.Kanthal,
+        Materials.Nichrome, Materials.TPV, Materials.HSSG, Materials.HSSS, Materials.Naquadah, Materials.NaquadahAlloy,
+        Materials.Trinium, Materials.ElectrumFlux, Materials.DraconiumAwakened };
+    private static final ItemStack[] COILS = new ItemStack[] { ItemList.Casing_Coil_Cupronickel.get(1),
+        ItemList.Casing_Coil_Kanthal.get(1), ItemList.Casing_Coil_Nichrome.get(1),
+        ItemList.Casing_Coil_TungstenSteel.get(1), ItemList.Casing_Coil_HSSG.get(1), ItemList.Casing_Coil_HSSS.get(1),
+        ItemList.Casing_Coil_Naquadah.get(1), ItemList.Casing_Coil_NaquadahAlloy.get(1),
+        ItemList.Casing_Coil_Trinium.get(1), ItemList.Casing_Coil_ElectrumFlux.get(1),
+        ItemList.Casing_Coil_AwakenedDraconium.get(1) };
 
     @Override
     public void run() {
@@ -63,6 +75,7 @@ public class Assembler implements Runnable {
         ivParts();
         hulls();
         superconductors();
+        coils();
     }
 
     private static void circuitStuff() {
@@ -1600,6 +1613,96 @@ public class Assembler implements Runnable {
                     d.itemIn()
                         .condenseAll();
                     d.scaleAllOutputs(Math.max(1, GeneralConfig.partCostMultiplier));
+                });
+        }
+    }
+
+    private static void coils() {
+        long eut = TierEU.RECIPE_LV;
+        for (int i = 0; i < COIL_MATS.length; i++) {
+            int insulatorAmount = 8 + 4 * i;
+            if (i >= 8) {
+                insulatorAmount -= 32;
+            }
+            ItemStack insulator = i < 8 ? NHItemList.MicaInsulatorFoil.get(insulatorAmount)
+                : ItemList.Naquarite_Universal_Insulator_Foil.get(insulatorAmount);
+            eut *= 4;
+            if (i == 0 || i == 5 || i == 7) {
+                eut /= 4;
+            }
+
+            int finalI = i;
+            long finalEut = eut;
+            RecipeModifiers.defineBase(
+                "assembler/" + COIL_MATS[i].getName() + "_coil",
+                () -> RecipeDraft.of(assemblerRecipes)
+                    .itemInputs(
+                        GTOreDictUnificator.get(OrePrefixes.wireGt02, COIL_MATS[finalI], 8L),
+                        insulator,
+                        GTUtility.getIntegratedCircuit(3))
+                    .fluidInputs(
+                        finalI > 0 ? COIL_MATS[finalI - 1].getMolten(144L)
+                            : SubstituteFluidStack.soldering(1 * HALF_INGOTS))
+                    .itemOutputs(COILS[finalI])
+                    .duration((10 + 5 * finalI) * SECONDS)
+                    .eut(finalEut));
+
+            RecipeModifiers.modify(
+                "assembler/" + COIL_MATS[i].getName() + "_coil",
+                VariantNames.ALTERED_PRICING,
+                RecipePhase.SCALE,
+                d -> {
+                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                    if (GeneralConfig.partCostMultiplier > 1) {
+                        d.itemIn()
+                            .scale(insulator, 1 / Math.pow(GeneralConfig.partCostMultiplier, 2 / 3f));
+                    }
+                    d.itemIn()
+                        .condenseAll();
+                });
+        }
+
+        RecipeModifiers.defineBase(
+            "assembler/superconducting_coil_0",
+            () -> RecipeDraft.of(assemblerRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorLuV, 64L),
+                    NHItemList.MicaInsulatorFoil.get(48))
+                .fluidInputs(Materials.Trinium.getMolten(1440L))
+                .itemOutputs(ItemList.Casing_Coil_Superconductor.get(1L))
+                .duration(50 * SECONDS)
+                .eut(9001));
+
+        RecipeModifiers
+            .modify("assembler/superconducting_coil_0", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        for (int i = 0; i < 6; i++) {
+            int finalI = i;
+            int div2 = i / 2;
+            RecipeModifiers.defineBase(
+                "assembler/superconducting_coil_" + (i + 1),
+                () -> RecipeDraft.of(assemblerRecipes)
+                    .itemInputs(
+                        GTOreDictUnificator
+                            .get(OrePrefixes.wireGt02, SC[finalI + 5], (long) (32L / Math.pow(2, finalI))),
+                        ItemList.Naquarite_Universal_Insulator_Foil.get((long) (4 / Math.pow(2, div2))))
+                    .fluidInputs(Materials.Trinium.getMolten((long) (576L / Math.pow(2, finalI))))
+                    .itemOutputs(ItemList.Casing_Coil_Superconductor.get(1L))
+                    .duration(50 * SECONDS)
+                    .eut(9001));
+
+            RecipeModifiers.modify(
+                "assembler/superconducting_coil_" + (i + 1),
+                VariantNames.ALTERED_PRICING,
+                RecipePhase.SCALE,
+                d -> {
+                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                    d.itemIn()
+                        .condenseAll();
                 });
         }
     }
