@@ -68,9 +68,7 @@ public class CommonProxy {
     }
 
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
-    public void postInit(FMLPostInitializationEvent event) {
-        new RecipeLoader().run();
-    }
+    public void postInit(FMLPostInitializationEvent event) {}
 
     // damn nhcoremod... loads recipes too late. At least its not on server starting.
     public void completeLoad(FMLLoadCompleteEvent event) {
@@ -81,8 +79,8 @@ public class CommonProxy {
         // Then after the recipes are removed, add the custom recipes.
         // Some chance a custom recipe could be removed. if run before remover.
         VariableHorizons.LOG.info("Added recipes.");
+        new RecipeLoader().run();
         VariantLoader.loadVariantRecipes();
-
     }
 
     // register server commands in this event handler (Remove if not needed)

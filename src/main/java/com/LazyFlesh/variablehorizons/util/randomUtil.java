@@ -415,7 +415,7 @@ public class randomUtil {
 
     public static boolean checkDeps(VariantNames[] deps) {
         for (VariantNames variant : deps) {
-            if (variant.hasLoaded) {
+            if (VariantNames.activeContains(variant.id)) {
                 return true;
             }
         }
