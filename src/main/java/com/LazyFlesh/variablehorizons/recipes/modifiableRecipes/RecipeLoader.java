@@ -39,5 +39,7 @@ public class RecipeLoader implements Runnable {
         new EIC().run();
         new NAC().run();
         new ManufacturingTable().run();
+
+        // new Examples().run();
     }
 }
