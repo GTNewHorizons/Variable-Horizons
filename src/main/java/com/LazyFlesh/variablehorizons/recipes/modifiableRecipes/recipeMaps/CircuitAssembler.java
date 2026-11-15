@@ -1,5 +1,6 @@
 package com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps;
 
+import static com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoader.circuitCostMultiplier;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.recipe.RecipeMaps.circuitAssemblerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
@@ -7,7 +8,6 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeDraft;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeModifiers;
@@ -79,7 +79,7 @@ public class CircuitAssembler implements Runnable {
                     VariantNames.ALTERED_PRICING,
                     RecipePhase.SCALE,
                     d -> {
-                        d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                        d.scaleAllInputsBalanced(circuitCostMultiplier);
                         d.itemIn()
                             .condenseAll();
                     });
@@ -103,7 +103,7 @@ public class CircuitAssembler implements Runnable {
                     RecipePhase.SCALE,
                     d -> {
                         d.scaleAllInputsBalanced(
-                            GeneralConfig.partCostMultiplier,
+                            circuitCostMultiplier,
                             GTModHandler.getModItem(IndustrialCraft2.ID, "itemPartCircuit", 1, 0));
                         d.itemIn()
                             .condenseAll();
@@ -129,7 +129,7 @@ public class CircuitAssembler implements Runnable {
                     VariantNames.ALTERED_PRICING,
                     RecipePhase.SCALE,
                     d -> {
-                        d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                        d.scaleAllInputsBalanced(circuitCostMultiplier);
                         d.itemIn()
                             .condenseAll();
                     });
@@ -155,7 +155,7 @@ public class CircuitAssembler implements Runnable {
                     VariantNames.ALTERED_PRICING,
                     RecipePhase.SCALE,
                     d -> {
-                        d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                        d.scaleAllInputsBalanced(circuitCostMultiplier);
                         d.itemIn()
                             .condenseAll();
                     });
@@ -183,7 +183,7 @@ public class CircuitAssembler implements Runnable {
                     VariantNames.ALTERED_PRICING,
                     RecipePhase.SCALE,
                     d -> {
-                        d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Integrated.get(2));
+                        d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Integrated.get(2));
                         d.itemIn()
                             .condenseAll();
                     });
@@ -208,9 +208,7 @@ public class CircuitAssembler implements Runnable {
                     VariantNames.ALTERED_PRICING,
                     RecipePhase.SCALE,
                     d -> {
-                        d.scaleAllInputsBalanced(
-                            GeneralConfig.partCostMultiplier,
-                            ItemList.Circuit_Integrated_Good.get(1));
+                        d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Integrated_Good.get(1));
                         d.itemIn()
                             .condenseAll();
                     });
@@ -236,7 +234,7 @@ public class CircuitAssembler implements Runnable {
                     VariantNames.ALTERED_PRICING,
                     RecipePhase.SCALE,
                     d -> {
-                        d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                        d.scaleAllInputsBalanced(circuitCostMultiplier);
                         d.itemIn()
                             .condenseAll();
                     });
@@ -262,7 +260,7 @@ public class CircuitAssembler implements Runnable {
                     VariantNames.ALTERED_PRICING,
                     RecipePhase.SCALE,
                     d -> {
-                        d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Processor.get(2L));
+                        d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Processor.get(2L));
                         d.itemIn()
                             .condenseAll();
                     });
@@ -288,7 +286,7 @@ public class CircuitAssembler implements Runnable {
                     VariantNames.ALTERED_PRICING,
                     RecipePhase.SCALE,
                     d -> {
-                        d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Advanced.get(2L));
+                        d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Advanced.get(2L));
                         d.itemIn()
                             .condenseAll();
                     });
@@ -315,7 +313,7 @@ public class CircuitAssembler implements Runnable {
                     VariantNames.ALTERED_PRICING,
                     RecipePhase.SCALE,
                     d -> {
-                        d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Data.get(2L));
+                        d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Data.get(2L));
                         d.itemIn()
                             .condenseAll();
                     });
@@ -342,7 +340,7 @@ public class CircuitAssembler implements Runnable {
                         VariantNames.ALTERED_PRICING,
                         RecipePhase.SCALE,
                         d -> {
-                            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                            d.scaleAllInputsBalanced(circuitCostMultiplier);
                             d.itemIn()
                                 .condenseAll();
                         });
@@ -368,9 +366,7 @@ public class CircuitAssembler implements Runnable {
                         VariantNames.ALTERED_PRICING,
                         RecipePhase.SCALE,
                         d -> {
-                            d.scaleAllInputsBalanced(
-                                GeneralConfig.partCostMultiplier,
-                                ItemList.Circuit_Nanoprocessor.get(2L));
+                            d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Nanoprocessor.get(2L));
                             d.itemIn()
                                 .condenseAll();
                         });
@@ -396,9 +392,7 @@ public class CircuitAssembler implements Runnable {
                         VariantNames.ALTERED_PRICING,
                         RecipePhase.SCALE,
                         d -> {
-                            d.scaleAllInputsBalanced(
-                                GeneralConfig.partCostMultiplier,
-                                ItemList.Circuit_Nanocomputer.get(2L));
+                            d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Nanocomputer.get(2L));
                             d.itemIn()
                                 .condenseAll();
                         });
@@ -424,9 +418,7 @@ public class CircuitAssembler implements Runnable {
                         VariantNames.ALTERED_PRICING,
                         RecipePhase.SCALE,
                         d -> {
-                            d.scaleAllInputsBalanced(
-                                GeneralConfig.partCostMultiplier,
-                                ItemList.Circuit_Elitenanocomputer.get(2L));
+                            d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Elitenanocomputer.get(2L));
                             d.itemIn()
                                 .condenseAll();
                         });
@@ -452,7 +444,7 @@ public class CircuitAssembler implements Runnable {
                         VariantNames.ALTERED_PRICING,
                         RecipePhase.SCALE,
                         d -> {
-                            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                            d.scaleAllInputsBalanced(circuitCostMultiplier);
                             d.itemIn()
                                 .condenseAll();
                         });
@@ -478,9 +470,7 @@ public class CircuitAssembler implements Runnable {
                         VariantNames.ALTERED_PRICING,
                         RecipePhase.SCALE,
                         d -> {
-                            d.scaleAllInputsBalanced(
-                                GeneralConfig.partCostMultiplier,
-                                ItemList.Circuit_Quantumprocessor.get(2L));
+                            d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Quantumprocessor.get(2L));
                             d.itemIn()
                                 .condenseAll();
                         });
@@ -506,9 +496,7 @@ public class CircuitAssembler implements Runnable {
                         VariantNames.ALTERED_PRICING,
                         RecipePhase.SCALE,
                         d -> {
-                            d.scaleAllInputsBalanced(
-                                GeneralConfig.partCostMultiplier,
-                                ItemList.Circuit_Quantumcomputer.get(2L));
+                            d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Quantumcomputer.get(2L));
                             d.itemIn()
                                 .condenseAll();
                         });
@@ -535,7 +523,7 @@ public class CircuitAssembler implements Runnable {
                         RecipePhase.SCALE,
                         d -> {
                             d.scaleAllInputsBalanced(
-                                GeneralConfig.partCostMultiplier,
+                                circuitCostMultiplier,
                                 ItemList.Circuit_Masterquantumcomputer.get(2L));
                             d.itemIn()
                                 .condenseAll();
@@ -566,7 +554,7 @@ public class CircuitAssembler implements Runnable {
                     VariantNames.ALTERED_PRICING,
                     RecipePhase.SCALE,
                     d -> {
-                        d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                        d.scaleAllInputsBalanced(circuitCostMultiplier);
                         d.itemIn()
                             .condenseAll();
                     });
@@ -592,9 +580,7 @@ public class CircuitAssembler implements Runnable {
                     VariantNames.ALTERED_PRICING,
                     RecipePhase.SCALE,
                     d -> {
-                        d.scaleAllInputsBalanced(
-                            GeneralConfig.partCostMultiplier,
-                            ItemList.Circuit_Neuroprocessor.get(2));
+                        d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Neuroprocessor.get(2));
                         d.itemIn()
                             .condenseAll();
                     });
@@ -620,9 +606,7 @@ public class CircuitAssembler implements Runnable {
                     VariantNames.ALTERED_PRICING,
                     RecipePhase.SCALE,
                     d -> {
-                        d.scaleAllInputsBalanced(
-                            GeneralConfig.partCostMultiplier,
-                            ItemList.Circuit_Wetwarecomputer.get(2));
+                        d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Wetwarecomputer.get(2));
                         d.itemIn()
                             .condenseAll();
                     });
@@ -648,7 +632,7 @@ public class CircuitAssembler implements Runnable {
                     VariantNames.ALTERED_PRICING,
                     RecipePhase.SCALE,
                     d -> {
-                        d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                        d.scaleAllInputsBalanced(circuitCostMultiplier);
                         d.itemIn()
                             .condenseAll();
                     });
@@ -674,9 +658,7 @@ public class CircuitAssembler implements Runnable {
                     VariantNames.ALTERED_PRICING,
                     RecipePhase.SCALE,
                     d -> {
-                        d.scaleAllInputsBalanced(
-                            GeneralConfig.partCostMultiplier,
-                            ItemList.Circuit_Bioprocessor.get(2));
+                        d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Bioprocessor.get(2));
                         d.itemIn()
                             .condenseAll();
                     });
@@ -699,7 +681,7 @@ public class CircuitAssembler implements Runnable {
 
         RecipeModifiers
             .modify("circuitassembler/integrated_processor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.scaleAllInputsBalanced(circuitCostMultiplier);
                 d.itemIn()
                     .condenseAll();
             });
@@ -720,7 +702,7 @@ public class CircuitAssembler implements Runnable {
 
         RecipeModifiers
             .modify("circuitassembler/nano_processor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.scaleAllInputsBalanced(circuitCostMultiplier);
                 d.itemIn()
                     .condenseAll();
             });
@@ -741,7 +723,7 @@ public class CircuitAssembler implements Runnable {
 
         RecipeModifiers
             .modify("circuitassembler/quantum_processor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.scaleAllInputsBalanced(circuitCostMultiplier);
                 d.itemIn()
                     .condenseAll();
             });
@@ -764,7 +746,7 @@ public class CircuitAssembler implements Runnable {
 
         RecipeModifiers
             .modify("circuitassembler/crystal_processor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.scaleAllInputsBalanced(circuitCostMultiplier);
                 d.itemIn()
                     .condenseAll();
             });
@@ -785,7 +767,7 @@ public class CircuitAssembler implements Runnable {
 
         RecipeModifiers
             .modify("circuitassembler/crystal_processor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.scaleAllInputsBalanced(circuitCostMultiplier);
                 d.itemIn()
                     .condenseAll();
             });
@@ -808,7 +790,7 @@ public class CircuitAssembler implements Runnable {
 
         RecipeModifiers
             .modify("circuitassembler/crystal_assembly", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Crystalprocessor.get(2));
+                d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Crystalprocessor.get(2));
                 d.itemIn()
                     .condenseAll();
             });
@@ -831,7 +813,7 @@ public class CircuitAssembler implements Runnable {
 
         RecipeModifiers
             .modify("circuitassembler/crystal_computer", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Crystalcomputer.get(2));
+                d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Crystalcomputer.get(2));
                 d.itemIn()
                     .condenseAll();
             });
@@ -854,9 +836,7 @@ public class CircuitAssembler implements Runnable {
 
         RecipeModifiers
             .modify("circuitassembler/crystal_mainframe", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
-                    ItemList.Circuit_Ultimatecrystalcomputer.get(2));
+                d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Ultimatecrystalcomputer.get(2));
                 d.itemIn()
                     .condenseAll();
             });
@@ -877,7 +857,7 @@ public class CircuitAssembler implements Runnable {
 
         RecipeModifiers
             .modify("circuitassembler/wetware_processor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.scaleAllInputsBalanced(circuitCostMultiplier);
                 d.itemIn()
                     .condenseAll();
             });
@@ -898,7 +878,7 @@ public class CircuitAssembler implements Runnable {
 
         RecipeModifiers
             .modify("circuitassembler/bio_processor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.scaleAllInputsBalanced(circuitCostMultiplier);
                 d.itemIn()
                     .condenseAll();
             });
@@ -921,7 +901,7 @@ public class CircuitAssembler implements Runnable {
 
         RecipeModifiers
             .modify("circuitassembler/optical_processor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.scaleAllInputsBalanced(circuitCostMultiplier);
                 d.itemIn()
                     .condenseAll();
             });
@@ -947,7 +927,7 @@ public class CircuitAssembler implements Runnable {
 
             RecipeModifiers
                 .modify("circuitassembler/nand_chip_array" + i, VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                    d.scaleAllInputsBalanced(circuitCostMultiplier);
                     d.itemIn()
                         .condenseAll();
                 });
@@ -969,7 +949,7 @@ public class CircuitAssembler implements Runnable {
 
         RecipeModifiers
             .modify("circuitassembler/microprocessor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.scaleAllInputsBalanced(circuitCostMultiplier);
                 d.itemIn()
                     .condenseAll();
             });

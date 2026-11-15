@@ -1,5 +1,6 @@
 package com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps;
 
+import static com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoader.circuitCostMultiplier;
 import static gregtech.api.recipe.RecipeMaps.nanochipAssemblyMatrixRecipes;
 import static gregtech.api.recipe.RecipeMaps.nanochipEncasementWrapper;
 import static gregtech.api.recipe.RecipeMaps.nanochipEtchingArray;
@@ -14,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeDraft;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeModifiers;
@@ -107,7 +107,7 @@ public class NAC implements Runnable {
             "NAC/nand_chip",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/microprocessor",
@@ -126,7 +126,7 @@ public class NAC implements Runnable {
             "NAC/microprocessor",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/integrated_processor",
@@ -145,7 +145,7 @@ public class NAC implements Runnable {
             "NAC/integrated_processor",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/nano_processor",
@@ -164,7 +164,7 @@ public class NAC implements Runnable {
             "NAC/nano_processor",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/quantum_processor",
@@ -183,7 +183,7 @@ public class NAC implements Runnable {
             "NAC/quantum_processor",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/crystal_processor",
@@ -202,7 +202,7 @@ public class NAC implements Runnable {
             "NAC/crystal_processor",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/crystal_assembly",
@@ -223,9 +223,7 @@ public class NAC implements Runnable {
             "NAC/crystal_assembly",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                CircuitComponent.CrystalProcessor.getFakeStack(2)));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier, CircuitComponent.CrystalProcessor.getFakeStack(2)));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/crystal_computer",
@@ -246,9 +244,7 @@ public class NAC implements Runnable {
             "NAC/crystal_computer",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                CircuitComponent.CrystalAssembly.getFakeStack(2)));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier, CircuitComponent.CrystalAssembly.getFakeStack(2)));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/crystal_mainframe",
@@ -269,9 +265,7 @@ public class NAC implements Runnable {
             "NAC/crystal_mainframe",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                CircuitComponent.CrystalComputer.getFakeStack(1)));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier, CircuitComponent.CrystalComputer.getFakeStack(1)));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/wetware_processor",
@@ -290,7 +284,7 @@ public class NAC implements Runnable {
             "NAC/wetware_processor",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/wetware_assembly",
@@ -311,9 +305,7 @@ public class NAC implements Runnable {
             "NAC/wetware_assembly",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                CircuitComponent.WetwareProcessor.getFakeStack(1)));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier, CircuitComponent.WetwareProcessor.getFakeStack(1)));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/wetware_computer",
@@ -334,9 +326,7 @@ public class NAC implements Runnable {
             "NAC/wetware_computer",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                CircuitComponent.WetwareAssembly.getFakeStack(1)));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier, CircuitComponent.WetwareAssembly.getFakeStack(1)));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/wetware_mainframe",
@@ -368,9 +358,7 @@ public class NAC implements Runnable {
             "NAC/wetware_mainframe",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                CircuitComponent.WetwareComputer.getFakeStack(1)));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier, CircuitComponent.WetwareComputer.getFakeStack(1)));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/bio_processor",
@@ -391,7 +379,7 @@ public class NAC implements Runnable {
             "NAC/bio_processor",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/bio_processor_soc",
@@ -410,7 +398,7 @@ public class NAC implements Runnable {
             "NAC/bio_processor_soc",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/bio_assembly",
@@ -431,9 +419,7 @@ public class NAC implements Runnable {
             "NAC/bio_assembly",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                CircuitComponent.BiowareProcessor.getFakeStack(1)));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier, CircuitComponent.BiowareProcessor.getFakeStack(1)));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/bio_computer",
@@ -462,9 +448,7 @@ public class NAC implements Runnable {
             "NAC/bio_computer",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                CircuitComponent.BiowareAssembly.getFakeStack(1)));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier, CircuitComponent.BiowareAssembly.getFakeStack(1)));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/bio_mainframe",
@@ -494,9 +478,7 @@ public class NAC implements Runnable {
             "NAC/bio_mainframe",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                CircuitComponent.BiowareComputer.getFakeStack(1)));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier, CircuitComponent.BiowareComputer.getFakeStack(1)));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/optical_processor",
@@ -517,7 +499,7 @@ public class NAC implements Runnable {
             "NAC/optical_processor",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/optical_assembly",
@@ -546,9 +528,7 @@ public class NAC implements Runnable {
             "NAC/optical_assembly",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                CircuitComponent.OpticalProcessor.getFakeStack(1)));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier, CircuitComponent.OpticalProcessor.getFakeStack(1)));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/optical_computer",
@@ -579,9 +559,7 @@ public class NAC implements Runnable {
             "NAC/optical_computer",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                CircuitComponent.OpticalAssembly.getFakeStack(1)));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier, CircuitComponent.OpticalAssembly.getFakeStack(1)));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/optical_mainframe",
@@ -611,9 +589,7 @@ public class NAC implements Runnable {
             "NAC/optical_mainframe",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                CircuitComponent.OpticalComputer.getFakeStack(1)));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier, CircuitComponent.OpticalComputer.getFakeStack(1)));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/pico_circuit",
@@ -642,7 +618,7 @@ public class NAC implements Runnable {
             "NAC/pico_circuit",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, CircuitComponent.PicoCPU.getFakeStack(1)));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier, CircuitComponent.PicoCPU.getFakeStack(1)));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/quantum_circuit",
@@ -673,8 +649,7 @@ public class NAC implements Runnable {
             "NAC/quantum_circuit",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d
-                .scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, CircuitComponent.QuantumCPU.getFakeStack(1)));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier, CircuitComponent.QuantumCPU.getFakeStack(1)));
 
         addModifiableAssemblyMatrixRecipe(
             "NAC/planck_circuit",
@@ -706,8 +681,7 @@ public class NAC implements Runnable {
             "NAC/planck_circuit",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d
-                .scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, CircuitComponent.PlanckCPU.getFakeStack(1)));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier, CircuitComponent.PlanckCPU.getFakeStack(1)));
     }
 
     private void encasementWrapper() {
@@ -727,9 +701,8 @@ public class NAC implements Runnable {
             "NAC/pico_cpu",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                CircuitComponent.OpticalMainframeRack.getFakeStack(1)));
+            d -> d
+                .scaleAllInputsBalanced(circuitCostMultiplier, CircuitComponent.OpticalMainframeRack.getFakeStack(1)));
 
         RecipeModifiers.defineBase(
             "NAC/quantum_cpu",
@@ -747,9 +720,7 @@ public class NAC implements Runnable {
             "NAC/quantum_cpu",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                CircuitComponent.PicoCircuitRack.getFakeStack(1)));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier, CircuitComponent.PicoCircuitRack.getFakeStack(1)));
 
         RecipeModifiers.defineBase(
             "NAC/planck_cpu",
@@ -768,7 +739,7 @@ public class NAC implements Runnable {
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
             d -> d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                circuitCostMultiplier,
                 CircuitComponent.RealizedQuantumCircuitRack.getFakeStack(1)));
     }
 
@@ -787,9 +758,7 @@ public class NAC implements Runnable {
             "NAC/optical_mainframe_rack",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                CircuitComponent.OpticalMainframe.getFakeStack(1)));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier, CircuitComponent.OpticalMainframe.getFakeStack(1)));
 
         RecipeModifiers.defineBase(
             "NAC/pico_circuit_rack",
@@ -804,10 +773,8 @@ public class NAC implements Runnable {
                 .eut(TierEU.RECIPE_UMV));
 
         RecipeModifiers.modify("NAC/pico_circuit_rack", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                CircuitComponent.OrganizedPicoCircuit.getFakeStack(1));
-            d.scaleAllOutputsExcept(GeneralConfig.partCostMultiplier, CircuitComponent.PicoCircuitRack.getFakeStack(1));
+            d.scaleAllInputsBalanced(circuitCostMultiplier, CircuitComponent.OrganizedPicoCircuit.getFakeStack(1));
+            d.scaleAllOutputsExcept(circuitCostMultiplier, CircuitComponent.PicoCircuitRack.getFakeStack(1));
         });
 
         RecipeModifiers.defineBase(
@@ -825,11 +792,9 @@ public class NAC implements Runnable {
         RecipeModifiers
             .modify("NAC/lost_quantum_mainframe_rack", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    circuitCostMultiplier,
                     CircuitComponent.OrganizedQuantumCircuit.getFakeStack(1));
-                d.scaleAllOutputsExcept(
-                    GeneralConfig.partCostMultiplier,
-                    CircuitComponent.LostQuantumCircuitRack.getFakeStack(1));
+                d.scaleAllOutputsExcept(circuitCostMultiplier, CircuitComponent.LostQuantumCircuitRack.getFakeStack(1));
             });
     }
 }

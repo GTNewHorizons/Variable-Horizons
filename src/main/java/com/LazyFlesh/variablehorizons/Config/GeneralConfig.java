@@ -95,4 +95,16 @@ public class GeneralConfig {
     @Config.Comment("Component/hull/circuit cost multiplier for the altered pricing variant")
     @Config.DefaultDouble(1d)
     public static double partCostMultiplier;
+
+    @Config.Comment("Should tiered parts (motors and such) be affected by the altered pricing variant")
+    @Config.DefaultBoolean(true)
+    public static boolean changePartCosts;
+
+    @Config.Comment("Should circuits be affected by the altered pricing variant")
+    @Config.DefaultBoolean(true)
+    public static boolean changeCircuitCosts;
+
+    @Config.Comment("Should misc items (coils and such) be affected by the altered pricing variant")
+    @Config.DefaultBoolean(true)
+    public static boolean changeMiscCosts;
 }

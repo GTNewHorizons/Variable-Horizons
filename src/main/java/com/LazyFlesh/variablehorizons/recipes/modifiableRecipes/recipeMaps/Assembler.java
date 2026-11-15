@@ -1,5 +1,8 @@
 package com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps;
 
+import static com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoader.circuitCostMultiplier;
+import static com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoader.miscCostMultiplier;
+import static com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoader.partCostMultiplier;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -8,7 +11,6 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeDraft;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeModifiers;
@@ -146,7 +148,7 @@ public class Assembler implements Runnable {
 
         for (int i = 1; i < 6; i++) {
             RecipeModifiers.modify("assembler/vacuum_tube_" + i, VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.scaleAllInputsBalanced(circuitCostMultiplier);
                 d.itemIn()
                     .condenseAll();
             });
@@ -167,7 +169,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV));
 
         RecipeModifiers.modify("assembler/lv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -190,7 +192,7 @@ public class Assembler implements Runnable {
 
             RecipeModifiers
                 .modify("assembler/lv_pump_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_LV.get(1));
+                    d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_LV.get(1));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -211,7 +213,7 @@ public class Assembler implements Runnable {
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_LV.get(1));
+                    d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_LV.get(1));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -231,7 +233,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV));
 
         RecipeModifiers.modify("assembler/lv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_LV.get(1));
+            d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_LV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -251,7 +253,7 @@ public class Assembler implements Runnable {
 
         RecipeModifiers.modify("assembler/lv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 ItemList.Electric_Motor_LV.get(1),
                 ItemList.Electric_Piston_LV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 1L));
@@ -273,7 +275,7 @@ public class Assembler implements Runnable {
 
         RecipeModifiers.modify("assembler/lv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -293,7 +295,7 @@ public class Assembler implements Runnable {
 
         RecipeModifiers.modify("assembler/lv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -313,7 +315,7 @@ public class Assembler implements Runnable {
 
         RecipeModifiers.modify("assembler/lv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -334,7 +336,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV));
 
         RecipeModifiers.modify("assembler/mv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -357,7 +359,7 @@ public class Assembler implements Runnable {
 
             RecipeModifiers
                 .modify("assembler/mv_pump_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_MV.get(1));
+                    d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_MV.get(1));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -378,7 +380,7 @@ public class Assembler implements Runnable {
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_MV.get(1));
+                    d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_MV.get(1));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -398,7 +400,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV));
 
         RecipeModifiers.modify("assembler/mv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_MV.get(1));
+            d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_MV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -418,7 +420,7 @@ public class Assembler implements Runnable {
 
         RecipeModifiers.modify("assembler/mv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 ItemList.Electric_Motor_MV.get(1),
                 ItemList.Electric_Piston_MV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L));
@@ -440,7 +442,7 @@ public class Assembler implements Runnable {
 
         RecipeModifiers.modify("assembler/mv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -460,7 +462,7 @@ public class Assembler implements Runnable {
 
         RecipeModifiers.modify("assembler/mv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -480,7 +482,7 @@ public class Assembler implements Runnable {
 
         RecipeModifiers.modify("assembler/mv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -501,7 +503,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV));
 
         RecipeModifiers.modify("assembler/hv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -524,7 +526,7 @@ public class Assembler implements Runnable {
 
             RecipeModifiers
                 .modify("assembler/hv_pump_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_HV.get(1));
+                    d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_HV.get(1));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -545,7 +547,7 @@ public class Assembler implements Runnable {
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_HV.get(1));
+                    d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_HV.get(1));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -565,7 +567,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV));
 
         RecipeModifiers.modify("assembler/hv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_HV.get(1));
+            d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_HV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -585,7 +587,7 @@ public class Assembler implements Runnable {
 
         RecipeModifiers.modify("assembler/hv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 ItemList.Electric_Motor_HV.get(1),
                 ItemList.Electric_Piston_HV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L));
@@ -607,7 +609,7 @@ public class Assembler implements Runnable {
 
         RecipeModifiers.modify("assembler/hv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -627,7 +629,7 @@ public class Assembler implements Runnable {
 
         RecipeModifiers.modify("assembler/hv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -647,7 +649,7 @@ public class Assembler implements Runnable {
 
         RecipeModifiers.modify("assembler/hv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -668,7 +670,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV));
 
         RecipeModifiers.modify("assembler/ev_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -691,7 +693,7 @@ public class Assembler implements Runnable {
 
             RecipeModifiers
                 .modify("assembler/ev_pump_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_EV.get(1));
+                    d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_EV.get(1));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -712,7 +714,7 @@ public class Assembler implements Runnable {
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_EV.get(1));
+                    d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_EV.get(1));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -732,7 +734,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV));
 
         RecipeModifiers.modify("assembler/ev_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_EV.get(1));
+            d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_EV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -752,7 +754,7 @@ public class Assembler implements Runnable {
 
         RecipeModifiers.modify("assembler/ev_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 ItemList.Electric_Motor_EV.get(1),
                 ItemList.Electric_Piston_EV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L));
@@ -774,7 +776,7 @@ public class Assembler implements Runnable {
 
         RecipeModifiers.modify("assembler/ev_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -794,7 +796,7 @@ public class Assembler implements Runnable {
 
         RecipeModifiers.modify("assembler/ev_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -814,7 +816,7 @@ public class Assembler implements Runnable {
 
         RecipeModifiers.modify("assembler/ev_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -835,7 +837,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV));
 
         RecipeModifiers.modify("assembler/iv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -858,7 +860,7 @@ public class Assembler implements Runnable {
 
             RecipeModifiers
                 .modify("assembler/iv_pump_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_IV.get(1));
+                    d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_IV.get(1));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -879,7 +881,7 @@ public class Assembler implements Runnable {
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_IV.get(1));
+                    d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_IV.get(1));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -899,7 +901,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV));
 
         RecipeModifiers.modify("assembler/iv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_IV.get(1));
+            d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_IV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -919,7 +921,7 @@ public class Assembler implements Runnable {
 
         RecipeModifiers.modify("assembler/iv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 ItemList.Electric_Motor_IV.get(1),
                 ItemList.Electric_Piston_IV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L));
@@ -941,7 +943,7 @@ public class Assembler implements Runnable {
 
         RecipeModifiers.modify("assembler/iv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -961,7 +963,7 @@ public class Assembler implements Runnable {
 
         RecipeModifiers.modify("assembler/iv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -981,7 +983,7 @@ public class Assembler implements Runnable {
 
         RecipeModifiers.modify("assembler/iv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 1L));
             d.itemIn()
                 .condenseAll();
@@ -1000,7 +1002,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/bronze_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1017,7 +1019,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/bricked_bronze_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1033,7 +1035,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/steel_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1051,7 +1053,7 @@ public class Assembler implements Runnable {
 
         RecipeModifiers
             .modify("assembler/bricked_cast_iron_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.scaleAllInputsBalanced(miscCostMultiplier);
                 d.itemIn()
                     .condenseAll();
             });
@@ -1067,7 +1069,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/ulv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1084,7 +1086,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/ulv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_ULV.get(1));
+            d.scaleAllInputsBalanced(miscCostMultiplier, ItemList.Casing_ULV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -1100,7 +1102,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/lv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1117,7 +1119,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/lv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_LV.get(1));
+            d.scaleAllInputsBalanced(miscCostMultiplier, ItemList.Casing_LV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -1133,7 +1135,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/mv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1150,7 +1152,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/mv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_MV.get(1));
+            d.scaleAllInputsBalanced(miscCostMultiplier, ItemList.Casing_MV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -1166,7 +1168,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/hv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1183,7 +1185,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/hv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_HV.get(1));
+            d.scaleAllInputsBalanced(miscCostMultiplier, ItemList.Casing_HV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -1199,7 +1201,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/ev_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1216,7 +1218,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/ev_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_EV.get(1));
+            d.scaleAllInputsBalanced(miscCostMultiplier, ItemList.Casing_EV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -1232,7 +1234,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/iv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1249,7 +1251,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/iv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_IV.get(1));
+            d.scaleAllInputsBalanced(miscCostMultiplier, ItemList.Casing_IV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -1266,7 +1268,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/luv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1283,7 +1285,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/luv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_LuV.get(1));
+            d.scaleAllInputsBalanced(miscCostMultiplier, ItemList.Casing_LuV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -1299,7 +1301,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/zpm_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1316,7 +1318,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/zpm_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_ZPM.get(1));
+            d.scaleAllInputsBalanced(miscCostMultiplier, ItemList.Casing_ZPM.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -1332,7 +1334,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/uv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1349,7 +1351,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/uv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_UV.get(1));
+            d.scaleAllInputsBalanced(miscCostMultiplier, ItemList.Casing_UV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -1365,7 +1367,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/uhv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1382,7 +1384,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/uhv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_MAX.get(1));
+            d.scaleAllInputsBalanced(miscCostMultiplier, ItemList.Casing_MAX.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -1398,7 +1400,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/uev_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1415,7 +1417,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/uev_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_UEV.get(1));
+            d.scaleAllInputsBalanced(miscCostMultiplier, ItemList.Casing_UEV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -1431,7 +1433,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/uiv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1448,7 +1450,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/uiv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_UIV.get(1));
+            d.scaleAllInputsBalanced(miscCostMultiplier, ItemList.Casing_UIV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -1464,7 +1466,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/umv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1481,7 +1483,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/umv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_UMV.get(1));
+            d.scaleAllInputsBalanced(miscCostMultiplier, ItemList.Casing_UMV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -1498,7 +1500,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/uxv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1515,7 +1517,7 @@ public class Assembler implements Runnable {
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/uxv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_UXV.get(1));
+            d.scaleAllInputsBalanced(miscCostMultiplier, ItemList.Casing_UXV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -1558,10 +1560,10 @@ public class Assembler implements Runnable {
                     VariantNames.ALTERED_PRICING,
                     RecipePhase.SCALE,
                     d -> {
-                        d.scaleAllInputsExcept(Math.max(1, GeneralConfig.partCostMultiplier), PUMPS[finalI]);
+                        d.scaleAllInputsExcept(Math.max(1, partCostMultiplier), PUMPS[finalI]);
                         d.itemIn()
                             .condenseAll();
-                        d.scaleAllOutputs(Math.max(1, GeneralConfig.partCostMultiplier));
+                        d.scaleAllOutputs(Math.max(1, partCostMultiplier));
                     });
             }
 
@@ -1584,10 +1586,10 @@ public class Assembler implements Runnable {
                     VariantNames.ALTERED_PRICING,
                     RecipePhase.SCALE,
                     d -> {
-                        d.scaleAllInputsExcept(Math.max(1, GeneralConfig.partCostMultiplier), PUMPS[finalI]);
+                        d.scaleAllInputsExcept(Math.max(1, partCostMultiplier), PUMPS[finalI]);
                         d.itemIn()
                             .condenseAll();
-                        d.scaleAllOutputs(Math.max(1, GeneralConfig.partCostMultiplier));
+                        d.scaleAllOutputs(Math.max(1, partCostMultiplier));
                     });
             }
 
@@ -1609,10 +1611,10 @@ public class Assembler implements Runnable {
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
-                    d.scaleAllInputsExcept(Math.max(1, GeneralConfig.partCostMultiplier), PUMPS[finalI]);
+                    d.scaleAllInputsExcept(Math.max(1, partCostMultiplier), PUMPS[finalI]);
                     d.itemIn()
                         .condenseAll();
-                    d.scaleAllOutputs(Math.max(1, GeneralConfig.partCostMultiplier));
+                    d.scaleAllOutputs(Math.max(1, partCostMultiplier));
                 });
         }
     }
@@ -1652,10 +1654,10 @@ public class Assembler implements Runnable {
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
-                    if (GeneralConfig.partCostMultiplier > 1) {
+                    d.scaleAllInputsBalanced(miscCostMultiplier);
+                    if (miscCostMultiplier > 1) {
                         d.itemIn()
-                            .scale(insulator, 1 / Math.pow(GeneralConfig.partCostMultiplier, 2 / 3f));
+                            .scale(insulator, 1 / Math.pow(miscCostMultiplier, 2 / 3f));
                     }
                     d.itemIn()
                         .condenseAll();
@@ -1675,7 +1677,7 @@ public class Assembler implements Runnable {
 
         RecipeModifiers
             .modify("assembler/superconducting_coil_0", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.scaleAllInputsBalanced(miscCostMultiplier);
                 d.itemIn()
                     .condenseAll();
             });
@@ -1700,7 +1702,7 @@ public class Assembler implements Runnable {
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                    d.scaleAllInputsBalanced(miscCostMultiplier);
                     d.itemIn()
                         .condenseAll();
                 });

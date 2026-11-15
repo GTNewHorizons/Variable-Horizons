@@ -1,13 +1,13 @@
 package com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps;
 
 import static bartworks.API.recipe.BartWorksRecipeMaps.electricImplosionCompressorRecipes;
+import static com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoader.circuitCostMultiplier;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.Mods.OpenComputers;
 import static gregtech.api.enums.Mods.SuperSolarPanels;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 
-import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeDraft;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeModifiers;
@@ -78,11 +78,11 @@ public class EIC implements Runnable {
 
         RecipeModifiers.modify("EIC/mhdcsm_" + part.getName(), VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsExcept(
-                Math.max(1, GeneralConfig.partCostMultiplier),
+                Math.max(1, circuitCostMultiplier),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 1));
             d.itemIn()
                 .condenseAll();
-            d.scaleAllOutputs(Math.max(1, GeneralConfig.partCostMultiplier));
+            d.scaleAllOutputs(Math.max(1, circuitCostMultiplier));
         });
     }
 }

@@ -1,5 +1,8 @@
 package com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps;
 
+import static com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoader.circuitCostMultiplier;
+import static com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoader.miscCostMultiplier;
+import static com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoader.partCostMultiplier;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -22,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.AsslineDraft;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeDraft;
@@ -105,9 +107,7 @@ public class AssemblyLine implements Runnable {
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
             d -> {
-                d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
-                    ItemList.Circuit_Wetwaresupercomputer.get(2L));
+                d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Wetwaresupercomputer.get(2L));
                 d.itemIn()
                     .condenseAll();
             });
@@ -141,7 +141,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/bio_computer", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Biowarecomputer.get(2L));
+                d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Biowarecomputer.get(2L));
                 d.itemIn()
                     .condenseAll();
             });
@@ -180,9 +180,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/bio_mainframe", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
-                    ItemList.Circuit_Biowaresupercomputer.get(2L));
+                d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Biowaresupercomputer.get(2L));
                 d.itemIn()
                     .condenseAll();
             });
@@ -214,7 +212,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/optical_assembly", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_OpticalProcessor.get(2L));
+                d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_OpticalProcessor.get(2L));
                 d.itemIn()
                     .condenseAll();
             });
@@ -248,7 +246,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/optical_computer", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_OpticalAssembly.get(2L));
+                d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_OpticalAssembly.get(2L));
                 d.itemIn()
                     .condenseAll();
             });
@@ -287,7 +285,7 @@ public class AssemblyLine implements Runnable {
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
             d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_OpticalComputer.get(2L));
+                d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_OpticalComputer.get(2L));
                 d.itemIn()
                     .condenseAll();
             });
@@ -311,7 +309,7 @@ public class AssemblyLine implements Runnable {
                 .duration(30 * SECONDS));
 
         RecipeModifiers.modify("assemblyLine/luv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -335,7 +333,7 @@ public class AssemblyLine implements Runnable {
                 .duration(30 * SECONDS));
 
         RecipeModifiers.modify("assemblyLine/luv_pump", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_LuV.get(1));
+            d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_LuV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -358,7 +356,7 @@ public class AssemblyLine implements Runnable {
                 .eut(TierEU.RECIPE_IV));
 
         RecipeModifiers.modify("assemblyLine/luv_conveyor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_LuV.get(1));
+            d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_LuV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -383,7 +381,7 @@ public class AssemblyLine implements Runnable {
                 .eut(TierEU.RECIPE_IV));
 
         RecipeModifiers.modify("assemblyLine/luv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_LuV.get(1));
+            d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_LuV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -410,7 +408,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers.modify("assemblyLine/luv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 ItemList.Electric_Motor_LuV.get(1),
                 ItemList.Electric_Piston_LuV.get(1),
                 new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },
@@ -442,7 +440,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers.modify("assemblyLine/luv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 ItemList.Electric_Motor_LuV.get(1),
                 new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 });
             d.itemIn()
@@ -471,7 +469,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers.modify("assemblyLine/luv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 ItemList.Electric_Motor_LuV.get(1),
                 new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 });
             d.itemIn()
@@ -501,7 +499,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers.modify("assemblyLine/luv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 ItemList.Emitter_LuV.get(1),
                 new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 });
             d.itemIn()
@@ -530,7 +528,7 @@ public class AssemblyLine implements Runnable {
                 .duration(30 * SECONDS));
 
         RecipeModifiers.modify("assemblyLine/zpm_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -554,7 +552,7 @@ public class AssemblyLine implements Runnable {
                 .duration(30 * SECONDS));
 
         RecipeModifiers.modify("assemblyLine/zpm_pump", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_ZPM.get(1));
+            d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_ZPM.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -577,7 +575,7 @@ public class AssemblyLine implements Runnable {
                 .eut(TierEU.RECIPE_LuV));
 
         RecipeModifiers.modify("assemblyLine/zpm_conveyor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_ZPM.get(1));
+            d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_ZPM.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -602,7 +600,7 @@ public class AssemblyLine implements Runnable {
                 .eut(TierEU.RECIPE_LuV));
 
         RecipeModifiers.modify("assemblyLine/zpm_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_ZPM.get(1));
+            d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_ZPM.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -629,7 +627,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers.modify("assemblyLine/zpm_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 ItemList.Electric_Motor_ZPM.get(2),
                 ItemList.Electric_Piston_ZPM.get(1),
                 new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 2 },
@@ -661,7 +659,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers.modify("assemblyLine/zpm_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 ItemList.Electric_Motor_ZPM.get(1),
                 new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 });
             d.itemIn()
@@ -690,7 +688,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers.modify("assemblyLine/zpm_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 ItemList.Electric_Motor_ZPM.get(1),
                 new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 });
             d.itemIn()
@@ -720,7 +718,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers.modify("assemblyLine/zpm_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 ItemList.Emitter_ZPM.get(1),
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 });
             d.itemIn()
@@ -755,7 +753,7 @@ public class AssemblyLine implements Runnable {
                 .duration(30 * SECONDS));
 
         RecipeModifiers.modify("assemblyLine/uv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -782,7 +780,7 @@ public class AssemblyLine implements Runnable {
                 .eut(TierEU.RECIPE_ZPM));
 
         RecipeModifiers.modify("assemblyLine/uv_pump", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UV.get(1));
+            d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_UV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -808,7 +806,7 @@ public class AssemblyLine implements Runnable {
                 .eut(TierEU.RECIPE_ZPM));
 
         RecipeModifiers.modify("assemblyLine/uv_conveyor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UV.get(1));
+            d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_UV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -836,7 +834,7 @@ public class AssemblyLine implements Runnable {
                 .eut(TierEU.RECIPE_ZPM));
 
         RecipeModifiers.modify("assemblyLine/uv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UV.get(1));
+            d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_UV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -866,7 +864,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers.modify("assemblyLine/uv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 ItemList.Electric_Motor_UV.get(2),
                 ItemList.Electric_Piston_UV.get(1),
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 2 },
@@ -900,7 +898,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers.modify("assemblyLine/uv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 ItemList.Electric_Motor_UV.get(1),
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 });
             d.itemIn()
@@ -931,7 +929,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers.modify("assemblyLine/uv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 ItemList.Electric_Motor_UV.get(1),
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 });
             d.itemIn()
@@ -965,7 +963,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers.modify("assemblyLine/uv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 ItemList.Emitter_UV.get(1),
                 new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4 });
             d.itemIn()
@@ -1002,7 +1000,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uhv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.scaleAllInputsBalanced(partCostMultiplier);
                 d.itemIn()
                     .condenseAll();
             });
@@ -1029,7 +1027,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uhv_pump", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UHV.get(1L));
+                d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_UHV.get(1L));
                 d.itemIn()
                     .condenseAll();
             });
@@ -1055,7 +1053,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uhv_conveyor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UHV.get(1L));
+                d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_UHV.get(1L));
                 d.itemIn()
                     .condenseAll();
             });
@@ -1083,7 +1081,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uhv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UHV.get(1L));
+                d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_UHV.get(1L));
                 d.itemIn()
                     .condenseAll();
             });
@@ -1113,7 +1111,7 @@ public class AssemblyLine implements Runnable {
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uhv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    partCostMultiplier,
                     ItemList.Electric_Motor_UHV.get(2L),
                     ItemList.Electric_Piston_UHV.get(1L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UHV), 2L },
@@ -1148,7 +1146,7 @@ public class AssemblyLine implements Runnable {
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uhv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    partCostMultiplier,
                     ItemList.Electric_Motor_UHV.get(1L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4L });
                 d.itemIn()
@@ -1180,7 +1178,7 @@ public class AssemblyLine implements Runnable {
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uhv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    partCostMultiplier,
                     ItemList.Electric_Motor_UHV.get(1L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4L });
                 d.itemIn()
@@ -1219,7 +1217,7 @@ public class AssemblyLine implements Runnable {
             RecipePhase.SCALE,
             d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    partCostMultiplier,
                     ItemList.Emitter_UHV.get(1L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4L });
                 d.itemIn()
@@ -1256,7 +1254,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uev_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.scaleAllInputsBalanced(partCostMultiplier);
                 d.itemIn()
                     .condenseAll();
             });
@@ -1283,7 +1281,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uev_pump", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UEV.get(1L));
+                d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_UEV.get(1L));
                 d.itemIn()
                     .condenseAll();
             });
@@ -1310,7 +1308,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uev_conveyor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UEV.get(1L));
+                d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_UEV.get(1L));
                 d.itemIn()
                     .condenseAll();
             });
@@ -1338,7 +1336,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uev_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UEV.get(1L));
+                d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_UEV.get(1L));
                 d.itemIn()
                     .condenseAll();
             });
@@ -1368,7 +1366,7 @@ public class AssemblyLine implements Runnable {
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uev_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    partCostMultiplier,
                     ItemList.Electric_Motor_UEV.get(2L),
                     ItemList.Electric_Piston_UEV.get(1L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UEV), 2L },
@@ -1403,7 +1401,7 @@ public class AssemblyLine implements Runnable {
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uev_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    partCostMultiplier,
                     ItemList.Electric_Motor_UEV.get(2L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4L });
                 d.itemIn()
@@ -1435,7 +1433,7 @@ public class AssemblyLine implements Runnable {
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uev_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    partCostMultiplier,
                     ItemList.Electric_Motor_UEV.get(2L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4L });
                 d.itemIn()
@@ -1474,7 +1472,7 @@ public class AssemblyLine implements Runnable {
             RecipePhase.SCALE,
             d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    partCostMultiplier,
                     ItemList.Emitter_UEV.get(2L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UIV), 4L });
                 d.itemIn()
@@ -1511,7 +1509,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uiv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.scaleAllInputsBalanced(partCostMultiplier);
                 d.itemIn()
                     .condenseAll();
             });
@@ -1538,7 +1536,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uiv_pump", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UIV.get(1L));
+                d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_UIV.get(1L));
                 d.itemIn()
                     .condenseAll();
             });
@@ -1565,7 +1563,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uiv_conveyor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UIV.get(1L));
+                d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_UIV.get(1L));
                 d.itemIn()
                     .condenseAll();
             });
@@ -1593,7 +1591,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uiv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UIV.get(2L));
+                d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_UIV.get(2L));
                 d.itemIn()
                     .condenseAll();
             });
@@ -1623,7 +1621,7 @@ public class AssemblyLine implements Runnable {
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uiv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    partCostMultiplier,
                     ItemList.Electric_Motor_UIV.get(2L),
                     ItemList.Electric_Piston_UIV.get(1L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UIV), 2L },
@@ -1658,7 +1656,7 @@ public class AssemblyLine implements Runnable {
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uiv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    partCostMultiplier,
                     ItemList.Electric_Motor_UIV.get(2L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UIV), 4L });
                 d.itemIn()
@@ -1690,7 +1688,7 @@ public class AssemblyLine implements Runnable {
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uiv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    partCostMultiplier,
                     ItemList.Electric_Motor_UIV.get(2L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UIV), 4L });
                 d.itemIn()
@@ -1729,7 +1727,7 @@ public class AssemblyLine implements Runnable {
             RecipePhase.SCALE,
             d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    partCostMultiplier,
                     ItemList.Emitter_UIV.get(4L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4 });
                 d.itemIn()
@@ -1767,7 +1765,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/umv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.scaleAllInputsBalanced(partCostMultiplier);
                 d.itemIn()
                     .condenseAll();
             });
@@ -1795,7 +1793,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/umv_pump", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UMV.get(1L));
+                d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_UMV.get(1L));
                 d.itemIn()
                     .condenseAll();
             });
@@ -1823,7 +1821,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/umv_conveyor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UMV.get(1L));
+                d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_UMV.get(1L));
                 d.itemIn()
                     .condenseAll();
             });
@@ -1852,7 +1850,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/umv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UMV.get(1L));
+                d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_UMV.get(1L));
                 d.itemIn()
                     .condenseAll();
             });
@@ -1883,7 +1881,7 @@ public class AssemblyLine implements Runnable {
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/umv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    partCostMultiplier,
                     ItemList.Electric_Motor_UMV.get(2L),
                     ItemList.Electric_Piston_UMV.get(1L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UMV), 2L },
@@ -1919,7 +1917,7 @@ public class AssemblyLine implements Runnable {
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/umv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    partCostMultiplier,
                     ItemList.Electric_Motor_UMV.get(2L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4L });
                 d.itemIn()
@@ -1952,7 +1950,7 @@ public class AssemblyLine implements Runnable {
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/umv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    partCostMultiplier,
                     ItemList.Electric_Motor_UMV.get(2L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4L });
                 d.itemIn()
@@ -1992,7 +1990,7 @@ public class AssemblyLine implements Runnable {
             RecipePhase.SCALE,
             d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    partCostMultiplier,
                     ItemList.Emitter_UMV.get(4L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UXV), 4 });
                 d.itemIn()
@@ -2031,7 +2029,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uxv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.scaleAllInputsBalanced(partCostMultiplier);
                 d.itemIn()
                     .condenseAll();
             });
@@ -2062,7 +2060,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uxv_pump", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UXV.get(1L));
+                d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_UXV.get(1L));
                 d.itemIn()
                     .condenseAll();
             });
@@ -2093,7 +2091,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uxv_conveyor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UXV.get(1L));
+                d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_UXV.get(1L));
                 d.itemIn()
                     .condenseAll();
             });
@@ -2125,7 +2123,7 @@ public class AssemblyLine implements Runnable {
 
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uxv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_UXV.get(1L));
+                d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_UXV.get(1L));
                 d.itemIn()
                     .condenseAll();
             });
@@ -2159,7 +2157,7 @@ public class AssemblyLine implements Runnable {
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uxv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    partCostMultiplier,
                     ItemList.Electric_Motor_UXV.get(2L),
                     ItemList.Electric_Piston_UXV.get(1L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UXV), 2L },
@@ -2197,7 +2195,7 @@ public class AssemblyLine implements Runnable {
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uxv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    partCostMultiplier,
                     ItemList.Electric_Motor_UXV.get(2L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UXV), 2L });
                 d.itemIn()
@@ -2232,7 +2230,7 @@ public class AssemblyLine implements Runnable {
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/uxv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    partCostMultiplier,
                     ItemList.Electric_Motor_UXV.get(2L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UXV), 2L });
                 d.itemIn()
@@ -2274,7 +2272,7 @@ public class AssemblyLine implements Runnable {
             RecipePhase.SCALE,
             d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    partCostMultiplier,
                     ItemList.Emitter_UXV.get(4L),
                     new Object[] { OrePrefixes.circuit.get(Materials.MAX), 2L });
                 d.itemIn()
@@ -2300,7 +2298,7 @@ public class AssemblyLine implements Runnable {
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/infinity_coil", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    miscCostMultiplier,
                     new Object[] { OrePrefixes.circuit.get(Materials.UHV), 2L });
                 d.itemIn()
                     .condenseAll();
@@ -2323,7 +2321,7 @@ public class AssemblyLine implements Runnable {
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/hypogen_coil", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    miscCostMultiplier,
                     new Object[] { OrePrefixes.circuit.get(Materials.UEV), 2L });
                 d.itemIn()
                     .condenseAll();
@@ -2347,7 +2345,7 @@ public class AssemblyLine implements Runnable {
         RecipeModifiers
             .modifyAssemblyLine("assemblyLine/eternal_coil", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    miscCostMultiplier,
                     new Object[] { OrePrefixes.circuit.get(Materials.UIV), 2L });
                 d.itemIn()
                     .condenseAll();

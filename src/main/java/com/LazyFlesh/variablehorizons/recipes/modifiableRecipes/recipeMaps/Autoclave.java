@@ -1,9 +1,9 @@
 package com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps;
 
+import static com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoader.circuitCostMultiplier;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeDraft;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeModifiers;
@@ -37,6 +37,6 @@ public class Autoclave implements Runnable {
             "autoclave/realized_quantum_mainframe_rack",
             VariantNames.ALTERED_PRICING,
             RecipePhase.SCALE,
-            d -> d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.LostQuantumCircuitRack.get(1)));
+            d -> d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.LostQuantumCircuitRack.get(1)));
     }
 }

@@ -1,12 +1,14 @@
 package com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps;
 
 import static com.LazyFlesh.variablehorizons.recipes.VHRecipeMaps.manufacturingTableRecipes;
+import static com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoader.circuitCostMultiplier;
+import static com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoader.miscCostMultiplier;
+import static com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoader.partCostMultiplier;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeDraft;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeModifiers;
@@ -63,7 +65,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Circuit_Parts_Vacuum_Tube.get(1L)));
 
         RecipeModifiers.modify("manufacturing/vacuum_tube", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(circuitCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -81,7 +83,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers
             .modify("manufacturing/electronic_circuit", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Parts_Vacuum_Tube.get(2));
+                d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Parts_Vacuum_Tube.get(2));
                 d.itemIn()
                     .condenseAll();
             });
@@ -100,7 +102,7 @@ public class ManufacturingTable implements Runnable {
         RecipeModifiers
             .modify("manufacturing/good_electronic_circuit", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
                 d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
+                    circuitCostMultiplier,
                     GTModHandler.getModItem(IndustrialCraft2.ID, "itemPartCircuit", 1, 0));
                 d.itemIn()
                     .condenseAll();
@@ -145,7 +147,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Electric_Motor_LV.get(1L)));
 
         RecipeModifiers.modify("manufacturing/lv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -169,7 +171,7 @@ public class ManufacturingTable implements Runnable {
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_LV.get(1));
+                    d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_LV.get(1));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -188,7 +190,7 @@ public class ManufacturingTable implements Runnable {
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_LV.get(1));
+                    d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_LV.get(1));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -206,7 +208,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Electric_Piston_LV.get(1L)));
 
         RecipeModifiers.modify("manufacturing/lv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_LV.get(1));
+            d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_LV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -224,7 +226,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers.modify("manufacturing/lv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 ItemList.Electric_Motor_LV.get(1),
                 ItemList.Electric_Piston_LV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 1L));
@@ -244,7 +246,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers.modify("manufacturing/lv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -262,7 +264,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers.modify("manufacturing/lv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -279,7 +281,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers.modify("manufacturing/lv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -299,7 +301,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Electric_Motor_MV.get(1L)));
 
         RecipeModifiers.modify("manufacturing/mv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -323,7 +325,7 @@ public class ManufacturingTable implements Runnable {
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_MV.get(1));
+                    d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_MV.get(1));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -342,7 +344,7 @@ public class ManufacturingTable implements Runnable {
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_MV.get(1));
+                    d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_MV.get(1));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -360,7 +362,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Electric_Piston_MV.get(1L)));
 
         RecipeModifiers.modify("manufacturing/mv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_MV.get(1));
+            d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_MV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -378,7 +380,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers.modify("manufacturing/mv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 ItemList.Electric_Motor_MV.get(1),
                 ItemList.Electric_Piston_MV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L));
@@ -398,7 +400,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers.modify("manufacturing/mv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -416,7 +418,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers.modify("manufacturing/mv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -433,7 +435,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers.modify("manufacturing/mv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -452,7 +454,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Electric_Motor_HV.get(1L)));
 
         RecipeModifiers.modify("manufacturing/hv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -476,7 +478,7 @@ public class ManufacturingTable implements Runnable {
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_HV.get(1));
+                    d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_HV.get(1));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -495,7 +497,7 @@ public class ManufacturingTable implements Runnable {
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_HV.get(1));
+                    d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_HV.get(1));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -513,7 +515,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Electric_Piston_HV.get(1L)));
 
         RecipeModifiers.modify("manufacturing/hv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_HV.get(1));
+            d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_HV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -531,7 +533,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers.modify("manufacturing/hv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 ItemList.Electric_Motor_HV.get(1),
                 ItemList.Electric_Piston_HV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L));
@@ -551,7 +553,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers.modify("manufacturing/hv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -569,7 +571,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers.modify("manufacturing/hv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -586,7 +588,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers.modify("manufacturing/hv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -605,7 +607,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Electric_Motor_EV.get(1L)));
 
         RecipeModifiers.modify("manufacturing/ev_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -629,7 +631,7 @@ public class ManufacturingTable implements Runnable {
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_EV.get(1));
+                    d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_EV.get(1));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -648,7 +650,7 @@ public class ManufacturingTable implements Runnable {
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_EV.get(1));
+                    d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_EV.get(1));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -666,7 +668,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Electric_Piston_EV.get(1L)));
 
         RecipeModifiers.modify("manufacturing/ev_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_EV.get(1));
+            d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_EV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -684,7 +686,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers.modify("manufacturing/ev_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 ItemList.Electric_Motor_EV.get(1),
                 ItemList.Electric_Piston_EV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L));
@@ -704,7 +706,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers.modify("manufacturing/ev_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -722,7 +724,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers.modify("manufacturing/ev_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -739,7 +741,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers.modify("manufacturing/ev_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -758,7 +760,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Electric_Motor_IV.get(1L)));
 
         RecipeModifiers.modify("manufacturing/iv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -782,7 +784,7 @@ public class ManufacturingTable implements Runnable {
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_IV.get(1));
+                    d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_IV.get(1));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -801,7 +803,7 @@ public class ManufacturingTable implements Runnable {
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_IV.get(1));
+                    d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_IV.get(1));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -819,7 +821,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Electric_Piston_IV.get(1L)));
 
         RecipeModifiers.modify("manufacturing/iv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Electric_Motor_IV.get(1));
+            d.scaleAllInputsBalanced(partCostMultiplier, ItemList.Electric_Motor_IV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -837,7 +839,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers.modify("manufacturing/iv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 ItemList.Electric_Motor_IV.get(1),
                 ItemList.Electric_Piston_IV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L));
@@ -857,7 +859,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers.modify("manufacturing/iv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -875,7 +877,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers.modify("manufacturing/iv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L));
             d.itemIn()
                 .condenseAll();
@@ -892,7 +894,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers.modify("manufacturing/iv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 1L));
             d.itemIn()
                 .condenseAll();
@@ -909,7 +911,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Hull_Bronze.get(1L)));
 
         RecipeModifiers.modify("manufacturing/bronze_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -925,7 +927,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers
             .modify("manufacturing/bricked_bronze_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.scaleAllInputsBalanced(miscCostMultiplier);
                 d.itemIn()
                     .condenseAll();
             });
@@ -939,7 +941,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Hull_HP.get(1L)));
 
         RecipeModifiers.modify("manufacturing/steel_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -955,7 +957,7 @@ public class ManufacturingTable implements Runnable {
 
         RecipeModifiers
             .modify("manufacturing/bricked_cast_iron_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.scaleAllInputsBalanced(miscCostMultiplier);
                 d.itemIn()
                     .condenseAll();
             });
@@ -969,7 +971,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Casing_ULV.get(1L)));
 
         RecipeModifiers.modify("manufacturing/ulv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -985,7 +987,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Hull_ULV.get(1L)));
 
         RecipeModifiers.modify("manufacturing/ulv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_ULV.get(1));
+            d.scaleAllInputsBalanced(miscCostMultiplier, ItemList.Casing_ULV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -999,7 +1001,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Casing_LV.get(1L)));
 
         RecipeModifiers.modify("manufacturing/lv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1015,7 +1017,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Hull_LV.get(1L)));
 
         RecipeModifiers.modify("manufacturing/lv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_LV.get(1));
+            d.scaleAllInputsBalanced(miscCostMultiplier, ItemList.Casing_LV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -1029,7 +1031,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Casing_MV.get(1L)));
 
         RecipeModifiers.modify("manufacturing/mv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1045,7 +1047,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Hull_MV.get(1L)));
 
         RecipeModifiers.modify("manufacturing/mv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_MV.get(1));
+            d.scaleAllInputsBalanced(miscCostMultiplier, ItemList.Casing_MV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -1059,7 +1061,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Casing_HV.get(1L)));
 
         RecipeModifiers.modify("manufacturing/hv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1075,7 +1077,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Hull_HV.get(1L)));
 
         RecipeModifiers.modify("manufacturing/hv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_HV.get(1));
+            d.scaleAllInputsBalanced(miscCostMultiplier, ItemList.Casing_HV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -1089,7 +1091,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Casing_EV.get(1L)));
 
         RecipeModifiers.modify("manufacturing/ev_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1105,7 +1107,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Hull_EV.get(1L)));
 
         RecipeModifiers.modify("manufacturing/ev_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_EV.get(1));
+            d.scaleAllInputsBalanced(miscCostMultiplier, ItemList.Casing_EV.get(1));
             d.itemIn()
                 .condenseAll();
         });
@@ -1119,7 +1121,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Casing_IV.get(1L)));
 
         RecipeModifiers.modify("manufacturing/iv_casing", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(miscCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1135,7 +1137,7 @@ public class ManufacturingTable implements Runnable {
                 .itemOutputs(ItemList.Hull_IV.get(1L)));
 
         RecipeModifiers.modify("manufacturing/iv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Casing_IV.get(1));
+            d.scaleAllInputsBalanced(miscCostMultiplier, ItemList.Casing_IV.get(1));
             d.itemIn()
                 .condenseAll();
         });

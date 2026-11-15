@@ -1,6 +1,7 @@
 package com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps;
 
 import static bartworks.API.recipe.BartWorksRecipeMaps.circuitAssemblyLineRecipes;
+import static com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoader.circuitCostMultiplier;
 import static com.dreammaster.scripts.IngredientFactory.getModItem;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
@@ -11,7 +12,6 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.core.material.MaterialMisc.MUTATED_LIVING_SOLDER;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.CHRONOMATIC_GLASS;
 
-import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeDraft;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeModifiers;
@@ -64,9 +64,7 @@ public class CAL implements Runnable {
                 .special(ItemList.CircuitImprint_GoodElectronicCircuit.get(0)));
 
         RecipeModifiers.modify("CAL/good_electronic_circuit", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                getModItem(IndustrialCraft2.ID, "itemPartCircuit", 32, 0));
+            d.scaleAllInputsBalanced(circuitCostMultiplier, getModItem(IndustrialCraft2.ID, "itemPartCircuit", 32, 0));
             d.itemIn()
                 .condenseAll();
         });
@@ -88,7 +86,7 @@ public class CAL implements Runnable {
                 .special(ItemList.CircuitImprint_IntegratedLogicCircuit.get(0)));
 
         RecipeModifiers.modify("CAL/integrated_logic_circuit", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(circuitCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -118,7 +116,7 @@ public class CAL implements Runnable {
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Basic.get(32));
+                    d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Basic.get(32));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -144,7 +142,7 @@ public class CAL implements Runnable {
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                    d.scaleAllInputsBalanced(circuitCostMultiplier);
                     d.itemIn()
                         .condenseAll();
                 });
@@ -170,7 +168,7 @@ public class CAL implements Runnable {
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Processor.get(2L));
+                    d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Processor.get(2L));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -193,7 +191,7 @@ public class CAL implements Runnable {
 
             RecipeModifiers
                 .modify("CAL/workstation" + SMD_STRING[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Advanced.get(2L));
+                    d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Advanced.get(2L));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -216,7 +214,7 @@ public class CAL implements Runnable {
 
             RecipeModifiers
                 .modify("CAL/mainframe" + SMD_STRING[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Data.get(2L));
+                    d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Data.get(2L));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -239,7 +237,7 @@ public class CAL implements Runnable {
 
             RecipeModifiers
                 .modify("CAL/nano_processor" + SMD_STRING[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                    d.scaleAllInputsBalanced(circuitCostMultiplier);
                     d.itemIn()
                         .condenseAll();
                 });
@@ -262,7 +260,7 @@ public class CAL implements Runnable {
 
             RecipeModifiers
                 .modify("CAL/nano_assembly" + SMD_STRING[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Nanoprocessor.get(32));
+                    d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Nanoprocessor.get(32));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -285,7 +283,7 @@ public class CAL implements Runnable {
 
             RecipeModifiers
                 .modify("CAL/nano_computer" + SMD_STRING[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Nanocomputer.get(32));
+                    d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Nanocomputer.get(32));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -308,9 +306,7 @@ public class CAL implements Runnable {
 
             RecipeModifiers
                 .modify("CAL/nano_mainframe" + SMD_STRING[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(
-                        GeneralConfig.partCostMultiplier,
-                        ItemList.Circuit_Elitenanocomputer.get(32));
+                    d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Elitenanocomputer.get(32));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -333,7 +329,7 @@ public class CAL implements Runnable {
 
             RecipeModifiers
                 .modify("CAL/quantum_processor" + SMD_STRING[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                    d.scaleAllInputsBalanced(circuitCostMultiplier);
                     d.itemIn()
                         .condenseAll();
                 });
@@ -356,9 +352,7 @@ public class CAL implements Runnable {
 
             RecipeModifiers
                 .modify("CAL/quantum_assembly" + SMD_STRING[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(
-                        GeneralConfig.partCostMultiplier,
-                        ItemList.Circuit_Quantumprocessor.get(32));
+                    d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Quantumprocessor.get(32));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -381,9 +375,7 @@ public class CAL implements Runnable {
 
             RecipeModifiers
                 .modify("CAL/quantum_computer" + SMD_STRING[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(
-                        GeneralConfig.partCostMultiplier,
-                        ItemList.Circuit_Quantumcomputer.get(32));
+                    d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Quantumcomputer.get(32));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -406,9 +398,7 @@ public class CAL implements Runnable {
 
             RecipeModifiers
                 .modify("CAL/quantum_mainframe" + SMD_STRING[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(
-                        GeneralConfig.partCostMultiplier,
-                        ItemList.Circuit_Masterquantumcomputer.get(32));
+                    d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Masterquantumcomputer.get(32));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -437,7 +427,7 @@ public class CAL implements Runnable {
 
             RecipeModifiers
                 .modify("CAL/wetware_processor" + SMD_STRING[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                    d.scaleAllInputsBalanced(circuitCostMultiplier);
                     d.itemIn()
                         .condenseAll();
                 });
@@ -460,7 +450,7 @@ public class CAL implements Runnable {
 
             RecipeModifiers
                 .modify("CAL/wetware_assembly" + SMD_STRING[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Neuroprocessor.get(32));
+                    d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Neuroprocessor.get(32));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -483,9 +473,7 @@ public class CAL implements Runnable {
 
             RecipeModifiers
                 .modify("CAL/wetware_computer" + SMD_STRING[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(
-                        GeneralConfig.partCostMultiplier,
-                        ItemList.Circuit_Wetwarecomputer.get(32));
+                    d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Wetwarecomputer.get(32));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -508,7 +496,7 @@ public class CAL implements Runnable {
 
             RecipeModifiers
                 .modify("CAL/bio_processor" + SMD_STRING[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                    d.scaleAllInputsBalanced(circuitCostMultiplier);
                     d.itemIn()
                         .condenseAll();
                 });
@@ -531,7 +519,7 @@ public class CAL implements Runnable {
 
             RecipeModifiers
                 .modify("CAL/bio_assembly" + SMD_STRING[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Bioprocessor.get(32));
+                    d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Bioprocessor.get(32));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -552,7 +540,7 @@ public class CAL implements Runnable {
                 .special(ItemList.CircuitImprint_IntegratedProcessor.get(0)));
 
         RecipeModifiers.modify("CAL/integrated_processor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(circuitCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -572,7 +560,7 @@ public class CAL implements Runnable {
                 .special(ItemList.CircuitImprint_NanoProcessor.get(0)));
 
         RecipeModifiers.modify("CAL/nano_processor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(circuitCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -592,7 +580,7 @@ public class CAL implements Runnable {
                 .special(ItemList.CircuitImprint_QuantumProcessor.get(0)));
 
         RecipeModifiers.modify("CAL/quantum_processor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(circuitCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -614,7 +602,7 @@ public class CAL implements Runnable {
                 .special(ItemList.CircuitImprint_CrystalProcessor.get(0)));
 
         RecipeModifiers.modify("CAL/crystal_processor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(circuitCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -634,7 +622,7 @@ public class CAL implements Runnable {
                 .special(ItemList.CircuitImprint_CrystalProcessor.get(0)));
 
         RecipeModifiers.modify("CAL/crystal_processor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(circuitCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -656,7 +644,7 @@ public class CAL implements Runnable {
                 .special(ItemList.CircuitImprint_CrystalAssembly.get(0)));
 
         RecipeModifiers.modify("CAL/crystal_assembly", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Crystalprocessor.get(32));
+            d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Crystalprocessor.get(32));
             d.itemIn()
                 .condenseAll();
         });
@@ -678,7 +666,7 @@ public class CAL implements Runnable {
                 .special(ItemList.CircuitImprint_CrystalSupercomputer.get(0)));
 
         RecipeModifiers.modify("CAL/crystal_computer", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, ItemList.Circuit_Crystalcomputer.get(32));
+            d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Crystalcomputer.get(32));
             d.itemIn()
                 .condenseAll();
         });
@@ -700,9 +688,7 @@ public class CAL implements Runnable {
                 .special(ItemList.CircuitImprint_CrystalMainframe.get(0)));
 
         RecipeModifiers.modify("CAL/crystal_mainframe", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                ItemList.Circuit_Ultimatecrystalcomputer.get(32));
+            d.scaleAllInputsBalanced(circuitCostMultiplier, ItemList.Circuit_Ultimatecrystalcomputer.get(32));
             d.itemIn()
                 .condenseAll();
         });
@@ -722,7 +708,7 @@ public class CAL implements Runnable {
                 .special(ItemList.CircuitImprint_WetwareProcessor.get(0)));
 
         RecipeModifiers.modify("CAL/wetware_processor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(circuitCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -742,7 +728,7 @@ public class CAL implements Runnable {
                 .special(ItemList.CircuitImprint_BiowareProcessor.get(0)));
 
         RecipeModifiers.modify("CAL/bio_processor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(circuitCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -764,7 +750,7 @@ public class CAL implements Runnable {
                 .special(ItemList.CircuitImprint_OpticalProcessor.get(0)));
 
         RecipeModifiers.modify("CAL/optical_processor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(circuitCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -789,7 +775,7 @@ public class CAL implements Runnable {
                     .special(ItemList.CircuitImprint_NANDChipArray.get(0)));
 
             RecipeModifiers.modify("CAL/nand_chip_array" + i, VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                d.scaleAllInputsBalanced(circuitCostMultiplier);
                 d.itemIn()
                     .condenseAll();
             });
@@ -812,7 +798,7 @@ public class CAL implements Runnable {
                 .special(ItemList.CircuitImprint_Microprocessor.get(0)));
 
         RecipeModifiers.modify("CAL/microprocessor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(circuitCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -832,7 +818,7 @@ public class CAL implements Runnable {
                 .special(ItemList.CircuitImprint_Microprocessor.get(0)));
 
         RecipeModifiers.modify("CAL/microprocessor_soc", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(circuitCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });

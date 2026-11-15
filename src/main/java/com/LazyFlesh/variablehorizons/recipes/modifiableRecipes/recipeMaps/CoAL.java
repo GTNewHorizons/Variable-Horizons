@@ -1,6 +1,7 @@
 package com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps;
 
 import static bartworks.system.material.WerkstoffLoader.Ruridit;
+import static com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoader.partCostMultiplier;
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.componentAssemblyLineRecipes;
 import static gregtech.api.enums.ItemList.Conveyor_Module_EV;
 import static gregtech.api.enums.ItemList.Conveyor_Module_HV;
@@ -245,7 +246,6 @@ import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.HYPOGEN;
 
 import net.minecraft.item.ItemStack;
 
-import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeDraft;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeModifiers;
@@ -314,7 +314,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/lv_motor_iron_" + COPPER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                    d.scaleAllInputsBalanced(partCostMultiplier);
                     d.itemIn()
                         .condenseAll();
                 });
@@ -337,7 +337,7 @@ public class CoAL implements Runnable {
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                    d.scaleAllInputsBalanced(partCostMultiplier);
                     d.itemIn()
                         .condenseAll();
                 });
@@ -358,7 +358,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_ULV));
 
         RecipeModifiers.modify("coal/lv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_LV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_LV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -379,7 +379,7 @@ public class CoAL implements Runnable {
 
         RecipeModifiers.modify("coal/lv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 get(Electric_Motor_LV, 96),
                 get(Electric_Piston_LV, 48),
                 get(wrapCircuit, LV, 3));
@@ -406,7 +406,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/lv_pump_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_LV, 96));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_LV, 96));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -425,7 +425,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/lv_conveyor_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_LV, 96));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_LV, 96));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -445,7 +445,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_ULV));
 
         RecipeModifiers.modify("coal/lv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, LV, 3));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, LV, 3));
             d.itemIn()
                 .condenseAll();
         });
@@ -461,7 +461,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_ULV));
 
         RecipeModifiers.modify("coal/lv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, LV, 6));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, LV, 6));
             d.itemIn()
                 .condenseAll();
         });
@@ -477,7 +477,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_ULV));
 
         RecipeModifiers.modify("coal/lv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, HV, 12));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, HV, 12));
             d.itemIn()
                 .condenseAll();
         });
@@ -501,7 +501,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/mv_motor_" + COPPER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+                    d.scaleAllInputsBalanced(partCostMultiplier);
                     d.itemIn()
                         .condenseAll();
                 });
@@ -522,7 +522,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_LV));
 
         RecipeModifiers.modify("coal/mv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_MV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_MV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -543,7 +543,7 @@ public class CoAL implements Runnable {
 
         RecipeModifiers.modify("coal/mv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 get(Electric_Motor_MV, 96),
                 get(Electric_Piston_MV, 48),
                 get(wrapCircuit, MV, 3));
@@ -570,7 +570,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/mv_pump_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_MV, 96));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_MV, 96));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -589,7 +589,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/mv_conveyor_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_MV, 96));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_MV, 96));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -609,7 +609,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_LV));
 
         RecipeModifiers.modify("coal/mv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, MV, 3));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, MV, 3));
             d.itemIn()
                 .condenseAll();
         });
@@ -625,7 +625,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_LV));
 
         RecipeModifiers.modify("coal/mv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, MV, 6));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, MV, 6));
             d.itemIn()
                 .condenseAll();
         });
@@ -641,7 +641,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_LV));
 
         RecipeModifiers.modify("coal/mv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, EV, 12));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, EV, 12));
             d.itemIn()
                 .condenseAll();
         });
@@ -662,7 +662,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_MV));
 
         RecipeModifiers.modify("coal/hv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -682,7 +682,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_MV));
 
         RecipeModifiers.modify("coal/hv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_HV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_HV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -703,7 +703,7 @@ public class CoAL implements Runnable {
 
         RecipeModifiers.modify("coal/hv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 get(Electric_Motor_HV, 96),
                 get(Electric_Piston_HV, 48),
                 get(wrapCircuit, HV, 3));
@@ -730,7 +730,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/hv_pump_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_HV, 96));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_HV, 96));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -749,7 +749,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/hv_conveyor_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_HV, 96));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_HV, 96));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -769,7 +769,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_MV));
 
         RecipeModifiers.modify("coal/hv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, HV, 3));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, HV, 3));
             d.itemIn()
                 .condenseAll();
         });
@@ -785,7 +785,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_MV));
 
         RecipeModifiers.modify("coal/hv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, HV, 6));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, HV, 6));
             d.itemIn()
                 .condenseAll();
         });
@@ -801,7 +801,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_MV));
 
         RecipeModifiers.modify("coal/hv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, IV, 12));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, IV, 12));
             d.itemIn()
                 .condenseAll();
         });
@@ -822,7 +822,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_HV));
 
         RecipeModifiers.modify("coal/ev_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -842,7 +842,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_HV));
 
         RecipeModifiers.modify("coal/ev_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_EV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_EV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -863,7 +863,7 @@ public class CoAL implements Runnable {
 
         RecipeModifiers.modify("coal/ev_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 get(Electric_Motor_EV, 96),
                 get(Electric_Piston_EV, 48),
                 get(wrapCircuit, EV, 3));
@@ -890,7 +890,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/ev_pump_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_EV, 96));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_EV, 96));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -909,7 +909,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/ev_conveyor_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_EV, 96));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_EV, 96));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -929,7 +929,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_HV));
 
         RecipeModifiers.modify("coal/ev_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, EV, 3));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, EV, 3));
             d.itemIn()
                 .condenseAll();
         });
@@ -945,7 +945,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_HV));
 
         RecipeModifiers.modify("coal/ev_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, EV, 6));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, EV, 6));
             d.itemIn()
                 .condenseAll();
         });
@@ -961,7 +961,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_HV));
 
         RecipeModifiers.modify("coal/ev_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, LuV, 12));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, LuV, 12));
             d.itemIn()
                 .condenseAll();
         });
@@ -983,7 +983,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_EV));
 
         RecipeModifiers.modify("coal/iv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1004,7 +1004,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_EV));
 
         RecipeModifiers.modify("coal/iv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_IV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_IV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -1026,7 +1026,7 @@ public class CoAL implements Runnable {
 
         RecipeModifiers.modify("coal/iv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 get(Electric_Motor_IV, 96),
                 get(Electric_Piston_IV, 48),
                 get(wrapCircuit, IV, 3));
@@ -1054,7 +1054,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/iv_pump_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_IV, 96));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_IV, 96));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -1074,7 +1074,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/iv_conveyor_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_IV, 96));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_IV, 96));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -1095,7 +1095,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_EV));
 
         RecipeModifiers.modify("coal/iv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, IV, 3));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, IV, 3));
             d.itemIn()
                 .condenseAll();
         });
@@ -1115,7 +1115,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_EV));
 
         RecipeModifiers.modify("coal/iv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, IV, 6));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, IV, 6));
             d.itemIn()
                 .condenseAll();
         });
@@ -1134,7 +1134,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_EV));
 
         RecipeModifiers.modify("coal/iv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, ZPM, 12));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, ZPM, 12));
             d.itemIn()
                 .condenseAll();
         });
@@ -1159,7 +1159,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_IV));
 
         RecipeModifiers.modify("coal/luv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1182,7 +1182,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_IV));
 
         RecipeModifiers.modify("coal/luv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_LuV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_LuV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -1209,7 +1209,7 @@ public class CoAL implements Runnable {
 
         RecipeModifiers.modify("coal/luv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 get(Electric_Motor_LuV, 96),
                 get(Electric_Piston_LuV, 48),
                 get(wrapCircuit, LuV, 6),
@@ -1242,7 +1242,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/luv_pump_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_LuV, 96));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_LuV, 96));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -1267,7 +1267,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/luv_conveyor_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_LuV, 96));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_LuV, 96));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -1291,10 +1291,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_IV));
 
         RecipeModifiers.modify("coal/luv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                get(wrapCircuit, LuV, 3),
-                get(Electric_Motor_LuV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, LuV, 3), get(Electric_Motor_LuV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -1319,10 +1316,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_IV));
 
         RecipeModifiers.modify("coal/luv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                get(wrapCircuit, LuV, 6),
-                get(Electric_Motor_LuV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, LuV, 6), get(Electric_Motor_LuV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -1345,10 +1339,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_IV));
 
         RecipeModifiers.modify("coal/luv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                get(wrapCircuit, ZPM, 12),
-                get(Emitter_LuV, 192));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, ZPM, 12), get(Emitter_LuV, 192));
             d.itemIn()
                 .condenseAll();
         });
@@ -1373,7 +1364,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_LuV));
 
         RecipeModifiers.modify("coal/zpm_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1396,7 +1387,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_LuV));
 
         RecipeModifiers.modify("coal/zpm_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_ZPM, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_ZPM, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -1423,7 +1414,7 @@ public class CoAL implements Runnable {
 
         RecipeModifiers.modify("coal/zpm_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 get(Electric_Motor_ZPM, 96),
                 get(Electric_Piston_ZPM, 48),
                 get(wrapCircuit, ZPM, 6),
@@ -1456,7 +1447,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/zpm_pump_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_ZPM, 48));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_ZPM, 48));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -1481,7 +1472,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/zpm_conveyor_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_ZPM, 96));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_ZPM, 96));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -1507,10 +1498,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_LuV));
 
         RecipeModifiers.modify("coal/zpm_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                get(wrapCircuit, ZPM, 3),
-                get(Electric_Motor_ZPM, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, ZPM, 3), get(Electric_Motor_ZPM, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -1535,10 +1523,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_LuV));
 
         RecipeModifiers.modify("coal/zpm_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                get(wrapCircuit, ZPM, 6),
-                get(Electric_Motor_ZPM, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, ZPM, 6), get(Electric_Motor_ZPM, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -1563,7 +1548,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_LuV));
 
         RecipeModifiers.modify("coal/zpm_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, UV, 12), get(Emitter_ZPM, 192));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, UV, 12), get(Emitter_ZPM, 192));
             d.itemIn()
                 .condenseAll();
         });
@@ -1587,7 +1572,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_ZPM));
 
         RecipeModifiers.modify("coal/uv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1611,7 +1596,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_ZPM));
 
         RecipeModifiers.modify("coal/uv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_UV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_UV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -1639,7 +1624,7 @@ public class CoAL implements Runnable {
 
         RecipeModifiers.modify("coal/uv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 get(Electric_Motor_UV, 96),
                 get(Electric_Piston_UV, 48),
                 get(wrapCircuit, UV, 6),
@@ -1673,7 +1658,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/uv_pump_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_UV, 48));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_UV, 48));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -1699,7 +1684,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/uv_conveyor_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_UV, 96));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_UV, 96));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -1725,10 +1710,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_ZPM));
 
         RecipeModifiers.modify("coal/uv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                get(wrapCircuit, UV, 3),
-                get(Electric_Motor_UV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, UV, 3), get(Electric_Motor_UV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -1753,10 +1735,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_ZPM));
 
         RecipeModifiers.modify("coal/uv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                get(wrapCircuit, UV, 6),
-                get(Electric_Motor_UV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, UV, 6), get(Electric_Motor_UV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -1782,7 +1761,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_ZPM));
 
         RecipeModifiers.modify("coal/uv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, UHV, 12), get(Emitter_UV, 192));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, UHV, 12), get(Emitter_UV, 192));
             d.itemIn()
                 .condenseAll();
         });
@@ -1806,7 +1785,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UV));
 
         RecipeModifiers.modify("coal/uhv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -1830,7 +1809,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UV));
 
         RecipeModifiers.modify("coal/uhv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_UHV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_UHV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -1858,7 +1837,7 @@ public class CoAL implements Runnable {
 
         RecipeModifiers.modify("coal/uhv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 get(Electric_Motor_UHV, 96),
                 get(Electric_Piston_UHV, 48),
                 get(wrapCircuit, UHV, 6),
@@ -1892,7 +1871,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/uhv_pump_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_UHV, 48));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_UHV, 48));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -1918,7 +1897,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/uhv_conveyor_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_UHV, 96));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_UHV, 96));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -1945,10 +1924,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UV));
 
         RecipeModifiers.modify("coal/uhv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                get(wrapCircuit, UHV, 3),
-                get(Electric_Motor_UHV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, UHV, 3), get(Electric_Motor_UHV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -1974,10 +1950,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UV));
 
         RecipeModifiers.modify("coal/uhv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                get(wrapCircuit, UHV, 6),
-                get(Electric_Motor_UHV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, UHV, 6), get(Electric_Motor_UHV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -2003,10 +1976,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UV));
 
         RecipeModifiers.modify("coal/uhv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                get(wrapCircuit, UEV, 12),
-                get(Emitter_UHV, 192));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, UEV, 12), get(Emitter_UHV, 192));
             d.itemIn()
                 .condenseAll();
         });
@@ -2030,7 +2000,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UHV));
 
         RecipeModifiers.modify("coal/uev_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -2054,7 +2024,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UHV));
 
         RecipeModifiers.modify("coal/uev_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_UEV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_UEV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -2082,7 +2052,7 @@ public class CoAL implements Runnable {
 
         RecipeModifiers.modify("coal/uev_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 get(Electric_Motor_UEV, 96),
                 get(Electric_Piston_UEV, 48),
                 get(wrapCircuit, UEV, 6),
@@ -2116,7 +2086,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/uev_pump_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_UEV, 48));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_UEV, 48));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -2142,7 +2112,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/uev_conveyor_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_UEV, 96));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_UEV, 96));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -2169,10 +2139,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UHV));
 
         RecipeModifiers.modify("coal/uev_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                get(wrapCircuit, UEV, 3),
-                get(Electric_Motor_UEV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, UEV, 3), get(Electric_Motor_UEV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -2198,10 +2165,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UHV));
 
         RecipeModifiers.modify("coal/uev_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                get(wrapCircuit, UEV, 6),
-                get(Electric_Motor_UEV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, UEV, 6), get(Electric_Motor_UEV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -2227,10 +2191,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UHV));
 
         RecipeModifiers.modify("coal/uev_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                get(wrapCircuit, UIV, 12),
-                get(Emitter_UEV, 192));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, UIV, 12), get(Emitter_UEV, 192));
             d.itemIn()
                 .condenseAll();
         });
@@ -2255,7 +2216,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UEV));
 
         RecipeModifiers.modify("coal/uiv_motor_infinity", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -2279,7 +2240,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UEV));
 
         RecipeModifiers.modify("coal/uiv_motor_creon_mellion", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -2303,7 +2264,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UEV));
 
         RecipeModifiers.modify("coal/uiv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_UIV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_UIV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -2331,7 +2292,7 @@ public class CoAL implements Runnable {
 
         RecipeModifiers.modify("coal/uiv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 get(Electric_Motor_UIV, 96),
                 get(Electric_Piston_UIV, 48),
                 get(wrapCircuit, UIV, 6),
@@ -2365,7 +2326,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/uiv_pump_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_UIV, 48));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_UIV, 48));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -2391,7 +2352,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/uiv_conveyor_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_UIV, 96));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_UIV, 96));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -2421,10 +2382,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UEV));
 
         RecipeModifiers.modify("coal/uiv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                get(wrapCircuit, UIV, 3),
-                get(Electric_Motor_UIV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, UIV, 3), get(Electric_Motor_UIV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -2453,10 +2411,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UEV));
 
         RecipeModifiers.modify("coal/uiv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                get(wrapCircuit, UIV, 6),
-                get(Electric_Motor_UIV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, UIV, 6), get(Electric_Motor_UIV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -2484,10 +2439,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UEV));
 
         RecipeModifiers.modify("coal/uiv_field_gen_infinity", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                get(wrapCircuit, UMV, 12),
-                get(Emitter_UIV, 192));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, UMV, 12), get(Emitter_UIV, 192));
             d.itemIn()
                 .condenseAll();
         });
@@ -2517,10 +2469,7 @@ public class CoAL implements Runnable {
 
         RecipeModifiers
             .modify("coal/uiv_field_gen_creon_mellion", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                d.scaleAllInputsBalanced(
-                    GeneralConfig.partCostMultiplier,
-                    get(wrapCircuit, UMV, 12),
-                    get(Emitter_UIV, 192));
+                d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, UMV, 12), get(Emitter_UIV, 192));
                 d.itemIn()
                     .condenseAll();
             });
@@ -2544,7 +2493,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UIV));
 
         RecipeModifiers.modify("coal/umv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier);
+            d.scaleAllInputsBalanced(partCostMultiplier);
             d.itemIn()
                 .condenseAll();
         });
@@ -2569,7 +2518,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UIV));
 
         RecipeModifiers.modify("coal/umv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_UMV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_UMV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -2598,7 +2547,7 @@ public class CoAL implements Runnable {
 
         RecipeModifiers.modify("coal/umv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 get(Electric_Motor_UMV, 96),
                 get(Electric_Piston_UMV, 48),
                 get(wrapCircuit, UMV, 6),
@@ -2633,7 +2582,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/umv_pump_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_UMV, 48));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_UMV, 48));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -2660,7 +2609,7 @@ public class CoAL implements Runnable {
 
             RecipeModifiers
                 .modify("coal/umv_conveyor_" + RUBBER_NAMES[i], VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-                    d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(Electric_Motor_UMV, 96));
+                    d.scaleAllInputsBalanced(partCostMultiplier, get(Electric_Motor_UMV, 96));
                     d.itemIn()
                         .condenseAll();
                 });
@@ -2690,10 +2639,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UIV));
 
         RecipeModifiers.modify("coal/umv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                get(wrapCircuit, UMV, 3),
-                get(Electric_Motor_UMV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, UMV, 3), get(Electric_Motor_UMV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -2722,10 +2668,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UIV));
 
         RecipeModifiers.modify("coal/umv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                get(wrapCircuit, UMV, 6),
-                get(Electric_Motor_UMV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, UMV, 6), get(Electric_Motor_UMV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -2751,10 +2694,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UIV));
 
         RecipeModifiers.modify("coal/umv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                get(wrapCircuit, UXV, 12),
-                get(Emitter_UMV, 192));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, UXV, 12), get(Emitter_UMV, 192));
             d.itemIn()
                 .condenseAll();
         });
@@ -2784,7 +2724,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UMV));
 
         RecipeModifiers.modify("coal/uxv_motor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(GeneralConfig.partCostMultiplier, get(wrapCircuit, UHV, 3));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, UHV, 3));
             d.itemIn()
                 .condenseAll();
         });
@@ -2810,10 +2750,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UMV));
 
         RecipeModifiers.modify("coal/uxv_piston", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                get(wrapCircuit, UHV, 3),
-                get(Electric_Motor_UXV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, UHV, 3), get(Electric_Motor_UXV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -2844,7 +2781,7 @@ public class CoAL implements Runnable {
 
         RecipeModifiers.modify("coal/uxv_robot_arm", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 get(Electric_Motor_UXV, 96),
                 get(Electric_Piston_UXV, 48),
                 get(wrapCircuit, UXV, 6),
@@ -2879,10 +2816,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UMV));
 
         RecipeModifiers.modify("coal/uxv_pump", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                get(wrapCircuit, UHV, 3),
-                get(Electric_Motor_UXV, 48));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, UHV, 3), get(Electric_Motor_UXV, 48));
             d.itemIn()
                 .condenseAll();
         });
@@ -2910,10 +2844,7 @@ public class CoAL implements Runnable {
                 .eut(RECIPE_UMV));
 
         RecipeModifiers.modify("coal/uxv_conveyor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
-                get(wrapCircuit, UHV, 3),
-                get(Electric_Motor_UXV, 96));
+            d.scaleAllInputsBalanced(partCostMultiplier, get(wrapCircuit, UHV, 3), get(Electric_Motor_UXV, 96));
             d.itemIn()
                 .condenseAll();
         });
@@ -2943,7 +2874,7 @@ public class CoAL implements Runnable {
 
         RecipeModifiers.modify("coal/uxv_sensor", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 get(wrapCircuit, UXV, 3),
                 get(wrapCircuit, UHV, 3),
                 get(Electric_Motor_UXV, 48));
@@ -2976,7 +2907,7 @@ public class CoAL implements Runnable {
 
         RecipeModifiers.modify("coal/uxv_emitter", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 get(wrapCircuit, UXV, 6),
                 get(wrapCircuit, UHV, 3),
                 get(Electric_Motor_UXV, 48));
@@ -3010,7 +2941,7 @@ public class CoAL implements Runnable {
 
         RecipeModifiers.modify("coal/uxv_field_gen", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
             d.scaleAllInputsBalanced(
-                GeneralConfig.partCostMultiplier,
+                partCostMultiplier,
                 get(wrapCircuit, MAX, 12),
                 get(wrapCircuit, UHV, 3),
                 get(Emitter_UXV, 192));
