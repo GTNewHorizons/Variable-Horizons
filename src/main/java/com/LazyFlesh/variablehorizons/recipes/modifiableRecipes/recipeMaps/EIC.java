@@ -33,7 +33,7 @@ public class EIC implements Runnable {
     }
 
     private void partsMHDCSM() {
-        if (!SuperSolarPanels.isModLoaded()) {
+        if (!(SuperSolarPanels.isModLoaded() && OpenComputers.isModLoaded())) {
             return;
         }
         this.addMHDCSMPartRecipe(OrePrefixes.frameGt, 1, 1);

@@ -3,7 +3,9 @@ package com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps;
 import static com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoader.circuitCostMultiplier;
 import static com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoader.miscCostMultiplier;
 import static com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoader.partCostMultiplier;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -16,7 +18,6 @@ import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeDraft;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeModifiers;
 import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipePhase;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
-import com.dreammaster.item.NHItemList;
 
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.ItemList;
@@ -89,7 +90,9 @@ public class Assembler implements Runnable {
         ivParts();
         hulls();
         superconductors();
-        coils();
+        if (NewHorizonsCoreMod.isModLoaded()) {
+            coils();
+        }
         misc();
     }
 
@@ -1639,7 +1642,7 @@ public class Assembler implements Runnable {
             if (i >= 8) {
                 insulatorAmount -= 32;
             }
-            ItemStack insulator = i < 8 ? NHItemList.MicaInsulatorFoil.get(insulatorAmount)
+            ItemStack insulator = i < 8 ? getModItem(NewHorizonsCoreMod.ID, "MicaInsulatorFoil", insulatorAmount, 0)
                 : ItemList.Naquarite_Universal_Insulator_Foil.get(insulatorAmount);
             eut *= 4;
             if (i == 0 || i == 5 || i == 7) {
@@ -1682,7 +1685,7 @@ public class Assembler implements Runnable {
             () -> RecipeDraft.of(assemblerRecipes)
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorLuV, 64L),
-                    NHItemList.MicaInsulatorFoil.get(48))
+                    getModItem(NewHorizonsCoreMod.ID, "MicaInsulatorFoil", 48, 0))
                 .fluidInputs(Materials.Trinium.getMolten(1440L))
                 .itemOutputs(ItemList.Casing_Coil_Superconductor.get(1L))
                 .duration(50 * SECONDS)

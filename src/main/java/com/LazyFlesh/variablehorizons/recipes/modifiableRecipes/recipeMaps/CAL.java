@@ -2,8 +2,8 @@ package com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.recipeMaps;
 
 import static bartworks.API.recipe.BartWorksRecipeMaps.circuitAssemblyLineRecipes;
 import static com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoader.circuitCostMultiplier;
-import static com.dreammaster.scripts.IngredientFactory.getModItem;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
