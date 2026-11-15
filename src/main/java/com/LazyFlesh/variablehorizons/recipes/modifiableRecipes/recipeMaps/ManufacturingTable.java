@@ -5,6 +5,7 @@ import static com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoa
 import static com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoader.miscCostMultiplier;
 import static com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoader.partCostMultiplier;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -19,6 +20,7 @@ import bartworks.system.material.CircuitGeneration.CircuitWraps;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -1153,5 +1155,80 @@ public class ManufacturingTable implements Runnable {
                         GTUtility.getIntegratedCircuit(19))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDense, plateMat, 1L)));
         }
+
+        RecipeModifiers.defineBase(
+            "manufacturing/pipe_casing_tin",
+            () -> RecipeDraft.of(manufacturingTableRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Tin, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tin, 1L),
+                    GTUtility.getIntegratedCircuit(12))
+                .itemOutputs(ItemList.Casing_Item_Pipe_Tin.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV));
+
+        RecipeModifiers.modify("manufacturing/pipe_casing_tin", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+            d.scaleAllInputsBalanced(miscCostMultiplier);
+            d.itemIn()
+                .condenseAll();
+        });
+
+        RecipeModifiers.defineBase(
+            "manufacturing/pipe_casing_brass",
+            () -> RecipeDraft.of(manufacturingTableRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Brass, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Brass, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Brass, 1L),
+                    GTUtility.getIntegratedCircuit(12))
+                .itemOutputs(ItemList.Casing_Item_Pipe_Brass.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV));
+
+        RecipeModifiers
+            .modify("manufacturing/pipe_casing_brass", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(miscCostMultiplier);
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "manufacturing/pipe_casing_bronze",
+            () -> RecipeDraft.of(manufacturingTableRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Bronze, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Bronze, 1L),
+                    GTUtility.getIntegratedCircuit(12))
+                .itemOutputs(ItemList.Casing_Pipe_Bronze.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV));
+
+        RecipeModifiers
+            .modify("manufacturing/pipe_casing_bronze", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(miscCostMultiplier);
+                d.itemIn()
+                    .condenseAll();
+            });
+
+        RecipeModifiers.defineBase(
+            "manufacturing/pipe_casing_steel",
+            () -> RecipeDraft.of(manufacturingTableRecipes)
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1L),
+                    GTUtility.getIntegratedCircuit(12))
+                .itemOutputs(ItemList.Casing_Pipe_Steel.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV));
+
+        RecipeModifiers
+            .modify("manufacturing/pipe_casing_steel", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
+                d.scaleAllInputsBalanced(miscCostMultiplier);
+                d.itemIn()
+                    .condenseAll();
+            });
     }
 }

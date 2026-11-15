@@ -62,6 +62,18 @@ public class Assembler implements Runnable {
         ItemList.Casing_Coil_Naquadah.get(1), ItemList.Casing_Coil_NaquadahAlloy.get(1),
         ItemList.Casing_Coil_Trinium.get(1), ItemList.Casing_Coil_ElectrumFlux.get(1),
         ItemList.Casing_Coil_AwakenedDraconium.get(1) };
+    private static final Materials[] PIPE_CASING_MATS = new Materials[] { Materials.Bronze, Materials.Steel,
+        Materials.Titanium, Materials.TungstenSteel, Materials.Polytetrafluoroethylene, Materials.Polybenzimidazole,
+        Materials.Tin, Materials.Brass, Materials.Electrum, Materials.Platinum, Materials.Osmium, Materials.Quantium,
+        Materials.ElectrumFlux, Materials.BlackPlutonium };
+    private static final ItemStack[] PIPE_CASINGS = new ItemStack[] { ItemList.Casing_Pipe_Bronze.get(1),
+        ItemList.Casing_Pipe_Steel.get(1), ItemList.Casing_Pipe_Titanium.get(1),
+        ItemList.Casing_Pipe_TungstenSteel.get(1), ItemList.Casing_Pipe_Polytetrafluoroethylene.get(1),
+        ItemList.Casing_Pipe_Polybenzimidazole.get(1), ItemList.Casing_Item_Pipe_Tin.get(1),
+        ItemList.Casing_Item_Pipe_Brass.get(1), ItemList.Casing_Item_Pipe_Electrum.get(1),
+        ItemList.Casing_Item_Pipe_Platinum.get(1), ItemList.Casing_Item_Pipe_Osmium.get(1),
+        ItemList.Casing_Item_Pipe_Quantium.get(1), ItemList.Casing_Item_Pipe_Fluxed_Electrum.get(1),
+        ItemList.Casing_Item_Pipe_Black_Plutonium.get(1) };
 
     @Override
     public void run() {
@@ -78,6 +90,7 @@ public class Assembler implements Runnable {
         hulls();
         superconductors();
         coils();
+        misc();
     }
 
     private static void circuitStuff() {
@@ -1699,6 +1712,34 @@ public class Assembler implements Runnable {
 
             RecipeModifiers.modify(
                 "assembler/superconducting_coil_" + (i + 1),
+                VariantNames.ALTERED_PRICING,
+                RecipePhase.SCALE,
+                d -> {
+                    d.scaleAllInputsBalanced(miscCostMultiplier);
+                    d.itemIn()
+                        .condenseAll();
+                });
+        }
+    }
+
+    private static void misc() {
+        for (int i = 0; i < PIPE_CASING_MATS.length; i++) {
+            Materials mat = PIPE_CASING_MATS[i];
+            ItemStack output = PIPE_CASINGS[i];
+            RecipeModifiers.defineBase(
+                "assembler/pipe_casing_" + mat.getName(),
+                () -> RecipeDraft.of(assemblerRecipes)
+                    .itemInputs(
+                        GTOreDictUnificator.get(OrePrefixes.pipeMedium, mat, 4L),
+                        GTOreDictUnificator.get(OrePrefixes.plate, mat, 4L),
+                        GTOreDictUnificator.get(OrePrefixes.frameGt, mat, 1L),
+                        GTUtility.getIntegratedCircuit(12))
+                    .itemOutputs(output)
+                    .duration(5 * SECONDS)
+                    .eut(TierEU.RECIPE_LV));
+
+            RecipeModifiers.modify(
+                "assembler/pipe_casing_" + mat.getName(),
                 VariantNames.ALTERED_PRICING,
                 RecipePhase.SCALE,
                 d -> {
