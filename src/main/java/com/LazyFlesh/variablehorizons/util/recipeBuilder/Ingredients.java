@@ -77,11 +77,17 @@ public final class Ingredients<T> {
         return new Entry<>(stack, kind.amount(stack));
     }
 
+    /**
+     * Add a new stack at the end list of the in/output list
+     */
     public Ingredients<T> add(T stack) {
         list.add(make(stack));
         return this;
     } // used for base definition
 
+    /**
+     * Add a new stack at the end of the in/output list + its respective chance to be consumed/produced
+     */
     public Ingredients<T> add(T stack, int chance) {
         Entry<T> entry = make(stack);
         entry.chanceBase = chance;
@@ -89,11 +95,17 @@ public final class Ingredients<T> {
         return this;
     }
 
+    /**
+     * Add a new stack at the start of the in/output list
+     */
     public Ingredients<T> addFirst(T stack) {
         list.add(0, make(stack));
         return this;
     }
 
+    /**
+     * Add a new stack at the start of the in/output list + its respective chance to be consumed/produced
+     */
     public Ingredients<T> addFirst(T stack, int chance) {
         Entry<T> entry = make(stack);
         entry.chanceBase = chance;
@@ -101,20 +113,17 @@ public final class Ingredients<T> {
         return this;
     }
 
-    public Ingredients<T> addLast(T stack) {
-        list.add(make(stack));
-        return this;
-    }
-
-    public Ingredients<T> addLast(T stack, int chance) {
-        return add(stack, chance);
-    }
-
+    /**
+     * Add a new stack right before the specified anchor stack
+     */
     public Ingredients<T> addBefore(T anchor, T stack) {
         list.add(Math.max(indexOf(anchor), 0), make(stack));
         return this;
     }
 
+    /**
+     * Add a new stack right before the specified anchor stack + its respective chance to be consumed/produced
+     */
     public Ingredients<T> addBefore(T anchor, T stack, int chance) {
         Entry<T> entry = make(stack);
         entry.chanceBase = chance;
@@ -122,12 +131,18 @@ public final class Ingredients<T> {
         return this;
     }
 
+    /**
+     * Add a new stack right after the specified anchor stack
+     */
     public Ingredients<T> addAfter(T anchor, T stack) {
         int i = indexOf(anchor);
         list.add(i < 0 ? list.size() : i + 1, make(stack));
         return this;
     }
 
+    /**
+     * Add a new stack right after the specified anchor stack + its respective chance to be consumed/produced
+     */
     public Ingredients<T> addAfter(T anchor, T stack, int chance) {
         Entry<T> entry = make(stack);
         entry.chanceBase = chance;
@@ -136,6 +151,9 @@ public final class Ingredients<T> {
         return this;
     }
 
+    /**
+     * Replace a stack with a different one
+     */
     public Ingredients<T> replace(T target, T newStack) {
         Entry<T> entry = require(target);
         entry.current = newStack;
@@ -143,24 +161,36 @@ public final class Ingredients<T> {
         return this;
     }
 
+    /**
+     * Replace a stack with a different one + define its respective chance to be consumed/produced
+     */
     public Ingredients<T> replace(T target, T newStack, int chance) {
         replace(target, newStack);
         require(newStack).chanceBase = chance;
         return this;
     }
 
+    /**
+     * Scale a stack by a factor
+     */
     public Ingredients<T> scale(T target, double factor) {
         checkFactor(factor);
         require(target).factor *= factor;
         return this;
     }
 
+    /**
+     * Scale a stack's production/consumption chance by a factor
+     */
     public Ingredients<T> scaleChance(T target, double factor) {
         checkFactor(factor);
         require(target).chanceFactor *= factor;
         return this;
     }
 
+    /**
+     * Scale all input/output stacks by a factor
+     */
     public Ingredients<T> scaleAll(double factor) {
         checkFactor(factor);
         for (Entry<T> entry : list) {
@@ -169,6 +199,9 @@ public final class Ingredients<T> {
         return this;
     }
 
+    /**
+     * Scale all input/output stacks' chances by a factor
+     */
     public Ingredients<T> scaleAllChances(double factor) {
         checkFactor(factor);
         for (Entry<T> entry : list) {
@@ -177,6 +210,9 @@ public final class Ingredients<T> {
         return this;
     }
 
+    /**
+     * Scale all input/output stacks by a factor, except the specified ones
+     */
     @SafeVarargs
     public final Ingredients<T> scaleAllExcept(double factor, T... excluded) {
         checkFactor(factor);
@@ -188,6 +224,9 @@ public final class Ingredients<T> {
         return this;
     }
 
+    /**
+     * Scale all input/output stacks' chances by a factor, except the specified ones
+     */
     @SafeVarargs
     public final Ingredients<T> scaleAllChancesExcept(double factor, T... excluded) {
         checkFactor(factor);
@@ -199,6 +238,10 @@ public final class Ingredients<T> {
         return this;
     }
 
+    /**
+     * Scale all input stacks by a factor except the specified ones. If the factor is < 1, scale outputs upwards
+     * instead.
+     */
     @SafeVarargs
     public final Ingredients<T> scaleAllBalanced(double factor, T... excluded) {
         checkFactor(factor);
@@ -219,11 +262,20 @@ public final class Ingredients<T> {
         return false;
     }
 
+    /**
+     * Condense a material part by replacing it with its 'denser' counterpart, should the stacksize exceed 64.
+     * E.g. 72 rods -> 36 long rods
+     */
     public Ingredients<T> condense(T target) {
         require(target).condense = true;
         return this;
     }
 
+    /**
+     * Condense all in/output material parts by replacing them with their 'denser' counterparts, should the stacksize
+     * exceed 64.
+     * E.g. 72 rods -> 36 long rods
+     */
     public Ingredients<T> condenseAll() {
         for (Entry<T> entry : list) {
             entry.condense = true;
@@ -237,6 +289,9 @@ public final class Ingredients<T> {
         }
     }
 
+    /**
+     * Set a stack's amount. Overrides scaling.
+     */
     public Ingredients<T> setAmount(T target, int amount) {
         Entry<T> entry = require(target);
         entry.base = amount;
@@ -244,6 +299,9 @@ public final class Ingredients<T> {
         return this;
     }
 
+    /**
+     * Remove a stack.
+     */
     public Ingredients<T> remove(T target) {
         int i = indexOf(target);
         if (i >= 0) {
