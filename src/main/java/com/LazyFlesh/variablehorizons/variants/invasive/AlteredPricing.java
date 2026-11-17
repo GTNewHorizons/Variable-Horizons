@@ -1,6 +1,6 @@
 package com.LazyFlesh.variablehorizons.variants.invasive;
 
-import static gregtech.api.enums.Mods.EtFuturumRequiem;
+import static gregtech.api.enums.Mods.IronChests;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -28,6 +28,6 @@ public class AlteredPricing extends VariantLoader {
             new Object[] { "SPS", "GTG", "SCS", 'S', OrePrefixes.screw.get(Materials.Tin), 'P',
                 OrePrefixes.plate.get(Materials.Iron), 'G', OrePrefixes.gearGt.get(Materials.Wood), 'T',
                 new ItemStack(Blocks.crafting_table, 1), 'C',
-                GTModHandler.getModItem(EtFuturumRequiem.ID, "barrel", 1, 0) });
+                GTModHandler.getModItem(IronChests.ID, "BlockIronChest", 1, 0) });
     }
 }
