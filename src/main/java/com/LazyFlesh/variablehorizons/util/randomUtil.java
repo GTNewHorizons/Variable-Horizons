@@ -39,6 +39,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTUtility.ItemId;
 import gtPlusPlus.core.material.Material;
 
 public class randomUtil {
@@ -46,6 +47,7 @@ public class randomUtil {
     private static final Map<EntityPlayerMP, Long> WARN_TIMES = new WeakHashMap<>();
     private static final Map<Integer, byte[]> CHUNK_META_CACHE = new HashMap<>();
     private static final Map<Integer, Block[]> CHUNK_BLOCK_CACHE = new HashMap<>();
+    private static final Map<ItemId, CircuitWraps> WRAP_ITEMS_CACHE = new HashMap<>();
     private static final boolean VOID_WORLD_ACTIVE = VariantNames.activeContains(VariantNames.VOID_WORLD.id);
     private static final boolean VOID_ISLAND_ACTIVE = VariantNames.activeContains(VariantNames.VOID_ISLAND.id);
     private static final boolean CUSTOM_STARTING_DIM_ACTIVE = VariantNames
@@ -309,12 +311,15 @@ public class randomUtil {
     }
 
     private static CircuitWraps findPartWrap(ItemStack stack) {
-        for (CircuitWraps wrap : CircuitWraps.VALUES) {
-            if (wrap.itemSingle.hasBeenSet() && wrap.itemSingle.isStackEqual(stack, false, true)) {
-                return wrap;
+        if (WRAP_ITEMS_CACHE.isEmpty()) {
+            for (CircuitWraps wrap : CircuitWraps.VALUES) {
+                if (wrap.itemSingle.hasBeenSet()) {
+                    WRAP_ITEMS_CACHE.put(ItemId.create(wrap.itemSingle.get(1)), wrap);
+                }
             }
         }
-        return null;
+
+        return WRAP_ITEMS_CACHE.get(ItemId.createNoCopy(stack));
     }
 
     private static Material findGtppMaterial(String name) {
