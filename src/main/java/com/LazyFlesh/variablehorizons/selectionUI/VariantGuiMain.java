@@ -76,6 +76,10 @@ public class VariantGuiMain extends GuiScreen {
     private final float initialEfficiencyMultiplier;
     private final boolean initialSuperflatPopulation;
     private final boolean initialSuperflatBiomes;
+    private final double initialPartCostMultiplier;
+    private final boolean initialCircuitCostChange;
+    private final boolean initialPartCostChange;
+    private final boolean initialMiscCostChange;
 
     public VariantGuiMain(GuiScreen parent) {
         this.parent = parent;
@@ -84,6 +88,10 @@ public class VariantGuiMain extends GuiScreen {
         this.initialEfficiencyMultiplier = GeneralConfig.efficiencyMultiplier;
         this.initialSuperflatPopulation = GeneralConfig.allowSuperflatPopulation;
         this.initialSuperflatBiomes = GeneralConfig.allowSuperflatBiomes;
+        this.initialPartCostMultiplier = GeneralConfig.partCostMultiplier;
+        this.initialCircuitCostChange = GeneralConfig.changeCircuitCosts;
+        this.initialPartCostChange = GeneralConfig.changePartCosts;
+        this.initialMiscCostChange = GeneralConfig.changeMiscCosts;
     }
 
     private boolean hasUnsavedChanges() {
@@ -92,6 +100,10 @@ public class VariantGuiMain extends GuiScreen {
         if (initialEfficiencyMultiplier != GeneralConfig.efficiencyMultiplier) return true;
         if (initialSuperflatPopulation != GeneralConfig.allowSuperflatPopulation) return true;
         if (initialSuperflatBiomes != GeneralConfig.allowSuperflatBiomes) return true;
+        if (initialPartCostMultiplier != GeneralConfig.partCostMultiplier) return true;
+        if (initialCircuitCostChange != GeneralConfig.changeCircuitCosts) return true;
+        if (initialPartCostChange != GeneralConfig.changePartCosts) return true;
+        if (initialMiscCostChange != GeneralConfig.changeMiscCosts) return true;
         return false;
     }
 
@@ -364,6 +376,27 @@ public class VariantGuiMain extends GuiScreen {
                         Settings.BLOODMOON_VISUAL_REDLIGHT = MobConfig.bloodMoonTint;
                     }
                 }));
+        checkboxEntries.add(
+            makeCheckbox(
+                10,
+                VariantNames.ALTERED_PRICING,
+                "variantgui.alteredpricing.parts",
+                () -> GeneralConfig.changePartCosts,
+                value -> GeneralConfig.changePartCosts = value));
+        checkboxEntries.add(
+            makeCheckbox(
+                11,
+                VariantNames.ALTERED_PRICING,
+                "variantgui.alteredpricing.circuits",
+                () -> GeneralConfig.changeCircuitCosts,
+                value -> GeneralConfig.changeCircuitCosts = value));
+        checkboxEntries.add(
+            makeCheckbox(
+                12,
+                VariantNames.ALTERED_PRICING,
+                "variantgui.alteredpricing.misc",
+                () -> GeneralConfig.changeMiscCosts,
+                value -> GeneralConfig.changeMiscCosts = value));
 
         textFieldEntries.clear();
         Predicate<Character> dimIdFilter = c -> Character.isDigit(c) || c == '-';
@@ -527,6 +560,18 @@ public class VariantGuiMain extends GuiScreen {
                 },
                 StatCollector.translateToLocal("variantgui.crimsonapocalypse.infernaldifficulty.tooltip"),
                 StatCollector.translateToLocal("variantgui.crimsonapocalypse.infernaldifficulty.label")));
+        textFieldEntries.add(
+            makeTextField(
+                Collections.singletonList(VariantNames.ALTERED_PRICING),
+                decimalFilter,
+                () -> String.valueOf(GeneralConfig.partCostMultiplier),
+                text -> {
+                    try {
+                        GeneralConfig.partCostMultiplier = Double.parseDouble(text);
+                    } catch (NumberFormatException ignored) {}
+                },
+                StatCollector.translateToLocal("variantgui.alteredpricing.multiplier.tooltip"),
+                StatCollector.translateToLocal("variantgui.alteredpricing.multiplier.label")));
 
         cycleButtonEntries.clear();
         cycleButtonEntries.add(

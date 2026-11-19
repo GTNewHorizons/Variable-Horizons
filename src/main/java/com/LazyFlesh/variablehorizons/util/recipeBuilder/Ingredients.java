@@ -1,0 +1,697 @@
+package com.LazyFlesh.variablehorizons.util.recipeBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.IntFunction;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
+import com.LazyFlesh.variablehorizons.util.randomUtil;
+
+import gregtech.api.objects.ItemData;
+import gregtech.api.objects.OreDictItemStack;
+import gregtech.api.objects.SubstituteFluidStack;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
+
+public final class Ingredients<T> {
+
+    private static final class Entry<T> {
+
+        final T origin;
+        T current;
+        double factor = 1d;
+        int base;
+        int chanceBase = 10000;
+        double chanceFactor = 1d;
+        boolean condense;
+        double balanceFactor = 1d;
+
+        Entry(T stack, int base) {
+            this.origin = stack;
+            this.current = stack;
+            this.base = base;
+        }
+
+        int chance() {
+            long chance = Math.round(chanceBase * chanceFactor);
+            return (int) Math.max(0, Math.min(10000, chance));
+        }
+    }
+
+    private final Kind<T> kind;
+    private final List<Entry<T>> list = new ArrayList<>();
+
+    Ingredients(Kind<T> kind) {
+        this.kind = kind;
+    }
+
+    private int indexOf(T target) {
+        for (int i = 0; i < list.size(); i++) {
+            Entry<T> entry = list.get(i);
+            if (kind.same(entry.origin, target) || kind.same(entry.current, target)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private Entry<T> require(T target) {
+        int i = indexOf(target);
+        if (i < 0) {
+            throw new IllegalStateException("Ingredient not found in recipe draft: " + target);
+        }
+        return list.get(i);
+    }
+
+    public Ingredients<T> setChance(T target, int chance) {
+        Entry<T> entry = require(target);
+        entry.chanceBase = chance;
+        entry.chanceFactor = 1d;
+        return this;
+    }
+
+    private Entry<T> make(T stack) {
+        return new Entry<>(stack, kind.amount(stack));
+    }
+
+    /**
+     * Add a new stack at the end list of the in/output list
+     */
+    public Ingredients<T> add(T stack) {
+        list.add(make(stack));
+        return this;
+    } // used for base definition
+
+    /**
+     * Add a new stack at the end of the in/output list + its respective chance to be consumed/produced
+     */
+    public Ingredients<T> add(T stack, int chance) {
+        Entry<T> entry = make(stack);
+        entry.chanceBase = chance;
+        list.add(entry);
+        return this;
+    }
+
+    /**
+     * Add a new stack at the start of the in/output list
+     */
+    public Ingredients<T> addFirst(T stack) {
+        list.add(0, make(stack));
+        return this;
+    }
+
+    /**
+     * Add a new stack at the start of the in/output list + its respective chance to be consumed/produced
+     */
+    public Ingredients<T> addFirst(T stack, int chance) {
+        Entry<T> entry = make(stack);
+        entry.chanceBase = chance;
+        list.add(0, entry);
+        return this;
+    }
+
+    /**
+     * Add a new stack right before the specified anchor stack
+     */
+    public Ingredients<T> addBefore(T anchor, T stack) {
+        list.add(Math.max(indexOf(anchor), 0), make(stack));
+        return this;
+    }
+
+    /**
+     * Add a new stack right before the specified anchor stack + its respective chance to be consumed/produced
+     */
+    public Ingredients<T> addBefore(T anchor, T stack, int chance) {
+        Entry<T> entry = make(stack);
+        entry.chanceBase = chance;
+        list.add(Math.max(indexOf(anchor), 0), entry);
+        return this;
+    }
+
+    /**
+     * Add a new stack right after the specified anchor stack
+     */
+    public Ingredients<T> addAfter(T anchor, T stack) {
+        int i = indexOf(anchor);
+        list.add(i < 0 ? list.size() : i + 1, make(stack));
+        return this;
+    }
+
+    /**
+     * Add a new stack right after the specified anchor stack + its respective chance to be consumed/produced
+     */
+    public Ingredients<T> addAfter(T anchor, T stack, int chance) {
+        Entry<T> entry = make(stack);
+        entry.chanceBase = chance;
+        int i = indexOf(anchor);
+        list.add(i < 0 ? list.size() : i + 1, entry);
+        return this;
+    }
+
+    /**
+     * Replace a stack with a different one
+     */
+    public Ingredients<T> replace(T target, T newStack) {
+        Entry<T> entry = require(target);
+        entry.current = newStack;
+        entry.base = kind.amount(newStack);
+        return this;
+    }
+
+    /**
+     * Replace a stack with a different one + define its respective chance to be consumed/produced
+     */
+    public Ingredients<T> replace(T target, T newStack, int chance) {
+        replace(target, newStack);
+        require(newStack).chanceBase = chance;
+        return this;
+    }
+
+    /**
+     * Scale a stack by a factor
+     */
+    public Ingredients<T> scale(T target, double factor) {
+        checkFactor(factor);
+        require(target).factor *= factor;
+        return this;
+    }
+
+    /**
+     * Scale a stack's production/consumption chance by a factor
+     */
+    public Ingredients<T> scaleChance(T target, double factor) {
+        checkFactor(factor);
+        require(target).chanceFactor *= factor;
+        return this;
+    }
+
+    /**
+     * Scale all input/output stacks by a factor
+     */
+    public Ingredients<T> scaleAll(double factor) {
+        checkFactor(factor);
+        for (Entry<T> entry : list) {
+            entry.factor *= factor;
+        }
+        return this;
+    }
+
+    /**
+     * Scale all input/output stacks' chances by a factor
+     */
+    public Ingredients<T> scaleAllChances(double factor) {
+        checkFactor(factor);
+        for (Entry<T> entry : list) {
+            entry.chanceFactor *= factor;
+        }
+        return this;
+    }
+
+    /**
+     * Scale all input/output stacks by a factor, except the specified ones
+     */
+    @SafeVarargs
+    public final Ingredients<T> scaleAllExcept(double factor, T... excluded) {
+        checkFactor(factor);
+        for (Entry<T> entry : list) {
+            if (!isIn(entry, excluded)) {
+                entry.factor *= factor;
+            }
+        }
+        return this;
+    }
+
+    /**
+     * Scale all input/output stacks' chances by a factor, except the specified ones
+     */
+    @SafeVarargs
+    public final Ingredients<T> scaleAllChancesExcept(double factor, T... excluded) {
+        checkFactor(factor);
+        for (Entry<T> entry : list) {
+            if (!isIn(entry, excluded)) {
+                entry.chanceFactor *= factor;
+            }
+        }
+        return this;
+    }
+
+    /**
+     * Scale all input stacks by a factor except the specified ones. If the factor is < 1, scale outputs upwards
+     * instead.
+     */
+    @SafeVarargs
+    public final Ingredients<T> scaleAllBalanced(double factor, T... excluded) {
+        checkFactor(factor);
+        for (Entry<T> entry : list) {
+            if (!isIn(entry, excluded)) {
+                entry.balanceFactor *= factor;
+            }
+        }
+        return this;
+    }
+
+    private boolean isIn(Entry<T> entry, T[] targets) {
+        for (T target : targets) {
+            if (kind.same(entry.origin, target) || kind.same(entry.current, target)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Condense a material part by replacing it with its 'denser' counterpart, should the stacksize exceed 64.
+     * E.g. 72 rods -> 36 long rods
+     */
+    public Ingredients<T> condense(T target) {
+        require(target).condense = true;
+        return this;
+    }
+
+    /**
+     * Condense all in/output material parts by replacing them with their 'denser' counterparts, should the stacksize
+     * exceed 64.
+     * E.g. 72 rods -> 36 long rods
+     */
+    public Ingredients<T> condenseAll() {
+        for (Entry<T> entry : list) {
+            entry.condense = true;
+        }
+        return this;
+    }
+
+    private static void checkFactor(double factor) {
+        if (!(factor > 0) || Double.isInfinite(factor)) {
+            throw new IllegalArgumentException("Scale factor must be positive and finite: " + factor);
+        }
+    }
+
+    /**
+     * Set a stack's amount. Overrides scaling.
+     */
+    public Ingredients<T> setAmount(T target, int amount) {
+        Entry<T> entry = require(target);
+        entry.base = amount;
+        entry.factor = 1d;
+        return this;
+    }
+
+    /**
+     * Remove a stack.
+     */
+    public Ingredients<T> remove(T target) {
+        int i = indexOf(target);
+        if (i >= 0) {
+            list.remove(i);
+        }
+        return this;
+    }
+
+    public boolean isEmpty() {
+        return list.isEmpty();
+    }
+
+    public T[] build(IntFunction<T[]> gen) {
+        return build(gen, 1d);
+    }
+
+    public T[] build(IntFunction<T[]> gen, double extraFactor) {
+        T[] out = gen.apply(list.size());
+        for (int i = 0; i < out.length; i++) {
+            Entry<T> entry = list.get(i);
+            double factor = entry.factor * Math.max(1d, entry.balanceFactor) * extraFactor;
+            T stack = kind.withAmount(entry.current, kind.scaled(entry.base, factor));
+            if (entry.condense) {
+                stack = kind.condense(stack);
+            }
+            out[i] = stack;
+        }
+        return out;
+    }
+
+    public Ingredients<T> setChances(int... chances) {
+        if (chances.length != list.size()) {
+            throw new IllegalArgumentException("Expected " + list.size() + " chances, got " + chances.length);
+        }
+        for (int i = 0; i < chances.length; i++) {
+            list.get(i).chanceBase = chances[i];
+        }
+        return this;
+    }
+
+    public int[] buildChances() {
+        int[] out = new int[list.size()];
+        for (int i = 0; i < out.length; i++) out[i] = list.get(i)
+            .chance();
+        return out;
+    }
+
+    public boolean hasChances() {
+        for (Entry<T> entry : list) {
+            if (entry.chance() != 10000) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    interface Kind<T> {
+
+        boolean same(T a, T b);
+
+        int amount(T stack);
+
+        T withAmount(T stack, int amount);
+
+        default int scaled(int base, double factor) {
+            if (base == 0) {
+                return 0;
+            }
+            long rounded = Math.round(base * factor);
+            if (rounded > Integer.MAX_VALUE) {
+                throw new ArithmeticException("Scaled amount overflows int: " + base + " * " + factor);
+            }
+            return (int) Math.max(1, rounded);
+        }
+
+        default T condense(T stack) {
+            return stack;
+        }
+    }
+
+    static final class Kinds {
+
+        static final Kind<Object> ITEM_INPUT = new Kind<>() {
+
+            private boolean isOreDictArray(Object object) {
+                return object instanceof Object[] && !(object instanceof ItemStack[])
+                    && ((Object[]) object).length >= 2;
+            }
+
+            public boolean same(Object a, Object b) {
+                if (a instanceof ItemStack && b instanceof ItemStack) {
+                    return GTUtility.areStacksEqual((ItemStack) a, (ItemStack) b);
+                }
+
+                if (a instanceof OreDictItemStack && b instanceof OreDictItemStack) {
+                    return ((OreDictItemStack) a).mOreName.equals(((OreDictItemStack) b).mOreName);
+                }
+
+                if (a instanceof ItemStack[]x && b instanceof ItemStack[]y) {
+                    if (x.length != y.length) {
+                        return false;
+                    }
+                    for (int i = 0; i < x.length; i++) {
+                        if (!GTUtility.areStacksEqual(x[i], y[i])) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+
+                if (a instanceof ItemStack[] && b instanceof ItemStack) {
+                    for (ItemStack alt : (ItemStack[]) a) {
+                        if (GTUtility.areStacksEqual(alt, (ItemStack) b)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+                if (a instanceof ItemStack && b instanceof ItemStack[]) {
+                    for (ItemStack alt : (ItemStack[]) b) {
+                        if (GTUtility.areStacksEqual((ItemStack) a, alt)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+                Object stackA = isOreDictArray(a) ? ((Object[]) a)[0] : a;
+                Object stackB = isOreDictArray(b) ? ((Object[]) b)[0] : b;
+
+                String nameA = getOreDictName(stackA);
+                String nameB = getOreDictName(stackB);
+
+                if (nameA != null && nameB != null) {
+                    return nameA.equals(nameB);
+                }
+
+                if (isOreDictArray(a) && isOreDictArray(b)) {
+                    return Objects.equals(stackA, stackB);
+                }
+
+                return Objects.equals(a, b);
+            }
+
+            public int amount(Object stack) {
+                if (stack instanceof ItemStack) {
+                    return ((ItemStack) stack).stackSize;
+                }
+
+                if (stack instanceof OreDictItemStack) {
+                    return ((OreDictItemStack) stack).mAmount;
+                }
+
+                if (stack instanceof ItemStack[]) {
+                    return ((ItemStack[]) stack)[0].stackSize;
+                }
+
+                return ((Number) ((Object[]) stack)[1]).intValue();
+            }
+
+            public Object withAmount(Object stack, int amount) {
+                if (stack instanceof ItemStack) {
+                    return GTUtility.copyAmountUnsafe(amount, (ItemStack) stack);
+                }
+
+                if (stack instanceof OreDictItemStack) {
+                    return new OreDictItemStack(((OreDictItemStack) stack).mOreName, amount);
+                }
+
+                if (stack instanceof ItemStack[]src) {
+                    int ref = src[0].stackSize;
+                    ItemStack[] out = new ItemStack[src.length];
+                    for (int i = 0; i < src.length; i++) {
+                        int newAmount = (int) Math.max(1, Math.round((double) src[i].stackSize * amount / ref));
+                        out[i] = GTUtility.copyAmountUnsafe(newAmount, src[i]);
+                    }
+                    return out;
+                }
+
+                if (isOreDictArray(stack)) {
+                    Object[] stacks = (Object[]) stack;
+                    ItemStack[] sorted = sortStacks(stacks[0], amount);
+                    if (sorted != null) {
+                        return sorted;
+                    }
+                    return new Object[] { stacks[0], amount };
+                }
+
+                return stack;
+            }
+
+            public Object condense(Object stack) {
+                if (stack instanceof ItemStack) {
+                    return randomUtil.compressItems((ItemStack) stack);
+                }
+                if (stack instanceof ItemStack[]src) {
+                    ItemStack[] out = new ItemStack[src.length];
+                    for (int i = 0; i < src.length; i++) {
+                        out[i] = randomUtil.compressItems(src[i]);
+                    }
+                    return out;
+                }
+
+                if (isOreDictArray(stack)) {
+                    Object[] stacks = (Object[]) stack;
+                    int amount = (int) stacks[1];
+                    ItemStack[] out = sortStacks(stacks[0], amount);
+
+                    if (out != null) {
+                        for (int i = 0; i < out.length; i++) {
+                            out[i] = randomUtil.compressItems(out[i]);
+                        }
+                        return out;
+                    }
+                    return stack;
+                }
+
+                return stack;
+            }
+
+        };
+
+        static final Kind<ItemStack> ITEM_OUTPUT = new Kind<>() {
+
+            public boolean same(ItemStack a, ItemStack b) {
+                return GTUtility.areStacksEqual(a, b);
+            }
+
+            public int amount(ItemStack stack) {
+                return stack.stackSize;
+            }
+
+            public ItemStack withAmount(ItemStack stack, int amount) {
+                ItemStack copy = stack.copy();
+                copy.stackSize = amount;
+                return copy;
+            }
+
+            public ItemStack condense(ItemStack stack) {
+                return randomUtil.compressItems(stack);
+            }
+        };
+
+        static final Kind<FluidStack> FLUID = new Kind<>() {
+
+            public boolean same(FluidStack a, FluidStack b) {
+                return a.isFluidEqual(b);
+            }
+
+            public int amount(FluidStack stack) {
+                return stack.amount;
+            }
+
+            public FluidStack withAmount(FluidStack stack, int amount) {
+                return new FluidStack(stack, amount);
+            }
+        };
+
+        // accepts FluidStack or SubstituteFluidStack
+        static final Kind<Object> FLUID_SUBSTITUTABLE = new Kind<>() {
+
+            private List<FluidStack> members(Object stack) {
+                return ((SubstituteFluidStack) stack).fluidStacks;
+            }
+
+            private boolean contains(SubstituteFluidStack group, FluidStack fluid) {
+                for (FluidStack member : group.fluidStacks) {
+                    if (member.isFluidEqual(fluid)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            public boolean same(Object a, Object b) {
+                if (a instanceof FluidStack x && b instanceof FluidStack y) {
+                    return x.isFluidEqual(y);
+                }
+
+                if (a instanceof SubstituteFluidStack x && b instanceof SubstituteFluidStack y) {
+                    if (x.fluidStacks.size() != y.fluidStacks.size()) {
+                        return false;
+                    }
+                    for (int i = 0; i < x.fluidStacks.size(); i++) {
+                        if (!x.fluidStacks.get(i)
+                            .isFluidEqual(y.fluidStacks.get(i))) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+
+                if (a instanceof SubstituteFluidStack x && b instanceof FluidStack y) {
+                    return contains(x, y);
+                }
+                if (a instanceof FluidStack x && b instanceof SubstituteFluidStack y) {
+                    return contains(y, x);
+                }
+                return false;
+            }
+
+            public int amount(Object stack) {
+                if (stack instanceof FluidStack) {
+                    return ((FluidStack) stack).amount;
+                }
+                return members(stack).get(0).amount;
+            }
+
+            public Object withAmount(Object stack, int amount) {
+                if (stack instanceof FluidStack) {
+                    return new FluidStack((FluidStack) stack, amount);
+                }
+
+                List<FluidStack> src = members(stack);
+                int ref = src.get(0).amount;
+                FluidStack[] out = new FluidStack[src.size()];
+                for (int i = 0; i < out.length; i++) {
+                    long scaled = ref == 0 ? amount : Math.round((double) src.get(i).amount * amount / ref);
+                    out[i] = new FluidStack(src.get(i), (int) Math.min(Integer.MAX_VALUE, Math.max(1, scaled)));
+                }
+                return new SubstituteFluidStack(out);
+            }
+        };
+
+        private static String getOreDictName(Object stack) {
+            if (stack instanceof String) {
+                return (String) stack;
+            }
+            if (stack instanceof OreDictItemStack) {
+                return ((OreDictItemStack) stack).mOreName;
+            }
+            if (stack instanceof ItemData data) {
+                if (data.mPrefix != null && data.mMaterial != null && data.mMaterial.mMaterial != null) {
+                    return data.mPrefix.getName() + data.mMaterial.mMaterial.mName;
+                }
+            }
+            return null;
+        }
+
+        // needed for research station assline recipes
+        private static ItemStack[] sortStacks(Object oreDict, int amount) {
+            List<ItemStack> ores = GTOreDictUnificator.getOres(oreDict);
+            if (ores.isEmpty()) {
+                return null;
+            }
+
+            List<ItemStack> sorted = new java.util.ArrayList<>(ores);
+            sorted.sort(
+                java.util.Comparator
+                    .<ItemStack, String>comparing(
+                        s -> cpw.mods.fml.common.registry.GameRegistry.findUniqueIdentifierFor(s.getItem()).modId)
+                    .thenComparing(
+                        s -> cpw.mods.fml.common.registry.GameRegistry.findUniqueIdentifierFor(s.getItem()).name)
+                    .thenComparingInt(ItemStack::getItemDamage)
+                    .thenComparingInt(s -> s.stackSize));
+
+            ItemStack[] out = new ItemStack[sorted.size()];
+            for (int i = 0; i < sorted.size(); i++) {
+                out[i] = GTUtility.copyAmountUnsafe(amount, sorted.get(i));
+            }
+            return out;
+        }
+
+    }
+
+    static final class CraftIngredients {
+
+        static String oreName(Object object) {
+            if (object instanceof OreDictItemStack) {
+                return ((OreDictItemStack) object).mOreName;
+            }
+
+            if (object instanceof String) {
+                return (String) object;
+            }
+            return null;
+        }
+
+        static boolean same(Object a, Object b) {
+            if (a instanceof ItemStack && b instanceof ItemStack) {
+                return GTUtility.areStacksEqual((ItemStack) a, (ItemStack) b);
+            }
+            String x = oreName(a);
+            String y = oreName(b);
+            if (x != null && y != null) {
+                return x.equals(y);
+            }
+
+            return Objects.equals(a, b);
+        }
+    }
+}

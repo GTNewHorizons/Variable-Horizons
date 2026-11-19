@@ -3,6 +3,8 @@ package com.LazyFlesh.variablehorizons;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
+import com.LazyFlesh.variablehorizons.recipes.modifiableRecipes.RecipeLoader;
+import com.LazyFlesh.variablehorizons.tileentity.MTELoader;
 import com.LazyFlesh.variablehorizons.util.RecipeRemover;
 import com.LazyFlesh.variablehorizons.util.VillagerRecipe;
 import com.LazyFlesh.variablehorizons.util.islands.IslandCommands;
@@ -62,6 +64,7 @@ public class CommonProxy {
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
     public void init(FMLInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(VariantNames.CRIMSON_APOCALYPSE.loaderClass);
+        MTELoader.init();
     }
 
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
@@ -76,8 +79,8 @@ public class CommonProxy {
         // Then after the recipes are removed, add the custom recipes.
         // Some chance a custom recipe could be removed. if run before remover.
         VariableHorizons.LOG.info("Added recipes.");
+        new RecipeLoader().run();
         VariantLoader.loadVariantRecipes();
-
     }
 
     // register server commands in this event handler (Remove if not needed)

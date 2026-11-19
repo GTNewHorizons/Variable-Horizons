@@ -1,6 +1,7 @@
 package com.LazyFlesh.variablehorizons.variants;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -8,6 +9,7 @@ import net.minecraft.util.StatCollector;
 
 import com.LazyFlesh.variablehorizons.Config.GeneralConfig;
 import com.LazyFlesh.variablehorizons.VariableHorizons;
+import com.LazyFlesh.variablehorizons.util.recipeBuilder.RecipeModifiers;
 import com.LazyFlesh.variablehorizons.variants.runtime.IRuntimeVariant;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
@@ -70,14 +72,19 @@ public abstract class VariantLoader {
     }
 
     public static void loadVariantRecipes() {
+        Set<VariantNames> activeVariants = new HashSet<>();
         for (String var : VariantNames.getActiveVariantNames()) {
             VariantNames variant = VariantNames.getVariantFromID(var);
 
-            if (variant.hasLoaded && variant.loaderClass instanceof VariantLoader) {
-                // load recipes from all active variants
-                variant.loaderClass.variantRecipes();
+            if (variant.hasLoaded) {
+                activeVariants.add(variant);
+                if (variant.loaderClass instanceof VariantLoader) {
+                    // load recipes from all active variants
+                    variant.loaderClass.variantRecipes();
+                }
             }
         }
+        RecipeModifiers.registerAll(activeVariants);
     }
 
     public abstract void loadVariant(VariantNames... activeVariants);
