@@ -15,4 +15,7 @@ public class GogConfig {
     @Config.DefaultBoolean(false)
     public static boolean dragonTime;
 
+    @Config.Comment("Should mob cramming be turned off")
+    @Config.DefaultBoolean(true)
+    public static boolean disableMobCramming;
 }
