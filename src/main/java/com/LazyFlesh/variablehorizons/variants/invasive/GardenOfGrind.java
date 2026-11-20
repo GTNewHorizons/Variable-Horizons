@@ -1,5 +1,6 @@
 package com.LazyFlesh.variablehorizons.variants.invasive;
 
+import com.LazyFlesh.variablehorizons.Config.GogConfig;
 import com.LazyFlesh.variablehorizons.variants.VariantLoader;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
@@ -16,8 +17,11 @@ public class GardenOfGrind extends VariantLoader {
         // but it does need to overwrite some things
         // the hodgepodge mixins have been ported here, because early mixins are hard to toggle config on.
         Worldgen.endAsteroids.generateEndAsteroids = false;
-        // disable entity cramming (makes mob farms behave better)
-        GTMod.proxy.mMaxEqualEntitiesAtOneSpot = -1;
+
+        if (GogConfig.disableMobCramming) {
+            // disable entity cramming (makes mob farms behave better)
+            GTMod.proxy.mMaxEqualEntitiesAtOneSpot = -1;
+        }
     }
 
     @Override
