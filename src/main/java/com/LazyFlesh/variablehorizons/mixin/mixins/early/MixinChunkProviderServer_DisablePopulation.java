@@ -18,8 +18,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import com.LazyFlesh.variablehorizons.util.randomUtil;
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
-import rwg.world.ChunkGeneratorRealistic;
-
 @Mixin(ChunkProviderServer.class)
 public class MixinChunkProviderServer_DisablePopulation {
 
@@ -47,8 +45,10 @@ public class MixinChunkProviderServer_DisablePopulation {
             MapGenVillage villageGen = null;
             if (chunkProvider instanceof ChunkProviderGenerate) {
                 villageGen = ((AccessorChunkProviderGenerate) chunkProvider).getVillageGenerator();
-            } else if (chunkProvider instanceof ChunkGeneratorRealistic) {
-                villageGen = ((AccessorChunkGeneratorRealistic) chunkProvider).getVillageGenerator();
+            } else if (chunkProvider instanceof rwg.world.ChunkGeneratorRealistic) {
+                villageGen = ((AccessorChunkGeneratorRealisticRWG1) chunkProvider).getVillageGenerator();
+            } else if (chunkProvider instanceof rwg2.world.ChunkGeneratorRealistic) {
+                villageGen = ((AccessorChunkGeneratorRealisticRWG2) chunkProvider).getVillageGenerator();
             }
 
             if (villageGen != null) {

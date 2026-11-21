@@ -47,13 +47,13 @@ public abstract class MixinMTEHatchDynamo_MakeWireless extends MTEHatch {
         variablehorizons$cachedAmperes = amps;
 
         BigInteger perOp = BigInteger.valueOf(amps * V[mTier])
-            .multiply(BigInteger.valueOf(WirelessNetworkManager.ticks_between_energy_addition));
+            .multiply(BigInteger.valueOf(WirelessNetworkManager.TICKS_BETWEEN_ENERGY_ADDITION));
 
         double div = perOp.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) > 0 ? perOp.doubleValue() / Long.MAX_VALUE
             : 1d;
 
-        variablehorizons$ticksBetween = div > 1 ? (long) (WirelessNetworkManager.ticks_between_energy_addition / div)
-            : WirelessNetworkManager.ticks_between_energy_addition;
+        variablehorizons$ticksBetween = div > 1 ? (long) (WirelessNetworkManager.TICKS_BETWEEN_ENERGY_ADDITION / div)
+            : WirelessNetworkManager.TICKS_BETWEEN_ENERGY_ADDITION;
 
         variablehorizons$capacity = div
             > 1 ? perOp.divide(BigInteger.valueOf((long) (div * variablehorizons$precisionMultiplier)))

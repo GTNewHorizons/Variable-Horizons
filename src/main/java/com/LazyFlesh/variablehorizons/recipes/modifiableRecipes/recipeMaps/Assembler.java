@@ -1378,7 +1378,7 @@ public class Assembler implements Runnable {
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8),
                     GTUtility.getIntegratedCircuit(8))
-                .itemOutputs(ItemList.Casing_MAX.get(1L))
+                .itemOutputs(ItemList.Casing_UHV.get(1L))
                 .duration(50 * TICKS)
                 .eut(TierEU.RECIPE_LV / 2));
 
@@ -1393,14 +1393,14 @@ public class Assembler implements Runnable {
             () -> RecipeDraft.of(assemblerRecipes)
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 2L),
-                    ItemList.Casing_MAX.get(1))
+                    ItemList.Casing_UHV.get(1))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(288L))
-                .itemOutputs(ItemList.Hull_MAX.get(1L))
+                .itemOutputs(ItemList.Hull_UHV.get(1L))
                 .duration(50 * TICKS)
                 .eut(TierEU.RECIPE_LV / 2));
 
         RecipeModifiers.modify("assembler/uhv_hull", VariantNames.ALTERED_PRICING, RecipePhase.SCALE, d -> {
-            d.scaleAllInputsBalanced(miscCostMultiplier, ItemList.Casing_MAX.get(1));
+            d.scaleAllInputsBalanced(miscCostMultiplier, ItemList.Casing_UHV.get(1));
             d.itemIn()
                 .condenseAll();
         });
