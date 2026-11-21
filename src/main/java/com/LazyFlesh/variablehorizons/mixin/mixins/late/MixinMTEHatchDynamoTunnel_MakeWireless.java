@@ -47,14 +47,14 @@ public class MixinMTEHatchDynamoTunnel_MakeWireless extends MTEHatchDynamoMulti 
         variablehorizonsLaser$cachedAmperes = Amperes;
 
         BigInteger perOp = BigInteger.valueOf(Amperes * V[mTier])
-            .multiply(BigInteger.valueOf(WirelessNetworkManager.ticks_between_energy_addition));
+            .multiply(BigInteger.valueOf(WirelessNetworkManager.TICKS_BETWEEN_ENERGY_ADDITION));
 
         double div = perOp.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) > 0 ? perOp.doubleValue() / Long.MAX_VALUE
             : 1d;
 
         variablehorizonsLaser$ticksBetween = div > 1
-            ? (long) (WirelessNetworkManager.ticks_between_energy_addition / div)
-            : WirelessNetworkManager.ticks_between_energy_addition;
+            ? (long) (WirelessNetworkManager.TICKS_BETWEEN_ENERGY_ADDITION / div)
+            : WirelessNetworkManager.TICKS_BETWEEN_ENERGY_ADDITION;
 
         variablehorizonsLaser$capacity = div
             > 1 ? perOp.divide(BigInteger.valueOf((long) (div * variablehorizonsLaser$precisionMultiplier)))

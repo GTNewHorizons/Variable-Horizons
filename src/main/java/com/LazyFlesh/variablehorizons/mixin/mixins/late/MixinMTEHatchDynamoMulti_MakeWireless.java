@@ -43,7 +43,7 @@ public class MixinMTEHatchDynamoMulti_MakeWireless extends MTEHatchDynamo {
         variablehorizonsMultiamp$cachedAmperes = amps;
 
         BigInteger perOp = BigInteger.valueOf(amps * V[mTier])
-            .multiply(BigInteger.valueOf(WirelessNetworkManager.ticks_between_energy_addition));
+            .multiply(BigInteger.valueOf(WirelessNetworkManager.TICKS_BETWEEN_ENERGY_ADDITION));
 
         double div = perOp.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) > 0 ? perOp.doubleValue() / Long.MAX_VALUE
             : 1d;
