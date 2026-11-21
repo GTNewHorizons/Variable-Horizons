@@ -78,7 +78,8 @@ public enum Mixins implements IMixins {
     ALLOW_VILLAGE_GENERATION_IN_ANY_BIOME(new MixinBuilder("Allow villages to generate in any biome")
         .addCommonMixins(
             "MixinStructureVillagePieces_AllowAnyBiome",
-            "AccessorChunkGeneratorRealistic",
+            "AccessorChunkGeneratorRealisticRWG1",
+            "AccessorChunkGeneratorRealisticRWG2",
             "MixinMapGenVillage_AllowAnyBiome")
         .setApplyIf(() -> (VariantNames.activeContains(VariantNames.SUPERFLAT.id) && !GeneralConfig.disableVariants))
         .addRequiredMod(TargetedMod.RWG)
